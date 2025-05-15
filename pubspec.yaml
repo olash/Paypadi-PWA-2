@@ -29,7 +29,7 @@ dev_dependencies:
   flutter_gen_runner: ^5.10.0
 
 flutter_gen:
-  output: lib/gen/
+  output: lib/config/gen/
   assets:
     outputs:
       class_name: AppAssets
