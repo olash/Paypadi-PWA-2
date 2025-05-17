@@ -47,3 +47,5 @@ app.*.map.json
 # All generated files
 *.g.dart
 *.gen.dart
+*.gr.dart
+*.*.dart
