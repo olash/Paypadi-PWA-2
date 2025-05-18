@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i4;
+import 'package:flutter/material.dart' as _i5;
 import 'package:paypadi/src/features/authentication/presentation/views/create_account.dart'
     as _i1;
 import 'package:paypadi/src/features/authentication/presentation/views/login.dart'
@@ -51,16 +52,34 @@ class LoginRoute extends _i4.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.OnboardingScreen]
-class OnboardingRoute extends _i4.PageRouteInfo<void> {
-  const OnboardingRoute({List<_i4.PageRouteInfo>? children})
-    : super(OnboardingRoute.name, initialChildren: children);
+class OnboardingRoute extends _i4.PageRouteInfo<OnboardingRouteArgs> {
+  OnboardingRoute({_i5.Key? key, List<_i4.PageRouteInfo>? children})
+    : super(
+        OnboardingRoute.name,
+        args: OnboardingRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'OnboardingRoute';
 
   static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      return const _i3.OnboardingScreen();
+      final args = data.argsAs<OnboardingRouteArgs>(
+        orElse: () => const OnboardingRouteArgs(),
+      );
+      return _i3.OnboardingScreen(key: args.key);
     },
   );
+}
+
+class OnboardingRouteArgs {
+  const OnboardingRouteArgs({this.key});
+
+  final _i5.Key? key;
+
+  @override
+  String toString() {
+    return 'OnboardingRouteArgs{key: $key}';
+  }
 }

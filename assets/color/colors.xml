@@ -2,15 +2,17 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="primary">#0CE1C3</color>
+    <color name="primary">#007D78</color>
     <color name="primaryPressed">#0BA18D</color>
     <color name="primaryFocused">#0BBCA0</color>
     <color name="accent">#015B54</color>
     <color name="secondary">#FE9027</color>
     <color name="disabled">#F0F0F0</color>
-    <color name="disabledText">#BDBDBD</color>
+    <color name="hintText">#ABAFB1</color>
     <color name="lightBg">#ECFCF9</color>
     <color name="lightBgText">#00332E</color>
     <color name="lightBgTextPressed">#002A26</color>
     <color name="focused">#00332E</color>
+    <color name="unselectedIndicator">#CFCDC9</color>
+    <color name="unfocusedTextField">#CBD2E0</color>
 </resources>

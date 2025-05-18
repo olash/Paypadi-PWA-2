@@ -1,89 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
+import 'package:paypadi/config/gen/fonts.gen.dart';
+import 'package:paypadi/core/constants/constants.dart';
 
 final ThemeData theme = ThemeData(
-  fontFamily: 'Manrope',
   brightness: Brightness.light,
+  fontFamily: FontFamily.poppins,
   scaffoldBackgroundColor: AppColors.white,
   colorScheme: const ColorScheme.light(primary: AppColors.primary),
-  // filledButtonTheme: FilledButtonThemeData(
-  //   style: ButtonStyle(
-  //     textStyle: WidgetStatePropertyAll(
-  //       TextStyle(
-  //         fontSize: 16,
-  //         color: AppColors.white,
-  //         fontWeight: FontWeight.w600,
-  //       ),
-  //     ),
-  //     backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-  //       return states.contains(WidgetState.disabled)
-  //           ? AppColors.disabledButton
-  //           : AppColors.black;
-  //     }),
-  //     padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 24.w)),
-  //     fixedSize: WidgetStatePropertyAll(Size(362.w, 56.h)),
-  //     shape: WidgetStatePropertyAll(
-  //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
-  //     ),
-  //   ),
-  // ),
-  // outlinedButtonTheme: OutlinedButtonThemeData(
-  //   style: ButtonStyle(
-  //     textStyle: WidgetStatePropertyAll(
-  //       TextStyle(
-  //         fontSize: 15,
-  //         color: AppColors.black,
-  //         fontWeight: FontWeight.w600,
-  //       ),
-  //     ),
-  //     fixedSize: WidgetStatePropertyAll(Size(361.w, 48.h)),
-  //     padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 24.w)),
-  //     side: const WidgetStatePropertyAll(
-  //       BorderSide(color: AppColors.outlinedButtonBorder),
-  //     ),
-  //     shape: WidgetStatePropertyAll(
-  //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
-  //     ),
-  //   ),
-  // ),
-  // inputDecorationTheme: InputDecorationTheme(
-  //   filled: true,
-  //   fillColor: AppColors.white,
-  //   hintStyle: TextStyle(
-  //     fontSize: 14,
-  //     fontWeight: FontWeight.w500,
-  //     color: AppColors.black.withValues(alpha: .3),
-  //   ),
-  //   constraints: BoxConstraints(maxWidth: 362.w),
-  //   contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-  //   errorBorder: OutlineInputBorder(
-  //     borderSide: const BorderSide(color: AppColors.red),
-  //     borderRadius: BorderRadius.circular(5.r),
-  //   ),
-  //   focusedErrorBorder: OutlineInputBorder(
-  //     borderSide: const BorderSide(color: AppColors.red),
-  //     borderRadius: BorderRadius.circular(5.r),
-  //   ),
-  //   focusedBorder: OutlineInputBorder(
-  //     borderSide: const BorderSide(color: AppColors.black),
-  //     borderRadius: BorderRadius.circular(5.r),
-  //   ),
-  //   enabledBorder: OutlineInputBorder(
-  //     borderSide: const BorderSide(color: AppColors.textFieldBorderColor),
-  //     borderRadius: BorderRadius.circular(5.r),
-  //   ),
-  // ),
+  filledButtonTheme: FilledButtonThemeData(
+    style: ButtonStyle(
+      textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 16)),
+      fixedSize: WidgetStatePropertyAll(kButtonSize),
+      foregroundColor: WidgetStatePropertyAll(AppColors.white),
+      backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+        return states.contains(WidgetState.disabled)
+            ? AppColors.disabled
+            : AppColors.primary;
+      }),
+      shape: WidgetStatePropertyAll(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: ButtonStyle(
+      fixedSize: WidgetStatePropertyAll(kButtonSize),
+      side: const WidgetStatePropertyAll(BorderSide(color: AppColors.primary)),
+      foregroundColor: WidgetStatePropertyAll(AppColors.primary),
+      textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 16)),
+      shape: WidgetStatePropertyAll(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: AppColors.white,
+    constraints: BoxConstraints(maxWidth: 362),
+    hintStyle: TextStyle(fontSize: 14, color: AppColors.black),
+    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: AppColors.primary),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: AppColors.unfocusedTextField),
+      borderRadius: BorderRadius.circular(12),
+    ),
+  ),
   textTheme: TextTheme(
-    displayLarge: TextStyle(
-      fontSize: 57,
-      color: AppColors.black,
-      fontWeight: FontWeight.w500,
-    ),
-    displayMedium: TextStyle(
-      fontSize: 45,
-      color: AppColors.black,
-      fontWeight: FontWeight.w500,
-    ),
     displaySmall: TextStyle(
       fontSize: 36,
       color: AppColors.black,
@@ -105,7 +71,7 @@ final ThemeData theme = ThemeData(
       fontWeight: FontWeight.w500,
     ),
     titleLarge: TextStyle(
-      fontSize: 22,
+      fontSize: 18,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
