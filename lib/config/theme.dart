@@ -38,7 +38,7 @@ final ThemeData theme = ThemeData(
     filled: true,
     fillColor: AppColors.white,
     constraints: BoxConstraints(maxWidth: 362),
-    hintStyle: TextStyle(fontSize: 14, color: AppColors.black),
+    hintStyle: TextStyle(fontSize: 14, color: AppColors.hintText),
     contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     focusedBorder: OutlineInputBorder(
       borderSide: const BorderSide(color: AppColors.primary),

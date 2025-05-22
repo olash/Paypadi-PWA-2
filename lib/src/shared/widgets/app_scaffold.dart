@@ -24,6 +24,7 @@ class AppScaffold extends StatelessWidget {
               ? _CustomAppBar()
               : AppBar(
                 centerTitle: false,
+                automaticallyImplyLeading: true,
                 title: Text(appBarTitle, style: context.textTheme.titleLarge),
               ),
       body: SafeArea(

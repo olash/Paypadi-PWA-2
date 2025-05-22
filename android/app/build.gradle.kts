@@ -29,6 +29,28 @@ android {
         versionName = flutter.versionName
     }
 
+    flavorDimensions += "flavors"
+    productFlavors {
+        create("dev") {
+            dimension = "flavors"
+            applicationIdSuffix = ".dev"
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "Paypadi dev",
+            )
+        }
+        create("prod") {
+            dimension = "flavors"
+            applicationIdSuffix = ".prod"
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "Paypadi prod",
+            )
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
