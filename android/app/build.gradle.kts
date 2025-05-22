@@ -42,11 +42,10 @@ android {
         }
         create("prod") {
             dimension = "flavors"
-            applicationIdSuffix = ".prod"
             resValue(
                 type = "string",
                 name = "app_name",
-                value = "Paypadi prod",
+                value = "Paypadi",
             )
         }
     }

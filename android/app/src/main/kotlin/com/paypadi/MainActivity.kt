@@ -1,4 +1,4 @@
-package com.paypadi.paypadi
+package com.paypadi
 
 import io.flutter.embedding.android.FlutterActivity
 
