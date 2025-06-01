@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:paypadi/config/env.dart' show Env;
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show theme;
+import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 
 final AppRouter _router = AppRouter();
 
@@ -10,6 +12,9 @@ class PayPadi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppSize.instance.appHeight = context.screenHeight;
+    AppSize.instance.appWidth = context.screenWidth;
+
     return MaterialApp.router(
       theme: theme,
       routerConfig: _router.config(),

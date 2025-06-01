@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/gen/fonts.gen.dart';
 import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 
 final ThemeData theme = ThemeData(
   brightness: Brightness.light,
@@ -37,8 +38,12 @@ final ThemeData theme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: AppColors.white,
-    constraints: BoxConstraints(maxWidth: 362),
-    hintStyle: TextStyle(fontSize: 14, color: AppColors.hintText),
+    constraints: BoxConstraints(maxWidth: 362.sW),
+    hintStyle: TextStyle(
+      fontSize: 14,
+      letterSpacing: 0,
+      color: AppColors.hintText,
+    ),
     contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     focusedBorder: OutlineInputBorder(
       borderSide: const BorderSide(color: AppColors.primary),

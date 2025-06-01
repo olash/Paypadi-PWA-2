@@ -20,7 +20,7 @@ class OtpScreen extends HookConsumerWidget {
     final TextEditingController pinCode = useTextEditingController();
 
     return AppScaffold(
-      appBarTitle: "",
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

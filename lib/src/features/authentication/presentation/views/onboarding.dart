@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -29,6 +30,8 @@ class OnboardingScreen extends HookWidget {
     final ValueNotifier<int> currentImg = useState<int>(0);
 
     return AppScaffold(
+      topPadding: kTopPadding,
+      bottomPadding: kBottomPadding,
       child: Column(
         spacing: 12,
         children: [

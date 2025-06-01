@@ -1,27 +1,29 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 
-class AppKeypad extends StatelessWidget {
+class AppKeypad extends HookWidget {
   const AppKeypad({
     super.key,
-    this.showBiometric = false,
     this.pinLength = 4,
-    this.onBiometricKeyPressed,
-    this.onChanged,
+    this.showBiometric = false,
     this.onSubmit,
+    this.onBiometricKeyPressed,
+    required this.controller,
   });
 
   final int pinLength;
   final bool showBiometric;
+  final TextEditingController controller;
   final VoidCallback? onBiometricKeyPressed;
-  final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmit;
 
   @override
   Widget build(BuildContext context) {
-    String transactionPin = '';
-
     final List<String> keys = [
       '1',
       '2',
@@ -47,18 +49,28 @@ class AppKeypad extends StatelessWidget {
         mainAxisSpacing: 16,
         crossAxisSpacing: 40,
       ),
-      itemBuilder: (context, index) => buildKeyButton(keys[index]),
+      itemBuilder: (context, index) => buildKeyButton(context, keys[index]),
     );
   }
 
-  void onTap(String text) {
+  void onTap(String key) {
     HapticFeedback.lightImpact();
+    if (controller.text.length < pinLength && key != 'x') {
+      controller.text += key;
+    }
 
-    if (text == 'x') {
-    } else if (text == '') {}
+    if (controller.text.isNotEmpty && key == 'x') {
+      controller.clear();
+    }
+
+    if (controller.text.length == pinLength) {
+      onSubmit?.call(controller.text);
+    }
+
+    log(controller.text);
   }
 
-  Widget buildKeyButton(String key) {
+  Widget buildKeyButton(BuildContext context, String key) {
     // if (key.isEmpty) {
     //   return GestureDetector(
     //     onTap: widget.onBiometricKeyPressed,
@@ -66,13 +78,13 @@ class AppKeypad extends StatelessWidget {
     //   );
     // }
     return InkWell(
-      onTap: () {},
+      onTap: () => onTap(key),
       customBorder: CircleBorder(),
       splashColor: AppColors.primaryFocused.withValues(alpha: .1),
       child: Center(
         child: switch (key) {
           "x" => Icon(Icons.backspace_outlined),
-          _ => Text(key),
+          _ => Text(key, style: context.textTheme.headlineSmall),
         },
       ),
     );

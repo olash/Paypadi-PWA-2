@@ -22,7 +22,7 @@ class AppTextformfield extends StatelessWidget {
       children: [
         Text(
           title,
-          style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0.5),
+          style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
         5.0.verticalSpacing,
         TextFormField(

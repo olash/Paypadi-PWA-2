@@ -18,8 +18,8 @@ dependencies:
   riverpod_annotation: ^2.6.1
   auto_route: ^10.0.1
   flutter_svg: ^2.0.10+1
-  ionicons: ^0.2.2
   pin_code_text_field: ^1.8.0
+  icons_plus: ^5.0.0
 
 dev_dependencies:
   flutter_test:

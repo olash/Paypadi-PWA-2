@@ -11,23 +11,44 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-      appBarTitle: "",
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Create a Transaction PIN",
+            "Enable Face ID",
             style: context.textTheme.headlineMedium,
           ),
           16.0.verticalSpacing,
           Text(
-            "Set a secure password for your account",
+            "Use face recognition for a faster and more secure access.",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          32.0.verticalSpacing,
+          Spacer(),
+          Row(
+            spacing: 8,
+            children: [
+              Flexible(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Maybe Later",
+                  ),
+                ),
+              ),
 
+              Flexible(
+                child: FilledButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Enable",
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

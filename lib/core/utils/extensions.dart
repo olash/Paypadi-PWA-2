@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:paypadi/core/constants/constants.dart';
 
 const int _designWidth = 393;
+
 const int _designHeight = 852;
 
 extension BuildContextExtension on BuildContext {
@@ -9,16 +11,15 @@ extension BuildContextExtension on BuildContext {
   double get screenHeight => MediaQuery.sizeOf(this).height;
 
   TextTheme get textTheme => Theme.of(this).textTheme;
+
+  FilledButtonThemeData get filledButtonTheme =>
+      Theme.of(this).filledButtonTheme;
 }
 
 extension NumExtension on num {
-  double adH(BuildContext context) {
-    return this * (context.screenHeight / _designHeight);
-  }
+  double get sH => this * (AppSize.instance.getHeight / _designHeight);
 
-  num adW(BuildContext context) {
-    return this * (context.screenWidth / _designWidth);
-  }
+  double get sW => this * (AppSize.instance.getWidth / _designWidth);
 }
 
 extension DoubleExtension on double {

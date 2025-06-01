@@ -24,9 +24,9 @@ class CreateAccountScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController phoneNumber = useTextEditingController();
-    
+
     return AppScaffold(
-      appBarTitle: "",
+      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

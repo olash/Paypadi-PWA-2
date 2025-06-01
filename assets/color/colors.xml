@@ -9,11 +9,13 @@
     <color name="secondary">#FE9027</color>
     <color name="disabled">#F0F0F0</color>
     <color name="hintText">#ABAFB1</color>
-    <color name="lightBg">#ECFCF9</color>
-    <color name="lightBgText">#00332E</color>
+    <color name="scaffoldBackground">#F9FAFB</color>
+    <color name="walletCardTextColor">#082431</color>
+    <color name="walletCardIconColor">#9CA3AF</color>
     <color name="lightBgTextPressed">#002A26</color>
     <color name="focused">#00332E</color>
     <color name="unselectedIndicator">#CFCDC9</color>
     <color name="unfocusedTextField">#CBD2E0</color>
-    
+    <color name="walletCardButtonColor">#E0F2F1</color>
+
 </resources>
