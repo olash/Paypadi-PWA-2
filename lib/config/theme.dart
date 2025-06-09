@@ -11,7 +11,12 @@ final ThemeData theme = ThemeData(
   colorScheme: const ColorScheme.light(primary: AppColors.primary),
   filledButtonTheme: FilledButtonThemeData(
     style: ButtonStyle(
-      textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 16)),
+      textStyle: WidgetStatePropertyAll(
+        TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       fixedSize: WidgetStatePropertyAll(kButtonSize),
       foregroundColor: WidgetStatePropertyAll(AppColors.white),
       backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
@@ -56,79 +61,79 @@ final ThemeData theme = ThemeData(
   ),
   textTheme: TextTheme(
     displaySmall: TextStyle(
-      fontSize: 36,
+      fontSize: 36.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     headlineLarge: TextStyle(
-      fontSize: 32,
+      fontSize: 32.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     headlineMedium: TextStyle(
-      fontSize: 28,
+      fontSize: 28.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     headlineSmall: TextStyle(
-      fontSize: 24,
+      fontSize: 24.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     titleLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 18.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     titleMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 16.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     titleSmall: TextStyle(
-      fontSize: 14,
+      fontSize: 14.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     bodyLarge: TextStyle(
-      fontSize: 16,
+      fontSize: 16.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     bodyMedium: TextStyle(
-      fontSize: 14,
+      fontSize: 14.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     bodySmall: TextStyle(
-      fontSize: 12,
+      fontSize: 12.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     labelLarge: TextStyle(
-      fontSize: 14,
+      fontSize: 14.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     labelMedium: TextStyle(
-      fontSize: 12,
+      fontSize: 12.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,
     ),
     labelSmall: TextStyle(
-      fontSize: 11,
+      fontSize: 11.sp,
       letterSpacing: 0.5,
       color: AppColors.black,
       fontWeight: FontWeight.w500,

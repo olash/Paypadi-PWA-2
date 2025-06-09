@@ -14,3 +14,5 @@ enum AccountRole {
   final String title;
   final String description;
 }
+
+enum BeneficiaryStatus { recent, saved }

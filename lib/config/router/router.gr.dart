@@ -770,34 +770,16 @@ class TransactionPinRouteArgs {
 
 /// generated route for
 /// [_i26.TransferScreen]
-class TransferRoute extends _i27.PageRouteInfo<TransferRouteArgs> {
-  TransferRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
-    : super(
-        TransferRoute.name,
-        args: TransferRouteArgs(key: key),
-        initialChildren: children,
-      );
+class TransferRoute extends _i27.PageRouteInfo<void> {
+  const TransferRoute({List<_i27.PageRouteInfo>? children})
+    : super(TransferRoute.name, initialChildren: children);
 
   static const String name = 'TransferRoute';
 
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<TransferRouteArgs>(
-        orElse: () => const TransferRouteArgs(),
-      );
-      return _i26.TransferScreen(key: args.key);
+      return const _i26.TransferScreen();
     },
   );
-}
-
-class TransferRouteArgs {
-  const TransferRouteArgs({this.key});
-
-  final _i28.Key? key;
-
-  @override
-  String toString() {
-    return 'TransferRouteArgs{key: $key}';
-  }
 }

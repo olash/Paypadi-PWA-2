@@ -1,51 +1,61 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/shared/widgets/app_keypad.dart';
-import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
   MakePaymentScreen({super.key});
 
-  final TapGestureRecognizer resendCode = TapGestureRecognizer();
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController pin = useTextEditingController();
+    final hasSavedAsBeneficiary = useState<bool>(false);
+    final TextEditingController comments = useTextEditingController();
 
     return AppScaffold(
+      title: "Transfer",
       child: Column(
         children: [
-          Text(
-            "Good evening, ",
-            style: context.textTheme.headlineMedium,
+          32.0.verticalSpacing,
+
+          AppTextformfield(
+            title: "Comments",
+            hint: "Enter a narration",
+            controller: comments,
           ),
 
-          24.0.verticalSpacing,
-
-          AppPinIndicator(controller: pin),
-          Spacer(),
-
-          AppKeypad(
-            controller: pin,
-            onSubmit: (value) {},
-          ),
-          124.0.verticalSpacing,
-          Center(
-            child: RichText(
-              text: TextSpan(
-                text: "Forgot Password?",
-                recognizer: resendCode,
-                style: context.textTheme.bodySmall?.copyWith(
-                  letterSpacing: 0.5,
+          20.0.verticalSpacing,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 14),
+                child: Text(
+                  "Save as Beneficiary",
+                  style: context.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            ),
+              Switch.adaptive(
+                value: hasSavedAsBeneficiary.value,
+                onChanged: (value) {
+                  hasSavedAsBeneficiary.value = value;
+                },
+              ),
+            ],
+          ),
+
+          20.0.verticalSpacing,
+          FilledButton(
+            onPressed: () {
+              context.router.push(EnterPinRoute());
+            },
+            child: Text("Make Payment"),
           ),
         ],
       ),

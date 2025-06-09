@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -12,41 +13,39 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 class EnterPinScreen extends HookConsumerWidget {
   EnterPinScreen({super.key});
 
-  final TapGestureRecognizer resendCode = TapGestureRecognizer();
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController pin = useTextEditingController();
 
     return AppScaffold(
+      title: "",
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          32.0.verticalSpacing,
           Text(
-            "Good evening, ",
+            "Enter PIN",
             style: context.textTheme.headlineMedium,
           ),
-
-          24.0.verticalSpacing,
-
-          AppPinIndicator(controller: pin),
-          Spacer(),
-
-          AppKeypad(
-            controller: pin,
-            onSubmit: (value) {},
-          ),
-          124.0.verticalSpacing,
-          Center(
-            child: RichText(
-              text: TextSpan(
-                text: "Forgot Password?",
-                recognizer: resendCode,
-                style: context.textTheme.bodySmall?.copyWith(
-                  letterSpacing: 0.5,
-                ),
-              ),
+          12.0.verticalSpacing,
+          Text(
+            "Enter transaction 4-digit PIN-code or use your biometrics to perform action.",
+            style: context.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w400,
             ),
           ),
+          32.0.verticalSpacing,
+          AppPinIndicator(controller: pin),
+          Spacer(),
+          AppKeypad(
+            controller: pin,
+            showBiometric: true,
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            onSubmit: (value) {
+              context.router.push(ConfirmPaymentRoute());
+            },
+          ),
+          Spacer(),
         ],
       ),
     );

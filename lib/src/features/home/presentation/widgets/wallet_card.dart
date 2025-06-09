@@ -86,7 +86,7 @@ class WalletCard extends HookConsumerWidget {
                   fixedSize: WidgetStatePropertyAll(Size(125.sW, 32.sH)),
                   foregroundColor: WidgetStatePropertyAll(AppColors.primary),
                   backgroundColor: WidgetStatePropertyAll(
-                    AppColors.walletCardButtonColor,
+                    AppColors.smallButtonColor,
                   ),
                   padding: WidgetStatePropertyAll(
                     EdgeInsets.symmetric(horizontal: 12),

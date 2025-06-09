@@ -11,6 +11,7 @@ class AppKeypad extends HookWidget {
     super.key,
     this.pinLength = 4,
     this.showBiometric = false,
+    this.padding,
     this.onSubmit,
     this.onBiometricKeyPressed,
     required this.controller,
@@ -19,6 +20,7 @@ class AppKeypad extends HookWidget {
   final int pinLength;
   final bool showBiometric;
   final TextEditingController controller;
+  final EdgeInsetsGeometry? padding;
   final VoidCallback? onBiometricKeyPressed;
   final ValueChanged<String>? onSubmit;
 
@@ -42,6 +44,7 @@ class AppKeypad extends HookWidget {
     return GridView.builder(
       shrinkWrap: true,
       itemCount: keys.length,
+      padding: padding,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
