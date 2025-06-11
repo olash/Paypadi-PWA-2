@@ -20,10 +20,11 @@ class OtpScreen extends HookConsumerWidget {
     final TextEditingController pinCode = useTextEditingController();
 
     return AppScaffold(
-
+title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+           40.0.verticalSpacing,
           Text("OTP\nverification", style: context.textTheme.headlineMedium),
           16.0.verticalSpacing,
           Text(

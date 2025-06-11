@@ -1,50 +1,47 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
-class AppKeypad extends HookWidget {
+class AppKeypad extends StatefulWidget {
   const AppKeypad({
     super.key,
-    this.pinLength = 4,
-    this.showBiometric = false,
     this.padding,
     this.onSubmit,
+    this.onChanged,
     this.onBiometricKeyPressed,
-    required this.controller,
+    this.pinLength = 4,
+    this.showBiometric = false,
   });
 
   final int pinLength;
   final bool showBiometric;
-  final TextEditingController controller;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onBiometricKeyPressed;
   final ValueChanged<String>? onSubmit;
+  final ValueChanged<String>? onChanged;
+
+  @override
+  State<AppKeypad> createState() => _AppKeypadState();
+}
+
+class _AppKeypadState extends State<AppKeypad> {
+  late String _pin;
+
+  @override
+  void initState() {
+    super.initState();
+    _pin = '';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<String> keys = [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '.',
-      '0',
-      'x',
-    ];
-
     return GridView.builder(
       shrinkWrap: true,
-      itemCount: keys.length,
-      padding: padding,
+      itemCount: kAppKeyPadKeys.length,
+      padding: widget.padding ?? EdgeInsets.symmetric(horizontal: 24),
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -52,41 +49,56 @@ class AppKeypad extends HookWidget {
         mainAxisSpacing: 16,
         crossAxisSpacing: 40,
       ),
-      itemBuilder: (context, index) => buildKeyButton(context, keys[index]),
+      itemBuilder:
+          (context, index) => buildKeyButton(context, kAppKeyPadKeys[index]),
     );
   }
 
   void onTap(String key) {
     HapticFeedback.lightImpact();
-    if (controller.text.length < pinLength && key != 'x') {
-      controller.text += key;
+
+    // Calls [onBiometricKeyPressed] if keypad shows biometric button
+    if (widget.showBiometric && key == '.') {
+      widget.onBiometricKeyPressed?.call();
+      return;
     }
 
-    if (controller.text.isNotEmpty && key == 'x') {
-      controller.clear();
+    // Handle backspace
+    if (key == 'x') {
+      if (_pin.isNotEmpty) {
+        setState(() {
+          _pin = _pin.substring(0, _pin.length - 1);
+          widget.onChanged?.call(_pin);
+        });
+      }
+      return;
     }
 
-    if (controller.text.length == pinLength) {
-      onSubmit?.call(controller.text);
+    // Handle numeric input
+    if (_pin.length < widget.pinLength && key != '.') {
+      setState(() {
+        _pin += key;
+        widget.onChanged?.call(_pin);
+        // Auto-submit when PIN is complete
+        if (_pin.length == widget.pinLength) {
+          widget.onSubmit?.call(_pin);
+        }
+      });
     }
-
-    log(controller.text);
   }
 
   Widget buildKeyButton(BuildContext context, String key) {
-    // if (key.isEmpty) {
-    //   return GestureDetector(
-    //     onTap: widget.onBiometricKeyPressed,
-    //     child: SvgPicture.asset(Assets.svgs.scan),
-    //   );
-    // }
     return InkWell(
-      onTap: () => onTap(key),
+      onTap: key == "." ? null : () => onTap(key),
       customBorder: CircleBorder(),
       splashColor: AppColors.primaryFocused.withValues(alpha: .1),
       child: Center(
         child: switch (key) {
-          "x" => Icon(Icons.backspace_outlined),
+          "x" => Icon(EvaIcons.backspace_outline, size: 32),
+          "." => switch (widget.showBiometric) {
+            true => Icon(IonIcons.finger_print, size: 42),
+            false => SizedBox(),
+          },
           _ => Text(key, style: context.textTheme.headlineSmall),
         },
       ),

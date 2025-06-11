@@ -18,10 +18,12 @@ class SetupAccountScreen extends HookConsumerWidget {
     final TextEditingController referralCode = useTextEditingController();
 
     return AppScaffold(
+      title: "",
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+             40.0.verticalSpacing,
             Text(
               "Set up your account",
               style: context.textTheme.headlineMedium,

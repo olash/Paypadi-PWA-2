@@ -36,8 +36,16 @@ class AppRouter extends RootStackRouter {
       page: PasswordRoute.page,
     ),
     AutoRoute(
+      path: "/confirm-password",
+      page: ConfirmPasswordRoute.page,
+    ),
+    AutoRoute(
       path: "/transaction-pin",
       page: TransactionPinRoute.page,
+    ),
+    AutoRoute(
+      path: "/confirm-transaction-pin",
+      page: ConfirmTransactionPinRoute.page,
     ),
     AutoRoute(
       path: "/local-authentication",

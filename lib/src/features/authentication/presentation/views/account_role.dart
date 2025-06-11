@@ -15,6 +15,7 @@ class AccountRoleScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
+      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,7 +61,7 @@ class _RoleWidget extends HookConsumerWidget {
     return GestureDetector(
       onTap: selectRole,
       child: Container(
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.symmetric(vertical: 26, horizontal: 16),
         margin: EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
           color: AppColors.white,

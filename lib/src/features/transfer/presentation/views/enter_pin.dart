@@ -35,10 +35,10 @@ class EnterPinScreen extends HookConsumerWidget {
             ),
           ),
           32.0.verticalSpacing,
-          AppPinIndicator(controller: pin),
+          AppPinIndicator(text: '',),
           Spacer(),
           AppKeypad(
-            controller: pin,
+        
             showBiometric: true,
             padding: EdgeInsets.symmetric(horizontal: 24),
             onSubmit: (value) {

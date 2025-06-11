@@ -30,6 +30,7 @@ class CreateAccountScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          40.0.verticalSpacing,
           Text(
             "Let’s get\nyou started",
             style: context.textTheme.headlineMedium,
@@ -39,6 +40,7 @@ class CreateAccountScreen extends HookConsumerWidget {
             title: "Phone Number",
             hint: "Enter phone number",
             controller: phoneNumber,
+            showCountryFlag: true,
             keyboardType: TextInputType.phone,
           ),
           4.0.verticalSpacing,

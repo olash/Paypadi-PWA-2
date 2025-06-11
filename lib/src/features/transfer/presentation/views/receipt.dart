@@ -28,13 +28,7 @@ class ReceiptScreen extends HookConsumerWidget {
 
           24.0.verticalSpacing,
 
-          AppPinIndicator(controller: pin),
-          Spacer(),
-
-          AppKeypad(
-            controller: pin,
-            onSubmit: (value) {},
-          ),
+    
           124.0.verticalSpacing,
           Center(
             child: RichText(

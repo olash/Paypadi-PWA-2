@@ -28,11 +28,11 @@ class ChangePinScreen extends HookConsumerWidget {
 
           24.0.verticalSpacing,
 
-          AppPinIndicator(controller: pin),
+          AppPinIndicator(text: '',),
           Spacer(),
 
           AppKeypad(
-            controller: pin,
+           
             onSubmit: (value) {},
           ),
           124.0.verticalSpacing,

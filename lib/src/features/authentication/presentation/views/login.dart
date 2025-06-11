@@ -34,11 +34,11 @@ class LoginScreen extends HookConsumerWidget {
 
           24.0.verticalSpacing,
 
-          AppPinIndicator(controller: pin),
+          AppPinIndicator(text: "",),
           Spacer(),
 
           AppKeypad(
-            controller: pin,
+            
             onSubmit: (value) {
               context.router.push(AppBottomBavBarRoute());
             },

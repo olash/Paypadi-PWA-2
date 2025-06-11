@@ -11,10 +11,11 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-
+      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          24.0.verticalSpacing,
           Text(
             "Enable Face ID",
             style: context.textTheme.headlineMedium,

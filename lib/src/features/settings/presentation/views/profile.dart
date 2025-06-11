@@ -28,25 +28,6 @@ class ProfileScreen extends HookConsumerWidget {
 
           24.0.verticalSpacing,
 
-          AppPinIndicator(controller: pin),
-          Spacer(),
-
-          AppKeypad(
-            controller: pin,
-            onSubmit: (value) {},
-          ),
-          124.0.verticalSpacing,
-          Center(
-            child: RichText(
-              text: TextSpan(
-                text: "Forgot Password?",
-                recognizer: resendCode,
-                style: context.textTheme.bodySmall?.copyWith(
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

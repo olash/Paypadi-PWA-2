@@ -9,6 +9,21 @@ final double kTopPadding = 40.0;
 
 final double kBottomPadding = 40.0;
 
+final List<String> kAppKeyPadKeys = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '.',
+  '0',
+  'x',
+];
+
 final String kDemoProfilePic =
     "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
 

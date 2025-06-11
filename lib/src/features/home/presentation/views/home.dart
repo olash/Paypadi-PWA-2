@@ -31,7 +31,7 @@ class HomeScreen extends HookConsumerWidget {
           12.0.verticalSpacing,
           //? Display some fixed numbers
           // 28.0.verticalSpacing,
-          AppKeypad(controller: amount),
+          AppKeypad(),
           12.0.verticalSpacing,
           FilledButton.icon(
             onPressed: () {

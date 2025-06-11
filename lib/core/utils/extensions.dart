@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+
 import 'package:paypadi/core/constants/constants.dart';
 
 const int _designWidth = 393;
@@ -10,6 +12,12 @@ const int _designHeight = 852;
 final double _scaleWidth = (AppSize.instance.getWidth / _designWidth);
 
 final double _scaleHeight = (AppSize.instance.getHeight / _designHeight);
+
+extension NullableObjectExtension on Object? {
+  void debugLog() {
+    dev.log(toString());
+  }
+}
 
 extension BuildContextExtension on BuildContext {
   double get screenWidth => MediaQuery.sizeOf(this).width;

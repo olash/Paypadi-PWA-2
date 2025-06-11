@@ -14,24 +14,24 @@ import 'package:flutter/material.dart' as _i28;
 import 'package:paypadi/src/features/authentication/presentation/views/account_role.dart'
     as _i1;
 import 'package:paypadi/src/features/authentication/presentation/views/create_account.dart'
-    as _i7;
-import 'package:paypadi/src/features/authentication/presentation/views/local_authentication.dart'
-    as _i12;
-import 'package:paypadi/src/features/authentication/presentation/views/login.dart'
-    as _i13;
-import 'package:paypadi/src/features/authentication/presentation/views/onboarding.dart'
-    as _i16;
-import 'package:paypadi/src/features/authentication/presentation/views/otp.dart'
-    as _i17;
-import 'package:paypadi/src/features/authentication/presentation/views/password.dart'
-    as _i18;
-import 'package:paypadi/src/features/authentication/presentation/views/setup_account.dart'
-    as _i23;
-import 'package:paypadi/src/features/authentication/presentation/views/transaction_pin.dart'
-    as _i25;
-import 'package:paypadi/src/features/home/presentation/views/history.dart'
     as _i9;
-import 'package:paypadi/src/features/home/presentation/views/home.dart' as _i10;
+import 'package:paypadi/src/features/authentication/presentation/views/local_authentication.dart'
+    as _i14;
+import 'package:paypadi/src/features/authentication/presentation/views/login.dart'
+    as _i15;
+import 'package:paypadi/src/features/authentication/presentation/views/onboarding.dart'
+    as _i18;
+import 'package:paypadi/src/features/authentication/presentation/views/otp.dart'
+    as _i19;
+import 'package:paypadi/src/features/authentication/presentation/views/password.dart'
+    as _i6;
+import 'package:paypadi/src/features/authentication/presentation/views/setup_account.dart'
+    as _i24;
+import 'package:paypadi/src/features/authentication/presentation/views/transaction_pin.dart'
+    as _i8;
+import 'package:paypadi/src/features/home/presentation/views/history.dart'
+    as _i11;
+import 'package:paypadi/src/features/home/presentation/views/home.dart' as _i12;
 import 'package:paypadi/src/features/settings/presentation/views/change_password.dart'
     as _i3;
 import 'package:paypadi/src/features/settings/presentation/views/change_pin.dart'
@@ -39,25 +39,25 @@ import 'package:paypadi/src/features/settings/presentation/views/change_pin.dart
 import 'package:paypadi/src/features/settings/presentation/views/change_theme.dart'
     as _i5;
 import 'package:paypadi/src/features/settings/presentation/views/legal.dart'
-    as _i11;
+    as _i13;
 import 'package:paypadi/src/features/settings/presentation/views/notifications.dart'
-    as _i15;
+    as _i17;
 import 'package:paypadi/src/features/settings/presentation/views/profile.dart'
-    as _i19;
-import 'package:paypadi/src/features/settings/presentation/views/referral.dart'
-    as _i21;
-import 'package:paypadi/src/features/settings/presentation/views/settings.dart'
-    as _i22;
-import 'package:paypadi/src/features/settings/presentation/views/support.dart'
-    as _i24;
-import 'package:paypadi/src/features/transfer/presentation/views/confirm_payment.dart'
-    as _i6;
-import 'package:paypadi/src/features/transfer/presentation/views/enter_pin.dart'
-    as _i8;
-import 'package:paypadi/src/features/transfer/presentation/views/make_payment.dart'
-    as _i14;
-import 'package:paypadi/src/features/transfer/presentation/views/receipt.dart'
     as _i20;
+import 'package:paypadi/src/features/settings/presentation/views/referral.dart'
+    as _i22;
+import 'package:paypadi/src/features/settings/presentation/views/settings.dart'
+    as _i23;
+import 'package:paypadi/src/features/settings/presentation/views/support.dart'
+    as _i25;
+import 'package:paypadi/src/features/transfer/presentation/views/confirm_payment.dart'
+    as _i7;
+import 'package:paypadi/src/features/transfer/presentation/views/enter_pin.dart'
+    as _i10;
+import 'package:paypadi/src/features/transfer/presentation/views/make_payment.dart'
+    as _i16;
+import 'package:paypadi/src/features/transfer/presentation/views/receipt.dart'
+    as _i21;
 import 'package:paypadi/src/features/transfer/presentation/views/transfer.dart'
     as _i26;
 import 'package:paypadi/src/shared/widgets/app_bottom_nav_bar.dart' as _i2;
@@ -197,41 +197,55 @@ class ChangeThemeRouteArgs {
 }
 
 /// generated route for
-/// [_i6.ConfirmPaymentScreen]
-class ConfirmPaymentRoute extends _i27.PageRouteInfo<ConfirmPaymentRouteArgs> {
-  ConfirmPaymentRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
-    : super(
-        ConfirmPaymentRoute.name,
-        args: ConfirmPaymentRouteArgs(key: key),
-        initialChildren: children,
-      );
+/// [_i6.ConfirmPasswordScreen]
+class ConfirmPasswordRoute extends _i27.PageRouteInfo<void> {
+  const ConfirmPasswordRoute({List<_i27.PageRouteInfo>? children})
+    : super(ConfirmPasswordRoute.name, initialChildren: children);
+
+  static const String name = 'ConfirmPasswordRoute';
+
+  static _i27.PageInfo page = _i27.PageInfo(
+    name,
+    builder: (data) {
+      return const _i6.ConfirmPasswordScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [_i7.ConfirmPaymentScreen]
+class ConfirmPaymentRoute extends _i27.PageRouteInfo<void> {
+  const ConfirmPaymentRoute({List<_i27.PageRouteInfo>? children})
+    : super(ConfirmPaymentRoute.name, initialChildren: children);
 
   static const String name = 'ConfirmPaymentRoute';
 
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ConfirmPaymentRouteArgs>(
-        orElse: () => const ConfirmPaymentRouteArgs(),
-      );
-      return _i6.ConfirmPaymentScreen(key: args.key);
+      return const _i7.ConfirmPaymentScreen();
     },
   );
 }
 
-class ConfirmPaymentRouteArgs {
-  const ConfirmPaymentRouteArgs({this.key});
+/// generated route for
+/// [_i8.ConfirmTransactionPinScreen]
+class ConfirmTransactionPinRoute extends _i27.PageRouteInfo<void> {
+  const ConfirmTransactionPinRoute({List<_i27.PageRouteInfo>? children})
+    : super(ConfirmTransactionPinRoute.name, initialChildren: children);
 
-  final _i28.Key? key;
+  static const String name = 'ConfirmTransactionPinRoute';
 
-  @override
-  String toString() {
-    return 'ConfirmPaymentRouteArgs{key: $key}';
-  }
+  static _i27.PageInfo page = _i27.PageInfo(
+    name,
+    builder: (data) {
+      return const _i8.ConfirmTransactionPinScreen();
+    },
+  );
 }
 
 /// generated route for
-/// [_i7.CreateAccountScreen]
+/// [_i9.CreateAccountScreen]
 class CreateAccountRoute extends _i27.PageRouteInfo<CreateAccountRouteArgs> {
   CreateAccountRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -248,7 +262,7 @@ class CreateAccountRoute extends _i27.PageRouteInfo<CreateAccountRouteArgs> {
       final args = data.argsAs<CreateAccountRouteArgs>(
         orElse: () => const CreateAccountRouteArgs(),
       );
-      return _i7.CreateAccountScreen(key: args.key);
+      return _i9.CreateAccountScreen(key: args.key);
     },
   );
 }
@@ -265,7 +279,7 @@ class CreateAccountRouteArgs {
 }
 
 /// generated route for
-/// [_i8.EnterPinScreen]
+/// [_i10.EnterPinScreen]
 class EnterPinRoute extends _i27.PageRouteInfo<EnterPinRouteArgs> {
   EnterPinRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -282,7 +296,7 @@ class EnterPinRoute extends _i27.PageRouteInfo<EnterPinRouteArgs> {
       final args = data.argsAs<EnterPinRouteArgs>(
         orElse: () => const EnterPinRouteArgs(),
       );
-      return _i8.EnterPinScreen(key: args.key);
+      return _i10.EnterPinScreen(key: args.key);
     },
   );
 }
@@ -299,7 +313,7 @@ class EnterPinRouteArgs {
 }
 
 /// generated route for
-/// [_i9.HistoryScreen]
+/// [_i11.HistoryScreen]
 class HistoryRoute extends _i27.PageRouteInfo<void> {
   const HistoryRoute({List<_i27.PageRouteInfo>? children})
     : super(HistoryRoute.name, initialChildren: children);
@@ -309,13 +323,13 @@ class HistoryRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i9.HistoryScreen();
+      return const _i11.HistoryScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i10.HomeScreen]
+/// [_i12.HomeScreen]
 class HomeRoute extends _i27.PageRouteInfo<void> {
   const HomeRoute({List<_i27.PageRouteInfo>? children})
     : super(HomeRoute.name, initialChildren: children);
@@ -325,13 +339,13 @@ class HomeRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i10.HomeScreen();
+      return const _i12.HomeScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i11.LegalScreen]
+/// [_i13.LegalScreen]
 class LegalRoute extends _i27.PageRouteInfo<LegalRouteArgs> {
   LegalRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -348,7 +362,7 @@ class LegalRoute extends _i27.PageRouteInfo<LegalRouteArgs> {
       final args = data.argsAs<LegalRouteArgs>(
         orElse: () => const LegalRouteArgs(),
       );
-      return _i11.LegalScreen(key: args.key);
+      return _i13.LegalScreen(key: args.key);
     },
   );
 }
@@ -365,7 +379,7 @@ class LegalRouteArgs {
 }
 
 /// generated route for
-/// [_i12.LocalAuthenticationScreen]
+/// [_i14.LocalAuthenticationScreen]
 class LocalAuthenticationRoute extends _i27.PageRouteInfo<void> {
   const LocalAuthenticationRoute({List<_i27.PageRouteInfo>? children})
     : super(LocalAuthenticationRoute.name, initialChildren: children);
@@ -375,13 +389,13 @@ class LocalAuthenticationRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i12.LocalAuthenticationScreen();
+      return const _i14.LocalAuthenticationScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i13.LoginScreen]
+/// [_i15.LoginScreen]
 class LoginRoute extends _i27.PageRouteInfo<LoginRouteArgs> {
   LoginRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -398,7 +412,7 @@ class LoginRoute extends _i27.PageRouteInfo<LoginRouteArgs> {
       final args = data.argsAs<LoginRouteArgs>(
         orElse: () => const LoginRouteArgs(),
       );
-      return _i13.LoginScreen(key: args.key);
+      return _i15.LoginScreen(key: args.key);
     },
   );
 }
@@ -415,7 +429,7 @@ class LoginRouteArgs {
 }
 
 /// generated route for
-/// [_i14.MakePaymentScreen]
+/// [_i16.MakePaymentScreen]
 class MakePaymentRoute extends _i27.PageRouteInfo<MakePaymentRouteArgs> {
   MakePaymentRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -432,7 +446,7 @@ class MakePaymentRoute extends _i27.PageRouteInfo<MakePaymentRouteArgs> {
       final args = data.argsAs<MakePaymentRouteArgs>(
         orElse: () => const MakePaymentRouteArgs(),
       );
-      return _i14.MakePaymentScreen(key: args.key);
+      return _i16.MakePaymentScreen(key: args.key);
     },
   );
 }
@@ -449,7 +463,7 @@ class MakePaymentRouteArgs {
 }
 
 /// generated route for
-/// [_i15.NotificationsScreen]
+/// [_i17.NotificationsScreen]
 class NotificationsRoute extends _i27.PageRouteInfo<NotificationsRouteArgs> {
   NotificationsRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -466,7 +480,7 @@ class NotificationsRoute extends _i27.PageRouteInfo<NotificationsRouteArgs> {
       final args = data.argsAs<NotificationsRouteArgs>(
         orElse: () => const NotificationsRouteArgs(),
       );
-      return _i15.NotificationsScreen(key: args.key);
+      return _i17.NotificationsScreen(key: args.key);
     },
   );
 }
@@ -483,7 +497,7 @@ class NotificationsRouteArgs {
 }
 
 /// generated route for
-/// [_i16.OnboardingScreen]
+/// [_i18.OnboardingScreen]
 class OnboardingRoute extends _i27.PageRouteInfo<OnboardingRouteArgs> {
   OnboardingRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -500,7 +514,7 @@ class OnboardingRoute extends _i27.PageRouteInfo<OnboardingRouteArgs> {
       final args = data.argsAs<OnboardingRouteArgs>(
         orElse: () => const OnboardingRouteArgs(),
       );
-      return _i16.OnboardingScreen(key: args.key);
+      return _i18.OnboardingScreen(key: args.key);
     },
   );
 }
@@ -517,7 +531,7 @@ class OnboardingRouteArgs {
 }
 
 /// generated route for
-/// [_i17.OtpScreen]
+/// [_i19.OtpScreen]
 class OtpRoute extends _i27.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -534,7 +548,7 @@ class OtpRoute extends _i27.PageRouteInfo<OtpRouteArgs> {
       final args = data.argsAs<OtpRouteArgs>(
         orElse: () => const OtpRouteArgs(),
       );
-      return _i17.OtpScreen(key: args.key);
+      return _i19.OtpScreen(key: args.key);
     },
   );
 }
@@ -551,7 +565,7 @@ class OtpRouteArgs {
 }
 
 /// generated route for
-/// [_i18.PasswordScreen]
+/// [_i6.PasswordScreen]
 class PasswordRoute extends _i27.PageRouteInfo<void> {
   const PasswordRoute({List<_i27.PageRouteInfo>? children})
     : super(PasswordRoute.name, initialChildren: children);
@@ -561,13 +575,13 @@ class PasswordRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i18.PasswordScreen();
+      return const _i6.PasswordScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i19.ProfileScreen]
+/// [_i20.ProfileScreen]
 class ProfileRoute extends _i27.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -584,7 +598,7 @@ class ProfileRoute extends _i27.PageRouteInfo<ProfileRouteArgs> {
       final args = data.argsAs<ProfileRouteArgs>(
         orElse: () => const ProfileRouteArgs(),
       );
-      return _i19.ProfileScreen(key: args.key);
+      return _i20.ProfileScreen(key: args.key);
     },
   );
 }
@@ -601,7 +615,7 @@ class ProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i20.ReceiptScreen]
+/// [_i21.ReceiptScreen]
 class ReceiptRoute extends _i27.PageRouteInfo<ReceiptRouteArgs> {
   ReceiptRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -618,7 +632,7 @@ class ReceiptRoute extends _i27.PageRouteInfo<ReceiptRouteArgs> {
       final args = data.argsAs<ReceiptRouteArgs>(
         orElse: () => const ReceiptRouteArgs(),
       );
-      return _i20.ReceiptScreen(key: args.key);
+      return _i21.ReceiptScreen(key: args.key);
     },
   );
 }
@@ -635,7 +649,7 @@ class ReceiptRouteArgs {
 }
 
 /// generated route for
-/// [_i21.ReferralScreen]
+/// [_i22.ReferralScreen]
 class ReferralRoute extends _i27.PageRouteInfo<ReferralRouteArgs> {
   ReferralRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -652,7 +666,7 @@ class ReferralRoute extends _i27.PageRouteInfo<ReferralRouteArgs> {
       final args = data.argsAs<ReferralRouteArgs>(
         orElse: () => const ReferralRouteArgs(),
       );
-      return _i21.ReferralScreen(key: args.key);
+      return _i22.ReferralScreen(key: args.key);
     },
   );
 }
@@ -669,7 +683,7 @@ class ReferralRouteArgs {
 }
 
 /// generated route for
-/// [_i22.SettingsScreen]
+/// [_i23.SettingsScreen]
 class SettingsRoute extends _i27.PageRouteInfo<void> {
   const SettingsRoute({List<_i27.PageRouteInfo>? children})
     : super(SettingsRoute.name, initialChildren: children);
@@ -679,13 +693,13 @@ class SettingsRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i22.SettingsScreen();
+      return const _i23.SettingsScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i23.SetupAccountScreen]
+/// [_i24.SetupAccountScreen]
 class SetupAccountRoute extends _i27.PageRouteInfo<void> {
   const SetupAccountRoute({List<_i27.PageRouteInfo>? children})
     : super(SetupAccountRoute.name, initialChildren: children);
@@ -695,13 +709,13 @@ class SetupAccountRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i23.SetupAccountScreen();
+      return const _i24.SetupAccountScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i24.SupportScreen]
+/// [_i25.SupportScreen]
 class SupportRoute extends _i27.PageRouteInfo<SupportRouteArgs> {
   SupportRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
     : super(
@@ -718,7 +732,7 @@ class SupportRoute extends _i27.PageRouteInfo<SupportRouteArgs> {
       final args = data.argsAs<SupportRouteArgs>(
         orElse: () => const SupportRouteArgs(),
       );
-      return _i24.SupportScreen(key: args.key);
+      return _i25.SupportScreen(key: args.key);
     },
   );
 }
@@ -735,37 +749,19 @@ class SupportRouteArgs {
 }
 
 /// generated route for
-/// [_i25.TransactionPinScreen]
-class TransactionPinRoute extends _i27.PageRouteInfo<TransactionPinRouteArgs> {
-  TransactionPinRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
-    : super(
-        TransactionPinRoute.name,
-        args: TransactionPinRouteArgs(key: key),
-        initialChildren: children,
-      );
+/// [_i8.TransactionPinScreen]
+class TransactionPinRoute extends _i27.PageRouteInfo<void> {
+  const TransactionPinRoute({List<_i27.PageRouteInfo>? children})
+    : super(TransactionPinRoute.name, initialChildren: children);
 
   static const String name = 'TransactionPinRoute';
 
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<TransactionPinRouteArgs>(
-        orElse: () => const TransactionPinRouteArgs(),
-      );
-      return _i25.TransactionPinScreen(key: args.key);
+      return const _i8.TransactionPinScreen();
     },
   );
-}
-
-class TransactionPinRouteArgs {
-  const TransactionPinRouteArgs({this.key});
-
-  final _i28.Key? key;
-
-  @override
-  String toString() {
-    return 'TransactionPinRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
