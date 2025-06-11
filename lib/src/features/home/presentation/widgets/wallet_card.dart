@@ -51,7 +51,7 @@ class WalletCard extends HookConsumerWidget {
             ],
           ),
           Text(
-            "500,000",
+            hideBalance.value ? "₦******" : "₦500,000",
             style: context.textTheme.headlineSmall,
           ),
           Row(
@@ -75,7 +75,7 @@ class WalletCard extends HookConsumerWidget {
               ),
             ],
           ),
-          4.0.verticalSpacing,
+         
           Row(
             children: [
               FilledButton.icon(

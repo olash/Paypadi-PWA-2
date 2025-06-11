@@ -15,4 +15,20 @@ enum AccountRole {
   final String description;
 }
 
+enum PickedAmount {
+  two(displayedAmount: "₦200", value: 200),
+  four(displayedAmount: "₦400", value: 400),
+  six(displayedAmount: "₦600", value: 600),
+  eight(displayedAmount: "₦800", value: 800),
+  ten(displayedAmount: "₦1000", value: 1000);
+
+  const PickedAmount({
+    required this.displayedAmount,
+    required this.value,
+  });
+
+  final String displayedAmount;
+  final int value;
+}
+
 enum BeneficiaryStatus { recent, saved }

@@ -89,7 +89,7 @@ class _AppKeypadState extends State<AppKeypad> {
 
   Widget buildKeyButton(BuildContext context, String key) {
     return InkWell(
-      onTap: key == "." ? null : () => onTap(key),
+      onTap: (key == "." && !widget.showBiometric) ? null : () => onTap(key),
       customBorder: CircleBorder(),
       splashColor: AppColors.primaryFocused.withValues(alpha: .1),
       child: Center(

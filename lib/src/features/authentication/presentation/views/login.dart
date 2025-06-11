@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/biometrics_service.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
@@ -15,11 +16,13 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 class LoginScreen extends HookConsumerWidget {
   LoginScreen({super.key});
 
+  final int _pinLength = 6;
   final TapGestureRecognizer forgotPassword = TapGestureRecognizer();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController pin = useTextEditingController();
+    final password = useState<String>("");
+    final biometricService = ref.watch(biometricsProvider);
 
     return AppScaffold(
       topPadding: kTopPadding,
@@ -31,19 +34,26 @@ class LoginScreen extends HookConsumerWidget {
             "Good evening, ",
             style: context.textTheme.headlineMedium,
           ),
-
           24.0.verticalSpacing,
-
-          AppPinIndicator(text: "",),
-          Spacer(),
-
+          AppPinIndicator(
+            text: password.value,
+            pinLength: _pinLength,
+          ),
+          Spacer(flex: 2),
           AppKeypad(
-            
+            pinLength: _pinLength,
+            showBiometric: true,
+            onBiometricKeyPressed: () async {
+              await biometricService.authenticate();
+            },
+            onChanged: (value) {
+              password.value = value;
+            },
             onSubmit: (value) {
               context.router.push(AppBottomBavBarRoute());
             },
           ),
-          124.0.verticalSpacing,
+          Spacer(),
           Center(
             child: RichText(
               text: TextSpan(

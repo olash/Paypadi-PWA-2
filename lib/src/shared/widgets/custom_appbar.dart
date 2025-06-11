@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart';
@@ -27,6 +28,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           style: context.textTheme.bodyLarge,
         ),
         Spacer(),
+        Icon(Iconsax.notification_outline),
       ],
     );
   }

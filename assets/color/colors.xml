@@ -17,5 +17,5 @@
     <color name="unselectedIndicator">#CFCDC9</color>
     <color name="unfocusedTextField">#CBD2E0</color>
     <color name="smallButtonColor">#E0F2F1</color>
-
+    <color name="amountDisplayBorderColor">#D1D5D8</color>
 </resources>
