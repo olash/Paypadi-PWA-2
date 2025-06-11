@@ -1,7 +1,14 @@
-import 'package:local_auth/local_auth.dart';
+import 'dart:io';
 
-class LocalAuthenticationService {
+import 'package:local_auth/local_auth.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'biometrics_service.g.dart';
+
+class BiometricsService {
   final LocalAuthentication _service = LocalAuthentication();
+
+  bool deviceIsIos = Platform.isIOS;
 
   Future<bool> deviceHasBiometrics() => _service.canCheckBiometrics;
 
@@ -21,4 +28,9 @@ class LocalAuthenticationService {
       return false;
     }
   }
+}
+
+@riverpod
+BiometricsService biometrics(ref) {
+  return BiometricsService();
 }

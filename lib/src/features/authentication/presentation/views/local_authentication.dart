@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/core/services/biometrics_service.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -10,19 +12,32 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final biometricService = ref.watch(biometricsProvider);
+
     return AppScaffold(
       title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           24.0.verticalSpacing,
+          Icon(
+            biometricService.deviceIsIos
+                ? IonIcons.finger_print
+                : IonIcons.accessibility,
+            size: 81,
+          ),
+          24.0.verticalSpacing,
           Text(
-            "Enable Face ID",
+            biometricService.deviceIsIos
+                ? "Enable Face ID"
+                : "Enable Fingerprint",
             style: context.textTheme.headlineMedium,
           ),
           16.0.verticalSpacing,
           Text(
-            "Use face recognition for a faster and more secure access.",
+            biometricService.deviceIsIos
+                ? "Use face recognition for a faster and more secure access."
+                : "Use fingerprint for a faster and more secure access.",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -34,18 +49,16 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
               Flexible(
                 child: OutlinedButton(
                   onPressed: () {},
-                  child: Text(
-                    "Maybe Later",
-                  ),
+                  child: Text("Maybe Later"),
                 ),
               ),
 
               Flexible(
                 child: FilledButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Enable",
-                  ),
+                  onPressed: () async {
+                    await biometricService.authenticate();
+                  },
+                  child: Text("Enable"),
                 ),
               ),
             ],

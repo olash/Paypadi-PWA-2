@@ -45,5 +45,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!--Permissions for Third Party Packages-->
+	<key>NSFaceIDUsageDescription</key>
+	<string>This app wants to be able to record your face. JK</string>
 </dict>
 </plist>
