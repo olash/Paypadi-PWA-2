@@ -280,36 +280,18 @@ class CreateAccountRouteArgs {
 
 /// generated route for
 /// [_i10.EnterPinScreen]
-class EnterPinRoute extends _i27.PageRouteInfo<EnterPinRouteArgs> {
-  EnterPinRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
-    : super(
-        EnterPinRoute.name,
-        args: EnterPinRouteArgs(key: key),
-        initialChildren: children,
-      );
+class EnterPinRoute extends _i27.PageRouteInfo<void> {
+  const EnterPinRoute({List<_i27.PageRouteInfo>? children})
+    : super(EnterPinRoute.name, initialChildren: children);
 
   static const String name = 'EnterPinRoute';
 
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<EnterPinRouteArgs>(
-        orElse: () => const EnterPinRouteArgs(),
-      );
-      return _i10.EnterPinScreen(key: args.key);
+      return const _i10.EnterPinScreen();
     },
   );
-}
-
-class EnterPinRouteArgs {
-  const EnterPinRouteArgs({this.key});
-
-  final _i28.Key? key;
-
-  @override
-  String toString() {
-    return 'EnterPinRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
@@ -430,36 +412,18 @@ class LoginRouteArgs {
 
 /// generated route for
 /// [_i16.MakePaymentScreen]
-class MakePaymentRoute extends _i27.PageRouteInfo<MakePaymentRouteArgs> {
-  MakePaymentRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
-    : super(
-        MakePaymentRoute.name,
-        args: MakePaymentRouteArgs(key: key),
-        initialChildren: children,
-      );
+class MakePaymentRoute extends _i27.PageRouteInfo<void> {
+  const MakePaymentRoute({List<_i27.PageRouteInfo>? children})
+    : super(MakePaymentRoute.name, initialChildren: children);
 
   static const String name = 'MakePaymentRoute';
 
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<MakePaymentRouteArgs>(
-        orElse: () => const MakePaymentRouteArgs(),
-      );
-      return _i16.MakePaymentScreen(key: args.key);
+      return const _i16.MakePaymentScreen();
     },
   );
-}
-
-class MakePaymentRouteArgs {
-  const MakePaymentRouteArgs({this.key});
-
-  final _i28.Key? key;
-
-  @override
-  String toString() {
-    return 'MakePaymentRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for

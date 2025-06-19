@@ -110,11 +110,11 @@ class _BeneficiariesList extends HookConsumerWidget {
 
 class _BeneficiaryTile extends StatelessWidget {
   const _BeneficiaryTile({
-    this.imageUrl,
     required this.name,
     required this.transferType,
     required this.transactionTime,
     required this.onTap,
+    this.imageUrl,
   });
 
   final String name;

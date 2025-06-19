@@ -41,8 +41,9 @@ class LoginScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 2),
           AppKeypad(
-            pinLength: _pinLength,
             showBiometric: true,
+            pinLength: _pinLength,
+
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
             },

@@ -24,6 +24,10 @@ final List<String> kAppKeyPadKeys = [
   'x',
 ];
 
+final double kZeroLetterSpacing = 0.0;
+
+final double kVeryTightLetterSpacing = -0.43;
+
 final String kDemoProfilePic =
     "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
 

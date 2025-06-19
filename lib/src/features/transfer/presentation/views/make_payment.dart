@@ -2,14 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
-  MakePaymentScreen({super.key});
+  const MakePaymentScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,13 +23,17 @@ class MakePaymentScreen extends HookConsumerWidget {
       child: Column(
         children: [
           32.0.verticalSpacing,
-
+          _BankAccountInformation(
+            bankImageUrl: kDemoProfilePic,
+            accountName: "Dantanna Aguerro",
+            accountNumber: "1287319231",
+          ),
+          16.0.verticalSpacing,
           AppTextformfield(
             title: "Comments",
             hint: "Enter a narration",
             controller: comments,
           ),
-
           20.0.verticalSpacing,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,6 +62,64 @@ class MakePaymentScreen extends HookConsumerWidget {
               context.router.push(EnterPinRoute());
             },
             child: Text("Make Payment"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BankAccountInformation extends StatelessWidget {
+  const _BankAccountInformation({
+    required this.bankImageUrl,
+    required this.accountName,
+    required this.accountNumber,
+  });
+
+  final String bankImageUrl;
+  final String accountName;
+  final String accountNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.bankBorderColor),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Row(
+        spacing: 20,
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: AppColors.smallButtonColor,
+              borderRadius: BorderRadius.circular(25),
+              image: DecorationImage(
+                image: NetworkImage(bankImageUrl),
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  accountName,
+                  style: context.textTheme.bodyLarge,
+                ),
+                Text(
+                  accountNumber,
+                  style: context.textTheme.bodySmall?.copyWith(
+                    letterSpacing: kZeroLetterSpacing,
+                    color: AppColors.bankAccountNumberTextColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/services/biometrics_service.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -11,18 +11,21 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class EnterPinScreen extends HookConsumerWidget {
-  EnterPinScreen({super.key});
+  const EnterPinScreen({super.key});
+
+  final int _pinLength = 4;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController pin = useTextEditingController();
+    final password = useState<String>("");
+    final biometricService = ref.watch(biometricsProvider);
 
     return AppScaffold(
       title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          32.0.verticalSpacing,
+          25.0.verticalSpacing,
           Text(
             "Enter PIN",
             style: context.textTheme.headlineMedium,
@@ -35,12 +38,22 @@ class EnterPinScreen extends HookConsumerWidget {
             ),
           ),
           32.0.verticalSpacing,
-          AppPinIndicator(text: '',),
+          AppPinIndicator(
+            text: password.value,
+            pinLength: _pinLength,
+          ),
           Spacer(),
           AppKeypad(
-        
             showBiometric: true,
+            pinLength: _pinLength,
             padding: EdgeInsets.symmetric(horizontal: 24),
+
+            onBiometricKeyPressed: () async {
+              await biometricService.authenticate();
+            },
+            onChanged: (value) {
+              password.value = value;
+            },
             onSubmit: (value) {
               context.router.push(ConfirmPaymentRoute());
             },

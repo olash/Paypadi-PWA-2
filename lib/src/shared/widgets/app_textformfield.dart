@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
 class AppTextformfield extends StatelessWidget {
