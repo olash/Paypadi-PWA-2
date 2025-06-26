@@ -21,16 +21,28 @@ dependencies:
   pin_code_text_field: ^1.8.0
   icons_plus: ^5.0.0
   local_auth: ^2.3.0
+  package_info_plus: ^8.3.0
+  retrofit: ^4.4.2
+  talker_dio_logger: ^4.9.1
+  talker_flutter: ^4.9.1
+  talker_riverpod_logger: ^4.9.1
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+  freezed_annotation: ^3.0.0
 
-  vector_graphics: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  custom_lint: ^0.7.0
+  riverpod_lint: ^2.6.3
+  flutter_lints: ^6.0.0
   build_runner: ^2.4.15
+  retrofit_generator: ^9.2.0
   auto_route_generator: ^10.0.1
   riverpod_generator: ^2.6.5
   flutter_gen_runner: ^5.10.0
+  freezed: ^3.0.6
+  json_serializable: ^6.9.5
 
 flutter_gen:
   output: lib/config/gen/
@@ -45,7 +57,7 @@ flutter_gen:
 
   colors:
     inputs:
-      - assets/color/colors.xml
+      - assets/colors.xml
     outputs:
       class_name: AppColors
 
@@ -53,17 +65,10 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/icons/
     - assets/images/
-    - assets/color/
     - assets/illustrations/
-    
-    - path: assets/prod/
-      flavors:
-        - prod
-
-    - path: assets/dev/
-      flavors:
-        - dev
+    - assets/colors.xml
 
   fonts:
     - family: Poppins

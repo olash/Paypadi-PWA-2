@@ -580,36 +580,18 @@ class ProfileRouteArgs {
 
 /// generated route for
 /// [_i21.ReceiptScreen]
-class ReceiptRoute extends _i27.PageRouteInfo<ReceiptRouteArgs> {
-  ReceiptRoute({_i28.Key? key, List<_i27.PageRouteInfo>? children})
-    : super(
-        ReceiptRoute.name,
-        args: ReceiptRouteArgs(key: key),
-        initialChildren: children,
-      );
+class ReceiptRoute extends _i27.PageRouteInfo<void> {
+  const ReceiptRoute({List<_i27.PageRouteInfo>? children})
+    : super(ReceiptRoute.name, initialChildren: children);
 
   static const String name = 'ReceiptRoute';
 
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ReceiptRouteArgs>(
-        orElse: () => const ReceiptRouteArgs(),
-      );
-      return _i21.ReceiptScreen(key: args.key);
+      return const _i21.ReceiptScreen();
     },
   );
-}
-
-class ReceiptRouteArgs {
-  const ReceiptRouteArgs({this.key});
-
-  final _i28.Key? key;
-
-  @override
-  String toString() {
-    return 'ReceiptRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
