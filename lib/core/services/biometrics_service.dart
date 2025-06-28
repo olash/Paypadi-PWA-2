@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -31,6 +32,6 @@ class BiometricsService {
 }
 
 @riverpod
-BiometricsService biometrics(ref) {
+BiometricsService biometrics(Ref<BiometricsService> ref) {
   return BiometricsService();
 }
