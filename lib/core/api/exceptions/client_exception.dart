@@ -1,4 +1,4 @@
-sealed class ClientException {
+class ClientException {
   const ClientException({required this.message});
   final String message;
 

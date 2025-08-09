@@ -32,3 +32,5 @@ enum PickedAmount {
 }
 
 enum BeneficiaryStatus { recent, saved }
+
+

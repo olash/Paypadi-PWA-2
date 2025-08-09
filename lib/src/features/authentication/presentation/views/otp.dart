@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/widgets/pincode_field.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -20,15 +21,15 @@ class OtpScreen extends HookConsumerWidget {
     final TextEditingController pinCode = useTextEditingController();
 
     return AppScaffold(
-title: "",
+      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           40.0.verticalSpacing,
+          40.0.verticalSpacing,
           Text("OTP\nverification", style: context.textTheme.headlineMedium),
           16.0.verticalSpacing,
           Text(
-            "Kindly provide the verification code sent to your +234*******75.",
+            "Kindly provide the verification code sent to your ${obfuscatePhoneNumber("+2348134726507")}",
             style: context.textTheme.bodyMedium,
           ),
           24.0.verticalSpacing,
@@ -60,7 +61,7 @@ title: "",
           ),
           24.0.verticalSpacing,
           FilledButton(
-            onPressed: () => context.router.push(SetupAccountRoute()),
+            onPressed: () => context.router.push(AccountRoleRoute()),
             child: Text("Verify"),
           ),
           8.0.verticalSpacing,

@@ -1,15 +1,7 @@
-import 'dart:io';
-
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'biometrics_service.g.dart';
 
 class BiometricsService {
   final LocalAuthentication _service = LocalAuthentication();
-
-  bool deviceIsIos = Platform.isIOS;
 
   Future<bool> deviceHasBiometrics() => _service.canCheckBiometrics;
 
@@ -20,8 +12,8 @@ class BiometricsService {
 
     try {
       final bool isAuthenticated = await _service.authenticate(
-        localizedReason: reason ?? 'Login with Biometrics',
         options: options,
+        localizedReason: reason ?? 'Login with Biometrics',
       );
 
       return isAuthenticated;
@@ -31,7 +23,3 @@ class BiometricsService {
   }
 }
 
-@riverpod
-BiometricsService biometrics(Ref<BiometricsService> ref) {
-  return BiometricsService();
-}

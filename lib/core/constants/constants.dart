@@ -1,6 +1,37 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+
+final double useSpaceOf2 = 2.0;
+
+final double useSpaceOf4 = 4.0;
+
+final double useSpaceOf6 = 6.0;
+
+final double useSpaceOf8 = 8.0;
+
+final double useSpaceOf12 = 12.0;
+
+final double useSpaceOf14 = 14.0;
+
+final double useSpaceOf16 = 16.0;
+
+final double useSpaceOf18 = 18.0;
+
+final double useSpaceOf20 = 20.0;
+
+final double useSpaceOf22 = 22.0;
+
+final double useSpaceOf24 = 24.0;
+
+final double useSpaceOf28 = 28.0;
+
+final double useSpaceOf30 = 30.0;
+
+final double useSpaceOf32 = 32.0;
+
+final double useSpaceOf64 = 64.0;
 
 final Size kButtonSize = Size(362.sW, 56.sH);
 
@@ -25,6 +56,10 @@ final List<String> kAppKeyPadKeys = [
   'x',
 ];
 
+final int transactionPinLength = 4;
+
+final int passwordPinLength = 6;
+
 final double kZeroLetterSpacing = 0.0;
 
 final double kVeryTightLetterSpacing = -0.43;
@@ -34,6 +69,8 @@ final String kDemoProfilePic =
 
 final Talker logger = TalkerFlutter.init(
   settings: TalkerSettings(
+    enabled: !kReleaseMode,
+    useConsoleLogs: !kReleaseMode,
     colors: {
       TalkerLogType.route.key: AnsiPen()..cyan(),
       TalkerLogType.error.key: AnsiPen()..magenta(),
@@ -74,4 +111,14 @@ class AppSize {
   set appHeight(double appHeight) => _height = appHeight;
 
   set appWidth(double appWidth) => _width = appWidth;
+}
+
+class CacheKeys {
+  static final String role = "role";
+  static final String viewedOnboarding = "hasViewedOnboarding";
+  static final String isDarkMode = "isDarkMode";
+  static final String enabledBiometrics = "enabledBiometrics";
+  static final String loginPin = "loginPin";
+  static final String transactionPin = "transactionPin";
+  // static final String enabledBiometricLogin = "enabledBiometricLogin";
 }

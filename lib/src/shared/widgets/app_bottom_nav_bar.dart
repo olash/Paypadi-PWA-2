@@ -5,8 +5,8 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class AppBottomBavBarScreen extends HookWidget {
-  const AppBottomBavBarScreen({super.key});
+class AppBottomNavBarScreen extends HookWidget {
+  const AppBottomNavBarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

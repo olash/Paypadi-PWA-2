@@ -3,15 +3,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 
 class AmountDisplay extends HookWidget {
-  const AmountDisplay({super.key, required this.inputtedAmount});
-
-  final String inputtedAmount;
+  const AmountDisplay({super.key, required this.input});
+  final String input;
 
   @override
   Widget build(BuildContext context) {
     final pickedAmount = useState<int>(0);
+    final amount = useState<String>("");
 
     return Column(
       spacing: 12,
@@ -26,8 +27,8 @@ class AmountDisplay extends HookWidget {
           ),
           child: Center(
             child: Text(
-              inputtedAmount.isNotEmpty
-                  ? "₦$inputtedAmount"
+              input.isNotEmpty
+                  ? "₦${formatAmount(5000)}"
                   : "₦${pickedAmount.value}",
               style: context.textTheme.headlineLarge,
             ),
@@ -36,8 +37,8 @@ class AmountDisplay extends HookWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...PickedAmount.values.map(
-              (amount) => GestureDetector(
+            for (PickedAmount amount in PickedAmount.values)
+              GestureDetector(
                 onTap: () => pickedAmount.value = amount.value,
                 child: Container(
                   margin: EdgeInsets.only(right: 10),
@@ -57,7 +58,6 @@ class AmountDisplay extends HookWidget {
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ],

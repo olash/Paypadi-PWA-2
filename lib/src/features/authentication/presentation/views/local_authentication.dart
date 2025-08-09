@@ -1,9 +1,14 @@
+import 'dart:io' show Platform;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/services/biometrics_service.dart';
+import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart'
+    show appRouterProvider, localCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -13,30 +18,24 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final biometricService = ref.watch(biometricsProvider);
-
     return AppScaffold(
       title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          24.0.verticalSpacing,
-          Icon(
-            biometricService.deviceIsIos
-                ? Iconsax.bill_outline
-                : IonIcons.finger_print,
-            size: 81,
-          ),
-          24.0.verticalSpacing,
+          useSpaceOf24.verticalSpacing,
+          if (Platform.isIOS)
+            AppAssets.icons.faceId.svg()
+          else
+            Icon(IonIcons.finger_print, size: 81),
+          useSpaceOf24.verticalSpacing,
           Text(
-            biometricService.deviceIsIos
-                ? "Enable Face ID"
-                : "Enable Fingerprint",
+            Platform.isIOS ? "Enable Face ID" : "Enable Fingerprint",
             style: context.textTheme.headlineMedium,
           ),
-          16.0.verticalSpacing,
+          useSpaceOf16.verticalSpacing,
           Text(
-            biometricService.deviceIsIos
+            Platform.isIOS
                 ? "Use face recognition for a faster and more secure access."
                 : "Use fingerprint for a faster and more secure access.",
             style: context.textTheme.bodyMedium?.copyWith(
@@ -49,17 +48,23 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
             children: [
               Flexible(
                 child: OutlinedButton(
-                  onPressed: () {
-                    context.router.push(AppBottomBavBarRoute());
-                  },
+                  onPressed:
+                      () => ref.read(appRouterProvider).replaceAll([
+                        LoginRoute(),
+                      ]),
                   child: Text("Maybe Later"),
                 ),
               ),
-
               Flexible(
                 child: FilledButton(
                   onPressed: () async {
-                    await biometricService.authenticate();
+                    await ref
+                        .read(localCacheProvider)
+                        .saveToCache(
+                          key: CacheKeys.enabledBiometrics,
+                          value: true,
+                        );
+                    ref.read(appRouterProvider).replaceAll([LoginRoute()]);
                   },
                   child: Text("Enable"),
                 ),

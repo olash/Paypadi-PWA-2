@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/constants/constants.dart'
+    show passwordPinLength, CacheKeys;
+import 'package:paypadi/core/services/service_registry.dart'
+    show appRouterProvider, secureCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-
-final int _passwordPinLength = 6;
 
 @RoutePage()
 class PasswordScreen extends HookConsumerWidget {
@@ -17,7 +19,6 @@ class PasswordScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final password = useState<String>('');
-
     return AppScaffold(
       title: "",
       child: Column(
@@ -38,18 +39,19 @@ class PasswordScreen extends HookConsumerWidget {
           32.0.verticalSpacing,
           AppPinIndicator(
             text: password.value,
-            pinLength: _passwordPinLength,
+            pinLength: passwordPinLength,
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: _passwordPinLength,
+            pinLength: passwordPinLength,
             onChanged: (value) {
               password.value = value;
               password.debugLog();
             },
-            onSubmit: (value) {
-              context.router.push(ConfirmPasswordRoute());
-            },
+            onSubmit:
+                (value) => ref
+                    .read(appRouterProvider)
+                    .push(ConfirmPasswordRoute(passwordPin: value)),
           ),
           Spacer(),
         ],
@@ -60,12 +62,12 @@ class PasswordScreen extends HookConsumerWidget {
 
 @RoutePage()
 class ConfirmPasswordScreen extends HookConsumerWidget {
-  const ConfirmPasswordScreen({super.key});
+  const ConfirmPasswordScreen({super.key, required this.passwordPin});
+  final String passwordPin;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmPassword = useState<String>('');
-
     return AppScaffold(
       title: "",
       child: Column(
@@ -86,17 +88,22 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
           32.0.verticalSpacing,
           AppPinIndicator(
             text: confirmPassword.value,
-            pinLength: _passwordPinLength,
+            pinLength: passwordPinLength,
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: _passwordPinLength,
+            pinLength: passwordPinLength,
             onChanged: (value) {
               confirmPassword.value = value;
-              confirmPassword.debugLog();
+              confirmPassword.value.debugLog();
             },
-            onSubmit: (value) {
-              context.router.push(TransactionPinRoute());
+            onSubmit: (value) async {
+              if (value == passwordPin) {
+                await ref
+                    .read(secureCacheProvider)
+                    .write(key: CacheKeys.loginPin, value: value);
+                ref.read(appRouterProvider).push(TransactionPinRoute());
+              }
             },
           ),
           Spacer(),

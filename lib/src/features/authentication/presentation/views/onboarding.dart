@@ -1,15 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class OnboardingScreen extends HookWidget {
+class OnboardingScreen extends HookConsumerWidget {
   OnboardingScreen({super.key});
 
   final List<String> _onboardingText = [
@@ -25,7 +27,7 @@ class OnboardingScreen extends HookWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final PageController pageController = usePageController();
     final ValueNotifier<int> currentImg = useState<int>(0);
 
@@ -72,13 +74,23 @@ class OnboardingScreen extends HookWidget {
                     )
                     .toList(),
           ),
-          24.0.verticalSpacing,
+          useSpaceOf24.verticalSpacing,
           FilledButton(
-            onPressed: () => context.router.push(CreateAccountRoute()),
+            onPressed: () {
+              ref
+                  .read(localCacheProvider)
+                  .saveToCache(key: CacheKeys.viewedOnboarding, value: true);
+              context.router.push(CreateAccountRoute());
+            },
             child: Text("Create Account"),
           ),
           OutlinedButton(
-            onPressed: () => context.router.push(LoginRoute()),
+            onPressed: () {
+              ref
+                  .read(localCacheProvider)
+                  .saveToCache(key: CacheKeys.viewedOnboarding, value: true);
+              context.router.push(LoginRoute());
+            },
             child: Text("Sign In"),
           ),
         ],

@@ -1,15 +1,26 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/core/constants/constants.dart' show CacheKeys;
+import 'package:paypadi/core/services/service_registry.dart'
+    show localCacheProvider;
 
 import 'router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
+  AppRouter({required this.ref});
+  final Ref ref;
+
+  @override
+  RouteType get defaultRouteType => RouteType.adaptive();
+
   @override
   List<AutoRoute> get routes => [
     AutoRoute(
       path: "/",
       page: OnboardingRoute.page,
       initial: true,
+      // guards: [DefaultRouteGuard(ref)],
     ),
     AutoRoute(
       path: "/create-account",
@@ -77,6 +88,10 @@ class AppRouter extends RootStackRouter {
       page: ChangeThemeRoute.page,
     ),
     AutoRoute(
+      path: "/forgot-password",
+      page: ForgotPasswordRoute.page,
+    ),
+    AutoRoute(
       path: "/change-password",
       page: ChangePasswordRoute.page,
     ),
@@ -106,7 +121,7 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(
       path: "/app-navigation-bar-page",
-      page: AppBottomBavBarRoute.page,
+      page: AppBottomNavBarRoute.page,
       children: [
         AutoRoute(
           path: "home",
@@ -124,4 +139,23 @@ class AppRouter extends RootStackRouter {
       ],
     ),
   ];
+}
+
+class DefaultRouteGuard extends AutoRouteGuard {
+  const DefaultRouteGuard(this.ref);
+  final Ref ref;
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    final bool hasCompletedOnboarding =
+        ref
+            .read(localCacheProvider)
+            .getFromCache<bool>(CacheKeys.viewedOnboarding) ??
+        false;
+
+    if (!hasCompletedOnboarding && router.currentPath != "/") {
+      resolver.redirectUntil(OnboardingRoute());
+    }
+    resolver.next();
+  }
 }

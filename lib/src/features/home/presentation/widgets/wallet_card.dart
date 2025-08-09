@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 
 class WalletCard extends HookConsumerWidget {
   const WalletCard({super.key});
@@ -14,15 +15,16 @@ class WalletCard extends HookConsumerWidget {
     final hideBalance = useState<bool>(true);
 
     return Container(
+      width: context.screenWidth,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
+            blurRadius: 4,
             offset: Offset(0, 0.05),
             color: AppColors.black.withValues(alpha: .25),
-            blurRadius: 4,
           ),
         ],
       ),
@@ -51,7 +53,7 @@ class WalletCard extends HookConsumerWidget {
             ],
           ),
           Text(
-            hideBalance.value ? "₦******" : "₦500,000",
+            hideBalance.value ? "₦******" : "₦${formatAmount(50000)}",
             style: context.textTheme.headlineSmall,
           ),
           Row(
@@ -75,7 +77,7 @@ class WalletCard extends HookConsumerWidget {
               ),
             ],
           ),
-         
+
           Row(
             children: [
               FilledButton.icon(

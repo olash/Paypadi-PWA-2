@@ -31,11 +31,14 @@ dependencies:
   freezed_annotation: ^3.0.0
   dio: ^5.8.0+1
   json_annotation: ^4.9.0
+  fpdart: ^1.1.1
+  shared_preferences: ^2.5.3
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.6
   riverpod_lint: ^2.6.3
   flutter_lints: ^6.0.0
   build_runner: ^2.4.15

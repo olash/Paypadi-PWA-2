@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/constants/constants.dart'
+    show CacheKeys, transactionPinLength;
+import 'package:paypadi/core/services/service_registry.dart'
+    show secureCacheProvider, appRouterProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-
-final int _transactionPinLength = 4;
 
 @RoutePage()
 class TransactionPinScreen extends HookConsumerWidget {
@@ -17,7 +19,6 @@ class TransactionPinScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionPin = useState<String>('');
-
     return AppScaffold(
       title: "",
       child: Column(
@@ -36,21 +37,21 @@ class TransactionPinScreen extends HookConsumerWidget {
             ),
           ),
           32.0.verticalSpacing,
-
           AppPinIndicator(
             text: transactionPin.value,
-            pinLength: _transactionPinLength,
+            pinLength: transactionPinLength,
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: _transactionPinLength,
+            pinLength: transactionPinLength,
             onChanged: (value) {
               transactionPin.value = value;
               transactionPin.debugLog();
             },
-            onSubmit: (value) {
-              context.router.push(ConfirmTransactionPinRoute());
-            },
+            onSubmit:
+                (value) => ref
+                    .read(appRouterProvider)
+                    .push(ConfirmTransactionPinRoute(transactionPin: value)),
           ),
           Spacer(),
         ],
@@ -61,12 +62,12 @@ class TransactionPinScreen extends HookConsumerWidget {
 
 @RoutePage()
 class ConfirmTransactionPinScreen extends HookConsumerWidget {
-  const ConfirmTransactionPinScreen({super.key});
+  const ConfirmTransactionPinScreen({super.key, required this.transactionPin});
+  final String transactionPin;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmTransactionPin = useState<String>('');
-
     return AppScaffold(
       title: "",
       child: Column(
@@ -87,17 +88,22 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
           32.0.verticalSpacing,
           AppPinIndicator(
             text: confirmTransactionPin.value,
-            pinLength: _transactionPinLength,
+            pinLength: transactionPinLength,
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: _transactionPinLength,
+            pinLength: transactionPinLength,
             onChanged: (value) {
               confirmTransactionPin.value = value;
-              confirmTransactionPin.debugLog();
+              confirmTransactionPin.value.debugLog();
             },
-            onSubmit: (value) {
-              context.router.push(LocalAuthenticationRoute());
+            onSubmit: (value) async {
+              if (value == transactionPin) {
+                await ref
+                    .read(secureCacheProvider)
+                    .write(key: CacheKeys.transactionPin, value: value);
+                ref.read(appRouterProvider).push(LocalAuthenticationRoute());
+              }
             },
           ),
           Spacer(),

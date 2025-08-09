@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
-import 'package:paypadi/core/services/biometrics_service.dart';
+import 'package:paypadi/core/services/service_registry.dart'
+    show
+        appRouterProvider,
+        biometricsProvider,
+        localCacheProvider,
+        secureCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
@@ -14,52 +18,64 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class LoginScreen extends HookConsumerWidget {
-  LoginScreen({super.key});
-
-  final int _pinLength = 6;
-  final TapGestureRecognizer forgotPassword = TapGestureRecognizer();
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final password = useState<String>("");
     final biometricService = ref.watch(biometricsProvider);
+    final ValueNotifier<bool> enabledBiometrics = useState<bool>(
+      ref.read(localCacheProvider).getFromCache(CacheKeys.enabledBiometrics) ??
+          false,
+    );
+
+    useEffect(() {
+      if (password.value.length == passwordPinLength) {
+        ref.read(appRouterProvider).push(AppBottomNavBarRoute());
+      }
+      return null;
+    }, [password.value]);
 
     return AppScaffold(
       topPadding: kTopPadding,
+      bottomPadding: useSpaceOf24,
       child: Column(
         children: [
           AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
-          16.0.verticalSpacing,
+          useSpaceOf16.verticalSpacing,
           Text(
             "Good evening, ",
             style: context.textTheme.headlineMedium,
           ),
-          24.0.verticalSpacing,
+          useSpaceOf24.verticalSpacing,
           AppPinIndicator(
             text: password.value,
-            pinLength: _pinLength,
+            pinLength: passwordPinLength,
           ),
           Spacer(flex: 2),
           AppKeypad(
-            showBiometric: true,
-            pinLength: _pinLength,
-
+            pinLength: passwordPinLength,
+            showBiometric: enabledBiometrics.value,
+            onChanged: (value) => password.value = value,
             onBiometricKeyPressed: () async {
-              await biometricService.authenticate();
-            },
-            onChanged: (value) {
-              password.value = value;
-            },
-            onSubmit: (value) {
-              context.router.push(AppBottomBavBarRoute());
+              final isAuthorized = await biometricService.authenticate();
+              if (isAuthorized) {
+                final String? pin = await ref
+                    .read(secureCacheProvider)
+                    .read(CacheKeys.loginPin);
+                password.value = pin ?? "";
+              }
             },
           ),
           Spacer(),
           Center(
-            child: RichText(
-              text: TextSpan(
-                text: "Forgot Password?",
-                recognizer: forgotPassword,
+            child: GestureDetector(
+              onTap:
+                  () => ref
+                      .read(appRouterProvider)
+                      .push(ForgotPasswordRoute(email: "tokiolaolu@gmail.com")),
+              child: Text(
+                "Forgot Password?",
                 style: context.textTheme.bodySmall?.copyWith(
                   letterSpacing: 0.5,
                 ),

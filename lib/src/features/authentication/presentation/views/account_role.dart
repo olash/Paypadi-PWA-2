@@ -34,14 +34,14 @@ class AccountRoleScreen extends HookConsumerWidget {
           32.0.verticalSpacing,
           _RoleWidget(
             role: AccountRole.passenger,
-            selectRole: () {
-              context.router.push(PasswordRoute());
+            selectRole: (role) {
+              context.router.push(SetupAccountRoute(role: role));
             },
           ),
           _RoleWidget(
             role: AccountRole.driver,
-            selectRole: () {
-              context.router.push(PasswordRoute());
+            selectRole: (role) {
+              context.router.push(SetupAccountRoute(role: role));
             },
           ),
         ],
@@ -54,12 +54,12 @@ class _RoleWidget extends HookConsumerWidget {
   const _RoleWidget({required this.role, required this.selectRole});
 
   final AccountRole role;
-  final VoidCallback selectRole;
+  final ValueSetter<AccountRole> selectRole;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: selectRole,
+      onTap: () => selectRole(role),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 26, horizontal: 16),
         margin: EdgeInsets.only(bottom: 16),
