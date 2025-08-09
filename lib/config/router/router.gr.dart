@@ -187,46 +187,18 @@ class ChangePinRouteArgs {
 
 /// generated route for
 /// [_i5.ChangeThemeScreen]
-class ChangeThemeRoute extends _i28.PageRouteInfo<ChangeThemeRouteArgs> {
-  ChangeThemeRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        ChangeThemeRoute.name,
-        args: ChangeThemeRouteArgs(key: key),
-        initialChildren: children,
-      );
+class ChangeThemeRoute extends _i28.PageRouteInfo<void> {
+  const ChangeThemeRoute({List<_i28.PageRouteInfo>? children})
+    : super(ChangeThemeRoute.name, initialChildren: children);
 
   static const String name = 'ChangeThemeRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ChangeThemeRouteArgs>(
-        orElse: () => const ChangeThemeRouteArgs(),
-      );
-      return _i5.ChangeThemeScreen(key: args.key);
+      return const _i5.ChangeThemeScreen();
     },
   );
-}
-
-class ChangeThemeRouteArgs {
-  const ChangeThemeRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'ChangeThemeRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ChangeThemeRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -734,46 +706,18 @@ class PasswordRoute extends _i28.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i21.ProfileScreen]
-class ProfileRoute extends _i28.PageRouteInfo<ProfileRouteArgs> {
-  ProfileRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        ProfileRoute.name,
-        args: ProfileRouteArgs(key: key),
-        initialChildren: children,
-      );
+class ProfileRoute extends _i28.PageRouteInfo<void> {
+  const ProfileRoute({List<_i28.PageRouteInfo>? children})
+    : super(ProfileRoute.name, initialChildren: children);
 
   static const String name = 'ProfileRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ProfileRouteArgs>(
-        orElse: () => const ProfileRouteArgs(),
-      );
-      return _i21.ProfileScreen(key: args.key);
+      return const _i21.ProfileScreen();
     },
   );
-}
-
-class ProfileRouteArgs {
-  const ProfileRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'ProfileRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ProfileRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for

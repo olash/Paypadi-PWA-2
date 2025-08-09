@@ -21,5 +21,9 @@
     <color name= "bankBorderColor">#E6EBF0</color>
     <color name= "bankAccountNumberTextColor">#667085</color>
     <color name= "dividerColor">#EDEDED</color>
-
+    <color name= "themeBorderColor">#EDEDED</color>
+    <color name= "blueThemeColor">#2C64E3</color>
+    <color name= "pinkThemeColor">#DD3E86</color>
+    <color name= "orangeThemeColor">#CE7E2E</color>
+    <color name= "lightGreenThemeColor">#51B58F</color>
 </resources>

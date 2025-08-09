@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/utils/helpers.dart';
@@ -86,7 +87,9 @@ class WalletCard extends HookConsumerWidget {
                 icon: Icon(Iconsax.add_outline, size: 24),
                 style: context.filledButtonTheme.style?.copyWith(
                   fixedSize: WidgetStatePropertyAll(Size(125.sW, 32.sH)),
-                  foregroundColor: WidgetStatePropertyAll(AppColors.primary),
+                  foregroundColor: WidgetStatePropertyAll(
+                    ref.watch(appPrimaryProvider),
+                  ),
                   backgroundColor: WidgetStatePropertyAll(
                     AppColors.smallButtonColor,
                   ),
@@ -95,7 +98,7 @@ class WalletCard extends HookConsumerWidget {
                   ),
                   shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
-                      side: BorderSide(color: AppColors.primary),
+                      side: BorderSide(color: ref.watch(appPrimaryProvider)),
                       borderRadius: BorderRadiusGeometry.circular(12),
                     ),
                   ),
@@ -103,7 +106,7 @@ class WalletCard extends HookConsumerWidget {
                     context.textTheme.bodySmall?.copyWith(
                       letterSpacing: -0.08,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      color: ref.watch(appPrimaryProvider),
                     ),
                   ),
                 ),

@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/settings/presentation/widgets/setting_tile.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -13,6 +16,40 @@ class SettingsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localCache = ref.read(localCacheProvider);
+    final biometricsIsEnabled = useState<bool>(
+      localCache.getFromCache(CacheKeys.enabledBiometrics) ?? false,
+    );
+    final isDarkMode = useState<bool>(
+      localCache.getFromCache(CacheKeys.isDarkMode) ?? false,
+    );
+
+    useEffect(() {
+      // Save biometricsIsEnabled.value to cache whenever it changes
+      Future<void> saveBiometricsSetting() async {
+        await localCache.saveToCache(
+          key: CacheKeys.enabledBiometrics,
+          value: biometricsIsEnabled.value,
+        );
+      }
+
+      saveBiometricsSetting();
+      return null;
+    }, [biometricsIsEnabled.value]);
+
+    useEffect(() {
+      // Save isDarkMode.value to cache whenever it changes
+      Future<void> saveDarkModeSetting() async {
+        await localCache.saveToCache(
+          key: CacheKeys.isDarkMode,
+          value: isDarkMode.value,
+        );
+      }
+
+      saveDarkModeSetting();
+      return null;
+    }, [isDarkMode.value]);
+
     return AppScaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -30,67 +67,71 @@ class SettingsScreen extends HookConsumerWidget {
             SettingTile(
               name: "Profile",
               icon: Iconsax.profile_circle_outline,
-              onTap: () => context.router.push(ProfileRoute()),
+              onTap: () => ref.read(appRouterProvider).push(ProfileRoute()),
             ),
             SettingTile(
               name: "Notification Preferences",
               icon: Iconsax.notification_outline,
-              onTap: () => context.router.push(NotificationsRoute()),
+              onTap:
+                  () => ref.read(appRouterProvider).push(NotificationsRoute()),
             ),
             SettingTile(
               name: "Change Password",
               showTrailingIcon: false,
               icon: Iconsax.lock_1_outline,
-              onTap: () => context.router.push(ChangePasswordRoute()),
+              onTap:
+                  () => ref.read(appRouterProvider).push(ChangePasswordRoute()),
             ),
             SettingTile(
               name: "Change Pin",
               showTrailingIcon: false,
               icon: Iconsax.password_check_outline,
-              onTap: () => context.router.push(ChangePinRoute()),
+              onTap: () => ref.read(appRouterProvider).push(ChangePinRoute()),
             ),
             SettingTile(
               name: "Referral",
               showTrailingIcon: false,
               icon: Iconsax.alarm_outline,
-              onTap: () => context.router.push(ReferralRoute()),
+              onTap: () => ref.read(appRouterProvider).push(ReferralRoute()),
             ),
             SettingTile(
               name: "Theme",
               icon: Iconsax.colorfilter_outline,
-              onTap: () => context.router.push(ChangeThemeRoute()),
+              onTap: () => ref.read(appRouterProvider).push(ChangeThemeRoute()),
             ),
-            SettingTile(
+            SettingTileWithSwitch(
               name: "Enable Biometrics",
-              showTrailingIcon: false,
               icon: IonIcons.finger_print,
-              onChanged: (value) {},
+              switchValue: biometricsIsEnabled.value,
+              onChanged: (value) => biometricsIsEnabled.value = value,
             ),
-            SettingTile(
+            SettingTileWithSwitch(
               name: "Dark Mode",
-              showTrailingIcon: false,
               icon: Iconsax.moon_outline,
-              onChanged: (value) {},
+              switchValue: isDarkMode.value,
+              onChanged: (value) => isDarkMode.value = value,
             ),
             SettingTile(
               name: "Help & Support",
               icon: Iconsax.support_outline,
-              onTap: () => context.router.push(SupportRoute()),
+              onTap: () => ref.read(appRouterProvider).push(SupportRoute()),
             ),
             SettingTile(
               name: "Legal & Policies",
               icon: Iconsax.judge_outline,
-              onTap: () => context.router.push(LegalRoute()),
+              onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
             ),
             SettingTile(
               name: "Log out",
               showTrailingIcon: false,
               icon: Iconsax.logout_1_outline,
               onTap:
-                  () => context.router.pushAndPopUntil(
-                    LoginRoute(),
-                    predicate: (route) => route.settings.name == "/login",
-                  ),
+                  () => ref
+                      .read(appRouterProvider)
+                      .pushAndPopUntil(
+                        LoginRoute(),
+                        predicate: (route) => route.settings.name == "/login",
+                      ),
             ),
           ],
         ),

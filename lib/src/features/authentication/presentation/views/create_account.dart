@@ -36,11 +36,12 @@ class CreateAccountScreen extends HookConsumerWidget {
             style: context.textTheme.headlineMedium,
           ),
           32.0.verticalSpacing,
+          //TODO: Design special textfield for phone number
           AppTextformfield(
             title: "Phone Number",
             hint: "Enter phone number",
             controller: phoneNumber,
-            showCountryFlag: true,
+
             keyboardType: TextInputType.phone,
           ),
           4.0.verticalSpacing,

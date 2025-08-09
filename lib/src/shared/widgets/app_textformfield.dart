@@ -5,7 +5,7 @@ class AppTextformfield extends StatelessWidget {
   const AppTextformfield({
     super.key,
     this.hint,
-    this.showCountryFlag = false,
+    this.titleStyle,
     this.keyboardType = TextInputType.text,
     required this.title,
     required this.controller,
@@ -13,7 +13,7 @@ class AppTextformfield extends StatelessWidget {
 
   final String title;
   final String? hint;
-  final bool showCountryFlag;
+  final TextStyle? titleStyle;
   final TextInputType keyboardType;
   final TextEditingController controller;
 
@@ -24,13 +24,16 @@ class AppTextformfield extends StatelessWidget {
       children: [
         Text(
           title,
-          style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
+          style:
+              titleStyle ??
+              context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
         5.0.verticalSpacing,
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
+            hintText: hint,
             // prefix:
             //     showCountryFlag
             //         ? Row(
@@ -51,7 +54,6 @@ class AppTextformfield extends StatelessWidget {
             //           ],
             //         )
             //         : null,
-            hintText: hint,
           ),
         ),
         12.0.verticalSpacing,

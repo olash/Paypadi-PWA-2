@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
-class SettingTile extends HookWidget {
+class SettingTile extends StatelessWidget {
   const SettingTile({
     super.key,
     this.onTap,
-    this.onChanged,
     required this.name,
     required this.icon,
     this.showTrailingIcon = true,
@@ -18,12 +16,9 @@ class SettingTile extends HookWidget {
   final IconData? icon;
   final bool showTrailingIcon;
   final VoidCallback? onTap;
-  final ValueChanged<bool>? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    final isActivated = useState<bool>(false);
-
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -31,7 +26,7 @@ class SettingTile extends HookWidget {
         child: Row(
           children: [
             Icon(icon, size: 24),
-            16.0.horizontalSpacing,
+            useSpaceOf16.horizontalSpacing,
             Expanded(
               child: Text(
                 name,
@@ -41,21 +36,51 @@ class SettingTile extends HookWidget {
                 ),
               ),
             ),
-            if (onChanged != null)
-              SizedBox(
-                height: 40,
-                width: 40,
-                child: Switch.adaptive(
-                  value: isActivated.value,
-                  onChanged: (value) {
-                    isActivated.value = value;
-                    onChanged?.call(value);
-                  },
-                ),
-              ),
             if (showTrailingIcon) Icon(Iconsax.arrow_right_3_outline),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SettingTileWithSwitch extends StatelessWidget {
+  const SettingTileWithSwitch({
+    super.key,
+    required this.name,
+    required this.icon,
+    required this.switchValue,
+    required this.onChanged,
+  });
+
+  final String name;
+  final IconData? icon;
+  final bool switchValue;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      child: Row(
+        children: [
+          Icon(icon, size: 24),
+          useSpaceOf16.horizontalSpacing,
+          Expanded(
+            child: Text(
+              name,
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+                letterSpacing: kVeryTightLetterSpacing,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 40,
+            width: 40,
+            child: Switch.adaptive(value: switchValue, onChanged: onChanged),
+          ),
+        ],
       ),
     );
   }

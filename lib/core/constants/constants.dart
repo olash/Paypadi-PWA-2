@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -40,6 +41,14 @@ final Size kAppBarSize = Size(double.infinity, 56);
 final double kTopPadding = 40.0;
 
 final double kBottomPadding = 40.0;
+
+final List<Color> availableColors = [
+  AppColors.primary,
+  AppColors.blueThemeColor,
+  AppColors.pinkThemeColor,
+  AppColors.orangeThemeColor,
+  AppColors.lightGreenThemeColor,
+];
 
 final List<String> kAppKeyPadKeys = [
   '1',
@@ -120,5 +129,5 @@ class CacheKeys {
   static final String enabledBiometrics = "enabledBiometrics";
   static final String loginPin = "loginPin";
   static final String transactionPin = "transactionPin";
-  // static final String enabledBiometricLogin = "enabledBiometricLogin";
+  static final String colorTheme = "colorTheme";
 }
