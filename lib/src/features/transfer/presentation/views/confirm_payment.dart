@@ -4,7 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/transfer/presentation/widgets/dotted_line.dart';
+import 'package:paypadi/src/features/transfer/presentation/widgets/payment_details.dart';
+import 'package:paypadi/src/features/transfer/presentation/widgets/receipt_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
@@ -18,13 +22,8 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
       bgColor: AppColors.scaffoldBackground,
       child: Column(
         children: [
-          16.0.verticalSpacing,
-          Container(
-            padding: EdgeInsets.fromLTRB(24, 32, 24, 48),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(24),
-            ),
+          useSpaceOf16.verticalSpacing,
+          ReceiptCard(
             child: Column(
               children: [
                 Text(
@@ -34,7 +33,7 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
                     letterSpacing: kZeroLetterSpacing,
                   ),
                 ),
-                8.0.verticalSpacing,
+                useSpaceOf8.verticalSpacing,
                 Text(
                   "₦1,000,000",
                   style: context.textTheme.headlineLarge?.copyWith(
@@ -42,22 +41,26 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
                     letterSpacing: kZeroLetterSpacing,
                   ),
                 ),
-                32.0.verticalSpacing,
+                useSpaceOf32.verticalSpacing,
                 Divider(
                   indent: 8,
                   endIndent: 8,
                   color: AppColors.dividerColor,
                 ),
                 32.0.verticalSpacing,
-                _SummaryDetail(detail: "Ref Number", value: "enfioejnfowse"),
-                _SummaryDetail(detail: "Payment time", value: "enfioejnfowse"),
-                _SummaryDetail(detail: "Payment", value: "enfioejnfowse"),
-                _SummaryDetail(detail: "Amount", value: "enfioejnfowse"),
-                _SummaryDetail(detail: "Transaction Fee", value: "enfioejnfowse"),
+                PaymentDetails(detail: "Ref Number", value: "enfioejnfowse"),
+                PaymentDetails(detail: "Payment time", value: "enfioejnfowse"),
+                PaymentDetails(detail: "Payment", value: "enfioejnfowse"),
+                DottedDivider(topPadding: 2),
+                PaymentDetails(detail: "Amount", value: "enfioejnfowse"),
+                PaymentDetails(
+                  detail: "Transaction Fee",
+                  value: "enfioejnfowse",
+                ),
               ],
             ),
           ),
-          Spacer(flex: 3),
+          Spacer(flex: 4),
           FilledButton(
             style: ButtonStyle(
               shape: WidgetStatePropertyAll(
@@ -67,45 +70,11 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
               ),
             ),
             onPressed: () {
-              context.router.push(ReceiptRoute());
+              ref.read(appRouterProvider).push(ReceiptRoute());
             },
             child: Text("Make Payment"),
           ),
           Spacer(),
-        ],
-      ),
-    );
-  }
-}
-
-class _SummaryDetail extends StatelessWidget {
-  const _SummaryDetail({required this.detail, required this.value});
-
-  final String detail;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 14),
-      child: Row(
-        children: [
-          Text(
-            detail,
-            style: context.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w400,
-              letterSpacing: kZeroLetterSpacing,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: context.textTheme.bodySmall?.copyWith(
-                letterSpacing: kZeroLetterSpacing,
-              ),
-            ),
-          ),
         ],
       ),
     );

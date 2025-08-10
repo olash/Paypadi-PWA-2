@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 
@@ -13,12 +12,6 @@ final double _scaleWidth = (AppSize.instance.getWidth / _designWidth);
 
 final double _scaleHeight = (AppSize.instance.getHeight / _designHeight);
 
-extension NullableObjectExtension on Object? {
-  void debugLog() {
-    dev.log(toString());
-  }
-}
-
 extension BuildContextExtension on BuildContext {
   double get screenWidth => MediaQuery.sizeOf(this).width;
 
@@ -28,6 +21,8 @@ extension BuildContextExtension on BuildContext {
 
   FilledButtonThemeData get filledButtonTheme =>
       Theme.of(this).filledButtonTheme;
+
+  double get devicePixelRatio => MediaQuery.devicePixelRatioOf(this);
 }
 
 extension NumExtension on num {

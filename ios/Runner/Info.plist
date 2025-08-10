@@ -47,7 +47,9 @@
 		</array>
 		<!--Permissions for Third Party Packages-->
 		<key>NSFaceIDUsageDescription</key>
-		<string>This app wants to be able to record your face. JK</string>
+		<string>This app wants to be able to record your face.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>This app requires access to your photo library to save photos and videos.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

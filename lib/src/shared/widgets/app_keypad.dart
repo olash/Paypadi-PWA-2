@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart' show appPrimaryProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 
-class AppKeypad extends StatefulWidget {
+class AppKeypad extends ConsumerStatefulWidget {
   const AppKeypad({
     super.key,
     this.padding,
@@ -24,10 +25,10 @@ class AppKeypad extends StatefulWidget {
   final ValueChanged<String>? onChanged;
 
   @override
-  State<AppKeypad> createState() => _AppKeypadState();
+  ConsumerState<AppKeypad> createState() => _AppKeypadState();
 }
 
-class _AppKeypadState extends State<AppKeypad> {
+class _AppKeypadState extends ConsumerState<AppKeypad> {
   late String _pin;
 
   @override
@@ -91,7 +92,7 @@ class _AppKeypadState extends State<AppKeypad> {
     return InkWell(
       onTap: (key == "." && !widget.showBiometric) ? null : () => onTap(key),
       customBorder: CircleBorder(),
-      splashColor: AppColors.primaryFocused.withValues(alpha: .1),
+      splashColor: ref.watch(appPrimaryProvider).withValues(alpha: .1),
       child: Center(
         child: switch (key) {
           "x" => Icon(EvaIcons.backspace_outline, size: 32),

@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/services/service_registry.dart' show appPrimaryProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
@@ -55,7 +55,7 @@ class CreateAccountScreen extends HookConsumerWidget {
                   recognizer: termsOfService,
                   style: context.textTheme.bodySmall?.copyWith(
                     letterSpacing: 0.5,
-                    color: AppColors.primary,
+                    color: ref.watch(appPrimaryProvider),
                   ),
                 ),
                 TextSpan(
@@ -69,7 +69,7 @@ class CreateAccountScreen extends HookConsumerWidget {
                   recognizer: privacyPolicy,
                   style: context.textTheme.bodySmall?.copyWith(
                     letterSpacing: 0.5,
-                    color: AppColors.primary,
+                    color: ref.watch(appPrimaryProvider),
                   ),
                 ),
               ],
@@ -95,7 +95,7 @@ class CreateAccountScreen extends HookConsumerWidget {
                         signIn..onTap = () => context.router.push(LoginRoute()),
                     style: context.textTheme.bodySmall?.copyWith(
                       letterSpacing: 0.5,
-                      color: AppColors.primary,
+                      color: ref.watch(appPrimaryProvider),
                       fontWeight: FontWeight.w700,
                     ),
                   ),

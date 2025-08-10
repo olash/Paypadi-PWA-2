@@ -66,7 +66,7 @@ class OnboardingScreen extends HookConsumerWidget {
                         decoration: BoxDecoration(
                           color:
                               currentImg.value == _onboardingItems.indexOf(img)
-                                  ? AppColors.primary
+                                  ? ref.watch(appPrimaryProvider)
                                   : AppColors.unselectedIndicator,
                           borderRadius: BorderRadius.circular(25),
                         ),

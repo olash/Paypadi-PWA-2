@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart'
-    show CacheKeys, transactionPinLength;
+    show CacheKeys, logger, transactionPinLength;
 import 'package:paypadi/core/services/service_registry.dart'
     show secureCacheProvider, appRouterProvider;
 import 'package:paypadi/core/utils/extensions.dart';
@@ -46,7 +46,7 @@ class TransactionPinScreen extends HookConsumerWidget {
             pinLength: transactionPinLength,
             onChanged: (value) {
               transactionPin.value = value;
-              transactionPin.debugLog();
+              logger.debug(transactionPin.value);
             },
             onSubmit:
                 (value) => ref
@@ -95,7 +95,7 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
             pinLength: transactionPinLength,
             onChanged: (value) {
               confirmTransactionPin.value = value;
-              confirmTransactionPin.value.debugLog();
+              logger.debug(confirmTransactionPin.value);
             },
             onSubmit: (value) async {
               if (value == transactionPin) {

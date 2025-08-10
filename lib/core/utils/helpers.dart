@@ -37,3 +37,17 @@ String formatAmount(int amount) {
   );
   return '$formatted.00';
 }
+
+String capitalizeFirstChar(String s) {
+  if (s.isEmpty) return s;
+  return s[0].toUpperCase() + s.substring(1);
+}
+
+String getDateAndTime(DateTime date) {
+  final year = date.year.toString().padLeft(4, '0');
+  final month = date.month.toString().padLeft(2, '0');
+  final day = date.day.toString().padLeft(2, '0');
+  final hour = date.hour.toString().padLeft(2, '0');
+  final minute = date.minute.toString().padLeft(2, '0');
+  return '$year-$month-${day}_$hour:$minute';
+}

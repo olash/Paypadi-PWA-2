@@ -34,6 +34,11 @@ dependencies:
   fpdart: ^1.1.1
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^9.2.4
+  share_plus: ^11.0.0
+  screenshot: ^3.0.0
+  flutter_to_pdf: ^0.4.1
+  path_provider: ^2.1.5
+  image_gallery_saver: ^2.0.3
 
 dev_dependencies:
   flutter_test:

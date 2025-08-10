@@ -99,90 +99,34 @@ class AppBottomNavBarRoute extends _i28.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.ChangePasswordScreen]
-class ChangePasswordRoute extends _i28.PageRouteInfo<ChangePasswordRouteArgs> {
-  ChangePasswordRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        ChangePasswordRoute.name,
-        args: ChangePasswordRouteArgs(key: key),
-        initialChildren: children,
-      );
+class ChangePasswordRoute extends _i28.PageRouteInfo<void> {
+  const ChangePasswordRoute({List<_i28.PageRouteInfo>? children})
+    : super(ChangePasswordRoute.name, initialChildren: children);
 
   static const String name = 'ChangePasswordRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ChangePasswordRouteArgs>(
-        orElse: () => const ChangePasswordRouteArgs(),
-      );
-      return _i3.ChangePasswordScreen(key: args.key);
+      return const _i3.ChangePasswordScreen();
     },
   );
 }
 
-class ChangePasswordRouteArgs {
-  const ChangePasswordRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'ChangePasswordRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ChangePasswordRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
-}
-
 /// generated route for
 /// [_i4.ChangePinScreen]
-class ChangePinRoute extends _i28.PageRouteInfo<ChangePinRouteArgs> {
-  ChangePinRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        ChangePinRoute.name,
-        args: ChangePinRouteArgs(key: key),
-        initialChildren: children,
-      );
+class ChangePinRoute extends _i28.PageRouteInfo<void> {
+  const ChangePinRoute({List<_i28.PageRouteInfo>? children})
+    : super(ChangePinRoute.name, initialChildren: children);
 
   static const String name = 'ChangePinRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ChangePinRouteArgs>(
-        orElse: () => const ChangePinRouteArgs(),
-      );
-      return _i4.ChangePinScreen(key: args.key);
+      return const _i4.ChangePinScreen();
     },
   );
-}
-
-class ChangePinRouteArgs {
-  const ChangePinRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'ChangePinRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ChangePinRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -558,46 +502,18 @@ class MakePaymentRoute extends _i28.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i18.NotificationsScreen]
-class NotificationsRoute extends _i28.PageRouteInfo<NotificationsRouteArgs> {
-  NotificationsRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        NotificationsRoute.name,
-        args: NotificationsRouteArgs(key: key),
-        initialChildren: children,
-      );
+class NotificationsRoute extends _i28.PageRouteInfo<void> {
+  const NotificationsRoute({List<_i28.PageRouteInfo>? children})
+    : super(NotificationsRoute.name, initialChildren: children);
 
   static const String name = 'NotificationsRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<NotificationsRouteArgs>(
-        orElse: () => const NotificationsRouteArgs(),
-      );
-      return _i18.NotificationsScreen(key: args.key);
+      return const _i18.NotificationsScreen();
     },
   );
-}
-
-class NotificationsRouteArgs {
-  const NotificationsRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'NotificationsRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! NotificationsRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -722,62 +638,62 @@ class ProfileRoute extends _i28.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i22.ReceiptScreen]
-class ReceiptRoute extends _i28.PageRouteInfo<void> {
-  const ReceiptRoute({List<_i28.PageRouteInfo>? children})
-    : super(ReceiptRoute.name, initialChildren: children);
+class ReceiptRoute extends _i28.PageRouteInfo<ReceiptRouteArgs> {
+  ReceiptRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
+    : super(
+        ReceiptRoute.name,
+        args: ReceiptRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'ReceiptRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      return const _i22.ReceiptScreen();
+      final args = data.argsAs<ReceiptRouteArgs>(
+        orElse: () => const ReceiptRouteArgs(),
+      );
+      return _i22.ReceiptScreen(key: args.key);
     },
   );
 }
 
+class ReceiptRouteArgs {
+  const ReceiptRouteArgs({this.key});
+
+  final _i29.Key? key;
+
+  @override
+  String toString() {
+    return 'ReceiptRouteArgs{key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ReceiptRouteArgs) return false;
+    return key == other.key;
+  }
+
+  @override
+  int get hashCode => key.hashCode;
+}
+
 /// generated route for
 /// [_i23.ReferralScreen]
-class ReferralRoute extends _i28.PageRouteInfo<ReferralRouteArgs> {
-  ReferralRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        ReferralRoute.name,
-        args: ReferralRouteArgs(key: key),
-        initialChildren: children,
-      );
+class ReferralRoute extends _i28.PageRouteInfo<void> {
+  const ReferralRoute({List<_i28.PageRouteInfo>? children})
+    : super(ReferralRoute.name, initialChildren: children);
 
   static const String name = 'ReferralRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ReferralRouteArgs>(
-        orElse: () => const ReferralRouteArgs(),
-      );
-      return _i23.ReferralScreen(key: args.key);
+      return const _i23.ReferralScreen();
     },
   );
-}
-
-class ReferralRouteArgs {
-  const ReferralRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'ReferralRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ReferralRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -845,46 +761,18 @@ class SetupAccountRouteArgs {
 
 /// generated route for
 /// [_i26.SupportScreen]
-class SupportRoute extends _i28.PageRouteInfo<SupportRouteArgs> {
-  SupportRoute({_i29.Key? key, List<_i28.PageRouteInfo>? children})
-    : super(
-        SupportRoute.name,
-        args: SupportRouteArgs(key: key),
-        initialChildren: children,
-      );
+class SupportRoute extends _i28.PageRouteInfo<void> {
+  const SupportRoute({List<_i28.PageRouteInfo>? children})
+    : super(SupportRoute.name, initialChildren: children);
 
   static const String name = 'SupportRoute';
 
   static _i28.PageInfo page = _i28.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<SupportRouteArgs>(
-        orElse: () => const SupportRouteArgs(),
-      );
-      return _i26.SupportScreen(key: args.key);
+      return const _i26.SupportScreen();
     },
   );
-}
-
-class SupportRouteArgs {
-  const SupportRouteArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'SupportRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! SupportRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for

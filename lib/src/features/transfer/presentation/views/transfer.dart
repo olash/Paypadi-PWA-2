@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -96,6 +97,7 @@ class _BeneficiariesList extends HookConsumerWidget {
             itemBuilder: (context, index) {
               return _BeneficiaryTile(
                 name: "Ademola Ajani",
+                imageUrl: kDemoProfilePic,
                 transferType: "Withdrawal",
                 transactionTime: "5:40 PM",
                 onTap: () {},

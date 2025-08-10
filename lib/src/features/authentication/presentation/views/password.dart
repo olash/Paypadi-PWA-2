@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart'
-    show passwordPinLength, CacheKeys;
+    show CacheKeys, logger, passwordPinLength, useSpaceOf16, useSpaceOf32;
 import 'package:paypadi/core/services/service_registry.dart'
     show appRouterProvider, secureCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
@@ -19,6 +19,7 @@ class PasswordScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final password = useState<String>('');
+    
     return AppScaffold(
       title: "",
       child: Column(
@@ -29,14 +30,14 @@ class PasswordScreen extends HookConsumerWidget {
             "Create your Password",
             style: context.textTheme.headlineMedium,
           ),
-          16.0.verticalSpacing,
+       useSpaceOf16.verticalSpacing,
           Text(
             "Set a secure password for your account",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          32.0.verticalSpacing,
+         useSpaceOf32.verticalSpacing,
           AppPinIndicator(
             text: password.value,
             pinLength: passwordPinLength,
@@ -46,7 +47,7 @@ class PasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             onChanged: (value) {
               password.value = value;
-              password.debugLog();
+              logger.debug(password.value);
             },
             onSubmit:
                 (value) => ref
@@ -95,7 +96,7 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             onChanged: (value) {
               confirmPassword.value = value;
-              confirmPassword.value.debugLog();
+              logger.debug(confirmPassword.value);
             },
             onSubmit: (value) async {
               if (value == passwordPin) {
