@@ -71,6 +71,7 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
               ),
             ],
           ),
+          useSpaceOf24.verticalSpacing,
         ],
       ),
     );

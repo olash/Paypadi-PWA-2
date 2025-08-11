@@ -12,7 +12,7 @@ class AmountDisplay extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pickedAmount = useState<int>(0);
-    final amount = useState<String>("");
+  final amount = useState<String>("");
 
     return Column(
       spacing: 12,

@@ -8,8 +8,8 @@ import 'package:flutter_to_pdf/flutter_to_pdf.dart'
     show ExportDelegate, ExportFrame, PageFormatOptions, ExportOptions;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart'
-    show ImageGallerySaver;
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart'
+    show ImageGallerySaverPlus;
 import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/services/service_registry.dart';
@@ -140,7 +140,7 @@ class ReceiptScreen extends HookConsumerWidget {
 
   Future<void> _shareReceipt(double pixelRatio) async {
     final Directory directory = await getApplicationDocumentsDirectory();
-    final String fileName = "paypadi_receipt_${getDateAndTime(DateTime.now())}";
+    final String fileName = "paypadi_receipt_${getDateAndTime(DateTime.now())}.png";
     final String? savedReceiptPath = await screenshotController.captureAndSave(
       directory.path,
       fileName: fileName,
@@ -151,13 +151,10 @@ class ReceiptScreen extends HookConsumerWidget {
       return;
     }
 
-    final XFile shareableFile = XFile(
-      "${directory.path}/$fileName",
-      mimeType: "image/png",
-    );
+    final XFile shareableFile = XFile("${directory.path}/$fileName");
 
     final Uint8List imageToSave = await shareableFile.readAsBytes();
-    final result = await ImageGallerySaver.saveImage(imageToSave);
+    final result = await ImageGallerySaverPlus.saveImage(imageToSave);
 
     final ShareResult shareStatus = await SharePlus.instance.share(
       ShareParams(files: [shareableFile]),

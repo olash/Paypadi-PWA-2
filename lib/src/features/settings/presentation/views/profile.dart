@@ -56,7 +56,7 @@ class ProfileScreen extends HookConsumerWidget {
             controller: lastName,
           ),
           AppTextformfield(
-            title: "Last Name",
+            title: "Email",
             titleStyle: style,
             controller: email,
           ),

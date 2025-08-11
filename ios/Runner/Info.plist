@@ -49,7 +49,9 @@
 		<key>NSFaceIDUsageDescription</key>
 		<string>This app wants to be able to record your face.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>This app requires access to your photo library to save photos and videos.</string>
+		<string>We need permission to save photos and videos to your library for your convenience.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need permission to access your photo library to view and select your photos and videos.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>
