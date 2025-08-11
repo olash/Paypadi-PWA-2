@@ -7,6 +7,8 @@ class AppScaffold extends StatelessWidget {
     this.appBar,
     this.title,
     this.bgColor,
+    this.leftPadding,
+    this.rightPadding,
     this.topPadding,
     this.bottomPadding,
     this.bottomNavigationBar,
@@ -18,6 +20,8 @@ class AppScaffold extends StatelessWidget {
   final Color? bgColor;
   final double? topPadding;
   final double? bottomPadding;
+  final double? leftPadding;
+  final double? rightPadding;
   final PreferredSizeWidget? appBar;
   final BottomNavigationBar? bottomNavigationBar;
 
@@ -36,8 +40,8 @@ class AppScaffold extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
+            left: leftPadding ?? 16,
+            right: rightPadding ?? 16,
             bottom: bottomPadding ?? 0,
             top: topPadding ?? 0,
           ),
@@ -48,17 +52,3 @@ class AppScaffold extends StatelessWidget {
     );
   }
 }
-
-// class AppBackButton extends StatelessWidget {
-//   const AppBackButton({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return IconButton(
-//       onPressed: () => context.router.pop(),
-//       icon: Icon(
-//         Icons.arrow_back_ios_new_rounded,
-//       ),
-//     );
-//   }
-// }

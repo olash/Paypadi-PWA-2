@@ -69,7 +69,7 @@ class MakePaymentScreen extends HookConsumerWidget {
   }
 }
 
-class _BankAccountInformation extends StatelessWidget {
+class _BankAccountInformation extends ConsumerWidget {
   const _BankAccountInformation({
     required this.bankImageUrl,
     required this.accountName,
@@ -81,7 +81,7 @@ class _BankAccountInformation extends StatelessWidget {
   final String accountNumber;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -95,7 +95,7 @@ class _BankAccountInformation extends StatelessWidget {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: AppColors.smallButtonColor,
+              // color: ref.watch(appPrimaryProvider).withAlpha(20),
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
                 image: NetworkImage(bankImageUrl),

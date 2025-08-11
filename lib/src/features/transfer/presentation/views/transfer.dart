@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart'
+    show appPrimaryProvider;
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -157,7 +158,7 @@ class _BeneficiaryTile extends StatelessWidget {
   }
 }
 
-class _BeneficiaryListAction extends StatelessWidget {
+class _BeneficiaryListAction extends ConsumerWidget {
   const _BeneficiaryListAction({
     required this.onTap,
     required this.text,
@@ -171,7 +172,7 @@ class _BeneficiaryListAction extends StatelessWidget {
   final ValueNotifier<BeneficiaryStatus> listenable;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ValueListenableBuilder<BeneficiaryStatus>(
       valueListenable: listenable,
       builder: (context, value, child) {
@@ -183,15 +184,15 @@ class _BeneficiaryListAction extends StatelessWidget {
             decoration:
                 selected
                     ? BoxDecoration(
-                      color: AppColors.smallButtonColor,
-                      border: Border.all(color: AppColors.primary),
+                      color: ref.watch(appPrimaryProvider).withAlpha(20),
+                      border: Border.all(color: ref.watch(appPrimaryProvider)),
                       borderRadius: BorderRadius.circular(32.r),
                     )
                     : null,
             child: Text(
               text,
               style: context.textTheme.labelMedium?.copyWith(
-                color: selected ? AppColors.primary : null,
+                color: selected ? ref.watch(appPrimaryProvider) : null,
               ),
             ),
           ),

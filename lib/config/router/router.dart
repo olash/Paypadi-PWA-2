@@ -119,6 +119,10 @@ class AppRouter extends RootStackRouter {
       path: "/legal",
       page: LegalRoute.page,
     ),
+      AutoRoute(
+      path: "/add-money",
+      page: AddMoneyRoute.page,
+    ),
     AutoRoute(
       path: "/app-navigation-bar-page",
       page: AppBottomNavBarRoute.page,

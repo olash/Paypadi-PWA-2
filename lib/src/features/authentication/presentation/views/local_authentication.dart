@@ -20,6 +20,7 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
       title: "",
+      bottomPadding: useSpaceOf24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -71,7 +72,6 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
               ),
             ],
           ),
-          useSpaceOf24.verticalSpacing,
         ],
       ),
     );
