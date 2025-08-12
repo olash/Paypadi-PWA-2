@@ -11,7 +11,7 @@ import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart' show formatAmount;
 import 'package:paypadi/src/features/home/presentation/widgets/amount_display.dart';
-import 'package:paypadi/src/features/home/presentation/widgets/home_card.dart';
+import 'package:paypadi/src/shared/widgets/app_card.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/custom_appbar.dart';
@@ -34,13 +34,14 @@ class HomeScreen extends HookConsumerWidget {
             useSpaceOf24.verticalSpacing,
             _WalletCard(),
             useSpaceOf24.verticalSpacing,
-            AmountDisplay(input: amount.value),
+            AmountDisplay(
+              amountEntered: int.tryParse(amount.value) ?? 0,
+              onAmountPressed: (selected) => amount.value = selected.toString(),
+            ),
             useSpaceOf28.verticalSpacing,
             AppKeypad(
               pinLength: 10,
-              onChanged: (value) {
-                amount.value = value;
-              },
+              onChanged: (value) => amount.value = value,
             ),
             useSpaceOf12.verticalSpacing,
             FilledButton.icon(
@@ -72,7 +73,7 @@ class _WalletCard extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hideBalance = useState<bool>(true);
 
-    return HomeCard(
+    return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

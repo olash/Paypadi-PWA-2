@@ -33,6 +33,10 @@ class MakePaymentScreen extends HookConsumerWidget {
             title: "Comments",
             hint: "Enter a narration",
             controller: comments,
+            titleStyle: context.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w400,
+              letterSpacing: kZeroLetterSpacing,
+            ),
           ),
           20.0.verticalSpacing,
           Row(
@@ -83,7 +87,10 @@ class _BankAccountInformation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(
+        horizontal: useSpaceOf12,
+        vertical: useSpaceOf10,
+      ),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.bankBorderColor),
         borderRadius: BorderRadius.circular(50),
@@ -92,11 +99,10 @@ class _BankAccountInformation extends ConsumerWidget {
         spacing: 20,
         children: [
           Container(
-            width: 54,
-            height: 54,
+            width: 64.sW,
+            height: 64.sH,
             decoration: BoxDecoration(
-              // color: ref.watch(appPrimaryProvider).withAlpha(20),
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(28.r),
               image: DecorationImage(
                 image: NetworkImage(bankImageUrl),
                 fit: BoxFit.fill,

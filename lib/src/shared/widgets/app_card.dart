@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
-class HomeCard extends StatelessWidget {
-  const HomeCard({super.key, this.padding, required this.child});
+class AppCard extends StatelessWidget {
+  const AppCard({
+    super.key,
+    this.padding,
+    this.cardColor,
+    required this.child,
+  });
+
   final Widget child;
+  final Color? cardColor;
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -15,7 +22,7 @@ class HomeCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 2),
       padding: padding ?? EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: cardColor ?? AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(

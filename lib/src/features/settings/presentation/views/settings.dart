@@ -51,6 +51,8 @@ class SettingsScreen extends HookConsumerWidget {
     }, [isDarkMode.value]);
 
     return AppScaffold(
+      leftPadding: 0,
+      rightPadding: 0,
       appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,

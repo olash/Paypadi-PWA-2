@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appRouterProvider;
+    show appRouterProvider, secureCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -47,12 +47,51 @@ class ChangePasswordScreen extends HookConsumerWidget {
               password.value = value;
               logger.debug(password.value);
             },
-            onSubmit:
-                (value) => ref.read(appRouterProvider).push(PasswordRoute()),
+            onSubmit: (value) => _changePasswordRouteOnSubmit(ref, value),
           ),
           Spacer(),
         ],
       ),
     );
+  }
+
+  void _changePasswordRouteOnSubmit(WidgetRef ref, String currentPassword) {
+    ref
+        .read(appRouterProvider)
+        .push(
+          PasswordRoute(
+            onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
+          ),
+        );
+  }
+
+  void _passwordRouteOnSubmit(WidgetRef ref, String password) {
+    ref
+        .read(appRouterProvider)
+        .push(
+          ConfirmPasswordRoute(
+            onSubmit:
+                (confirmPassword) => _confirmPasswordRouteOnSubmit(
+                  ref,
+                  password,
+                  confirmPassword,
+                ),
+          ),
+        );
+  }
+
+  void _confirmPasswordRouteOnSubmit(
+    WidgetRef ref,
+    String password,
+    String confirmPassword,
+  ) {
+    if (password == confirmPassword) {
+      ref
+          .read(secureCacheProvider)
+          .write(key: CacheKeys.loginPin, value: confirmPassword);
+      ref
+          .read(appRouterProvider)
+          .popUntilRouteWithName(AppBottomNavBarRoute.name);
+    }
   }
 }

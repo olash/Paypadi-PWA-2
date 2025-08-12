@@ -6,14 +6,17 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 
 class AmountDisplay extends HookWidget {
-  const AmountDisplay({super.key, required this.input});
-  final String input;
+  const AmountDisplay({
+    super.key,
+    required this.amountEntered,
+    required this.onAmountPressed,
+  });
+
+  final int amountEntered;
+  final ValueSetter<int> onAmountPressed;
 
   @override
   Widget build(BuildContext context) {
-    final pickedAmount = useState<int>(0);
-  final amount = useState<String>("");
-
     return Column(
       spacing: 12,
       children: [
@@ -27,9 +30,7 @@ class AmountDisplay extends HookWidget {
           ),
           child: Center(
             child: Text(
-              input.isNotEmpty
-                  ? "₦${formatAmount(5000)}"
-                  : "₦${pickedAmount.value}",
+              "₦${formatAmount(amountEntered)}",
               style: context.textTheme.headlineLarge,
             ),
           ),
@@ -39,7 +40,7 @@ class AmountDisplay extends HookWidget {
           children: [
             for (PickedAmount amount in PickedAmount.values)
               GestureDetector(
-                onTap: () => pickedAmount.value = amount.value,
+                onTap: () => onAmountPressed(amount.value),
                 child: Container(
                   margin: EdgeInsets.only(right: 10),
                   padding: EdgeInsets.all(10),
@@ -51,7 +52,7 @@ class AmountDisplay extends HookWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    amount.displayedAmount,
+                    "₦${amount.value}",
                     style: context.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),

@@ -170,11 +170,11 @@ class ConfirmPasswordRoute
     extends _i29.PageRouteInfo<ConfirmPasswordRouteArgs> {
   ConfirmPasswordRoute({
     _i30.Key? key,
-    required String passwordPin,
+    _i30.ValueSetter<String>? onSubmit,
     List<_i29.PageRouteInfo>? children,
   }) : super(
          ConfirmPasswordRoute.name,
-         args: ConfirmPasswordRouteArgs(key: key, passwordPin: passwordPin),
+         args: ConfirmPasswordRouteArgs(key: key, onSubmit: onSubmit),
          initialChildren: children,
        );
 
@@ -183,36 +183,35 @@ class ConfirmPasswordRoute
   static _i29.PageInfo page = _i29.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ConfirmPasswordRouteArgs>();
-      return _i7.ConfirmPasswordScreen(
-        key: args.key,
-        passwordPin: args.passwordPin,
+      final args = data.argsAs<ConfirmPasswordRouteArgs>(
+        orElse: () => const ConfirmPasswordRouteArgs(),
       );
+      return _i7.ConfirmPasswordScreen(key: args.key, onSubmit: args.onSubmit);
     },
   );
 }
 
 class ConfirmPasswordRouteArgs {
-  const ConfirmPasswordRouteArgs({this.key, required this.passwordPin});
+  const ConfirmPasswordRouteArgs({this.key, this.onSubmit});
 
   final _i30.Key? key;
 
-  final String passwordPin;
+  final _i30.ValueSetter<String>? onSubmit;
 
   @override
   String toString() {
-    return 'ConfirmPasswordRouteArgs{key: $key, passwordPin: $passwordPin}';
+    return 'ConfirmPasswordRouteArgs{key: $key, onSubmit: $onSubmit}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ConfirmPasswordRouteArgs) return false;
-    return key == other.key && passwordPin == other.passwordPin;
+    return key == other.key && onSubmit == other.onSubmit;
   }
 
   @override
-  int get hashCode => key.hashCode ^ passwordPin.hashCode;
+  int get hashCode => key.hashCode ^ onSubmit.hashCode;
 }
 
 /// generated route for
@@ -237,14 +236,11 @@ class ConfirmTransactionPinRoute
     extends _i29.PageRouteInfo<ConfirmTransactionPinRouteArgs> {
   ConfirmTransactionPinRoute({
     _i30.Key? key,
-    required String transactionPin,
+    _i30.ValueSetter<String>? onSubmit,
     List<_i29.PageRouteInfo>? children,
   }) : super(
          ConfirmTransactionPinRoute.name,
-         args: ConfirmTransactionPinRouteArgs(
-           key: key,
-           transactionPin: transactionPin,
-         ),
+         args: ConfirmTransactionPinRouteArgs(key: key, onSubmit: onSubmit),
          initialChildren: children,
        );
 
@@ -253,39 +249,38 @@ class ConfirmTransactionPinRoute
   static _i29.PageInfo page = _i29.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ConfirmTransactionPinRouteArgs>();
+      final args = data.argsAs<ConfirmTransactionPinRouteArgs>(
+        orElse: () => const ConfirmTransactionPinRouteArgs(),
+      );
       return _i9.ConfirmTransactionPinScreen(
         key: args.key,
-        transactionPin: args.transactionPin,
+        onSubmit: args.onSubmit,
       );
     },
   );
 }
 
 class ConfirmTransactionPinRouteArgs {
-  const ConfirmTransactionPinRouteArgs({
-    this.key,
-    required this.transactionPin,
-  });
+  const ConfirmTransactionPinRouteArgs({this.key, this.onSubmit});
 
   final _i30.Key? key;
 
-  final String transactionPin;
+  final _i30.ValueSetter<String>? onSubmit;
 
   @override
   String toString() {
-    return 'ConfirmTransactionPinRouteArgs{key: $key, transactionPin: $transactionPin}';
+    return 'ConfirmTransactionPinRouteArgs{key: $key, onSubmit: $onSubmit}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ConfirmTransactionPinRouteArgs) return false;
-    return key == other.key && transactionPin == other.transactionPin;
+    return key == other.key && onSubmit == other.onSubmit;
   }
 
   @override
-  int get hashCode => key.hashCode ^ transactionPin.hashCode;
+  int get hashCode => key.hashCode ^ onSubmit.hashCode;
 }
 
 /// generated route for
@@ -625,18 +620,51 @@ class OtpRouteArgs {
 
 /// generated route for
 /// [_i7.PasswordScreen]
-class PasswordRoute extends _i29.PageRouteInfo<void> {
-  const PasswordRoute({List<_i29.PageRouteInfo>? children})
-    : super(PasswordRoute.name, initialChildren: children);
+class PasswordRoute extends _i29.PageRouteInfo<PasswordRouteArgs> {
+  PasswordRoute({
+    _i30.Key? key,
+    _i30.ValueSetter<String>? onSubmit,
+    List<_i29.PageRouteInfo>? children,
+  }) : super(
+         PasswordRoute.name,
+         args: PasswordRouteArgs(key: key, onSubmit: onSubmit),
+         initialChildren: children,
+       );
 
   static const String name = 'PasswordRoute';
 
   static _i29.PageInfo page = _i29.PageInfo(
     name,
     builder: (data) {
-      return const _i7.PasswordScreen();
+      final args = data.argsAs<PasswordRouteArgs>(
+        orElse: () => const PasswordRouteArgs(),
+      );
+      return _i7.PasswordScreen(key: args.key, onSubmit: args.onSubmit);
     },
   );
+}
+
+class PasswordRouteArgs {
+  const PasswordRouteArgs({this.key, this.onSubmit});
+
+  final _i30.Key? key;
+
+  final _i30.ValueSetter<String>? onSubmit;
+
+  @override
+  String toString() {
+    return 'PasswordRouteArgs{key: $key, onSubmit: $onSubmit}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PasswordRouteArgs) return false;
+    return key == other.key && onSubmit == other.onSubmit;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ onSubmit.hashCode;
 }
 
 /// generated route for
@@ -796,18 +824,51 @@ class SupportRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i9.TransactionPinScreen]
-class TransactionPinRoute extends _i29.PageRouteInfo<void> {
-  const TransactionPinRoute({List<_i29.PageRouteInfo>? children})
-    : super(TransactionPinRoute.name, initialChildren: children);
+class TransactionPinRoute extends _i29.PageRouteInfo<TransactionPinRouteArgs> {
+  TransactionPinRoute({
+    _i30.Key? key,
+    _i30.ValueSetter<String>? onSubmit,
+    List<_i29.PageRouteInfo>? children,
+  }) : super(
+         TransactionPinRoute.name,
+         args: TransactionPinRouteArgs(key: key, onSubmit: onSubmit),
+         initialChildren: children,
+       );
 
   static const String name = 'TransactionPinRoute';
 
   static _i29.PageInfo page = _i29.PageInfo(
     name,
     builder: (data) {
-      return const _i9.TransactionPinScreen();
+      final args = data.argsAs<TransactionPinRouteArgs>(
+        orElse: () => const TransactionPinRouteArgs(),
+      );
+      return _i9.TransactionPinScreen(key: args.key, onSubmit: args.onSubmit);
     },
   );
+}
+
+class TransactionPinRouteArgs {
+  const TransactionPinRouteArgs({this.key, this.onSubmit});
+
+  final _i30.Key? key;
+
+  final _i30.ValueSetter<String>? onSubmit;
+
+  @override
+  String toString() {
+    return 'TransactionPinRouteArgs{key: $key, onSubmit: $onSubmit}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! TransactionPinRouteArgs) return false;
+    return key == other.key && onSubmit == other.onSubmit;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ onSubmit.hashCode;
 }
 
 /// generated route for

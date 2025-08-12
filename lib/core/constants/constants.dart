@@ -12,6 +12,8 @@ final double useSpaceOf6 = 6.0;
 
 final double useSpaceOf8 = 8.0;
 
+final double useSpaceOf10 = 10.0;
+
 final double useSpaceOf12 = 12.0;
 
 final double useSpaceOf14 = 14.0;

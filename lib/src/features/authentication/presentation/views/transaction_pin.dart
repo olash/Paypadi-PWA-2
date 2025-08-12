@@ -2,11 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart'
     show CacheKeys, logger, transactionPinLength;
-import 'package:paypadi/core/services/service_registry.dart'
-    show secureCacheProvider, appRouterProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -14,7 +11,8 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class TransactionPinScreen extends HookConsumerWidget {
-  const TransactionPinScreen({super.key});
+  const TransactionPinScreen({super.key, this.onSubmit});
+  final ValueSetter<String>? onSubmit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,14 +42,11 @@ class TransactionPinScreen extends HookConsumerWidget {
           Spacer(flex: 3),
           AppKeypad(
             pinLength: transactionPinLength,
+            onSubmit: onSubmit,
             onChanged: (value) {
               transactionPin.value = value;
               logger.debug(transactionPin.value);
             },
-            onSubmit:
-                (value) => ref
-                    .read(appRouterProvider)
-                    .push(ConfirmTransactionPinRoute(transactionPin: value)),
           ),
           Spacer(),
         ],
@@ -62,8 +57,8 @@ class TransactionPinScreen extends HookConsumerWidget {
 
 @RoutePage()
 class ConfirmTransactionPinScreen extends HookConsumerWidget {
-  const ConfirmTransactionPinScreen({super.key, required this.transactionPin});
-  final String transactionPin;
+  const ConfirmTransactionPinScreen({super.key, this.onSubmit});
+  final ValueSetter<String>? onSubmit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,17 +88,10 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
           Spacer(flex: 3),
           AppKeypad(
             pinLength: transactionPinLength,
+            onSubmit: onSubmit,
             onChanged: (value) {
               confirmTransactionPin.value = value;
               logger.debug(confirmTransactionPin.value);
-            },
-            onSubmit: (value) async {
-              if (value == transactionPin) {
-                await ref
-                    .read(secureCacheProvider)
-                    .write(key: CacheKeys.transactionPin, value: value);
-                ref.read(appRouterProvider).push(LocalAuthenticationRoute());
-              }
             },
           ),
           Spacer(),

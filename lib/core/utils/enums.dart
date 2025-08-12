@@ -16,18 +16,13 @@ enum AccountRole {
 }
 
 enum PickedAmount {
-  two(displayedAmount: "₦200", value: 200),
-  four(displayedAmount: "₦400", value: 400),
-  six(displayedAmount: "₦600", value: 600),
-  eight(displayedAmount: "₦800", value: 800),
-  ten(displayedAmount: "₦1000", value: 1000);
+  two(value: 200),
+  four(value: 400),
+  six(value: 600),
+  eight(value: 800),
+  ten(value: 1000);
 
-  const PickedAmount({
-    required this.displayedAmount,
-    required this.value,
-  });
-
-  final String displayedAmount;
+  const PickedAmount({required this.value});
   final int value;
 }
 

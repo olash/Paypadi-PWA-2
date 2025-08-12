@@ -25,7 +25,7 @@
     <color name= "pinkThemeColor">#DD3E86</color>
     <color name= "orangeThemeColor">#CE7E2E</color>
     <color name= "lightGreenThemeColor">#51B58F</color>
-    <color name= "lightGreenThemeColor">#51B58F</color>
+    <color name= "referralCardColor">#ECFCF9</color>
     <color name= "success">#23A26D</color>
     <color name= "failure">#FF3B30</color>
 </resources>

@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appRouterProvider;
+    show appRouterProvider, secureCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -46,13 +46,51 @@ class ChangePinScreen extends HookConsumerWidget {
               pin.value = value;
               logger.debug(pin.value);
             },
-            onSubmit:
-                (value) =>
-                    ref.read(appRouterProvider).push(TransactionPinRoute()),
+            onSubmit: (currentPin) => _changePinRouteOnSubmit(ref, currentPin),
           ),
           Spacer(),
         ],
       ),
     );
+  }
+
+  void _changePinRouteOnSubmit(WidgetRef ref, String currentPin) {
+    ref
+        .read(appRouterProvider)
+        .push(
+          TransactionPinRoute(
+            onSubmit: (newPin) => _transactionPinRouteOnSubmit(ref, newPin),
+          ),
+        );
+  }
+
+  void _transactionPinRouteOnSubmit(WidgetRef ref, String pin) {
+    ref
+        .read(appRouterProvider)
+        .push(
+          ConfirmTransactionPinRoute(
+            onSubmit:
+                (confirmTransactionPin) => _confirmTransactionPinRouteOnSubmit(
+                  ref,
+                  pin,
+                  confirmTransactionPin,
+                ),
+          ),
+        );
+  }
+
+  void _confirmTransactionPinRouteOnSubmit(
+    WidgetRef ref,
+    String pin,
+    String confirmedPin,
+  ) {
+    if (pin == confirmedPin) {
+      ref
+          .read(secureCacheProvider)
+          .write(key: CacheKeys.transactionPin, value: confirmedPin);
+      ref
+          .read(appRouterProvider)
+          .popUntilRouteWithName(AppBottomNavBarRoute.name);
+    }
   }
 }

@@ -47,7 +47,12 @@ class ReceiptScreen extends HookConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CloseButton(),
+              CloseButton(
+                onPressed:
+                    () => ref
+                        .read(appRouterProvider)
+                        .popUntilRouteWithName(AppBottomNavBarRoute.name),
+              ),
               IconButton(
                 onPressed: () async => await _shareReceipt(pixelRatio),
                 icon: Icon(OctIcons.share),
@@ -140,7 +145,8 @@ class ReceiptScreen extends HookConsumerWidget {
 
   Future<void> _shareReceipt(double pixelRatio) async {
     final Directory directory = await getApplicationDocumentsDirectory();
-    final String fileName = "paypadi_receipt_${getDateAndTime(DateTime.now())}.png";
+    final String fileName =
+        "paypadi_receipt_${getDateAndTime(DateTime.now())}.png";
     final String? savedReceiptPath = await screenshotController.captureAndSave(
       directory.path,
       fileName: fileName,

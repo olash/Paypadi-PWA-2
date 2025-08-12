@@ -1,14 +1,16 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider;
+    show appPrimaryProvider, appRouterProvider;
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/transfer/data/mock_data.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -22,27 +24,27 @@ class TransferScreen extends HookConsumerWidget {
 
     return AppScaffold(
       title: "Transfer",
-      child: Column(
-        children: [
-          32.0.verticalSpacing,
-          AppTextformfield(
-            title: "Account Number",
-            hint: "Enter 10-digit Account number or Phone Number",
-            controller: accountNo,
-            keyboardType: TextInputType.number,
-          ),
-          50.0.verticalSpacing,
-          FilledButton(
-            onPressed: () {
-              context.router.push(MakePaymentRoute());
-            },
-            child: Text("Continue"),
-          ),
-          30.0.verticalSpacing,
-          Flexible(
-            child: _BeneficiariesList(),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            useSpaceOf32.verticalSpacing,
+            AppTextformfield(
+              title: "Account Number",
+              hint: "Enter 10-digit Account number or Phone Number",
+              controller: accountNo,
+              keyboardType: TextInputType.number,
+            ),
+            50.0.verticalSpacing,
+            FilledButton(
+              onPressed: () {
+                ref.read(appRouterProvider).push(MakePaymentRoute());
+              },
+              child: Text("Continue"),
+            ),
+            useSpaceOf32.verticalSpacing,
+            _BeneficiariesList(),
+          ],
+        ),
       ),
     );
   }
@@ -53,10 +55,22 @@ class _BeneficiariesList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final beneficiariesList = useState<List>([]);
     final beneficiaryStatus = useState<BeneficiaryStatus>(
       BeneficiaryStatus.recent,
     );
+    final recentBeneficiariesList = useState<List<Beneficiary>>([
+      Beneficiary(
+        name: "Ademola Ajani",
+        transferType: "Withdrawal",
+        transactionTime: "5:40 PM",
+      ),
+      Beneficiary(
+        name: "Ademola Ajani",
+        transferType: "Withdrawal",
+        transactionTime: "5:40 PM",
+      ),
+    ]);
+    final savedBeneficiariesList = useState<List>([]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +82,7 @@ class _BeneficiariesList extends HookConsumerWidget {
             fontWeight: FontWeight.w400,
           ),
         ),
-        8.0.verticalSpacing,
+        useSpaceOf8.verticalSpacing,
 
         Row(
           children: [
@@ -76,32 +90,46 @@ class _BeneficiariesList extends HookConsumerWidget {
               text: "Recent",
               listenable: beneficiaryStatus,
               selected: beneficiaryStatus.value == BeneficiaryStatus.recent,
-              onTap: () {
-                beneficiaryStatus.value = BeneficiaryStatus.recent;
-              },
+              onTap: () => beneficiaryStatus.value = BeneficiaryStatus.recent,
             ),
             _BeneficiaryListAction(
               text: "Saved",
               listenable: beneficiaryStatus,
               selected: beneficiaryStatus.value == BeneficiaryStatus.saved,
-              onTap: () {
-                beneficiaryStatus.value = BeneficiaryStatus.saved;
-              },
+              onTap: () => beneficiaryStatus.value = BeneficiaryStatus.saved,
             ),
           ],
         ),
-        4.0.verticalSpacing,
+        useSpaceOf4.verticalSpacing,
         SizedBox(
-          height: context.screenHeight * .4,
+          height: context.screenHeight * .6,
           child: ListView.builder(
-            itemCount: 2,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: switch (beneficiaryStatus.value) {
+              BeneficiaryStatus.recent => recentBeneficiariesList.value.length,
+              BeneficiaryStatus.saved => savedBeneficiariesList.value.length,
+            },
             itemBuilder: (context, index) {
+              final List data = switch (beneficiaryStatus.value) {
+                BeneficiaryStatus.recent => recentBeneficiariesList.value,
+                BeneficiaryStatus.saved => savedBeneficiariesList.value,
+              };
+
+              if (data.isEmpty) {
+                return Row(
+                  children: [
+                    Icon(Icons.punch_clock_outlined),
+                    Text("No recent beneficiary"),
+                  ],
+                );
+              }
+
               return _BeneficiaryTile(
-                name: "Ademola Ajani",
-                imageUrl: kDemoProfilePic,
-                transferType: "Withdrawal",
-                transactionTime: "5:40 PM",
-                onTap: () {},
+                name: data[index].name,
+                transferType: data[index].transferType,
+                transactionTime: data[index].transactionTime,
+                onTap:
+                    () => ref.read(appRouterProvider).push(MakePaymentRoute()),
               );
             },
           ),
@@ -117,42 +145,58 @@ class _BeneficiaryTile extends StatelessWidget {
     required this.transferType,
     required this.transactionTime,
     required this.onTap,
-    this.imageUrl,
   });
 
   final String name;
   final String transferType;
   final String transactionTime;
-  final String? imageUrl;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Row(
-        children: [
-          16.0.horizontalSpacing,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: context.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w400,
-                ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              width: 40.sW,
+              height: 40.sH,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.accent.withValues(alpha: .22),
               ),
-              Text(
-                "$transferType . $transactionTime",
+              child: Text(
+                name.split("").first,
                 style: context.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w400,
+                  color: AppColors.accent,
                 ),
               ),
-            ],
-          ),
-          Spacer(),
-          Icon(Iconsax.arrow_2_outline),
-        ],
+            ),
+            useSpaceOf16.horizontalSpacing,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Text(
+                  "$transferType . $transactionTime",
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            Icon(CupertinoIcons.chevron_forward),
+          ],
+        ),
       ),
     );
   }
