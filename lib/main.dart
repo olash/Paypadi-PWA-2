@@ -10,8 +10,9 @@ import 'package:paypadi/src/paypadi.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await preCacheSVGs();
 
-  final container = ProviderContainer(
+  final ProviderContainer providerContainer = ProviderContainer(
     observers: [
       if (kDebugMode)
         TalkerRiverpodObserver(
@@ -24,11 +25,16 @@ Future<void> initializeApp() async {
   );
 
   // Initializes SharedPreferencesWithCache
-  await container.read(sharedPreferencesFutureProvider.future);
+  try {
+    await providerContainer.read(sharedPreferencesFutureProvider.future);
+  } catch (e, stack) {
+    logger.error('Failed to initialize SharedPreferencesWithCache', e, stack);
+    // Optionally, handle the error further or rethrow
+  }
 
   runApp(
     UncontrolledProviderScope(
-      container: container,
+      container: providerContainer,
       child: PayPadi(),
     ),
   );

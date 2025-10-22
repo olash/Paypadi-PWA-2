@@ -9,6 +9,7 @@ import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 @RoutePage()
 class ChangeThemeScreen extends HookConsumerWidget {
@@ -25,10 +26,9 @@ class ChangeThemeScreen extends HookConsumerWidget {
       Timer? debounceTimer;
       debounceTimer = Timer(
         const Duration(milliseconds: 400),
-        () =>
-         ref
-              .read(colorIndexNotifierProvider.notifier)
-              .setColorIndex(currentColor.value),
+        () => ref
+            .read(colorIndexNotifierProvider.notifier)
+            .setColorIndex(currentColor.value),
       );
       return () => debounceTimer?.cancel();
     }, [currentColor.value]);
@@ -50,7 +50,7 @@ class ChangeThemeScreen extends HookConsumerWidget {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.scaffoldBackground,
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(useSpaceOf12),
               border: Border.all(color: AppColors.themeBorderColor),
             ),
             child: Row(
@@ -88,9 +88,9 @@ class _ThemeColorWidget extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: Durations.medium4,
-        width: 40.sW,
-        height: 40.sH,
-        margin: EdgeInsets.only(right: 12.sH),
+        width: 40.px,
+        height: 40.px,
+        margin: EdgeInsets.only(right: useSpaceOf12),
         decoration: ShapeDecoration(
           color: color,
           shape: CircleBorder(

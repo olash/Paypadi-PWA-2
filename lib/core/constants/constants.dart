@@ -1,8 +1,50 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
-import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/core/utils/extensions.dart';
+import 'package:flutter_svg/flutter_svg.dart' show SvgAssetLoader, svg;
+import 'package:paypadi/config/gen/assets.gen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+
+import 'package:paypadi/config/gen/colors.gen.dart';
+
+Future<void> preCacheSVGs() async {
+  for (final svgIcon in AppAssets.icons.values) {
+    final loadSvg = SvgAssetLoader(svgIcon.path);
+    await svg.cache.putIfAbsent(
+      loadSvg.cacheKey(null),
+      () => loadSvg.loadBytes(null),
+    );
+  }
+}
+
+class Values {
+  static final double zero = 0.0;
+  static final double v1 = 1.0;
+  static final double v2 = 2.0;
+  static final double v4 = 4.0;
+  static final double v6 = 6.0;
+  static final double v8 = 8.0;
+  static final double v10 = 10.0;
+  static final double v12 = 12.0;
+  static final double v14 = 14.0;
+  static final double v16 = 16.0;
+  static final double v18 = 18.0;
+  static final double v20 = 20.0;
+  static final double v24 = 24.0;
+  static final double v28 = 28.0;
+  static final double v32 = 32.0;
+  static final double v36 = 36.0;
+  static final double v48 = 48.0;
+  static final double v64 = 64.0;
+  static final double v72 = 72.0;
+  static final double v84 = 84.0;
+  static final double v92 = 92.0;
+  static final double v96 = 96.0;
+  static final double v108 = 108.0;
+  static final double v120 = 120.0;
+  static final double v136 = 136.0;
+  static final double v150 = 150.0;
+}
 
 final double useSpaceOf2 = 2.0;
 
@@ -36,7 +78,11 @@ final double useSpaceOf32 = 32.0;
 
 final double useSpaceOf64 = 64.0;
 
-final Size kButtonSize = Size(362.sW, 56.sH);
+final Size kButtonSize = Size(362.px, 56.px);
+
+final Size kButtonMediumSize = Size(158.px, 48.px);
+
+final Size kButtonSmallSize = Size(125.px, 32.px);
 
 final Size kAppBarSize = Size(double.infinity, 56);
 
@@ -83,46 +129,27 @@ final Talker logger = TalkerFlutter.init(
     enabled: !kReleaseMode,
     useConsoleLogs: !kReleaseMode,
     colors: {
-      TalkerLogType.route.key: AnsiPen()..cyan(),
-      TalkerLogType.error.key: AnsiPen()..magenta(),
-      TalkerLogType.debug.key: AnsiPen()..white(),
-      TalkerLogType.info.key:
-          AnsiPen()..rgb(r: 100 / 255, g: 181 / 255, b: 246 / 255),
-      TalkerLogType.riverpodAdd.key:
+      TalkerKey.route: AnsiPen()..cyan(),
+      TalkerKey.error: AnsiPen()..magenta(),
+      TalkerKey.debug: AnsiPen()..white(),
+      TalkerKey.info: AnsiPen()..rgb(r: 100 / 255, g: 181 / 255, b: 246 / 255),
+      TalkerKey.riverpodAdd:
           AnsiPen()..rgb(r: 129 / 255, g: 212 / 255, b: 250 / 255),
-      TalkerLogType.riverpodUpdate.key:
+      TalkerKey.riverpodUpdate:
           AnsiPen()..rgb(r: 255 / 255, g: 214 / 255, b: 165 / 255),
-      TalkerLogType.riverpodFail.key:
+      TalkerKey.riverpodFail:
           AnsiPen()..rgb(r: 171 / 255, g: 235 / 255, b: 198 / 255),
-      TalkerLogType.riverpodDispose.key:
+      TalkerKey.riverpodDispose:
           AnsiPen()..rgb(r: 255 / 255, g: 171 / 255, b: 145 / 255),
-      TalkerLogType.httpRequest.key:
+      TalkerKey.httpRequest:
           AnsiPen()..rgb(r: 255 / 255, g: 235 / 255, b: 59 / 255),
-      TalkerLogType.httpResponse.key:
+      TalkerKey.httpResponse:
           AnsiPen()..rgb(r: 0 / 255, g: 188 / 255, b: 212 / 255),
-      TalkerLogType.httpError.key:
+      TalkerKey.httpError:
           AnsiPen()..rgb(r: 239 / 255, g: 83 / 255, b: 80 / 255),
     },
   ),
 );
-
-class AppSize {
-  AppSize._();
-  static final AppSize _instance = AppSize._();
-  static AppSize get instance => _instance;
-
-  late double _height;
-
-  late double _width;
-
-  double get getHeight => _height;
-
-  double get getWidth => _width;
-
-  set appHeight(double appHeight) => _height = appHeight;
-
-  set appWidth(double appWidth) => _width = appWidth;
-}
 
 class CacheKeys {
   static final String role = "role";

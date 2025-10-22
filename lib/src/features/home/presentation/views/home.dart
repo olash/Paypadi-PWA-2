@@ -28,39 +28,37 @@ class HomeScreen extends HookConsumerWidget {
       leftPadding: 0,
       rightPadding: 0,
       appBar: CustomAppbar(name: "Abrrruham", profilePic: kDemoProfilePic),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            useSpaceOf24.verticalSpacing,
-            _WalletCard(),
-            useSpaceOf24.verticalSpacing,
-            AmountDisplay(
-              amountEntered: int.tryParse(amount.value) ?? 0,
-              onAmountPressed: (selected) => amount.value = selected.toString(),
-            ),
-            useSpaceOf28.verticalSpacing,
-            AppKeypad(
-              pinLength: 10,
-              onChanged: (value) => amount.value = value,
-            ),
-            useSpaceOf12.verticalSpacing,
-            FilledButton.icon(
-              onPressed:
-                  () => ref.read(appRouterProvider).push(TransferRoute()),
-              label: Text("Send Cash"),
-              iconAlignment: IconAlignment.end,
-              icon: Icon(Icons.arrow_forward, size: 24),
-              style: context.filledButtonTheme.style?.copyWith(
-                textStyle: WidgetStatePropertyAll(
-                  context.textTheme.bodyLarge?.copyWith(
-                    letterSpacing: -0.43,
-                    fontWeight: FontWeight.w600,
-                  ),
+      child: Column(
+        children: [
+          useSpaceOf12.verticalSpacing,
+          _WalletCard(),
+          useSpaceOf12.verticalSpacing,
+          AmountDisplay(
+            amountEntered: int.tryParse(amount.value) ?? 0,
+            onAmountPressed: (selected) => amount.value = selected.toString(),
+          ),
+          useSpaceOf14.verticalSpacing,
+          AppKeypad(
+            pinLength: 10,
+            onChanged: (value) => amount.value = value,
+          ),
+          useSpaceOf12.verticalSpacing,
+          FilledButton.icon(
+            onPressed:
+                () => ref.read(appRouterProvider).push(TransferRoute()),
+            label: Text("Send Cash"),
+            iconAlignment: IconAlignment.end,
+            icon: Icon(Icons.arrow_forward, size: 24),
+            style: context.filledButtonTheme.style?.copyWith(
+              textStyle: WidgetStatePropertyAll(
+                context.textTheme.bodyLarge?.copyWith(
+                  letterSpacing: -0.43,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -132,7 +130,7 @@ class _WalletCard extends HookConsumerWidget {
                 label: Text("Add Money"),
                 icon: Icon(Iconsax.add_outline, size: 24),
                 style: context.filledButtonTheme.style?.copyWith(
-                  fixedSize: WidgetStatePropertyAll(Size(125.sW, 32.sH)),
+                  fixedSize: WidgetStatePropertyAll(kButtonSmallSize),
                   foregroundColor: WidgetStatePropertyAll(
                     ref.watch(appPrimaryProvider),
                   ),

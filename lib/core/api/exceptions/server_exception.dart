@@ -1,12 +1,12 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:paypadi/core/api/exceptions/app_exception.dart';
 
 part 'server_exception.freezed.dart';
 
 @freezed
-sealed class ServerException with _$ServerException implements Exception {
+sealed class ServerException extends AppException with _$ServerException {
+  const ServerException._() : super();
   const factory ServerException.requestCancelled() = _RequestCancelled;
   const factory ServerException.requestTimeout() = _RequestTimeout;
   const factory ServerException.sendTimeout() = _SendTimeout;
@@ -21,15 +21,21 @@ sealed class ServerException with _$ServerException implements Exception {
   const factory ServerException.serviceUnavailable() = _ServiceUnavailable;
   const factory ServerException.noInternetConnection() = _NoInternetConnection;
   const factory ServerException.defaultError(String? error) = _DefaultError;
-  const factory ServerException.formatException(String message) =
-      _FormatException;
-  const factory ServerException.typeException(String message) = _TypeException;
-  const factory ServerException.randomException(String message) =
-      _RandomException;
 
-  static ServerException _handleResponse(Response<dynamic>? response) {
-    int statusCode = response?.statusCode ?? 0;
-    String message = response?.data["message"];
+  static ServerException handleResponse(Response<dynamic>? response) {
+    int? statusCode = response?.statusCode;
+
+    // Safely extract message from response data if available
+    String? message;
+    if (response?.data is Map && response?.data.containsKey("message")) {
+      message = response?.data["message"] as String?;
+    }
+
+    if (statusCode == null) {
+      return ServerException.defaultError(
+        "No status code received from server.",
+      );
+    }
 
     switch (statusCode) {
       case 400:
@@ -49,75 +55,10 @@ sealed class ServerException with _$ServerException implements Exception {
       case 503:
         return const ServerException.serviceUnavailable();
       default:
+        // The default error message is used when the status code is unrecognized.
         return ServerException.defaultError(
           "Unknown error with status code: $statusCode",
         );
-    }
-  }
-
-  static ServerException handleException(dynamic exception) {
-    ServerException networkExceptions;
-
-    if (exception is Exception) {
-      try {
-        if (exception is DioException) {
-          switch (exception.type) {
-            case DioExceptionType.cancel:
-              networkExceptions = const ServerException.requestCancelled();
-              break;
-
-            case DioExceptionType.connectionTimeout:
-              networkExceptions = const ServerException.requestTimeout();
-              break;
-
-            case DioExceptionType.receiveTimeout:
-              networkExceptions = const ServerException.receiveTimeout();
-              break;
-
-            case DioExceptionType.sendTimeout:
-              networkExceptions = const ServerException.sendTimeout();
-              break;
-
-            case DioExceptionType.connectionError:
-              networkExceptions = const ServerException.noInternetConnection();
-              break;
-
-            case DioExceptionType.badCertificate:
-              networkExceptions = const ServerException.internalServerError();
-              break;
-
-            case DioExceptionType.badResponse:
-              networkExceptions = _handleResponse(exception.response);
-              break;
-
-            case DioExceptionType.unknown:
-              if (exception.error is SocketException) {
-                networkExceptions =
-                    const ServerException.noInternetConnection();
-              } else {
-                networkExceptions = const ServerException.serviceUnavailable();
-              }
-              break;
-          }
-        }
-        networkExceptions = ServerException.randomException(
-          "A Random Exception has occurred!: $exception",
-        );
-        return networkExceptions;
-      } on FormatException catch (e) {
-        return ServerException.formatException(e.toString());
-      } catch (e) {
-        return ServerException.randomException(
-          "A Exception has occurred!: $exception",
-        );
-      }
-    } else {
-      if (exception.toString().contains("is not a subtype of")) {
-        return ServerException.typeException(exception.toString());
-      }
-      return ServerException.randomException(
-        "A Exception has occurred!: $exception",
-      );
     }
   }
 
@@ -135,7 +76,7 @@ sealed class ServerException with _$ServerException implements Exception {
       _BadRequest(:final error) => "$error",
       _UnauthorizedRequest(:final reason) => "$reason",
       _UnprocessableEntity(:final reason) => "$reason",
-
+      // The default error message below is a generic fallback for unexpected exceptions.
       _ => "Oops!, we ran into technical difficulties. Try again later.",
     };
   }

@@ -5,9 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
@@ -63,7 +65,7 @@ class MakePaymentScreen extends HookConsumerWidget {
           20.0.verticalSpacing,
           FilledButton(
             onPressed: () {
-              context.router.push(EnterPinRoute());
+              ref.read(appRouterProvider).push(EnterPinRoute());
             },
             child: Text("Make Payment"),
           ),
@@ -99,10 +101,10 @@ class _BankAccountInformation extends ConsumerWidget {
         spacing: 20,
         children: [
           Container(
-            width: 64.sW,
-            height: 64.sH,
+            width: 64,
+            height: 64,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28.r),
+              borderRadius: BorderRadius.circular(28),
               image: DecorationImage(
                 image: NetworkImage(bankImageUrl),
                 fit: BoxFit.fill,

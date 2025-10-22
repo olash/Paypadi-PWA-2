@@ -13,6 +13,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart'
 import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/services/service_registry.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/core/constants/constants.dart';
@@ -188,8 +189,8 @@ class _PaymentDetailsStatusIcon extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 72.sW,
-      height: 72.sH,
+      width: 72,
+      height: 72,
       padding: EdgeInsets.all(22),
       decoration: BoxDecoration(
         shape: BoxShape.circle,

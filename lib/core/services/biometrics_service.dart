@@ -11,15 +11,12 @@ class BiometricsService {
     );
 
     try {
-      final bool isAuthenticated = await _service.authenticate(
+      return await _service.authenticate(
         options: options,
         localizedReason: reason ?? 'Login with Biometrics',
       );
-
-      return isAuthenticated;
     } catch (e) {
-      return false;
+      return false;  
     }
   }
 }
-

@@ -46,9 +46,9 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1.1,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 40,
+        childAspectRatio: 1.4,
+        mainAxisSpacing: 14,
+        crossAxisSpacing: 36,
       ),
       itemBuilder:
           (context, index) => buildKeyButton(context, kAppKeyPadKeys[index]),

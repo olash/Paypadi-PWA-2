@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
@@ -21,8 +22,10 @@ class AmountDisplay extends HookWidget {
       spacing: 12,
       children: [
         Container(
-          width: 361.0.sW,
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: EdgeInsets.symmetric(
+            horizontal: useSpaceOf24,
+            vertical: useSpaceOf16,
+          ),
           decoration: BoxDecoration(
             color: AppColors.white,
             border: Border.all(color: AppColors.amountDisplayBorderColor),
@@ -31,7 +34,7 @@ class AmountDisplay extends HookWidget {
           child: Center(
             child: Text(
               "₦${formatAmount(amountEntered)}",
-              style: context.textTheme.headlineLarge,
+              style: context.textTheme.headlineSmall,
             ),
           ),
         ),

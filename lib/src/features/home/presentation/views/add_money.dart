@@ -8,6 +8,7 @@ import 'package:paypadi/core/services/service_registry.dart'
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
 
 @RoutePage()
@@ -62,7 +63,7 @@ class AddMoneyScreen extends HookConsumerWidget {
                   FilledButton(
                     onPressed: () {},
                     style: context.filledButtonTheme.style?.copyWith(
-                      fixedSize: WidgetStatePropertyAll(Size(158.sW, 48.sH)),
+                      fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
                       foregroundColor: WidgetStatePropertyAll(
                         ref.watch(appPrimaryProvider),
                       ),
@@ -75,7 +76,7 @@ class AddMoneyScreen extends HookConsumerWidget {
                             color: ref.watch(appPrimaryProvider),
                           ),
                           borderRadius: BorderRadiusGeometry.circular(
-                            useSpaceOf12.r,
+                            useSpaceOf12,
                           ),
                         ),
                       ),
@@ -98,7 +99,7 @@ class AddMoneyScreen extends HookConsumerWidget {
                         );
                       },
                       style: context.filledButtonTheme.style?.copyWith(
-                        fixedSize: WidgetStatePropertyAll(Size(158.sW, 48.sH)),
+                        fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
                       ),
                       child: Text("Share"),
                     ),

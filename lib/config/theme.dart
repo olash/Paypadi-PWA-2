@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/gen/fonts.gen.dart';
 import 'package:paypadi/core/constants/constants.dart';
-import 'package:paypadi/core/utils/extensions.dart';
 
 class AppTheme {
   const AppTheme({required this.primary});
@@ -50,7 +51,7 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.white,
-      constraints: BoxConstraints(maxWidth: 362.sW),
+      constraints: BoxConstraints(maxWidth: 362.sw),
       hintStyle: TextStyle(
         fontSize: 14,
         letterSpacing: 0,

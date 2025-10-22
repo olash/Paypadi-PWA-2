@@ -47,7 +47,7 @@ class ReferralScreen extends HookConsumerWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.black.withValues(alpha: .2),
-                  borderRadius: BorderRadius.circular(useSpaceOf10.r),
+                  borderRadius: BorderRadius.circular(useSpaceOf10),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +69,7 @@ class ReferralScreen extends HookConsumerWidget {
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: .3),
-                          borderRadius: BorderRadius.circular(useSpaceOf10.r),
+                          borderRadius: BorderRadius.circular(useSpaceOf10),
                         ),
                         child: Text(
                           "Copy",
@@ -89,7 +89,7 @@ class ReferralScreen extends HookConsumerWidget {
                 padding: EdgeInsets.all(useSpaceOf10),
                 decoration: BoxDecoration(
                   color: ref.read(appPrimaryProvider),
-                  borderRadius: BorderRadius.circular(useSpaceOf10.r),
+                  borderRadius: BorderRadius.circular(useSpaceOf10),
                 ),
                 child: Column(
                   children: [

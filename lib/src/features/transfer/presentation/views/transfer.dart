@@ -34,7 +34,7 @@ class TransferScreen extends HookConsumerWidget {
               controller: accountNo,
               keyboardType: TextInputType.number,
             ),
-            50.0.verticalSpacing,
+            useSpaceOf32.verticalSpacing,
             FilledButton(
               onPressed: () {
                 ref.read(appRouterProvider).push(MakePaymentRoute());
@@ -161,8 +161,8 @@ class _BeneficiaryTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 40.sW,
-              height: 40.sH,
+              width: 40,
+              height: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -230,7 +230,7 @@ class _BeneficiaryListAction extends ConsumerWidget {
                     ? BoxDecoration(
                       color: ref.watch(appPrimaryProvider).withAlpha(20),
                       border: Border.all(color: ref.watch(appPrimaryProvider)),
-                      borderRadius: BorderRadius.circular(32.r),
+                      borderRadius: BorderRadius.circular(32),
                     )
                     : null,
             child: Text(
