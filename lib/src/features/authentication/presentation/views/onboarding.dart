@@ -26,10 +26,12 @@ class OnboardingScreen extends HookConsumerWidget {
     AppAssets.images.storyThree.path,
   ];
 
+    final currentImg = useState<int>(0);
+
+  final PageController pageController = usePageController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final PageController pageController = usePageController();
-    final ValueNotifier<int> currentImg = useState<int>(0);
+
 
     return AppScaffold(
       topPadding: kTopPadding,
@@ -52,28 +54,47 @@ class OnboardingScreen extends HookConsumerWidget {
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
-            children:
-                _onboardingItems
-                    .map(
-                      (img) => AnimatedContainer(
-                        height: 5,
-                        duration: Durations.medium4,
-                        width:
-                            currentImg.value == _onboardingItems.indexOf(img)
-                                ? 40
-                                : 5,
-                        margin: EdgeInsets.only(right: 4),
-                        decoration: BoxDecoration(
-                          color:
-                              currentImg.value == _onboardingItems.indexOf(img)
-                                  ? ref.watch(appPrimaryProvider)
-                                  : AppColors.unselectedIndicator,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                    )
-                    .toList(),
+            children: List.generate(
+              _onboardingItems.length,
+              (index) => AnimatedContainer(
+                height: 5,
+                duration: Durations.medium4,
+                width: currentImg == index ? 40 : 5,
+                margin: EdgeInsets.only(right: 4),
+                decoration: BoxDecoration(
+                  color:
+                      currentImg == index
+                          ? ref.watch(appPrimaryProvider)
+                          : AppColors.unselectedIndicator,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+            ),
           ),
+          // Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children:
+          //       _onboardingItems
+          //           .map(
+          //             (img) => AnimatedContainer(
+          //               height: 5,
+          //               duration: Durations.medium4,
+          //               width:
+          //                   currentImg.value == _onboardingItems.indexOf(img)
+          //                       ? 40
+          //                       : 5,
+          //               margin: EdgeInsets.only(right: 4),
+          //               decoration: BoxDecoration(
+          //                 color:
+          //                     currentImg.value == _onboardingItems.indexOf(img)
+          //                         ? ref.watch(appPrimaryProvider)
+          //                         : AppColors.unselectedIndicator,
+          //                 borderRadius: BorderRadius.circular(25),
+          //               ),
+          //             ),
+          //           )
+          //           .toList(),
+          // ),
           useSpaceOf24.verticalSpacing,
           FilledButton(
             onPressed: () {

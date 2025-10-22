@@ -9,7 +9,7 @@ import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+
 
 @RoutePage()
 class ChangeThemeScreen extends HookConsumerWidget {
@@ -88,8 +88,8 @@ class _ThemeColorWidget extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: Durations.medium4,
-        width: 40.px,
-        height: 40.px,
+        width: 40,
+        height: 40,
         margin: EdgeInsets.only(right: useSpaceOf12),
         decoration: ShapeDecoration(
           color: color,

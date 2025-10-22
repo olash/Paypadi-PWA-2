@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter_svg/flutter_svg.dart' show SvgAssetLoader, svg;
 import 'package:paypadi/config/gen/assets.gen.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'package:paypadi/config/gen/colors.gen.dart';
@@ -78,11 +78,13 @@ final double useSpaceOf32 = 32.0;
 
 final double useSpaceOf64 = 64.0;
 
-final Size kButtonSize = Size(362.px, 56.px);
+final Size appDesignSize = Size(393, 852);
 
-final Size kButtonMediumSize = Size(158.px, 48.px);
+final Size kButtonSize = Size(362, 56);
 
-final Size kButtonSmallSize = Size(125.px, 32.px);
+final Size kButtonMediumSize = Size(158, 48);
+
+final Size kButtonSmallSize = Size(125, 32);
 
 final Size kAppBarSize = Size(double.infinity, 56);
 

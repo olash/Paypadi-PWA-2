@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'package:paypadi/config/env.dart' show Env;
@@ -18,20 +18,24 @@ class PayPadi extends ConsumerWidget {
     final AppRouter router = ref.watch(appRouterProvider);
     final AppTheme appTheme = ref.watch(appThemeProvider);
 
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
+    return ScreenUtilInit(
+      designSize: appDesignSize,
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, _) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           theme: appTheme.theme(),
           routerConfig: router.config(
-            navigatorObservers:
-                () => [if (kDebugMode) TalkerRouteObserver(logger)],
+            navigatorObservers: () {
+              return [if (kDebugMode) TalkerRouteObserver(logger)];
+            },
           ),
-          builder:
-              Env.isDev
-                  ? (context, child) =>
-                      Stack(children: [child!, _flavorBanner()])
-                  : null,
+          builder: (context, child) {
+            return Env.isDev
+                ? Stack(children: [child!, _flavorBanner()])
+                : child!;
+          },
         );
       },
     );
