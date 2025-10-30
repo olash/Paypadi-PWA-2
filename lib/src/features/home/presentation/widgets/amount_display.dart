@@ -23,8 +23,8 @@ class AmountDisplay extends HookWidget {
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: useSpaceOf24,
-            vertical: useSpaceOf16,
+            horizontal: Values.v24,
+            vertical: Values.v16,
           ),
           decoration: BoxDecoration(
             color: AppColors.white,

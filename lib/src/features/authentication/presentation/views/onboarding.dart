@@ -4,9 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
+import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/constants/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -26,18 +26,16 @@ class OnboardingScreen extends HookConsumerWidget {
     AppAssets.images.storyThree.path,
   ];
 
-    final currentImg = useState<int>(0);
-
-  final PageController pageController = usePageController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
+    final currentImg = useState<int>(0);
+    final pageController = usePageController();
 
     return AppScaffold(
       topPadding: kTopPadding,
       bottomPadding: kBottomPadding,
       child: Column(
-        spacing: 12,
+        spacing: Values.v12,
         children: [
           Flexible(
             child: PageView.builder(
@@ -59,11 +57,11 @@ class OnboardingScreen extends HookConsumerWidget {
               (index) => AnimatedContainer(
                 height: 5,
                 duration: Durations.medium4,
-                width: currentImg == index ? 40 : 5,
+                width: currentImg.value == index ? Values.v36 : Values.v6,
                 margin: EdgeInsets.only(right: 4),
                 decoration: BoxDecoration(
                   color:
-                      currentImg == index
+                      currentImg.value == index
                           ? ref.watch(appPrimaryProvider)
                           : AppColors.unselectedIndicator,
                   borderRadius: BorderRadius.circular(25),
@@ -71,31 +69,7 @@ class OnboardingScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          // Row(
-          //   mainAxisSize: MainAxisSize.min,
-          //   children:
-          //       _onboardingItems
-          //           .map(
-          //             (img) => AnimatedContainer(
-          //               height: 5,
-          //               duration: Durations.medium4,
-          //               width:
-          //                   currentImg.value == _onboardingItems.indexOf(img)
-          //                       ? 40
-          //                       : 5,
-          //               margin: EdgeInsets.only(right: 4),
-          //               decoration: BoxDecoration(
-          //                 color:
-          //                     currentImg.value == _onboardingItems.indexOf(img)
-          //                         ? ref.watch(appPrimaryProvider)
-          //                         : AppColors.unselectedIndicator,
-          //                 borderRadius: BorderRadius.circular(25),
-          //               ),
-          //             ),
-          //           )
-          //           .toList(),
-          // ),
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           FilledButton(
             onPressed: () {
               ref

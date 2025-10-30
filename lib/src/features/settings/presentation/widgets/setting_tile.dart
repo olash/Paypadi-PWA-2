@@ -26,7 +26,7 @@ class SettingTile extends StatelessWidget {
         child: Row(
           children: [
             Icon(icon, size: 24),
-            useSpaceOf16.horizontalSpacing,
+            Values.v16.horizontalSpacing,
             Expanded(
               child: Text(
                 name,
@@ -65,7 +65,7 @@ class SettingTileWithSwitch extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 24),
-          useSpaceOf16.horizontalSpacing,
+          Values.v16.horizontalSpacing,
           Expanded(
             child: Text(
               name,

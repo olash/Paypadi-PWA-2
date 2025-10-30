@@ -30,22 +30,21 @@ class HomeScreen extends HookConsumerWidget {
       appBar: CustomAppbar(name: "Abrrruham", profilePic: kDemoProfilePic),
       child: Column(
         children: [
-          useSpaceOf12.verticalSpacing,
+          Values.v12.verticalSpacing,
           _WalletCard(),
-          useSpaceOf12.verticalSpacing,
+          Values.v12.verticalSpacing,
           AmountDisplay(
             amountEntered: int.tryParse(amount.value) ?? 0,
             onAmountPressed: (selected) => amount.value = selected.toString(),
           ),
-          useSpaceOf14.verticalSpacing,
+          Values.v14.verticalSpacing,
           AppKeypad(
             pinLength: 10,
             onChanged: (value) => amount.value = value,
           ),
-          useSpaceOf12.verticalSpacing,
+          Values.v12.verticalSpacing,
           FilledButton.icon(
-            onPressed:
-                () => ref.read(appRouterProvider).push(TransferRoute()),
+            onPressed: () => ref.read(appRouterProvider).push(TransferRoute()),
             label: Text("Send Cash"),
             iconAlignment: IconAlignment.end,
             icon: Icon(Icons.arrow_forward, size: 24),

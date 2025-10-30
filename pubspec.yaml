@@ -7,21 +7,21 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.9.0
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_hooks: ^0.21.2
-  hooks_riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  hooks_riverpod: ^3.0.3
+  riverpod_annotation: ^3.0.3
   auto_route: ^10.0.1
   flutter_svg: ^2.0.10+1
   pin_code_text_field: ^1.8.0
   icons_plus: ^5.0.0
-  local_auth: ^2.3.0
-  package_info_plus: ^8.3.0
+  local_auth: ^3.0.0
+  package_info_plus: ^9.0.0
   retrofit: ^4.4.2
   talker_dio_logger: ^5.0.0
   talker_flutter: ^5.0.0
@@ -31,10 +31,9 @@ dependencies:
   freezed_annotation: ^3.0.0
   dio: ^5.8.0+1
   json_annotation: ^4.9.0
-  fpdart: ^1.1.1
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^9.2.4
-  share_plus: ^11.0.0
+  share_plus: ^12.0.1
   screenshot: ^3.0.0
   flutter_to_pdf: ^0.4.1
   path_provider: ^2.1.5
@@ -45,13 +44,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  custom_lint: ^0.7.6
-  riverpod_lint: ^2.6.3
+  custom_lint: ^0.8.0
+  riverpod_lint: ^3.0.3
   flutter_lints: ^6.0.0
   build_runner: ^2.4.15
-  retrofit_generator: ^9.2.0
+  retrofit_generator: ^10.0.0
   auto_route_generator: ^10.0.1
-  riverpod_generator: ^2.6.5
+  riverpod_generator: ^3.0.3
   flutter_gen_runner: ^5.10.0
   freezed: ^3.0.6
   json_serializable: ^6.9.5
@@ -94,7 +93,6 @@ flutter_gen:
   integrations:
     image: true
     flutter_svg: true
-    fonts: true
 
   colors:
     inputs:

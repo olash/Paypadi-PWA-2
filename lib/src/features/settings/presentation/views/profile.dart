@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/constants/constants.dart'
-    show kDemoProfilePic, useSpaceOf20, useSpaceOf24, useSpaceOf8;
+    show kDemoProfilePic, Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart' show AppAvatar;
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -28,12 +28,12 @@ class ProfileScreen extends HookConsumerWidget {
 
     return AppScaffold(
       title: "Profile",
-      bottomPadding: useSpaceOf24,
+      bottomPadding: Values.v24,
       child: Column(
         children: [
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
-          useSpaceOf8.verticalSpacing,
+          Values.v8.verticalSpacing,
           GestureDetector(
             onTap: () {},
             child: Text(
@@ -44,7 +44,7 @@ class ProfileScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          useSpaceOf20.verticalSpacing,
+          Values.v20.verticalSpacing,
           AppTextformfield(
             title: "First Name",
             titleStyle: style,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/core/constants/constants.dart'
-    show CacheKeys, logger, passwordPinLength, useSpaceOf16, useSpaceOf32;
+    show logger, passwordPinLength, Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -28,14 +28,14 @@ class PasswordScreen extends HookConsumerWidget {
             "Create your Password",
             style: context.textTheme.headlineMedium,
           ),
-          useSpaceOf16.verticalSpacing,
+          Values.v16.verticalSpacing,
           Text(
             "Set a secure password for your account",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          useSpaceOf32.verticalSpacing,
+          Values.v32.verticalSpacing,
           AppPinIndicator(
             text: password.value,
             pinLength: passwordPinLength,

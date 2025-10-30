@@ -60,7 +60,7 @@ class ReceiptScreen extends HookConsumerWidget {
               ),
             ],
           ),
-          useSpaceOf30.verticalSpacing,
+          Values.v32.verticalSpacing,
           Screenshot(
             controller: screenshotController,
             child: ExportFrame(
@@ -70,7 +70,7 @@ class ReceiptScreen extends HookConsumerWidget {
                 child: Column(
                   children: [
                     _PaymentDetailsStatusIcon(status: paymentStatus.value),
-                    useSpaceOf16.verticalSpacing,
+                    Values.v16.verticalSpacing,
                     Text(
                       "Payment ${capitalizeFirstChar(paymentStatus.value.name)}!",
                       style: context.textTheme.bodyLarge?.copyWith(
@@ -78,7 +78,7 @@ class ReceiptScreen extends HookConsumerWidget {
                         letterSpacing: kZeroLetterSpacing,
                       ),
                     ),
-                    useSpaceOf8.verticalSpacing,
+                    Values.v8.verticalSpacing,
                     Text(
                       "₦1,000,000",
                       style: context.textTheme.headlineLarge?.copyWith(
@@ -86,13 +86,13 @@ class ReceiptScreen extends HookConsumerWidget {
                         letterSpacing: kZeroLetterSpacing,
                       ),
                     ),
-                    useSpaceOf32.verticalSpacing,
+                    Values.v32.verticalSpacing,
                     Divider(
                       indent: 8,
                       endIndent: 8,
                       color: AppColors.dividerColor,
                     ),
-                    useSpaceOf32.verticalSpacing,
+                    Values.v32.verticalSpacing,
                     PaymentDetails(
                       detail: "Ref Number",
                       value: "enfioejnfowse",
@@ -130,7 +130,7 @@ class ReceiptScreen extends HookConsumerWidget {
             label: Text("Get PDF Receipt"),
             icon: Icon(OctIcons.download),
           ),
-          useSpaceOf12.verticalSpacing,
+          Values.v12.verticalSpacing,
           FilledButton(
             onPressed:
                 () => ref

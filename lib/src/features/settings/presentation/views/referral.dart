@@ -17,10 +17,10 @@ class ReferralScreen extends HookConsumerWidget {
     return AppScaffold(
       title: "Referrals",
       child: Padding(
-        padding: EdgeInsetsGeometry.only(top: useSpaceOf24),
+        padding: EdgeInsetsGeometry.only(top: Values.v24),
         child: AppCard(
           cardColor: AppColors.referralCardColor,
-          padding: EdgeInsets.all(useSpaceOf16),
+          padding: EdgeInsets.all(Values.v16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,15 +39,15 @@ class ReferralScreen extends HookConsumerWidget {
                   letterSpacing: kZeroLetterSpacing,
                 ),
               ),
-              useSpaceOf8.verticalSpacing,
+              Values.v8.verticalSpacing,
               Container(
                 padding: EdgeInsets.symmetric(
-                  vertical: useSpaceOf8,
-                  horizontal: useSpaceOf10,
+                  vertical: Values.v8,
+                  horizontal: Values.v10,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.black.withValues(alpha: .2),
-                  borderRadius: BorderRadius.circular(useSpaceOf10),
+                  borderRadius: BorderRadius.circular(Values.v10),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,12 +64,12 @@ class ReferralScreen extends HookConsumerWidget {
                       onTap: () {},
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                          vertical: useSpaceOf4,
-                          horizontal: useSpaceOf8,
+                          vertical: Values.v4,
+                          horizontal: Values.v8,
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: .3),
-                          borderRadius: BorderRadius.circular(useSpaceOf10),
+                          borderRadius: BorderRadius.circular(Values.v10),
                         ),
                         child: Text(
                           "Copy",
@@ -83,13 +83,13 @@ class ReferralScreen extends HookConsumerWidget {
                   ],
                 ),
               ),
-              useSpaceOf10.verticalSpacing,
+              Values.v10.verticalSpacing,
               Container(
                 width: context.screenWidth,
-                padding: EdgeInsets.all(useSpaceOf10),
+                padding: EdgeInsets.all(Values.v10),
                 decoration: BoxDecoration(
                   color: ref.read(appPrimaryProvider),
-                  borderRadius: BorderRadius.circular(useSpaceOf10),
+                  borderRadius: BorderRadius.circular(Values.v10),
                 ),
                 child: Column(
                   children: [

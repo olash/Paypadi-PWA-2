@@ -10,7 +10,6 @@ import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
-
 @RoutePage()
 class ChangeThemeScreen extends HookConsumerWidget {
   const ChangeThemeScreen({super.key});
@@ -27,7 +26,7 @@ class ChangeThemeScreen extends HookConsumerWidget {
       debounceTimer = Timer(
         const Duration(milliseconds: 400),
         () => ref
-            .read(colorIndexNotifierProvider.notifier)
+            .read(colorIndexProvider.notifier)
             .setColorIndex(currentColor.value),
       );
       return () => debounceTimer?.cancel();
@@ -38,19 +37,19 @@ class ChangeThemeScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           Text(
             "Customize to your preferred theme colour",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          useSpaceOf16.verticalSpacing,
+          Values.v16.verticalSpacing,
           Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.scaffoldBackground,
-              borderRadius: BorderRadius.circular(useSpaceOf12),
+              borderRadius: BorderRadius.circular(Values.v12),
               border: Border.all(color: AppColors.themeBorderColor),
             ),
             child: Row(
@@ -90,14 +89,13 @@ class _ThemeColorWidget extends StatelessWidget {
         duration: Durations.medium4,
         width: 40,
         height: 40,
-        margin: EdgeInsets.only(right: useSpaceOf12),
+        margin: EdgeInsets.only(right: Values.v12),
         decoration: ShapeDecoration(
           color: color,
           shape: CircleBorder(
-            side:
-                isCurrent
-                    ? BorderSide(color: AppColors.black, width: 3)
-                    : BorderSide.none,
+            side: isCurrent
+                ? BorderSide(color: AppColors.black, width: 3)
+                : BorderSide.none,
           ),
         ),
       ),

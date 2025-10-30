@@ -19,9 +19,9 @@ class AddMoneyScreen extends HookConsumerWidget {
     return AppScaffold(
       title: "Add money",
       child: Padding(
-        padding: EdgeInsets.only(top: useSpaceOf32),
+        padding: EdgeInsets.only(top: Values.v32),
         child: AppCard(
-          padding: EdgeInsets.all(useSpaceOf16),
+          padding: EdgeInsets.all(Values.v16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +40,7 @@ class AddMoneyScreen extends HookConsumerWidget {
                   letterSpacing: kZeroLetterSpacing,
                 ),
               ),
-              useSpaceOf16.verticalSpacing,
+              Values.v16.verticalSpacing,
               Text(
                 "Account Number",
                 style: context.textTheme.bodyMedium?.copyWith(
@@ -55,9 +55,9 @@ class AddMoneyScreen extends HookConsumerWidget {
                   letterSpacing: kZeroLetterSpacing,
                 ),
               ),
-              useSpaceOf12.verticalSpacing,
+              Values.v12.verticalSpacing,
               Row(
-                spacing: useSpaceOf12,
+                spacing: Values.v12,
                 children: [
                   FilledButton(
                     onPressed: () {},
@@ -75,7 +75,7 @@ class AddMoneyScreen extends HookConsumerWidget {
                             color: ref.watch(appPrimaryProvider),
                           ),
                           borderRadius: BorderRadiusGeometry.circular(
-                            useSpaceOf12,
+                            Values.v12,
                           ),
                         ),
                       ),

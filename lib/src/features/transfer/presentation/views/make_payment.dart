@@ -10,7 +10,6 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
-
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
   const MakePaymentScreen({super.key});
@@ -90,8 +89,8 @@ class _BankAccountInformation extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: useSpaceOf12,
-        vertical: useSpaceOf10,
+        horizontal: Values.v12,
+        vertical: Values.v10,
       ),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.bankBorderColor),

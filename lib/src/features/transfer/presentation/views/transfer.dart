@@ -27,21 +27,21 @@ class TransferScreen extends HookConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            useSpaceOf32.verticalSpacing,
+            Values.v32.verticalSpacing,
             AppTextformfield(
               title: "Account Number",
               hint: "Enter 10-digit Account number or Phone Number",
               controller: accountNo,
               keyboardType: TextInputType.number,
             ),
-            useSpaceOf32.verticalSpacing,
+            Values.v32.verticalSpacing,
             FilledButton(
               onPressed: () {
                 ref.read(appRouterProvider).push(MakePaymentRoute());
               },
               child: Text("Continue"),
             ),
-            useSpaceOf32.verticalSpacing,
+            Values.v32.verticalSpacing,
             _BeneficiariesList(),
           ],
         ),
@@ -82,7 +82,7 @@ class _BeneficiariesList extends HookConsumerWidget {
             fontWeight: FontWeight.w400,
           ),
         ),
-        useSpaceOf8.verticalSpacing,
+        Values.v8.verticalSpacing,
 
         Row(
           children: [
@@ -100,7 +100,7 @@ class _BeneficiariesList extends HookConsumerWidget {
             ),
           ],
         ),
-        useSpaceOf4.verticalSpacing,
+        Values.v4.verticalSpacing,
         SizedBox(
           height: context.screenHeight * .6,
           child: ListView.builder(
@@ -175,7 +175,7 @@ class _BeneficiaryTile extends StatelessWidget {
                 ),
               ),
             ),
-            useSpaceOf16.horizontalSpacing,
+            Values.v16.horizontalSpacing,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

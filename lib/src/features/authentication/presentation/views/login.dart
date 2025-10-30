@@ -38,16 +38,16 @@ class LoginScreen extends HookConsumerWidget {
 
     return AppScaffold(
       topPadding: kTopPadding,
-      bottomPadding: useSpaceOf24,
+      bottomPadding: Values.v24,
       child: Column(
         children: [
           AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
-          useSpaceOf16.verticalSpacing,
+          Values.v16.verticalSpacing,
           Text(
             "Good evening, ",
             style: context.textTheme.headlineMedium,
           ),
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           AppPinIndicator(
             text: password.value,
             pinLength: passwordPinLength,
@@ -58,22 +58,26 @@ class LoginScreen extends HookConsumerWidget {
             showBiometric: enabledBiometrics.value,
             onChanged: (value) => password.value = value,
             onBiometricKeyPressed: () async {
-              final isAuthorized = await biometricService.authenticate();
-              if (isAuthorized) {
-                final String? pin = await ref
-                    .read(secureCacheProvider)
-                    .read(CacheKeys.loginPin);
-                password.value = pin ?? "";
-              }
+              final result = await biometricService.authenticate();
+              result.fold(
+                (success) async {
+                  if (success) {
+                    final String? pin = await ref
+                        .read(secureCacheProvider)
+                        .read(CacheKeys.loginPin);
+                    password.value = pin ?? "";
+                  }
+                },
+                (error) {},
+              );
             },
           ),
           Spacer(),
           Center(
             child: GestureDetector(
-              onTap:
-                  () => ref
-                      .read(appRouterProvider)
-                      .push(ForgotPasswordRoute(email: "tokiolaolu@gmail.com")),
+              onTap: () => ref
+                  .read(appRouterProvider)
+                  .push(ForgotPasswordRoute(email: "tokiolaolu@gmail.com")),
               child: Text(
                 "Forgot Password?",
                 style: context.textTheme.bodySmall?.copyWith(

@@ -1,12 +1,8 @@
-import 'package:fpdart/fpdart.dart' show Either;
-import 'package:paypadi/core/api/exceptions/server_exception.dart'
-    show ServerException;
+import 'package:paypadi/core/api/exceptions/app_exception.dart'
+    show AppException;
 import 'package:paypadi/core/api/response/api_response.dart' show ApiResponse;
+import 'package:paypadi/core/api/result.dart';
 
-typedef FutureEitherResponseOf<T> =
-    Future<Either<ApiResponse<T>, ServerException>>;
+typedef FutureResultOf<T> = Future<Result<ApiResponse<T>, Exception>>;
 
-typedef FutureEitherVoidResponseOf<T> =
-    Future<Either<ApiResponse<T?>, ServerException>>;
-
-typedef FutureEitherOf<T> = Future<Either<T, ServerException>>;
+typedef FutureVoidResult = Future<Result<ApiResponse<void>, AppException>>;

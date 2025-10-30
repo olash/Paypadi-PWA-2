@@ -28,14 +28,14 @@ class ChangePasswordScreen extends HookConsumerWidget {
             "Verify Password",
             style: context.textTheme.headlineMedium,
           ),
-          useSpaceOf12.verticalSpacing,
+          Values.v12.verticalSpacing,
           Text(
             "Please enter your Password",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          useSpaceOf32.verticalSpacing,
+          Values.v32.verticalSpacing,
           AppPinIndicator(
             text: password.value,
             pinLength: passwordPinLength,

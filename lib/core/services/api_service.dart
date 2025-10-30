@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart' show Dio, BaseOptions;
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 

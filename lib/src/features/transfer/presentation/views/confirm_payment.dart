@@ -22,7 +22,7 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
       bgColor: AppColors.scaffoldBackground,
       child: Column(
         children: [
-          useSpaceOf16.verticalSpacing,
+          Values.v16.verticalSpacing,
           ReceiptCard(
             child: Column(
               children: [
@@ -33,7 +33,7 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
                     letterSpacing: kZeroLetterSpacing,
                   ),
                 ),
-                useSpaceOf8.verticalSpacing,
+                Values.v8.verticalSpacing,
                 Text(
                   "₦1,000,000",
                   style: context.textTheme.headlineLarge?.copyWith(
@@ -41,7 +41,7 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
                     letterSpacing: kZeroLetterSpacing,
                   ),
                 ),
-                useSpaceOf32.verticalSpacing,
+                Values.v32.verticalSpacing,
                 Divider(
                   indent: 8,
                   endIndent: 8,

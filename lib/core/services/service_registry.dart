@@ -1,6 +1,5 @@
 import 'dart:ui' show Color;
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
 import 'package:paypadi/core/constants/constants.dart'
@@ -42,7 +41,7 @@ AppRouter appRouter(Ref ref) => AppRouter(ref: ref);
 
 @Riverpod(keepAlive: true)
 Color appPrimary(Ref ref) {
-  return availableColors[ref.watch(colorIndexNotifierProvider)];
+  return availableColors[ref.watch(colorIndexProvider)];
 }
 
 @Riverpod(keepAlive: true)
@@ -78,6 +77,6 @@ LocalCacheService localCache(Ref ref) {
 SecureCacheService secureCache(Ref ref) => SecureCacheService(logger: logger);
 
 @riverpod
-BiometricsService biometrics(Ref<BiometricsService> ref) {
+BiometricsService biometrics(Ref ref) {
   return BiometricsService();
 }

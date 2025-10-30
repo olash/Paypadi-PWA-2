@@ -3,7 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/core/constants/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart' show appPrimaryProvider;
+import 'package:paypadi/core/services/service_registry.dart'
+    show appPrimaryProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -18,17 +19,16 @@ class ForgotPasswordScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-  
       title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           Text(
             "Please check your email",
             style: context.textTheme.headlineSmall,
           ),
-          useSpaceOf16.verticalSpacing,
+          Values.v16.verticalSpacing,
           Text(
             "We've sent a password reset link to ${obfuscateEmail(email)}. "
             "Click the link in the email to reset your password.",
@@ -36,7 +36,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           RichText(
             text: TextSpan(
               text:

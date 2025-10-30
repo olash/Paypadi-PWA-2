@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
-import 'package:paypadi/core/constants/constants.dart' show useSpaceOf16;
+import 'package:paypadi/core/constants/constants.dart' show Values;
 
 class DottedDivider extends StatelessWidget {
   const DottedDivider({super.key, this.topPadding});
@@ -11,8 +11,8 @@ class DottedDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        top: topPadding ?? useSpaceOf16,
-        bottom: useSpaceOf16,
+        top: topPadding ?? Values.v16,
+        bottom: Values.v16,
       ),
       child: SizedBox(
         width: double.infinity,

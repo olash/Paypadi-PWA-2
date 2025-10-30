@@ -20,21 +20,21 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
       title: "",
-      bottomPadding: useSpaceOf24,
+      bottomPadding: Values.v24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           if (Platform.isIOS)
             AppAssets.icons.faceId.svg()
           else
             Icon(IonIcons.finger_print, size: 81),
-          useSpaceOf24.verticalSpacing,
+          Values.v24.verticalSpacing,
           Text(
             Platform.isIOS ? "Enable Face ID" : "Enable Fingerprint",
             style: context.textTheme.headlineMedium,
           ),
-          useSpaceOf16.verticalSpacing,
+          Values.v16.verticalSpacing,
           Text(
             Platform.isIOS
                 ? "Use face recognition for a faster and more secure access."
