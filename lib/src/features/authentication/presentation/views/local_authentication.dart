@@ -25,10 +25,11 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Values.v24.verticalSpacing,
+          
           if (Platform.isIOS)
             AppAssets.icons.faceId.svg()
           else
-            Icon(IonIcons.finger_print, size: 81),
+            Icon(IonIcons.finger_print, size: Values.v84),
           Values.v24.verticalSpacing,
           Text(
             Platform.isIOS ? "Enable Face ID" : "Enable Fingerprint",

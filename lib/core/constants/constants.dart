@@ -46,7 +46,6 @@ class Values {
   static final double v150 = 150.0;
 }
 
-
 final Size appDesignSize = Size(393, 852);
 
 final Size kButtonSize = Size(362, 56);
@@ -68,6 +67,13 @@ final List<Color> availableColors = [
   AppColors.orangeThemeColor,
   AppColors.lightGreenThemeColor,
 ];
+
+final Map<String, String> onboardingStoryAndAsset = {
+  "Pay Seamlessly with your wallet—No More Change Wahala!":
+      AppAssets.images.storyOne.path,
+  "Exact Payments, No More Change Drama!": AppAssets.images.storyTwo.path,
+  "Your ‘Last Card’ Just Got Smarter": AppAssets.images.storyThree.path,
+};
 
 final List<String> kAppKeyPadKeys = [
   '1',
@@ -104,20 +110,20 @@ final Talker logger = TalkerFlutter.init(
       TalkerKey.error: AnsiPen()..magenta(),
       TalkerKey.debug: AnsiPen()..white(),
       TalkerKey.info: AnsiPen()..rgb(r: 100 / 255, g: 181 / 255, b: 246 / 255),
-      TalkerKey.riverpodAdd:
-          AnsiPen()..rgb(r: 129 / 255, g: 212 / 255, b: 250 / 255),
-      TalkerKey.riverpodUpdate:
-          AnsiPen()..rgb(r: 255 / 255, g: 214 / 255, b: 165 / 255),
-      TalkerKey.riverpodFail:
-          AnsiPen()..rgb(r: 171 / 255, g: 235 / 255, b: 198 / 255),
-      TalkerKey.riverpodDispose:
-          AnsiPen()..rgb(r: 255 / 255, g: 171 / 255, b: 145 / 255),
-      TalkerKey.httpRequest:
-          AnsiPen()..rgb(r: 255 / 255, g: 235 / 255, b: 59 / 255),
-      TalkerKey.httpResponse:
-          AnsiPen()..rgb(r: 0 / 255, g: 188 / 255, b: 212 / 255),
-      TalkerKey.httpError:
-          AnsiPen()..rgb(r: 239 / 255, g: 83 / 255, b: 80 / 255),
+      TalkerKey.riverpodAdd: AnsiPen()
+        ..rgb(r: 129 / 255, g: 212 / 255, b: 250 / 255),
+      TalkerKey.riverpodUpdate: AnsiPen()
+        ..rgb(r: 255 / 255, g: 214 / 255, b: 165 / 255),
+      TalkerKey.riverpodFail: AnsiPen()
+        ..rgb(r: 171 / 255, g: 235 / 255, b: 198 / 255),
+      TalkerKey.riverpodDispose: AnsiPen()
+        ..rgb(r: 255 / 255, g: 171 / 255, b: 145 / 255),
+      TalkerKey.httpRequest: AnsiPen()
+        ..rgb(r: 255 / 255, g: 235 / 255, b: 59 / 255),
+      TalkerKey.httpResponse: AnsiPen()
+        ..rgb(r: 0 / 255, g: 188 / 255, b: 212 / 255),
+      TalkerKey.httpError: AnsiPen()
+        ..rgb(r: 239 / 255, g: 83 / 255, b: 80 / 255),
     },
   ),
 );

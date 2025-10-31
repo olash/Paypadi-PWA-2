@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/services/service_registry.dart' show appPrimaryProvider;
+import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart'
+    show appPrimaryProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/widgets/pincode_field.dart';
@@ -25,18 +27,18 @@ class OtpScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          40.0.verticalSpacing,
+          Values.v36.verticalSpacing,
           Text("OTP\nverification", style: context.textTheme.headlineMedium),
-          16.0.verticalSpacing,
+          Values.v16.verticalSpacing,
           Text(
             "Kindly provide the verification code sent to your ${obfuscatePhoneNumber("+2348134726507")}",
             style: context.textTheme.bodyMedium,
           ),
-          24.0.verticalSpacing,
+          Values.v24.verticalSpacing,
           Center(
             child: PinCodeField(controller: pinCode),
           ),
-          12.0.verticalSpacing,
+          Values.v12.verticalSpacing,
           Center(
             child: RichText(
               text: TextSpan(
@@ -59,12 +61,11 @@ class OtpScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          24.0.verticalSpacing,
+          Values.v24.verticalSpacing,
           FilledButton(
             onPressed: () => context.router.push(AccountRoleRoute()),
             child: Text("Verify"),
           ),
-          8.0.verticalSpacing,
         ],
       ),
     );

@@ -12,40 +12,32 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class OnboardingScreen extends HookConsumerWidget {
-  OnboardingScreen({super.key});
-
-  final List<String> _onboardingText = [
-    "Pay Seamlessly with your wallet—No More Change Wahala!",
-    "Exact Payments, No More Change Drama!",
-    "Your ‘Last Card’ Just Got Smarter",
-  ];
-
-  final List<String> _onboardingItems = [
-    AppAssets.images.storyOne.path,
-    AppAssets.images.storyTwo.path,
-    AppAssets.images.storyThree.path,
-  ];
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentImg = useState<int>(0);
     final pageController = usePageController();
 
+    // Convert keys and values to lists once for efficiency
+    final onboardingKeys = onboardingStoryAndAsset.keys.toList();
+    final onboardingValues = onboardingStoryAndAsset.values.toList();
+
     return AppScaffold(
       topPadding: kTopPadding,
       bottomPadding: kBottomPadding,
       child: Column(
         spacing: Values.v12,
-        children: [
+        children: <Widget>[
           Flexible(
             child: PageView.builder(
               controller: pageController,
-              itemCount: _onboardingItems.length,
+              itemCount: onboardingStoryAndAsset.length,
               onPageChanged: (value) => currentImg.value = value,
               itemBuilder: (context, index) {
                 return _OnboardingStory(
-                  text: _onboardingText[index],
-                  imagePath: _onboardingItems[index],
+                  text: onboardingKeys[index],
+                  imagePath: onboardingValues[index],
                 );
               },
             ),
@@ -53,17 +45,16 @@ class OnboardingScreen extends HookConsumerWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: List.generate(
-              _onboardingItems.length,
+              onboardingStoryAndAsset.length,
               (index) => AnimatedContainer(
                 height: 5,
                 duration: Durations.medium4,
                 width: currentImg.value == index ? Values.v36 : Values.v6,
                 margin: EdgeInsets.only(right: 4),
                 decoration: BoxDecoration(
-                  color:
-                      currentImg.value == index
-                          ? ref.watch(appPrimaryProvider)
-                          : AppColors.unselectedIndicator,
+                  color: currentImg.value == index
+                      ? ref.watch(appPrimaryProvider)
+                      : AppColors.unselectedIndicator,
                   borderRadius: BorderRadius.circular(25),
                 ),
               ),

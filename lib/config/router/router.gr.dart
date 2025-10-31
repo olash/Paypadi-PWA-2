@@ -285,46 +285,18 @@ class ConfirmTransactionPinRouteArgs {
 
 /// generated route for
 /// [_i10.CreateAccountScreen]
-class CreateAccountRoute extends _i29.PageRouteInfo<CreateAccountRouteArgs> {
-  CreateAccountRoute({_i30.Key? key, List<_i29.PageRouteInfo>? children})
-    : super(
-        CreateAccountRoute.name,
-        args: CreateAccountRouteArgs(key: key),
-        initialChildren: children,
-      );
+class CreateAccountRoute extends _i29.PageRouteInfo<void> {
+  const CreateAccountRoute({List<_i29.PageRouteInfo>? children})
+    : super(CreateAccountRoute.name, initialChildren: children);
 
   static const String name = 'CreateAccountRoute';
 
   static _i29.PageInfo page = _i29.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<CreateAccountRouteArgs>(
-        orElse: () => const CreateAccountRouteArgs(),
-      );
-      return _i10.CreateAccountScreen(key: args.key);
+      return const _i10.CreateAccountScreen();
     },
   );
-}
-
-class CreateAccountRouteArgs {
-  const CreateAccountRouteArgs({this.key});
-
-  final _i30.Key? key;
-
-  @override
-  String toString() {
-    return 'CreateAccountRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! CreateAccountRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -532,46 +504,18 @@ class NotificationsRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.OnboardingScreen]
-class OnboardingRoute extends _i29.PageRouteInfo<OnboardingRouteArgs> {
-  OnboardingRoute({_i30.Key? key, List<_i29.PageRouteInfo>? children})
-    : super(
-        OnboardingRoute.name,
-        args: OnboardingRouteArgs(key: key),
-        initialChildren: children,
-      );
+class OnboardingRoute extends _i29.PageRouteInfo<void> {
+  const OnboardingRoute({List<_i29.PageRouteInfo>? children})
+    : super(OnboardingRoute.name, initialChildren: children);
 
   static const String name = 'OnboardingRoute';
 
   static _i29.PageInfo page = _i29.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<OnboardingRouteArgs>(
-        orElse: () => const OnboardingRouteArgs(),
-      );
-      return _i20.OnboardingScreen(key: args.key);
+      return const _i20.OnboardingScreen();
     },
   );
-}
-
-class OnboardingRouteArgs {
-  const OnboardingRouteArgs({this.key});
-
-  final _i30.Key? key;
-
-  @override
-  String toString() {
-    return 'OnboardingRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! OnboardingRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for

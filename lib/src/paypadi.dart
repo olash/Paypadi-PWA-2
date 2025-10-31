@@ -19,9 +19,9 @@ class PayPadi extends ConsumerWidget {
     final AppTheme appTheme = ref.watch(appThemeProvider);
 
     return ScreenUtilInit(
-      designSize: appDesignSize,
       minTextAdapt: true,
       splitScreenMode: true,
+      designSize: appDesignSize,
       builder: (context, _) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,

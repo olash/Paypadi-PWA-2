@@ -11,7 +11,7 @@ class AppTheme {
 
   ThemeData theme() => ThemeData(
     brightness: Brightness.light,
-    fontFamily: FontFamily.poppins,
+    fontFamily: FontFamily.manrope,
     colorScheme: ColorScheme.light(primary: primary),
     scaffoldBackgroundColor: AppColors.white,
     appBarTheme: AppBarTheme(elevation: 0, scrolledUnderElevation: 0),

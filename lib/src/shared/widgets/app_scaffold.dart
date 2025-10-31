@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/shared/widgets/custom_appbar.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     super.key,
-    this.appBar,
     this.title,
+    this.appBar,
     this.bgColor,
     this.leftPadding,
     this.rightPadding,
     this.topPadding,
     this.bottomPadding,
+    this.showAppBar = false,
+    this.makeScrollable = false,
     this.bottomNavigationBar,
     required this.child,
   });
 
   final Widget child;
+  final bool makeScrollable;
+  final bool showAppBar;
   final String? title;
   final Color? bgColor;
   final double? topPadding;
@@ -27,26 +31,20 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final EdgeInsetsGeometry padding = EdgeInsets.only(
+      left: leftPadding ?? 16,
+      right: rightPadding ?? 16,
+      bottom: bottomPadding ?? 0,
+      top: topPadding ?? 0,
+    );
+
     return Scaffold(
       backgroundColor: bgColor,
-      appBar:
-          title != null
-              ? AppBar(
-                centerTitle: false,
-                automaticallyImplyLeading: true,
-                title: Text(title!, style: context.textTheme.titleLarge),
-              )
-              : appBar,
+      appBar: showAppBar ? CustomAppbarWithTitle(title: title) : appBar,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: leftPadding ?? 16,
-            right: rightPadding ?? 16,
-            bottom: bottomPadding ?? 0,
-            top: topPadding ?? 0,
-          ),
-          child: child,
-        ),
+        child: makeScrollable
+            ? SingleChildScrollView(padding: padding, child: child)
+            : Padding(padding: padding, child: child),
       ),
       bottomNavigationBar: bottomNavigationBar,
     );

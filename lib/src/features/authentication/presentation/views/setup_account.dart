@@ -29,7 +29,7 @@ class SetupAccountScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            40.0.verticalSpacing,
+
             Text(
               "Set up your account",
               style: context.textTheme.headlineMedium,
@@ -50,12 +50,24 @@ class SetupAccountScreen extends HookConsumerWidget {
               hint: "Enter surname",
               controller: surname,
             ),
-            if (role == AccountRole.driver)
+            if (role == AccountRole.driver) ...<Widget>[
               AppTextformfield(
                 title: "Cab Number",
                 hint: "Enter your cab number",
                 controller: cabNumber,
               ),
+              AppTextformfield(
+                title: "Driver's License",
+                hint: "Enter your driver’s license",
+                controller: cabNumber,
+              ),
+              AppTextformfield(
+                title: "Plate Number",
+                hint: "Enter your plate number",
+                controller: cabNumber,
+              ),
+            ],
+
             AppTextformfield(
               title: "Referral Code (Optional)",
               hint: "Enter referral code",
@@ -66,7 +78,7 @@ class SetupAccountScreen extends HookConsumerWidget {
               onPressed: () => submit(ref),
               child: Text("Submit"),
             ),
-            8.0.verticalSpacing,
+
           ],
         ),
       ),
@@ -88,12 +100,11 @@ class SetupAccountScreen extends HookConsumerWidget {
         .read(appRouterProvider)
         .push(
           ConfirmPasswordRoute(
-            onSubmit:
-                (confirmPassword) => _confirmPasswordRouteOnSubmit(
-                  ref,
-                  password,
-                  confirmPassword,
-                ),
+            onSubmit: (confirmPassword) => _confirmPasswordRouteOnSubmit(
+              ref,
+              password,
+              confirmPassword,
+            ),
           ),
         );
   }
@@ -111,9 +122,8 @@ class SetupAccountScreen extends HookConsumerWidget {
           .read(appRouterProvider)
           .push(
             TransactionPinRoute(
-              onSubmit:
-                  (transactionPin) =>
-                      _transactionPinRouteOnSubmit(ref, transactionPin),
+              onSubmit: (transactionPin) =>
+                  _transactionPinRouteOnSubmit(ref, transactionPin),
             ),
           );
     }
@@ -124,8 +134,8 @@ class SetupAccountScreen extends HookConsumerWidget {
         .read(appRouterProvider)
         .push(
           ConfirmTransactionPinRoute(
-            onSubmit:
-                (confirmTransactionPin) => _confirmTransactionPinRouteOnSubmit(
+            onSubmit: (confirmTransactionPin) =>
+                _confirmTransactionPinRouteOnSubmit(
                   ref,
                   pin,
                   confirmTransactionPin,
