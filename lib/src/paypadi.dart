@@ -7,7 +7,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:paypadi/config/env.dart' show Env;
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart';
-import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart';
 
 class PayPadi extends ConsumerWidget {

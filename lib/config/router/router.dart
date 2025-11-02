@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/constants/constants.dart' show CacheKeys;
+import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
 import 'package:paypadi/core/services/service_registry.dart'
     show localCacheProvider;
 
@@ -30,13 +30,22 @@ class AppRouter extends RootStackRouter {
       path: "/login",
       page: LoginRoute.page,
     ),
-    AutoRoute(
-      path: "/setup-account",
-      page: SetupAccountRoute.page,
-    ),
+
     AutoRoute(
       path: "/account-role",
       page: AccountRoleRoute.page,
+    ),
+    AutoRoute(
+      path: "/setup-passenger-account",
+      page: SetupPassengerAccountRoute.page,
+    ),
+    AutoRoute(
+      path: "/setup-driver-account",
+      page: SetupDriverAccountRoute.page,
+    ),
+    AutoRoute(
+      path: "/driver-payout",
+      page: DriverPayoutRoute.page,
     ),
     AutoRoute(
       path: "/otp",
@@ -59,8 +68,8 @@ class AppRouter extends RootStackRouter {
       page: ConfirmTransactionPinRoute.page,
     ),
     AutoRoute(
-      path: "/local-authentication",
-      page: LocalAuthenticationRoute.page,
+      path: "/biometric-authentication",
+      page: BiometricAuthenticationRoute.page,
     ),
 
     AutoRoute(
@@ -119,7 +128,7 @@ class AppRouter extends RootStackRouter {
       path: "/legal",
       page: LegalRoute.page,
     ),
-      AutoRoute(
+    AutoRoute(
       path: "/add-money",
       page: AddMoneyRoute.page,
     ),

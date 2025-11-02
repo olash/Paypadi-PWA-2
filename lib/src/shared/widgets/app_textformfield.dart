@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart'
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/gen/fonts.gen.dart';
-import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
@@ -50,10 +50,12 @@ class AppTextformfield extends StatelessWidget {
 class PhoneTextField extends ConsumerWidget {
   const PhoneTextField({
     super.key,
+    this.validator,
     required this.controller,
   });
 
   final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -98,6 +100,7 @@ class PhoneTextField extends ConsumerWidget {
             Expanded(
               child: TextFormField(
                 controller: controller,
+                validator: validator,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "Enter phone number",

@@ -11,7 +11,7 @@ class AppScaffold extends StatelessWidget {
     this.rightPadding,
     this.topPadding,
     this.bottomPadding,
-    this.showAppBar = false,
+    this.showAppBar = true,
     this.makeScrollable = false,
     this.bottomNavigationBar,
     required this.child,
@@ -43,7 +43,11 @@ class AppScaffold extends StatelessWidget {
       appBar: showAppBar ? CustomAppbarWithTitle(title: title) : appBar,
       body: SafeArea(
         child: makeScrollable
-            ? SingleChildScrollView(padding: padding, child: child)
+            ? SingleChildScrollView(
+                padding: padding,
+                physics: BouncingScrollPhysics(),
+                child: child,
+              )
             : Padding(padding: padding, child: child),
       ),
       bottomNavigationBar: bottomNavigationBar,

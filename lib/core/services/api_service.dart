@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import 'package:paypadi/config/env.dart';
-import 'package:paypadi/core/constants/constants.dart' show logger;
+import 'package:paypadi/core/utils/constants.dart' show logger;
 
 part 'api_service.g.dart';
 

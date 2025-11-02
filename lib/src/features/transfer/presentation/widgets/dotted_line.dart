@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
-import 'package:paypadi/core/constants/constants.dart' show Values;
+import 'package:paypadi/core/utils/constants.dart' show Values;
 
 class DottedDivider extends StatelessWidget {
   const DottedDivider({super.key, this.topPadding});

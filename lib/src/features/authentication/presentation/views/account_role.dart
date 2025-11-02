@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -15,33 +17,33 @@ class AccountRoleScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-      title: "",
+      showAppBar: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+                Values.v32.verticalSpacing,
           Text(
             "Choose Your Role",
             style: context.textTheme.headlineMedium,
           ),
-          16.0.verticalSpacing,
+          Values.v10.verticalSpacing,
           Text(
             "Choose your role to get a personalized experience.",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-
-          32.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           _RoleWidget(
             role: AccountRole.passenger,
-            selectRole: (role) {
-              context.router.push(SetupAccountRoute(role: role));
+            onWidgetTapped: () {
+              ref.read(appRouterProvider).push(SetupPassengerAccountRoute());
             },
           ),
           _RoleWidget(
             role: AccountRole.driver,
-            selectRole: (role) {
-              context.router.push(SetupAccountRoute(role: role));
+            onWidgetTapped: () {
+              ref.read(appRouterProvider).push(SetupDriverAccountRoute());
             },
           ),
         ],
@@ -50,16 +52,16 @@ class AccountRoleScreen extends HookConsumerWidget {
   }
 }
 
-class _RoleWidget extends HookConsumerWidget {
-  const _RoleWidget({required this.role, required this.selectRole});
+class _RoleWidget extends StatelessWidget {
+  const _RoleWidget({required this.role, this.onWidgetTapped});
 
   final AccountRole role;
-  final ValueSetter<AccountRole> selectRole;
+  final VoidCallback? onWidgetTapped;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => selectRole(role),
+      onTap: onWidgetTapped,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 26, horizontal: 16),
         margin: EdgeInsets.only(bottom: 16),
@@ -93,7 +95,7 @@ class _RoleWidget extends HookConsumerWidget {
                   ),
                   Text(
                     role.description,
-                    style: context.textTheme.titleSmall?.copyWith(
+                    style: context.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
                   ),

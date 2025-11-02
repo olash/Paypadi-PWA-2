@@ -10,35 +10,33 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
-class DriverPayoutScreen extends HookConsumerWidget {
-  const DriverPayoutScreen({super.key});
+class SetupPassengerAccountScreen extends HookConsumerWidget {
+  const SetupPassengerAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstName = useTextEditingController();
-    final surname = useTextEditingController();
-    final cabNumber = useTextEditingController();
-    final license = useTextEditingController();
-    final plateNumber = useTextEditingController();
-    final referralCode = useTextEditingController();
+    final TextEditingController firstName = useTextEditingController();
+    final TextEditingController surname = useTextEditingController();
+    final TextEditingController referralCode = useTextEditingController();
 
     return AppScaffold(
       showAppBar: true,
+      makeScrollable: true,
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Values.v32.verticalSpacing,
             Text(
               "Set up your account",
               style: context.textTheme.headlineMedium,
             ),
-            Values.v16.verticalSpacing,
-
+            16.0.verticalSpacing,
             Text(
               "Kindly provide the details below to help give you the best experience.",
               style: context.textTheme.bodyMedium,
             ),
-            Values.v32.verticalSpacing,
+            32.0.verticalSpacing,
             AppTextformfield(
               title: "First Name",
               hint: "Enter first name",
@@ -49,28 +47,12 @@ class DriverPayoutScreen extends HookConsumerWidget {
               hint: "Enter surname",
               controller: surname,
             ),
-
-            AppTextformfield(
-              title: "Cab Number",
-              hint: "Enter your cab number",
-              controller: cabNumber,
-            ),
-            AppTextformfield(
-              title: "Driver's License",
-              hint: "Enter your driver’s license",
-              controller: license,
-            ),
-            AppTextformfield(
-              title: "Plate Number",
-              hint: "Enter your plate number",
-              controller: plateNumber,
-            ),
             AppTextformfield(
               title: "Referral Code (Optional)",
               hint: "Enter referral code",
               controller: referralCode,
             ),
-            Values.v24.verticalSpacing,
+            24.0.verticalSpacing,
             FilledButton(
               onPressed: () => submit(ref),
               child: Text("Submit"),

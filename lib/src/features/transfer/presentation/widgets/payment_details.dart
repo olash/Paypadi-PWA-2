@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paypadi/core/constants/constants.dart' show kZeroLetterSpacing;
+import 'package:paypadi/core/utils/constants.dart' show kZeroLetterSpacing;
 import 'package:paypadi/core/utils/extensions.dart';
 
 class PaymentDetails extends StatelessWidget {

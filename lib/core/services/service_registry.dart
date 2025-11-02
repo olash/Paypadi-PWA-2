@@ -2,7 +2,7 @@ import 'dart:ui' show Color;
 
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
-import 'package:paypadi/core/constants/constants.dart'
+import 'package:paypadi/core/utils/constants.dart'
     show CacheKeys, availableColors, logger;
 import 'package:paypadi/core/services/biometrics_service.dart'
     show BiometricsService;

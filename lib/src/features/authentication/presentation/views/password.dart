@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/constants/constants.dart'
+import 'package:paypadi/core/utils/constants.dart'
     show logger, passwordPinLength, Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
@@ -19,11 +19,10 @@ class PasswordScreen extends HookConsumerWidget {
     final password = useState<String>('');
 
     return AppScaffold(
-      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          24.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           Text(
             "Create your Password",
             style: context.textTheme.headlineMedium,
@@ -66,11 +65,10 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
     final confirmPassword = useState<String>('');
 
     return AppScaffold(
-      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          24.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           Text(
             "Confirm your Password",
             style: context.textTheme.headlineMedium,

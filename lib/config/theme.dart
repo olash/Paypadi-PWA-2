@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/gen/fonts.gen.dart';
-import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/constants.dart';
 
 class AppTheme {
   const AppTheme({required this.primary});

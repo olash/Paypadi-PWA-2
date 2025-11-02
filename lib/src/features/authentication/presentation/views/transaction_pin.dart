@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/constants/constants.dart'
-    show logger, transactionPinLength;
+import 'package:paypadi/core/utils/constants.dart'
+    show logger, transactionPinLength, Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -18,11 +18,10 @@ class TransactionPinScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionPin = useState<String>('');
     return AppScaffold(
-      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          24.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           Text(
             "Create a Transaction PIN",
             style: context.textTheme.headlineMedium,
@@ -64,11 +63,10 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmTransactionPin = useState<String>('');
     return AppScaffold(
-      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          24.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           Text(
             "Confirm Transaction Pin",
             style: context.textTheme.headlineMedium,

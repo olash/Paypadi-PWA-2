@@ -3,43 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/constants/constants.dart' show CacheKeys;
+import 'package:paypadi/core/utils/constants.dart' show CacheKeys, Values;
 import 'package:paypadi/core/services/service_registry.dart';
-import 'package:paypadi/core/utils/enums.dart' show AccountRole;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
-class SetupAccountScreen extends HookConsumerWidget {
-  const SetupAccountScreen({super.key, required this.role});
-
-  final AccountRole role;
+class SetupDriverAccountScreen extends HookConsumerWidget {
+  const SetupDriverAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController firstName = useTextEditingController();
-    final TextEditingController surname = useTextEditingController();
-    final TextEditingController cabNumber = useTextEditingController();
-    final TextEditingController referralCode = useTextEditingController();
+    final firstName = useTextEditingController();
+    final surname = useTextEditingController();
+    final cabNumber = useTextEditingController();
+    final license = useTextEditingController();
+    final plateNumber = useTextEditingController();
+    final referralCode = useTextEditingController();
 
     return AppScaffold(
-      title: "",
+      showAppBar: true,
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Text(
               "Set up your account",
               style: context.textTheme.headlineMedium,
             ),
-            16.0.verticalSpacing,
+            Values.v16.verticalSpacing,
+
             Text(
               "Kindly provide the details below to help give you the best experience.",
               style: context.textTheme.bodyMedium,
             ),
-            32.0.verticalSpacing,
+            Values.v32.verticalSpacing,
             AppTextformfield(
               title: "First Name",
               hint: "Enter first name",
@@ -50,35 +49,32 @@ class SetupAccountScreen extends HookConsumerWidget {
               hint: "Enter surname",
               controller: surname,
             ),
-            if (role == AccountRole.driver) ...<Widget>[
-              AppTextformfield(
-                title: "Cab Number",
-                hint: "Enter your cab number",
-                controller: cabNumber,
-              ),
-              AppTextformfield(
-                title: "Driver's License",
-                hint: "Enter your driver’s license",
-                controller: cabNumber,
-              ),
-              AppTextformfield(
-                title: "Plate Number",
-                hint: "Enter your plate number",
-                controller: cabNumber,
-              ),
-            ],
 
+            AppTextformfield(
+              title: "Cab Number",
+              hint: "Enter your cab number",
+              controller: cabNumber,
+            ),
+            AppTextformfield(
+              title: "Driver's License",
+              hint: "Enter your driver’s license",
+              controller: license,
+            ),
+            AppTextformfield(
+              title: "Plate Number",
+              hint: "Enter your plate number",
+              controller: plateNumber,
+            ),
             AppTextformfield(
               title: "Referral Code (Optional)",
               hint: "Enter referral code",
               controller: referralCode,
             ),
-            24.0.verticalSpacing,
+            Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(ref),
               child: Text("Submit"),
             ),
-
           ],
         ),
       ),
@@ -153,7 +149,7 @@ class SetupAccountScreen extends HookConsumerWidget {
       ref
           .read(secureCacheProvider)
           .write(key: CacheKeys.transactionPin, value: confirmedPin);
-      ref.read(appRouterProvider).push(LocalAuthenticationRoute());
+      ref.read(appRouterProvider).push(BiometricAuthenticationRoute());
     }
   }
 }

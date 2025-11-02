@@ -5,7 +5,7 @@ import 'package:paypadi/core/services/service_registry.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
 
-import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/src/paypadi.dart';
 
 Future<void> initializeApp() async {

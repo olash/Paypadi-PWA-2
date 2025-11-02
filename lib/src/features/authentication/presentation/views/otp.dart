@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
     show appPrimaryProvider;
 import 'package:paypadi/core/utils/extensions.dart';
@@ -20,14 +20,14 @@ class OtpScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController pinCode = useTextEditingController();
+    final pinCode = useTextEditingController();
 
     return AppScaffold(
-      title: "",
+     showAppBar: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Values.v36.verticalSpacing,
+         Values.v32.verticalSpacing,
           Text("OTP\nverification", style: context.textTheme.headlineMedium),
           Values.v16.verticalSpacing,
           Text(

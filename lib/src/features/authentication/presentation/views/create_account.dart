@@ -3,106 +3,101 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:paypadi/config/gen/fonts.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/constants/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider;
+import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
 class CreateAccountScreen extends HookConsumerWidget {
-  const CreateAccountScreen({super.key});
+  CreateAccountScreen({super.key});
+
+  final TapGestureRecognizer signInRecognizer = TapGestureRecognizer();
+  final GlobalKey<FormState> form = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final phoneNumber = useTextEditingController();
 
-    final termsOfService = useMemoized(
-      () => TapGestureRecognizer()..onTap = () {},
-      [],
-    );
-    final privacyPolicy = useMemoized(
-      () => TapGestureRecognizer()..onTap = () {},
-      [],
-    );
-    final signIn = useMemoized(
-      () =>
-          TapGestureRecognizer()
-            ..onTap = () => context.router.push(LoginRoute()),
-      [context],
-    );
-
     useEffect(() {
-      return () {
-        termsOfService.dispose();
-        privacyPolicy.dispose();
-        signIn.dispose();
-      };
-    }, [termsOfService, privacyPolicy, signIn]);
+      signInRecognizer.onTap = () =>
+          ref.read(appRouterProvider).push(LoginRoute());
+      return () => signInRecognizer.dispose();
+    }, []);
 
     return AppScaffold(
       showAppBar: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Values.v36.verticalSpacing,
-          Text(
-            "Let’s get\nyou started",
-            style: context.textTheme.headlineMedium,
-          ),
-          Values.v32.verticalSpacing,
-          PhoneTextField(controller: phoneNumber),
-          Values.v16.verticalSpacing,
-          _TermsAndPrivacyRichText(
-            termsOfService: termsOfService,
-            privacyPolicy: privacyPolicy,
-          ),
-          Values.v16.verticalSpacing,
-          FilledButton(
-            onPressed: () => context.router.push(OtpRoute()),
-            child: Text("Create Account"),
-          ),
-          Values.v8.verticalSpacing,
-          Center(
-            child: RichText(
-              text: TextSpan(
-                text: "Already have an account? ",
-                style: context.textTheme.bodyMedium?.copyWith(
-                  fontFamily: FontFamily.manrope,
-                ),
-                children: [
-                  TextSpan(
-                    text: "Sign in",
-                    recognizer: signIn,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontFamily: FontFamily.manrope,
-                      color: ref.watch(appPrimaryProvider),
-                    ),
+      child: Form(
+        key: form,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Values.v32.verticalSpacing,
+            Text(
+              "Let’s get\nyou started",
+              style: context.textTheme.headlineMedium,
+            ),
+            Values.v32.verticalSpacing,
+            PhoneTextField(
+              controller: phoneNumber,
+              validator: (number) => phoneNumberValidator(number),
+            ),
+            Values.v16.verticalSpacing,
+            _TermsAndPrivacyRichText(),
+            Values.v16.verticalSpacing,
+            FilledButton(
+              onPressed: () => context.router.push(OtpRoute()),
+              child: Text("Create Account"),
+            ),
+            Values.v8.verticalSpacing,
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  text: "Already have an account? ",
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    fontFamily: FontFamily.manrope,
                   ),
-                ],
+                  children: [
+                    TextSpan(
+                      text: "Sign in",
+                      recognizer: signInRecognizer,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontFamily: FontFamily.manrope,
+                        color: ref.watch(appPrimaryProvider),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-class _TermsAndPrivacyRichText extends ConsumerWidget {
-  const _TermsAndPrivacyRichText({
-    required this.termsOfService,
-    required this.privacyPolicy,
-  });
-
-  final TapGestureRecognizer termsOfService;
-  final TapGestureRecognizer privacyPolicy;
+class _TermsAndPrivacyRichText extends HookConsumerWidget {
+  _TermsAndPrivacyRichText();
+  final TapGestureRecognizer termsOfServiceRecognizer = TapGestureRecognizer();
+  final TapGestureRecognizer privacyPolicyRecognizer = TapGestureRecognizer();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      termsOfServiceRecognizer.onTap = () {};
+      privacyPolicyRecognizer.onTap = () {};
+      return () {
+        termsOfServiceRecognizer.dispose();
+        privacyPolicyRecognizer.dispose();
+      };
+    }, []);
+
     return RichText(
       text: TextSpan(
         text: "By proceeding, you agree to our",
@@ -113,7 +108,7 @@ class _TermsAndPrivacyRichText extends ConsumerWidget {
         children: [
           TextSpan(
             text: " Terms of Service ",
-            recognizer: termsOfService,
+            recognizer: termsOfServiceRecognizer,
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
               fontFamily: FontFamily.manrope,
@@ -129,7 +124,7 @@ class _TermsAndPrivacyRichText extends ConsumerWidget {
           ),
           TextSpan(
             text: "Privacy Policy",
-            recognizer: privacyPolicy,
+            recognizer: privacyPolicyRecognizer,
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
               fontFamily: FontFamily.manrope,

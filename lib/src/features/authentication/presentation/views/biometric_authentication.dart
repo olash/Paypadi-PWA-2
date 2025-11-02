@@ -6,26 +6,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/constants/constants.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
     show appRouterProvider, localCacheProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class LocalAuthenticationScreen extends HookConsumerWidget {
-  const LocalAuthenticationScreen({super.key});
+class BiometricAuthenticationScreen extends HookConsumerWidget {
+  const BiometricAuthenticationScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-      title: "",
-      bottomPadding: Values.v24,
+      bottomPadding: Values.v32,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Values.v24.verticalSpacing,
-          
+          Values.v32.verticalSpacing,
+
           if (Platform.isIOS)
             AppAssets.icons.faceId.svg()
           else
@@ -50,10 +49,9 @@ class LocalAuthenticationScreen extends HookConsumerWidget {
             children: [
               Flexible(
                 child: OutlinedButton(
-                  onPressed:
-                      () => ref.read(appRouterProvider).replaceAll([
-                        LoginRoute(),
-                      ]),
+                  onPressed: () => ref.read(appRouterProvider).replaceAll([
+                    LoginRoute(),
+                  ]),
                   child: Text("Maybe Later"),
                 ),
               ),
