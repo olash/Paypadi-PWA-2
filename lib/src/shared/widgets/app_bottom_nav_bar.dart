@@ -13,6 +13,7 @@ class AppBottomNavBarScreen extends HookWidget {
     final navTracker = useState<int>(0);
 
     return AppScaffold(
+      showAppBar: false,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navTracker.value,
         onTap: (value) {

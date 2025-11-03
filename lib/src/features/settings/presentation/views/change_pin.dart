@@ -46,7 +46,9 @@ class ChangePinScreen extends HookConsumerWidget {
               pin.value = value;
               logger.debug(pin.value);
             },
-            onSubmit: (currentPin) => _changePinRouteOnSubmit(ref, currentPin),
+            onSubmit: (currentPin) {
+              
+            },
           ),
           Spacer(),
         ],
@@ -54,43 +56,43 @@ class ChangePinScreen extends HookConsumerWidget {
     );
   }
 
-  void _changePinRouteOnSubmit(WidgetRef ref, String currentPin) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          TransactionPinRoute(
-            onSubmit: (newPin) => _transactionPinRouteOnSubmit(ref, newPin),
-          ),
-        );
-  }
+  // void _changePinRouteOnSubmit(WidgetRef ref, String currentPin) {
+  //   ref
+  //       .read(appRouterProvider)
+  //       .push(
+  //         TransactionPinRoute(
+  //           onSubmit: (newPin) => _transactionPinRouteOnSubmit(ref, newPin),
+  //         ),
+  //       );
+  // }
 
-  void _transactionPinRouteOnSubmit(WidgetRef ref, String pin) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          ConfirmTransactionPinRoute(
-            onSubmit:
-                (confirmTransactionPin) => _confirmTransactionPinRouteOnSubmit(
-                  ref,
-                  pin,
-                  confirmTransactionPin,
-                ),
-          ),
-        );
-  }
+  // void _transactionPinRouteOnSubmit(WidgetRef ref, String pin) {
+  //   ref
+  //       .read(appRouterProvider)
+  //       .push(
+  //         ConfirmTransactionPinRoute(
+  //           onSubmit:
+  //               (confirmTransactionPin) => _confirmTransactionPinRouteOnSubmit(
+  //                 ref,
+  //                 pin,
+  //                 confirmTransactionPin,
+  //               ),
+  //         ),
+  //       );
+  // }
 
-  void _confirmTransactionPinRouteOnSubmit(
-    WidgetRef ref,
-    String pin,
-    String confirmedPin,
-  ) {
-    if (pin == confirmedPin) {
-      ref
-          .read(secureCacheProvider)
-          .write(key: CacheKeys.transactionPin, value: confirmedPin);
-      ref
-          .read(appRouterProvider)
-          .popUntilRouteWithName(AppBottomNavBarRoute.name);
-    }
-  }
+  // void _confirmTransactionPinRouteOnSubmit(
+  //   WidgetRef ref,
+  //   String pin,
+  //   String confirmedPin,
+  // ) {
+  //   if (pin == confirmedPin) {
+  //     ref
+  //         .read(secureCacheProvider)
+  //         .write(key: CacheKeys.transactionPin, value: confirmedPin);
+  //     ref
+  //         .read(appRouterProvider)
+  //         .popUntilRouteWithName(AppBottomNavBarRoute.name);
+  //   }
+  // }
 }

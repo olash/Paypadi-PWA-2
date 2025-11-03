@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/utils/constants.dart' show CacheKeys, Values;
 import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -94,69 +94,7 @@ class SetupDriverAccountScreen extends HookConsumerWidget {
 
   void submit(WidgetRef ref, FormState form) {
     if (form.validate()) {
-      ref.read(appRouterProvider).push(PasswordRoute());
-    }
-  }
-
-  void _passwordRouteOnSubmit(WidgetRef ref, String password) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          ConfirmPasswordRoute(
-            onSubmit: (confirmPassword) => _confirmPasswordRouteOnSubmit(
-              ref,
-              password,
-              confirmPassword,
-            ),
-          ),
-        );
-  }
-
-  void _confirmPasswordRouteOnSubmit(
-    WidgetRef ref,
-    String password,
-    String confirmPassword,
-  ) {
-    if (password == confirmPassword) {
-      ref
-          .read(secureCacheProvider)
-          .write(key: CacheKeys.loginPin, value: confirmPassword);
-      ref
-          .read(appRouterProvider)
-          .push(
-            TransactionPinRoute(
-              onSubmit: (transactionPin) =>
-                  _transactionPinRouteOnSubmit(ref, transactionPin),
-            ),
-          );
-    }
-  }
-
-  void _transactionPinRouteOnSubmit(WidgetRef ref, String pin) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          ConfirmTransactionPinRoute(
-            onSubmit: (confirmTransactionPin) =>
-                _confirmTransactionPinRouteOnSubmit(
-                  ref,
-                  pin,
-                  confirmTransactionPin,
-                ),
-          ),
-        );
-  }
-
-  void _confirmTransactionPinRouteOnSubmit(
-    WidgetRef ref,
-    String pin,
-    String confirmedPin,
-  ) {
-    if (pin == confirmedPin) {
-      ref
-          .read(secureCacheProvider)
-          .write(key: CacheKeys.transactionPin, value: confirmedPin);
-      ref.read(appRouterProvider).push(BiometricAuthenticationRoute());
+      ref.read(appRouterProvider).push(DriverPayoutRoute());
     }
   }
 }

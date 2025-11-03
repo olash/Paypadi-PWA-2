@@ -43,11 +43,8 @@ class ChangePasswordScreen extends HookConsumerWidget {
           Spacer(flex: 3),
           AppKeypad(
             pinLength: passwordPinLength,
-            onChanged: (value) {
-              password.value = value;
-              logger.debug(password.value);
-            },
-            onSubmit: (value) => _changePasswordRouteOnSubmit(ref, value),
+            onChanged: (value) => password.value = value,
+            onSubmit: (password) {},
           ),
           Spacer(),
         ],
@@ -55,43 +52,43 @@ class ChangePasswordScreen extends HookConsumerWidget {
     );
   }
 
-  void _changePasswordRouteOnSubmit(WidgetRef ref, String currentPassword) {
-    // ref
-    //     .read(appRouterProvider)
-    //     .push(
-    //       PasswordRoute(
-    //         onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
-    //       ),
-    //     );
-  }
+  // void _changePasswordRouteOnSubmit(WidgetRef ref, String currentPassword) {
+  //   // ref
+  //   //     .read(appRouterProvider)
+  //   //     .push(
+  //   //       PasswordRoute(
+  //   //         onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
+  //   //       ),
+  //   //     );
+  // }
 
-  void _passwordRouteOnSubmit(WidgetRef ref, String password) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          ConfirmPasswordRoute(
-            onSubmit:
-                (confirmPassword) => _confirmPasswordRouteOnSubmit(
-                  ref,
-                  password,
-                  confirmPassword,
-                ),
-          ),
-        );
-  }
+  // void _passwordRouteOnSubmit(WidgetRef ref, String password) {
+  //   ref
+  //       .read(appRouterProvider)
+  //       .push(
+  //         ConfirmPasswordRoute(
+  //           onSubmit:
+  //               (confirmPassword) => _confirmPasswordRouteOnSubmit(
+  //                 ref,
+  //                 password,
+  //                 confirmPassword,
+  //               ),
+  //         ),
+  //       );
+  // }
 
-  void _confirmPasswordRouteOnSubmit(
-    WidgetRef ref,
-    String password,
-    String confirmPassword,
-  ) {
-    if (password == confirmPassword) {
-      ref
-          .read(secureCacheProvider)
-          .write(key: CacheKeys.loginPin, value: confirmPassword);
-      ref
-          .read(appRouterProvider)
-          .popUntilRouteWithName(AppBottomNavBarRoute.name);
-    }
-  }
+  // void _confirmPasswordRouteOnSubmit(
+  //   WidgetRef ref,
+  //   String password,
+  //   String confirmPassword,
+  // ) {
+  //   if (password == confirmPassword) {
+  //     ref
+  //         .read(secureCacheProvider)
+  //         .write(key: CacheKeys.loginPin, value: confirmPassword);
+  //     ref
+  //         .read(appRouterProvider)
+  //         .popUntilRouteWithName(AppBottomNavBarRoute.name);
+  //   }
+  // }
 }

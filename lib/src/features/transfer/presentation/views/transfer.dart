@@ -7,7 +7,7 @@ import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider, appRouterProvider;
+    show appPrimaryColorProvider, appRouterProvider;
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/transfer/data/mock_data.dart';
@@ -128,8 +128,8 @@ class _BeneficiariesList extends HookConsumerWidget {
                 name: data[index].name,
                 transferType: data[index].transferType,
                 transactionTime: data[index].transactionTime,
-                onTap:
-                    () => ref.read(appRouterProvider).push(MakePaymentRoute()),
+                onTap: () =>
+                    ref.read(appRouterProvider).push(MakePaymentRoute()),
               );
             },
           ),
@@ -139,7 +139,7 @@ class _BeneficiariesList extends HookConsumerWidget {
   }
 }
 
-class _BeneficiaryTile extends StatelessWidget {
+class _BeneficiaryTile extends ConsumerWidget {
   const _BeneficiaryTile({
     required this.name,
     required this.transferType,
@@ -153,7 +153,8 @@ class _BeneficiaryTile extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final color = ref.watch(appPrimaryColorProvider);
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -166,12 +167,12 @@ class _BeneficiaryTile extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.accent.withValues(alpha: .22),
+                color: color.withValues(alpha: .22),
               ),
               child: Text(
                 name.split("").first,
                 style: context.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.accent,
+                  color: color,
                 ),
               ),
             ),
@@ -225,18 +226,19 @@ class _BeneficiaryListAction extends ConsumerWidget {
           child: AnimatedContainer(
             duration: Durations.long4,
             padding: EdgeInsets.all(10),
-            decoration:
-                selected
-                    ? BoxDecoration(
-                      color: ref.watch(appPrimaryProvider).withAlpha(20),
-                      border: Border.all(color: ref.watch(appPrimaryProvider)),
-                      borderRadius: BorderRadius.circular(32),
-                    )
-                    : null,
+            decoration: selected
+                ? BoxDecoration(
+                    color: ref.watch(appPrimaryColorProvider).withAlpha(20),
+                    border: Border.all(
+                      color: ref.watch(appPrimaryColorProvider),
+                    ),
+                    borderRadius: BorderRadius.circular(32),
+                  )
+                : null,
             child: Text(
               text,
               style: context.textTheme.labelMedium?.copyWith(
-                color: selected ? ref.watch(appPrimaryProvider) : null,
+                color: selected ? ref.watch(appPrimaryColorProvider) : null,
               ),
             ),
           ),

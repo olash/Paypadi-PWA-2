@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider;
+    show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -64,15 +64,15 @@ class AddMoneyScreen extends HookConsumerWidget {
                     style: context.filledButtonTheme.style?.copyWith(
                       fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
                       foregroundColor: WidgetStatePropertyAll(
-                        ref.watch(appPrimaryProvider),
+                        ref.watch(appPrimaryColorProvider),
                       ),
                       backgroundColor: WidgetStatePropertyAll(
-                        ref.watch(appPrimaryProvider).withAlpha(20),
+                        ref.watch(appPrimaryColorProvider).withAlpha(20),
                       ),
                       shape: WidgetStatePropertyAll(
                         RoundedRectangleBorder(
                           side: BorderSide(
-                            color: ref.watch(appPrimaryProvider),
+                            color: ref.watch(appPrimaryColorProvider),
                           ),
                           borderRadius: BorderRadiusGeometry.circular(
                             Values.v12,
@@ -82,7 +82,7 @@ class AddMoneyScreen extends HookConsumerWidget {
                       textStyle: WidgetStatePropertyAll(
                         context.textTheme.bodyMedium?.copyWith(
                           letterSpacing: -0.08,
-                          color: ref.watch(appPrimaryProvider),
+                          color: ref.watch(appPrimaryColorProvider),
                         ),
                       ),
                     ),

@@ -40,14 +40,15 @@ class ColorIndexNotifier extends _$ColorIndexNotifier {
 AppRouter appRouter(Ref ref) => AppRouter(ref: ref);
 
 @Riverpod(keepAlive: true)
-Color appPrimary(Ref ref) {
+Color appPrimaryColor(Ref ref) {
   return availableColors[ref.watch(colorIndexProvider)];
 }
 
 @Riverpod(keepAlive: true)
 AppTheme appTheme(Ref ref) {
   return AppTheme(
-    primary: ref.watch(appPrimaryProvider),
+  
+    primary: ref.watch(appPrimaryColorProvider),
   );
 }
 

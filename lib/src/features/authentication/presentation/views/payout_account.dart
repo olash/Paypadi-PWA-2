@@ -2,8 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys, Values;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -32,26 +35,64 @@ class DriverPayoutScreen extends HookConsumerWidget {
             style: context.textTheme.bodyMedium,
           ),
           Values.v32.verticalSpacing,
-          //TODO: Place Bank dropdown field here
+          _BankList(),
           AppTextformfield(
             title: "Account Number",
             hint: "Enter account number",
             controller: accountNumber,
+            keyboardType: TextInputType.number,
           ),
-
           AppTextformfield(
-            title: "Account Name",
             isEnabled: false,
+            title: "Account Name",
             controller: accountName,
           ),
-
           Values.v24.verticalSpacing,
           FilledButton(
-            onPressed: () {},
+            onPressed: () {
+              ref.read(appRouterProvider).push(PasswordRoute());
+            },
             child: Text("Submit"),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BankList extends ConsumerWidget {
+  const _BankList();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final banks = ref.watch(bankListProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Bank Name",
+          style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
+        ),
+        Values.v6.verticalSpacing,
+        banks.when(
+          data: (banks) {
+            return DropdownMenu(
+              hintText: "Select Bank",
+              dropdownMenuEntries: [
+                for (String bank in banks)
+                  DropdownMenuEntry(
+                    value: bank,
+                    label: bank,
+                  ),
+              ],
+            );
+          },
+          error: (error, stackTrace) => SizedBox.shrink(),
+          loading: () => SizedBox.shrink(),
+        ),
+        Values.v12.verticalSpacing,
+      ],
     );
   }
 }

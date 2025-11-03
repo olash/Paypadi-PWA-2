@@ -3,7 +3,8 @@ import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart' show appPrimaryProvider;
+import 'package:paypadi/core/services/service_registry.dart'
+    show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 
 class AppKeypad extends ConsumerStatefulWidget {
@@ -50,8 +51,8 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
         mainAxisSpacing: 14,
         crossAxisSpacing: 36,
       ),
-      itemBuilder:
-          (context, index) => buildKeyButton(context, kAppKeyPadKeys[index]),
+      itemBuilder: (context, index) =>
+          buildKeyButton(context, kAppKeyPadKeys[index]),
     );
   }
 
@@ -92,7 +93,7 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
     return InkWell(
       onTap: (key == "." && !widget.showBiometric) ? null : () => onTap(key),
       customBorder: CircleBorder(),
-      splashColor: ref.watch(appPrimaryProvider).withValues(alpha: .1),
+      splashColor: ref.watch(appPrimaryColorProvider).withValues(alpha: .1),
       child: Center(
         child: switch (key) {
           "x" => Icon(EvaIcons.backspace_outline, size: 32),

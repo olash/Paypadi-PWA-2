@@ -42,6 +42,7 @@ class ReceiptScreen extends HookConsumerWidget {
     final paymentStatus = useState<PaymentStatus>(PaymentStatus.success);
 
     return AppScaffold(
+      showAppBar: false,
       bgColor: AppColors.scaffoldBackground,
       child: Column(
         children: [
@@ -60,7 +61,7 @@ class ReceiptScreen extends HookConsumerWidget {
               ),
             ],
           ),
-          Values.v32.verticalSpacing,
+          Values.v16.verticalSpacing,
           Screenshot(
             controller: screenshotController,
             child: ExportFrame(

@@ -68,7 +68,7 @@ class CreateAccountScreen extends HookConsumerWidget {
                       recognizer: signInRecognizer,
                       style: context.textTheme.bodyMedium?.copyWith(
                         fontFamily: FontFamily.manrope,
-                        color: ref.watch(appPrimaryProvider),
+                        color: ref.watch(appPrimaryColorProvider),
                       ),
                     ),
                   ],
@@ -118,7 +118,7 @@ class _TermsAndPrivacyRichText extends HookConsumerWidget {
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
               fontFamily: FontFamily.manrope,
-              color: ref.watch(appPrimaryProvider),
+              color: ref.watch(appPrimaryColorProvider),
             ),
           ),
           TextSpan(
@@ -134,7 +134,7 @@ class _TermsAndPrivacyRichText extends HookConsumerWidget {
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
               fontFamily: FontFamily.manrope,
-              color: ref.watch(appPrimaryProvider),
+              color: ref.watch(appPrimaryColorProvider),
             ),
           ),
         ],

@@ -51,12 +51,11 @@ class AppPinIndicator extends HookConsumerWidget {
               duration: Durations.medium4,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color:
-                    indicators.value[i]
-                        ? ref.watch(appPrimaryProvider)
-                        : AppColors.white,
+                color: indicators.value[i]
+                    ? ref.watch(appPrimaryColorProvider)
+                    : AppColors.white,
                 border: Border.all(
-                  color: ref.watch(appPrimaryProvider),
+                  color: ref.watch(appPrimaryColorProvider),
                 ),
               ),
             ),

@@ -65,7 +65,7 @@ class PhoneTextField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final color = ref.watch(appPrimaryProvider);
+    final color = ref.watch(appPrimaryColorProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

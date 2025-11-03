@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider;
+    show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -50,7 +50,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
                   recognizer: resendMail..onTap = () {},
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,
-                    color: ref.watch(appPrimaryProvider),
+                    color: ref.watch(appPrimaryColorProvider),
                   ),
                 ),
               ],

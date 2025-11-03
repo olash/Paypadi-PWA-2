@@ -1,13 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/core/utils/extensions.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class HistoryScreen extends HookConsumerWidget {
-  const HistoryScreen({super.key});
+class QrCodeScreen extends HookConsumerWidget {
+  const QrCodeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,10 +14,11 @@ class HistoryScreen extends HookConsumerWidget {
       showAppBar: false,
       child: Column(
         children: [
-          Text(
-            "Transactions",
-            style: context.textTheme.titleMedium,
-          ),
+          MobileScanner(
+            onDetect: (barcodes) {
+              
+            },
+          )
         ],
       ),
     );

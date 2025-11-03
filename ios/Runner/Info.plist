@@ -48,6 +48,8 @@
 		<!--Permissions for Third Party Packages-->
 		<key>NSFaceIDUsageDescription</key>
 		<string>This app wants to be able to record your face.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>This app needs camera access to scan QR codes</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>We need permission to save photos and videos to your library for your convenience.</string>
 		<key>NSPhotoLibraryUsageDescription</key>

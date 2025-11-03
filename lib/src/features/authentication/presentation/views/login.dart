@@ -37,6 +37,7 @@ class LoginScreen extends HookConsumerWidget {
     }, [password.value]);
 
     return AppScaffold(
+      showAppBar: false,
       topPadding: kTopPadding,
       bottomPadding: Values.v24,
       child: Column(

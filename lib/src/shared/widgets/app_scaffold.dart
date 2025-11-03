@@ -40,7 +40,9 @@ class AppScaffold extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: bgColor,
-      appBar: showAppBar ? CustomAppbarWithTitle(title: title) : appBar,
+      appBar: showAppBar
+          ? CustomAppbarWithTitle(title: title)
+          :  appBar,
       body: SafeArea(
         child: makeScrollable
             ? SingleChildScrollView(

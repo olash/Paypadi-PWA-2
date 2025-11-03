@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/core/services/service_registry.dart' show appPrimaryProvider;
+import 'package:paypadi/core/services/service_registry.dart'
+    show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart'
     show PinCodeTextField;
@@ -22,15 +23,14 @@ class PinCodeField extends ConsumerWidget {
       pinBoxHeight: 48,
       pinBoxRadius: 12,
       pinBoxBorderWidth: 1,
-    
+
       pinBoxOuterPadding: EdgeInsets.only(right: 4),
-      hasTextBorderColor: ref.watch(appPrimaryProvider),
+      hasTextBorderColor: ref.watch(appPrimaryColorProvider),
       defaultBorderColor: AppColors.unfocusedTextField,
       pinTextStyle: context.textTheme.bodyLarge?.copyWith(
         fontWeight: FontWeight.w400,
       ),
       controller: controller,
-      
     );
   }
 }

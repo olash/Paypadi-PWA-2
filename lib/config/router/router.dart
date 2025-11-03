@@ -71,7 +71,10 @@ class AppRouter extends RootStackRouter {
       path: "/biometric-authentication",
       page: BiometricAuthenticationRoute.page,
     ),
-
+    AutoRoute(
+      path: "/qr-code",
+      page: QrCodeRoute.page,
+    ),
     AutoRoute(
       path: "/transfer",
       page: TransferRoute.page,

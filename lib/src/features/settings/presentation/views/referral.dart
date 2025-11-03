@@ -88,7 +88,7 @@ class ReferralScreen extends HookConsumerWidget {
                 width: context.screenWidth,
                 padding: EdgeInsets.all(Values.v10),
                 decoration: BoxDecoration(
-                  color: ref.read(appPrimaryProvider),
+                  color: ref.read(appPrimaryColorProvider),
                   borderRadius: BorderRadius.circular(Values.v10),
                 ),
                 child: Column(

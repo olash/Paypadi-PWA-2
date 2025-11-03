@@ -21,7 +21,6 @@ class EnterPinScreen extends HookConsumerWidget {
     final biometricService = ref.watch(biometricsProvider);
 
     return AppScaffold(
-      title: "",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,9 +52,8 @@ class EnterPinScreen extends HookConsumerWidget {
             onChanged: (value) {
               password.value = value;
             },
-            onSubmit:
-                (value) =>
-                    ref.read(appRouterProvider).push(ConfirmPaymentRoute()),
+            onSubmit: (value) =>
+                ref.read(appRouterProvider).push(ConfirmPaymentRoute()),
           ),
           Spacer(),
         ],

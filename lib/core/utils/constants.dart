@@ -1,21 +1,15 @@
+import 'dart:convert' show json;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart' show SvgAssetLoader, svg;
 import 'package:paypadi/config/gen/assets.gen.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'package:paypadi/config/gen/colors.gen.dart';
-
-Future<void> preCacheSVGs() async {
-  for (final svgIcon in AppAssets.icons.values) {
-    final loadSvg = SvgAssetLoader(svgIcon.path);
-    await svg.cache.putIfAbsent(
-      loadSvg.cacheKey(null),
-      () => loadSvg.loadBytes(null),
-    );
-  }
-}
 
 class Values {
   static final double zero = 0.0;
@@ -59,6 +53,8 @@ final Size kAppBarSize = Size(double.infinity, 56);
 final double kTopPadding = 40.0;
 
 final double kBottomPadding = 40.0;
+
+final Duration kAppDuration = Durations.medium2;
 
 final List<Color> availableColors = [
   AppColors.primary,

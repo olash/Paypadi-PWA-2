@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider, appRouterProvider;
+    show appPrimaryColorProvider, appRouterProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/widgets/pincode_field.dart';
@@ -54,9 +54,9 @@ class OtpScreen extends HookConsumerWidget {
                     recognizer: resendCode,
                     style: context.textTheme.bodySmall?.copyWith(
                       letterSpacing: 0.5,
-                      color: ref.watch(appPrimaryProvider),
+                      color: ref.watch(appPrimaryColorProvider),
                       decoration: TextDecoration.underline,
-                      decorationColor: ref.watch(appPrimaryProvider),
+                      decorationColor: ref.watch(appPrimaryColorProvider),
                     ),
                   ),
                 ],

@@ -58,13 +58,17 @@ class AppTheme {
         color: AppColors.hintText,
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      disabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.unfocusedTextField),
+        borderRadius: BorderRadius.circular(Values.v12),
+      ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: primary),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(Values.v12),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.unfocusedTextField),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(Values.v12),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Values.v18),

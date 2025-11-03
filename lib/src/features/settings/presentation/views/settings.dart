@@ -53,6 +53,7 @@ class SettingsScreen extends HookConsumerWidget {
     return AppScaffold(
       leftPadding: 0,
       rightPadding: 0,
+      showAppBar: false,
       appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,
