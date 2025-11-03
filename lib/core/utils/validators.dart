@@ -1,10 +1,32 @@
 // Simple validators used across the app.
+String? requiredValidator(String? text) {
+  if (text == null || text.trim().isEmpty) return 'This field is required';
 
-String? nameValidator(String name) {
+  return null;
+}
+
+String? nameValidator(String? name) {
+  if (name == null || name.trim().isEmpty) return 'Enter a name';
+
+  final trimmed = name.trim();
+
+  // Disallow spaces — only a single (singular) name is allowed.
+  if (trimmed.contains(RegExp(r'\s'))) return 'Enter a single name (no spaces)';
+
+  // Accept only ASCII letters. If you want to allow diacritics, we can expand this.
   final RegExp regex = RegExp(r'^[A-Za-z]+$');
-  if (!regex.hasMatch(name)) {
-    return 'Enter a name';
-  }
+  if (!regex.hasMatch(trimmed)) return 'Enter a valid name';
+
+  return null;
+}
+
+String? otpValidator(String? otp) {
+  if (otp == null || otp.trim().isEmpty) return 'Enter the OTP';
+  final trimmed = otp.trim();
+
+  // Accept 4 to 6 digit numeric OTPs (common lengths). Adjust if your app uses a different length.
+  if (!RegExp(r'^\d{4,6}$').hasMatch(trimmed)) return 'Enter a valid OTP';
+
   return null;
 }
 
@@ -26,11 +48,20 @@ String? phoneNumberValidator(String? phone) {
     normalized = normalized.substring(1);
   }
 
+  // Conservatively accept international '00' prefix when it's followed by '234'
+  // (e.g. 002348031234567). This avoids accidentally stripping leading zeros
+  // from local numbers that legitimately start with '00'.
+  if (normalized.startsWith('00') &&
+      normalized.length > 2 &&
+      normalized.substring(2).startsWith('234')) {
+    normalized = normalized.substring(2);
+  }
+
   // Local: starts with 0 and 11 digits total (e.g. 08031234567)
   final isAllDigits = RegExp(r'^\d+$').hasMatch(normalized);
   final localMatch =
       normalized.startsWith('0') && normalized.length == 11 && isAllDigits;
-  // International without plus: starts with 234 and then 10 digits (e.g. 2348031234567)
+  // International without plus/prefix: starts with 234 and then 10 digits (e.g. 2348031234567)
   final intlMatch =
       normalized.startsWith('234') && normalized.length == 13 && isAllDigits;
 

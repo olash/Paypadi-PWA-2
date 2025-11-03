@@ -56,13 +56,13 @@ class ChangePasswordScreen extends HookConsumerWidget {
   }
 
   void _changePasswordRouteOnSubmit(WidgetRef ref, String currentPassword) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          PasswordRoute(
-            onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
-          ),
-        );
+    // ref
+    //     .read(appRouterProvider)
+    //     .push(
+    //       PasswordRoute(
+    //         onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
+    //       ),
+    //     );
   }
 
   void _passwordRouteOnSubmit(WidgetRef ref, String password) {

@@ -51,7 +51,7 @@ class CreateAccountScreen extends HookConsumerWidget {
             _TermsAndPrivacyRichText(),
             Values.v16.verticalSpacing,
             FilledButton(
-              onPressed: () => context.router.push(OtpRoute()),
+              onPressed: () => createAccount(ref, form),
               child: Text("Create Account"),
             ),
             Values.v8.verticalSpacing,
@@ -79,6 +79,12 @@ class CreateAccountScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  void createAccount(WidgetRef ref, GlobalKey<FormState> form) {
+    if (form.currentState!.validate()) {
+      ref.read(appRouterProvider).push(OtpRoute());
+    }
   }
 }
 

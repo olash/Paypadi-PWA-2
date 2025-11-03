@@ -66,6 +66,14 @@ class AppTheme {
         borderSide: const BorderSide(color: AppColors.unfocusedTextField),
         borderRadius: BorderRadius.circular(12),
       ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Values.v18),
+        borderSide: const BorderSide(color: AppColors.failure),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Values.v18),
+        borderSide: const BorderSide(color: AppColors.failure),
+      ),
     ),
     textTheme: TextTheme(
       displaySmall: _appTextStyle(36.sp),

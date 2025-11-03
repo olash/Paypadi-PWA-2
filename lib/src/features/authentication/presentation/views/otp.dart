@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/services/service_registry.dart'
-    show appPrimaryProvider;
+    show appPrimaryProvider, appRouterProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/widgets/pincode_field.dart';
@@ -23,11 +23,11 @@ class OtpScreen extends HookConsumerWidget {
     final pinCode = useTextEditingController();
 
     return AppScaffold(
-     showAppBar: true,
+      showAppBar: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         Values.v32.verticalSpacing,
+          Values.v32.verticalSpacing,
           Text("OTP\nverification", style: context.textTheme.headlineMedium),
           Values.v16.verticalSpacing,
           Text(
@@ -35,8 +35,10 @@ class OtpScreen extends HookConsumerWidget {
             style: context.textTheme.bodyMedium,
           ),
           Values.v24.verticalSpacing,
-          Center(
-            child: PinCodeField(controller: pinCode),
+          Form(
+            child: Center(
+              child: PinCodeField(controller: pinCode),
+            ),
           ),
           Values.v12.verticalSpacing,
           Center(
@@ -63,11 +65,15 @@ class OtpScreen extends HookConsumerWidget {
           ),
           Values.v24.verticalSpacing,
           FilledButton(
-            onPressed: () => context.router.push(AccountRoleRoute()),
+            onPressed: () => verifyAccount(ref),
             child: Text("Verify"),
           ),
         ],
       ),
     );
+  }
+
+  void verifyAccount(WidgetRef ref) {
+    ref.read(appRouterProvider).push(AccountRoleRoute());
   }
 }

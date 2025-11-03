@@ -611,51 +611,18 @@ class OtpRouteArgs {
 
 /// generated route for
 /// [_i8.PasswordScreen]
-class PasswordRoute extends _i31.PageRouteInfo<PasswordRouteArgs> {
-  PasswordRoute({
-    _i32.Key? key,
-    _i32.ValueSetter<String>? onSubmit,
-    List<_i31.PageRouteInfo>? children,
-  }) : super(
-         PasswordRoute.name,
-         args: PasswordRouteArgs(key: key, onSubmit: onSubmit),
-         initialChildren: children,
-       );
+class PasswordRoute extends _i31.PageRouteInfo<void> {
+  const PasswordRoute({List<_i31.PageRouteInfo>? children})
+    : super(PasswordRoute.name, initialChildren: children);
 
   static const String name = 'PasswordRoute';
 
   static _i31.PageInfo page = _i31.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<PasswordRouteArgs>(
-        orElse: () => const PasswordRouteArgs(),
-      );
-      return _i8.PasswordScreen(key: args.key, onSubmit: args.onSubmit);
+      return const _i8.PasswordScreen();
     },
   );
-}
-
-class PasswordRouteArgs {
-  const PasswordRouteArgs({this.key, this.onSubmit});
-
-  final _i32.Key? key;
-
-  final _i32.ValueSetter<String>? onSubmit;
-
-  @override
-  String toString() {
-    return 'PasswordRouteArgs{key: $key, onSubmit: $onSubmit}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! PasswordRouteArgs) return false;
-    return key == other.key && onSubmit == other.onSubmit;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ onSubmit.hashCode;
 }
 
 /// generated route for

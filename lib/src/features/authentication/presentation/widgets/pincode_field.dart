@@ -22,6 +22,7 @@ class PinCodeField extends ConsumerWidget {
       pinBoxHeight: 48,
       pinBoxRadius: 12,
       pinBoxBorderWidth: 1,
+    
       pinBoxOuterPadding: EdgeInsets.only(right: 4),
       hasTextBorderColor: ref.watch(appPrimaryProvider),
       defaultBorderColor: AppColors.unfocusedTextField,
@@ -29,6 +30,7 @@ class PinCodeField extends ConsumerWidget {
         fontWeight: FontWeight.w400,
       ),
       controller: controller,
+      
     );
   }
 }

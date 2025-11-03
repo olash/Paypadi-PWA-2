@@ -21,7 +21,7 @@ class AccountRoleScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-                Values.v32.verticalSpacing,
+          Values.v32.verticalSpacing,
           Text(
             "Choose Your Role",
             style: context.textTheme.headlineMedium,

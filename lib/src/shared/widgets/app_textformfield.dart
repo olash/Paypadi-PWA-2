@@ -12,17 +12,21 @@ class AppTextformfield extends StatelessWidget {
   const AppTextformfield({
     super.key,
     this.hint,
+    this.isEnabled,
     this.titleStyle,
     this.keyboardType = TextInputType.text,
+    this.validator,
     required this.title,
     required this.controller,
   });
 
   final String title;
   final String? hint;
+  final bool? isEnabled;
   final TextStyle? titleStyle;
   final TextInputType keyboardType;
   final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,8 @@ class AppTextformfield extends StatelessWidget {
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
+          validator: validator,
+          enabled: isEnabled,
           decoration: InputDecoration(hintText: hint),
         ),
         Values.v12.verticalSpacing,
@@ -74,11 +80,12 @@ class PhoneTextField extends ConsumerWidget {
         Values.v6.verticalSpacing,
         Row(
           spacing: Values.v6,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Values.v16,
-                vertical: Values.v12,
+                vertical: Values.v14,
               ),
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.unfocusedTextField),
@@ -111,6 +118,14 @@ class PhoneTextField extends ConsumerWidget {
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: color),
                     borderRadius: BorderRadius.circular(Values.v18),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Values.v18),
+                    borderSide: const BorderSide(color: AppColors.failure),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Values.v18),
+                    borderSide: const BorderSide(color: AppColors.failure),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(Values.v18),

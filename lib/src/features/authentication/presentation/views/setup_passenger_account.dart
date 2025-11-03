@@ -6,6 +6,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys, Values;
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -18,11 +19,13 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
     final TextEditingController firstName = useTextEditingController();
     final TextEditingController surname = useTextEditingController();
     final TextEditingController referralCode = useTextEditingController();
+    final GlobalKey<FormState> form = GlobalKey<FormState>();
 
     return AppScaffold(
       showAppBar: true,
       makeScrollable: true,
       child: Form(
+        key: form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -41,11 +44,13 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
               title: "First Name",
               hint: "Enter first name",
               controller: firstName,
+              validator: (firstname) => nameValidator(firstname),
             ),
             AppTextformfield(
               title: "Surname",
               hint: "Enter surname",
               controller: surname,
+              validator: (surname) => nameValidator(surname),
             ),
             AppTextformfield(
               title: "Referral Code (Optional)",
@@ -54,7 +59,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
             ),
             24.0.verticalSpacing,
             FilledButton(
-              onPressed: () => submit(ref),
+              onPressed: () => submit(ref, form),
               child: Text("Submit"),
             ),
           ],
@@ -63,75 +68,9 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void submit(WidgetRef ref) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          PasswordRoute(
-            onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
-          ),
-        );
-  }
-
-  void _passwordRouteOnSubmit(WidgetRef ref, String password) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          ConfirmPasswordRoute(
-            onSubmit: (confirmPassword) => _confirmPasswordRouteOnSubmit(
-              ref,
-              password,
-              confirmPassword,
-            ),
-          ),
-        );
-  }
-
-  void _confirmPasswordRouteOnSubmit(
-    WidgetRef ref,
-    String password,
-    String confirmPassword,
-  ) {
-    if (password == confirmPassword) {
-      ref
-          .read(secureCacheProvider)
-          .write(key: CacheKeys.loginPin, value: confirmPassword);
-      ref
-          .read(appRouterProvider)
-          .push(
-            TransactionPinRoute(
-              onSubmit: (transactionPin) =>
-                  _transactionPinRouteOnSubmit(ref, transactionPin),
-            ),
-          );
-    }
-  }
-
-  void _transactionPinRouteOnSubmit(WidgetRef ref, String pin) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          ConfirmTransactionPinRoute(
-            onSubmit: (confirmTransactionPin) =>
-                _confirmTransactionPinRouteOnSubmit(
-                  ref,
-                  pin,
-                  confirmTransactionPin,
-                ),
-          ),
-        );
-  }
-
-  void _confirmTransactionPinRouteOnSubmit(
-    WidgetRef ref,
-    String pin,
-    String confirmedPin,
-  ) {
-    if (pin == confirmedPin) {
-      ref
-          .read(secureCacheProvider)
-          .write(key: CacheKeys.transactionPin, value: confirmedPin);
-      ref.read(appRouterProvider).push(BiometricAuthenticationRoute());
+  void submit(WidgetRef ref, GlobalKey<FormState> form) {
+    if (form.currentState!.validate()) {
+      ref.read(appRouterProvider).push(PasswordRoute());
     }
   }
 }

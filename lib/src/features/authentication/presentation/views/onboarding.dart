@@ -24,6 +24,7 @@ class OnboardingScreen extends HookConsumerWidget {
     final onboardingValues = onboardingStoryAndAsset.values.toList();
 
     return AppScaffold(
+      showAppBar: false,
       topPadding: kTopPadding,
       bottomPadding: kBottomPadding,
       child: Column(

@@ -6,6 +6,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys, Values;
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -21,13 +22,17 @@ class SetupDriverAccountScreen extends HookConsumerWidget {
     final license = useTextEditingController();
     final plateNumber = useTextEditingController();
     final referralCode = useTextEditingController();
+    final GlobalKey<FormState> form = GlobalKey<FormState>();
 
     return AppScaffold(
       showAppBar: true,
+      makeScrollable: true,
       child: Form(
+        key: form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Values.v32.verticalSpacing,
             Text(
               "Set up your account",
               style: context.textTheme.headlineMedium,
@@ -43,27 +48,33 @@ class SetupDriverAccountScreen extends HookConsumerWidget {
               title: "First Name",
               hint: "Enter first name",
               controller: firstName,
+              validator: (firstName) => nameValidator(firstName),
             ),
             AppTextformfield(
               title: "Surname",
               hint: "Enter surname",
               controller: surname,
+              validator: (firstName) => nameValidator(firstName),
             ),
 
             AppTextformfield(
               title: "Cab Number",
               hint: "Enter your cab number",
               controller: cabNumber,
+              keyboardType: TextInputType.number,
+              validator: (cabNumber) => requiredValidator(cabNumber),
             ),
             AppTextformfield(
               title: "Driver's License",
               hint: "Enter your driver’s license",
               controller: license,
+              validator: (license) => requiredValidator(license),
             ),
             AppTextformfield(
               title: "Plate Number",
               hint: "Enter your plate number",
               controller: plateNumber,
+              validator: (plateNo) => plateNumberValidator(plateNo),
             ),
             AppTextformfield(
               title: "Referral Code (Optional)",
@@ -72,7 +83,7 @@ class SetupDriverAccountScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => submit(ref),
+              onPressed: () => submit(ref, form.currentState!),
               child: Text("Submit"),
             ),
           ],
@@ -81,14 +92,10 @@ class SetupDriverAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void submit(WidgetRef ref) {
-    ref
-        .read(appRouterProvider)
-        .push(
-          PasswordRoute(
-            onSubmit: (password) => _passwordRouteOnSubmit(ref, password),
-          ),
-        );
+  void submit(WidgetRef ref, FormState form) {
+    if (form.validate()) {
+      ref.read(appRouterProvider).push(PasswordRoute());
+    }
   }
 
   void _passwordRouteOnSubmit(WidgetRef ref, String password) {
