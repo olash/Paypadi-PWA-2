@@ -1,10 +1,6 @@
-import 'dart:convert' show json;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_svg/flutter_svg.dart' show SvgAssetLoader, svg;
 import 'package:paypadi/config/gen/assets.gen.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';

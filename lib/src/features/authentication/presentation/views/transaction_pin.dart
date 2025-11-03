@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/services/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart'
-    show logger, transactionPinLength, Values, CacheKeys;
+    show transactionPinLength, Values, CacheKeys;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
