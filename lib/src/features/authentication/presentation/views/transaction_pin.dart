@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show transactionPinLength, Values, CacheKeys;
 import 'package:paypadi/core/utils/extensions.dart';
@@ -27,14 +27,14 @@ class TransactionPinScreen extends HookConsumerWidget {
             "Create a Transaction PIN",
             style: context.textTheme.headlineMedium,
           ),
-          16.0.verticalSpacing,
+          Values.v12.verticalSpacing,
           Text(
             "Set a secure password for your account",
-            style: context.textTheme.bodyMedium?.copyWith(
+            style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          32.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           AppPinIndicator(
             text: transactionPin.value,
             pinLength: transactionPinLength,
@@ -73,14 +73,14 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
             "Confirm Transaction Pin",
             style: context.textTheme.headlineMedium,
           ),
-          16.0.verticalSpacing,
+          Values.v12.verticalSpacing,
           Text(
             "Set a secure password for your account",
-            style: context.textTheme.bodyMedium?.copyWith(
+            style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          32.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           AppPinIndicator(
             text: confirmTransactionPin.value,
             pinLength: transactionPinLength,

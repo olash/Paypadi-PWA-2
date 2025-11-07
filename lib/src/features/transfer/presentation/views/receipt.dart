@@ -12,7 +12,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart'
     show ImageGallerySaverPlus;
 import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 
 import 'package:screenshot/screenshot.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
@@ -50,10 +50,9 @@ class ReceiptScreen extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CloseButton(
-                onPressed:
-                    () => ref
-                        .read(appRouterProvider)
-                        .popUntilRouteWithName(AppBottomNavBarRoute.name),
+                onPressed: () => ref
+                    .read(appRouterProvider)
+                    .popUntilRouteWithName(AppBottomNavBarRoute.name),
               ),
               IconButton(
                 onPressed: () async => await _shareReceipt(pixelRatio),
@@ -133,10 +132,9 @@ class ReceiptScreen extends HookConsumerWidget {
           ),
           Values.v12.verticalSpacing,
           FilledButton(
-            onPressed:
-                () => ref
-                    .read(appRouterProvider)
-                    .popUntilRouteWithName(AppBottomNavBarRoute.name),
+            onPressed: () => ref
+                .read(appRouterProvider)
+                .popUntilRouteWithName(AppBottomNavBarRoute.name),
             child: Text("Back to Home"),
           ),
           Spacer(),
@@ -168,17 +166,17 @@ class ReceiptScreen extends HookConsumerWidget {
       ShareParams(files: [shareableFile]),
     );
 
-    logger.debug(savedReceiptPath);
-    logger.debug(shareStatus);
-    logger.debug(result);
+    debugLogger.debug(savedReceiptPath);
+    debugLogger.debug(shareStatus);
+    debugLogger.debug(result);
   }
 
   Future<void> _generatePdfReceipt() async {
     // try {
     //   final pdf = await exportDelegate.exportToPdfDocument('receipt');
-    //   logger.debug(pdf);
+    //   debugLogger.debug(pdf);
     // } on Exception catch (e) {
-    //   logger.debug(e.toString(), e);
+    //   debugLogger.debug(e.toString(), e);
     // }
   }
 }

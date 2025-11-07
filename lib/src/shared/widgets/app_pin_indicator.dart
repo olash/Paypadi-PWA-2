@@ -4,7 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart'
     show HookConsumerWidget, WidgetRef;
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
+import 'package:paypadi/core/utils/constants.dart';
 
 class AppPinIndicator extends HookConsumerWidget {
   const AppPinIndicator({
@@ -46,8 +47,8 @@ class AppPinIndicator extends HookConsumerWidget {
           Padding(
             padding: EdgeInsets.only(right: i == pinLength - 1 ? 0 : 16),
             child: AnimatedContainer(
-              height: 16,
-              width: 16,
+              height: Values.v16,
+              width: Values.v16,
               duration: Durations.medium4,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,

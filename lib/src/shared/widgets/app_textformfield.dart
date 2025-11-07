@@ -5,7 +5,7 @@ import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/gen/fonts.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
 class AppTextformfield extends StatelessWidget {

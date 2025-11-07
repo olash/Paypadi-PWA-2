@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -63,20 +64,24 @@ class _RoleWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onWidgetTapped,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-        margin: EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.symmetric(
+          vertical: Values.v24,
+          horizontal: Values.v16,
+        ),
+        margin: EdgeInsets.only(bottom: Values.v16),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(Values.v12.r),
           boxShadow: [
             BoxShadow(
-              blurRadius: 4,
+              blurRadius: Values.v4,
+              offset: Offset(Values.zero, Values.v1),
               color: AppColors.black.withValues(alpha: .25),
             ),
           ],
         ),
         child: Row(
-          spacing: 16,
+          spacing: Values.v16,
           children: [
             switch (role) {
               AccountRole.passenger => AppAssets.illustrations.passenger.svg(),
@@ -84,7 +89,7 @@ class _RoleWidget extends StatelessWidget {
             },
             Expanded(
               child: Column(
-                spacing: 6,
+                spacing: Values.v6,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

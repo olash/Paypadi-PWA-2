@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
@@ -18,7 +18,7 @@ Future<void> initializeApp() async {
     observers: [
       if (kDebugMode)
         TalkerRiverpodObserver(
-          talker: logger,
+          talker: debugLogger,
           settings: TalkerRiverpodLoggerSettings(
             printProviderDisposed: true,
           ),
@@ -30,7 +30,11 @@ Future<void> initializeApp() async {
   try {
     await providerContainer.read(sharedPreferencesFutureProvider.future);
   } catch (e, stack) {
-    logger.error('Failed to initialize SharedPreferencesWithCache', e, stack);
+    debugLogger.error(
+      'Failed to initialize SharedPreferencesWithCache',
+      e,
+      stack,
+    );
     // Optionally, handle the error further or rethrow
   }
 

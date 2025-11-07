@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
-import 'package:paypadi/core/services/service_registry.dart'
+import 'package:paypadi/config/provider_registry/service_registry.dart'
     show localCacheProvider;
 
 import 'router.gr.dart';

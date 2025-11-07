@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -48,15 +48,15 @@ class OnboardingScreen extends HookConsumerWidget {
             children: List.generate(
               onboardingStoryAndAsset.length,
               (index) => AnimatedContainer(
-                height: 5,
-                duration: Durations.medium4,
+                height: Values.v6,
+                duration: animatedFooDuration,
                 width: currentImg.value == index ? Values.v36 : Values.v6,
-                margin: EdgeInsets.only(right: 4),
+                margin: EdgeInsets.only(right: Values.v4),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Values.v24.r),
                   color: currentImg.value == index
                       ? ref.watch(appPrimaryColorProvider)
                       : AppColors.unselectedIndicator,
-                  borderRadius: BorderRadius.circular(25),
                 ),
               ),
             ),
@@ -64,19 +64,15 @@ class OnboardingScreen extends HookConsumerWidget {
           Values.v24.verticalSpacing,
           FilledButton(
             onPressed: () {
-              ref
-                  .read(localCacheProvider)
-                  .saveToCache(key: CacheKeys.viewedOnboarding, value: true);
-              context.router.push(CreateAccountRoute());
+              ref.read(localCacheProvider).markOnboardingAsSeen();
+              ref.read(appRouterProvider).push(CreateAccountRoute());
             },
             child: Text("Create Account"),
           ),
           OutlinedButton(
             onPressed: () {
-              ref
-                  .read(localCacheProvider)
-                  .saveToCache(key: CacheKeys.viewedOnboarding, value: true);
-              context.router.push(LoginRoute());
+              ref.read(localCacheProvider).markOnboardingAsSeen();
+              ref.read(appRouterProvider).push(LoginRoute());
             },
             child: Text("Sign In"),
           ),
@@ -88,7 +84,6 @@ class OnboardingScreen extends HookConsumerWidget {
 
 class _OnboardingStory extends StatelessWidget {
   const _OnboardingStory({required this.text, required this.imagePath});
-
   final String text;
   final String imagePath;
 
@@ -96,9 +91,12 @@ class _OnboardingStory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset(imagePath),
-        if (imagePath == AppAssets.images.storyOne.path) 78.0.verticalSpacing,
-        12.0.verticalSpacing,
+        Image.asset(
+          imagePath,
+          height: context.screenHeight * .45,
+        ),
+
+        Values.v12.verticalSpacing,
         Text(
           text,
           textAlign: TextAlign.center,

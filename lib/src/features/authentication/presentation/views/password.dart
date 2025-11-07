@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show passwordPinLength, Values, CacheKeys;
 import 'package:paypadi/core/utils/extensions.dart';
@@ -28,10 +28,10 @@ class PasswordScreen extends HookConsumerWidget {
             "Create your Password",
             style: context.textTheme.headlineMedium,
           ),
-          Values.v16.verticalSpacing,
+          Values.v12.verticalSpacing,
           Text(
             "Set a secure password for your account",
-            style: context.textTheme.bodyMedium?.copyWith(
+            style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -75,14 +75,14 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
             "Confirm your Password",
             style: context.textTheme.headlineMedium,
           ),
-          16.0.verticalSpacing,
+          Values.v12.verticalSpacing,
           Text(
             "Set a secure password for your account",
-            style: context.textTheme.bodyMedium?.copyWith(
+            style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          32.0.verticalSpacing,
+          Values.v32.verticalSpacing,
           AppPinIndicator(
             text: confirmPassword.value,
             pinLength: passwordPinLength,

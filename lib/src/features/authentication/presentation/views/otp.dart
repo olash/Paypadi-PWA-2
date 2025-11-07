@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart'
+import 'package:paypadi/config/provider_registry/service_registry.dart'
     show appPrimaryColorProvider, appRouterProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
@@ -28,11 +28,14 @@ class OtpScreen extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Values.v32.verticalSpacing,
-          Text("OTP\nverification", style: context.textTheme.headlineMedium),
+          Text(
+            "OTP\nverification",
+            style: context.textTheme.headlineMedium,
+          ),
           Values.v16.verticalSpacing,
           Text(
             "Kindly provide the verification code sent to your ${obfuscatePhoneNumber("+2348134726507")}",
-            style: context.textTheme.bodyMedium,
+            style: context.textTheme.bodyLarge,
           ),
           Values.v24.verticalSpacing,
           Form(

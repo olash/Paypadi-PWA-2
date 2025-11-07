@@ -70,7 +70,7 @@ String? phoneNumberValidator(String? phone) {
   // - normalized == '234' + 10 digits
   // The regex above uses an explicit end anchor; ensure the string matches exactly.
   if (!localMatch && !intlMatch) {
-    return 'Enter a valid Nigerian phone number (e.g. 08031234567 or +2348031234567)';
+    return 'Enter a valid number (e.g. 08031234567)';
   }
 
   return null;

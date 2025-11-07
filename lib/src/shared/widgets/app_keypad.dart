@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart'
+import 'package:paypadi/config/provider_registry/service_registry.dart'
     show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 
@@ -96,7 +97,7 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
       splashColor: ref.watch(appPrimaryColorProvider).withValues(alpha: .1),
       child: Center(
         child: switch (key) {
-          "x" => Icon(EvaIcons.backspace_outline, size: 32),
+          "x" => AppAssets.icons.keypadBackspace.svg(),
           "." => switch (widget.showBiometric) {
             true => Icon(IonIcons.finger_print, size: 42),
             false => SizedBox(),

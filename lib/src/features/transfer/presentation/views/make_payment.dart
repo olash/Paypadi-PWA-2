@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
@@ -122,7 +122,7 @@ class _BankAccountInformation extends ConsumerWidget {
                   accountNumber,
                   style: context.textTheme.bodySmall?.copyWith(
                     letterSpacing: kZeroLetterSpacing,
-                    color: AppColors.bankAccountNumberTextColor,
+                    color: AppColors.grey600,
                   ),
                 ),
               ],

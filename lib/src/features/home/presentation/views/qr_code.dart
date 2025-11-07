@@ -46,7 +46,7 @@ class QrCodeScreen extends HookConsumerWidget {
                   return Container();
                 },
                 onDetect: (barcodes) {
-                  logger.debug(barcodes);
+                  debugLogger.debug(barcodes);
                 },
               ),
             ),

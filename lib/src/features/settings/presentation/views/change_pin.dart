@@ -41,11 +41,9 @@ class ChangePinScreen extends HookConsumerWidget {
             pinLength: transactionPinLength,
             onChanged: (value) {
               pin.value = value;
-              logger.debug(pin.value);
+              debugLogger.debug(pin.value);
             },
-            onSubmit: (currentPin) {
-              
-            },
+            onSubmit: (currentPin) {},
           ),
           Spacer(),
         ],

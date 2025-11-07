@@ -2,8 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/services/service_registry.dart';
+import 'package:paypadi/config/provider_registry/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
@@ -34,12 +35,15 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
               "Set up your account",
               style: context.textTheme.headlineMedium,
             ),
-            16.0.verticalSpacing,
+            Values.v16.verticalSpacing,
             Text(
               "Kindly provide the details below to help give you the best experience.",
-              style: context.textTheme.bodyMedium,
+              style: context.textTheme.bodyLarge?.copyWith(
+                color: AppColors.grey600,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-            32.0.verticalSpacing,
+            Values.v32.verticalSpacing,
             AppTextformfield(
               title: "First Name",
               hint: "Enter first name",
@@ -57,7 +61,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
               hint: "Enter referral code",
               controller: referralCode,
             ),
-            24.0.verticalSpacing,
+            Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(ref, form),
               child: Text("Submit"),

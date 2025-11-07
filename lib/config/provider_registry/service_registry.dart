@@ -3,7 +3,7 @@ import 'dart:ui' show Color;
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
 import 'package:paypadi/core/utils/constants.dart'
-    show CacheKeys, availableColors, logger;
+    show CacheKeys, availableColors;
 import 'package:paypadi/core/services/biometrics_service.dart'
     show BiometricsService;
 import 'package:paypadi/core/services/local_cache_service.dart'
@@ -27,11 +27,11 @@ class ColorIndexNotifier extends _$ColorIndexNotifier {
     return isValidIndex ? colorIndex : 0;
   }
 
-  void setColorIndex(int index) {
+  void setColorIndex(int index) async {
     if (index >= 0 && index < availableColors.length) {
       state = index;
       final localCache = ref.read(localCacheProvider);
-      localCache.saveToCache(key: CacheKeys.colorTheme, value: index);
+      await localCache.setColorTheme(index);
     }
   }
 }
@@ -47,7 +47,6 @@ Color appPrimaryColor(Ref ref) {
 @Riverpod(keepAlive: true)
 AppTheme appTheme(Ref ref) {
   return AppTheme(
-  
     primary: ref.watch(appPrimaryColorProvider),
   );
 }
@@ -69,13 +68,12 @@ Future<SharedPreferencesWithCache> sharedPreferencesFuture(Ref ref) {
 @Riverpod(keepAlive: true)
 LocalCacheService localCache(Ref ref) {
   return LocalCacheService(
-    logger: logger,
     sharedPreferences: ref.watch(sharedPreferencesFutureProvider).requireValue,
   );
 }
 
 @Riverpod(keepAlive: true)
-SecureCacheService secureCache(Ref ref) => SecureCacheService(logger: logger);
+SecureCacheService secureCache(Ref ref) => SecureCacheService();
 
 @riverpod
 BiometricsService biometrics(Ref ref) {

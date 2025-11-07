@@ -100,7 +100,7 @@ Future<Map<String, dynamic>> _loadJsonAsset(String assetPath) async {
     // avoid bubbling the exception here. Callers can log or handle as needed.
     // You may change this behaviour to rethrow if you prefer strict errors.
 
-    logger.error('Failed to load JSON asset "$assetPath": $e');
+    debugLogger.error('Failed to load JSON asset "$assetPath": $e');
     _jsonAssetCache[assetPath] = <String, dynamic>{};
     return <String, dynamic>{};
   }

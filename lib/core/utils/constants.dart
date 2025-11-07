@@ -1,6 +1,6 @@
-
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';
@@ -38,7 +38,7 @@ class Values {
 
 final Size appDesignSize = Size(393, 852);
 
-final Size kButtonSize = Size(362, 56);
+final Size kButtonSize = Size(362.w, 48.h);
 
 final Size kButtonMediumSize = Size(158, 48);
 
@@ -50,13 +50,13 @@ final double kTopPadding = 40.0;
 
 final double kBottomPadding = 40.0;
 
-final Duration kAppDuration = Durations.medium2;
+final Duration animatedFooDuration = Durations.medium4;
 
 final List<Color> availableColors = [
   AppColors.primary,
   AppColors.blueThemeColor,
   AppColors.pinkThemeColor,
-  AppColors.orangeThemeColor,
+AppColors.orangeThemeColor,
   AppColors.lightGreenThemeColor,
 ];
 
@@ -93,7 +93,7 @@ final double kVeryTightLetterSpacing = -0.43;
 final String kDemoProfilePic =
     "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
 
-final Talker logger = TalkerFlutter.init(
+final Talker debugLogger = TalkerFlutter.init(
   settings: TalkerSettings(
     enabled: !kReleaseMode,
     useConsoleLogs: !kReleaseMode,
@@ -122,6 +122,7 @@ final Talker logger = TalkerFlutter.init(
 
 class CacheKeys {
   static final String role = "role";
+  static final String userToken = "userToken";
   static final String viewedOnboarding = "hasViewedOnboarding";
   static final String isDarkMode = "isDarkMode";
   static final String enabledBiometrics = "enabledBiometrics";
