@@ -6,7 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/service_registry.dart';
+import 'package:paypadi/config/service_registry/service_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -87,14 +87,14 @@ class _ThemeColorWidget extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: Durations.medium4,
-        width: 40,
-        height: 40,
+        width: Values.v48,
+        height: Values.v48,
         margin: EdgeInsets.only(right: Values.v12),
         decoration: ShapeDecoration(
           color: color,
           shape: CircleBorder(
             side: isCurrent
-                ? BorderSide(color: AppColors.black, width: 3)
+                ? BorderSide(color: AppColors.black, width: Values.v2)
                 : BorderSide.none,
           ),
         ),

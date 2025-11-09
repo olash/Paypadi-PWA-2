@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/service_registry.dart'
+import 'package:paypadi/config/service_registry/service_registry.dart'
     show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 
@@ -99,10 +100,15 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
         child: switch (key) {
           "x" => AppAssets.icons.keypadBackspace.svg(),
           "." => switch (widget.showBiometric) {
-            true => Icon(IonIcons.finger_print, size: 42),
-            false => SizedBox(),
+            true => Icon(IonIcons.finger_print, size: Values.v48),
+            false => SizedBox.shrink(),
           },
-          _ => Text(key, style: context.textTheme.headlineSmall),
+          _ => Text(
+            key,
+            style: context.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         },
       ),
     );

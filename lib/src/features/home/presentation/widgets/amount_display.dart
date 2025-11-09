@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/enums.dart';
@@ -19,22 +20,19 @@ class AmountDisplay extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 12,
+      spacing: Values.v12,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: Values.v24,
-            vertical: Values.v16,
-          ),
+          padding: EdgeInsets.symmetric(vertical: Values.v12),
           decoration: BoxDecoration(
             color: AppColors.white,
             border: Border.all(color: AppColors.amountDisplayBorderColor),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(Values.v8.r),
           ),
           child: Center(
             child: Text(
               "₦${formatAmount(amountEntered)}",
-              style: context.textTheme.headlineSmall,
+              style: context.textTheme.headlineLarge,
             ),
           ),
         ),
@@ -45,14 +43,14 @@ class AmountDisplay extends HookWidget {
               GestureDetector(
                 onTap: () => onAmountPressed(amount.value),
                 child: Container(
-                  margin: EdgeInsets.only(right: 10),
-                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(right: Values.v10),
+                  padding: EdgeInsets.all(Values.v10),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     border: Border.all(
                       color: AppColors.amountDisplayBorderColor,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(Values.v12.r),
                   ),
                   child: Text(
                     "₦${amount.value}",

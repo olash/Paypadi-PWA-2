@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/service_registry.dart'
+import 'package:paypadi/config/service_registry/service_registry.dart'
     show
         appRouterProvider,
         biometricsProvider,
@@ -42,11 +42,11 @@ class LoginScreen extends HookConsumerWidget {
       bottomPadding: Values.v24,
       child: Column(
         children: [
-          AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
+          AppAvatar(radius: Values.v84, imageUrl: kDemoProfilePic),
           Values.v16.verticalSpacing,
           Text(
-            "Good evening, ",
-            style: context.textTheme.headlineMedium,
+            "Good evening, Sheriff",
+            style: context.textTheme.headlineSmall,
           ),
           Values.v24.verticalSpacing,
           AppPinIndicator(
@@ -81,9 +81,9 @@ class LoginScreen extends HookConsumerWidget {
                   .push(ForgotPasswordRoute(email: "tokiolaolu@gmail.com")),
               child: Text(
                 "Forgot Password?",
-                style: context.textTheme.bodySmall?.copyWith(
-                  letterSpacing: 0.5,
-                ),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  letterSpacing: -Values.v1
+                )
               ),
             ),
           ),
