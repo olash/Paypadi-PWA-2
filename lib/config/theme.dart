@@ -92,7 +92,22 @@ class AppTheme {
         borderSide: const BorderSide(color: AppColors.failure),
       ),
     ),
-
+    searchBarTheme: SearchBarThemeData(
+      elevation: WidgetStatePropertyAll(Values.zero),
+      shape: WidgetStatePropertyAll(
+        RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.unfocusedTextField),
+          borderRadius: BorderRadius.circular(Values.v12.r),
+        ),
+      ),
+    ),
+    searchViewTheme: SearchViewThemeData(
+      // elevation: Values.zero,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: AppColors.unfocusedTextField),
+        borderRadius: BorderRadius.circular(Values.v12.r),
+      ),
+    ),
     textTheme: TextTheme(
       displaySmall: _appTextStyle,
       headlineLarge: _appTextStyle,

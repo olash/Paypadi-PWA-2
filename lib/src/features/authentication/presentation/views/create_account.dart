@@ -9,9 +9,12 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/service_registry/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/core/utils/validators.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class CreateAccountScreen extends HookConsumerWidget {
@@ -25,10 +28,25 @@ class CreateAccountScreen extends HookConsumerWidget {
     final phoneNumber = useTextEditingController();
 
     useEffect(() {
-      signInRecognizer.onTap = () =>
-          ref.read(appRouterProvider).push(LoginRoute());
+      signInRecognizer.onTap = () {
+        ref.read(appRouterProvider).push(LoginRoute());
+      };
       return () => signInRecognizer.dispose();
     }, []);
+
+    ref.listen(authControllerProvider, (_, state) {
+      state.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+          ref.read(appRouterProvider).push(OtpRoute());
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(desc: e.toString());
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
 
     return AppScaffold(
       showAppBar: true,
@@ -51,7 +69,7 @@ class CreateAccountScreen extends HookConsumerWidget {
             _TermsAndPrivacyRichText(),
             Values.v16.verticalSpacing,
             FilledButton(
-              onPressed: () => createAccount(ref, form),
+              onPressed: () => createAccount(ref, phoneNumber.text, form),
               child: Text("Create Account"),
             ),
             Values.v8.verticalSpacing,
@@ -75,15 +93,20 @@ class CreateAccountScreen extends HookConsumerWidget {
                 ),
               ),
             ),
+            // LoadingIndicator(),
           ],
         ),
       ),
     );
   }
 
-  void createAccount(WidgetRef ref, GlobalKey<FormState> form) {
+  void createAccount(
+    WidgetRef ref,
+    String phoneNumber,
+    GlobalKey<FormState> form,
+  ) {
     if (form.currentState!.validate()) {
-      ref.read(appRouterProvider).push(OtpRoute());
+      ref.read(authControllerProvider.notifier).requestForOtp(phoneNumber);
     }
   }
 }

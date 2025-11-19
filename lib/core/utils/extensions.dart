@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paypadi/core/utils/constants.dart';
 
 extension BuildContextExtension on BuildContext {
   double get screenWidth => MediaQuery.sizeOf(this).width;
@@ -17,4 +18,9 @@ extension DoubleExtension on double {
   SizedBox get verticalSpacing => SizedBox(height: this);
 
   SizedBox get horizontalSpacing => SizedBox(width: this);
+}
+
+extension NullableObjextExtension on Object? {
+  void print([Object? exception, StackTrace? stackTrace]) =>
+      debugLogger.debug(this, exception, stackTrace);
 }

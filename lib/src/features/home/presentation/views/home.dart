@@ -36,14 +36,12 @@ class HomeScreen extends HookConsumerWidget {
             amountEntered: int.tryParse(amount.value) ?? 0,
             onAmountPressed: (selected) => amount.value = selected.toString(),
           ),
-          Values.v24.verticalSpacing,
-          Expanded(
-            child: AppKeypad(
-              pinLength: 10,
-              onChanged: (value) => amount.value = value,
-            ),
+          Values.v32.verticalSpacing,
+          AppKeypad(
+            pinLength: 10,
+            onChanged: (value) => amount.value = value,
           ),
-          Values.v24.verticalSpacing,
+          Values.v32.verticalSpacing,
           Row(
             spacing: Values.v12,
             children: [

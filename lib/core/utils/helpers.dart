@@ -1,9 +1,16 @@
 import 'dart:convert' show json;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:toastification/toastification.dart';
+
+part 'helpers.g.dart';
 
 String obfuscateEmail(String email) {
   final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
@@ -59,6 +66,23 @@ String getDateAndTime(DateTime date) {
   return '$year-$month-${day}_$hour:$minute';
 }
 
+void showErrorDialog({String? desc}) {
+  toastification.show(
+    title: Text("Error"),
+    applyBlurEffect: true,
+    alignment: Alignment.topCenter,
+    type: ToastificationType.error,
+    style: ToastificationStyle.flat,
+    icon: Icon(Iconsax.danger_outline),
+    borderRadius: BorderRadius.circular(Values.v120),
+    description: desc != null ? Text(desc) : SizedBox.shrink(),
+    autoCloseDuration: const Duration(seconds: 4),
+    animationBuilder: (context, animation, alignment, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
+  );
+}
+
 Future<void> preCacheSVGs() async {
   for (final svgIcon in AppAssets.icons.values) {
     final loadSvg = SvgAssetLoader(svgIcon.path);
@@ -103,5 +127,33 @@ Future<Map<String, dynamic>> _loadJsonAsset(String assetPath) async {
     debugLogger.error('Failed to load JSON asset "$assetPath": $e');
     _jsonAssetCache[assetPath] = <String, dynamic>{};
     return <String, dynamic>{};
+  }
+}
+
+@Riverpod(keepAlive: true)
+Future<List<String>> bankList(Ref ref) async {
+  try {
+    final asset = await loadJsonFromAssets();
+
+    // The JSON loader may return a Map with a 'data' key containing a list,
+    // or the root may already be a list wrapped under 'data' by the loader.
+    final dynamic raw = asset['data'] ?? asset['banks'] ?? asset['items'];
+
+    if (raw is List) {
+      final names = <String>[];
+      for (final item in raw) {
+        if (item is Map<String, dynamic>) {
+          final name = item['name'];
+          if (name is String && name.isNotEmpty) names.add(name);
+        }
+      }
+      return names;
+    }
+
+    // If the structure is unexpected, return an empty list instead of throwing.
+    return <String>[];
+  } catch (_) {
+    // On error, return an empty list to keep the provider safe for consumers.
+    return <String>[];
   }
 }

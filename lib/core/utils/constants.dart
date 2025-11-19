@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -36,6 +37,18 @@ class Values {
   static final double v150 = 150.0;
 }
 
+final int transactionPinLength = 4;
+
+final int passwordPinLength = 6;
+
+final double kZeroLetterSpacing = 0.0;
+
+final double kVeryTightLetterSpacing = -0.43;
+
+final double kTopPadding = 40.0;
+
+final double kBottomPadding = 40.0;
+
 final Size appDesignSize = Size(393, 852);
 
 final Size kButtonSize = Size(362.w, 48.h);
@@ -46,17 +59,16 @@ final Size kButtonSmallSize = Size(125, 32);
 
 final Size kAppBarSize = Size(double.infinity, 56);
 
-final double kTopPadding = 40.0;
-
-final double kBottomPadding = 40.0;
-
 final Duration animatedFooDuration = Durations.medium4;
+
+final String kDemoProfilePic =
+    "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
 
 final List<Color> availableColors = [
   AppColors.primary,
   AppColors.blueThemeColor,
   AppColors.pinkThemeColor,
-AppColors.orangeThemeColor,
+  AppColors.orangeThemeColor,
   AppColors.lightGreenThemeColor,
 ];
 
@@ -81,17 +93,6 @@ final List<String> kAppKeyPadKeys = [
   '0',
   'x',
 ];
-
-final int transactionPinLength = 4;
-
-final int passwordPinLength = 6;
-
-final double kZeroLetterSpacing = 0.0;
-
-final double kVeryTightLetterSpacing = -0.43;
-
-final String kDemoProfilePic =
-    "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
 
 final Talker debugLogger = TalkerFlutter.init(
   settings: TalkerSettings(
@@ -130,3 +131,4 @@ class CacheKeys {
   static final String transactionPin = "transactionPin";
   static final String colorTheme = "colorTheme";
 }
+

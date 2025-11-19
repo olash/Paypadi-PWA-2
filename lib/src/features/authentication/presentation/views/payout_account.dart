@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/service_registry/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
@@ -16,6 +17,7 @@ class DriverPayoutScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bank = useTextEditingController();
     final accountNumber = useTextEditingController();
     final accountName = useTextEditingController();
 
@@ -35,7 +37,7 @@ class DriverPayoutScreen extends HookConsumerWidget {
             style: context.textTheme.bodyMedium,
           ),
           Values.v32.verticalSpacing,
-          _BankList(),
+          _BankList(bankController: bank),
           AppTextformfield(
             title: "Account Number",
             hint: "Enter account number",
@@ -61,12 +63,11 @@ class DriverPayoutScreen extends HookConsumerWidget {
 }
 
 class _BankList extends ConsumerWidget {
-  const _BankList();
+  const _BankList({required this.bankController});
+  final TextEditingController bankController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final banks = ref.watch(bankListProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,24 +76,50 @@ class _BankList extends ConsumerWidget {
           style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
         Values.v6.verticalSpacing,
-        banks.when(
-          data: (banks) {
-            return DropdownMenu(
-              hintText: "Select Bank",
-              dropdownMenuEntries: [
-                for (String bank in banks)
-                  DropdownMenuEntry(
-                    value: bank,
-                    label: bank,
-                  ),
-              ],
-            );
-          },
-          error: (error, stackTrace) => SizedBox.shrink(),
-          loading: () => SizedBox.shrink(),
-        ),
+
+        // SearchAnchor.bar(
+        //   isFullScreen: false,
+        //   barHintText: "Select Bank",
+        //   viewHintText: "Select Bank",
+        //   dividerColor: AppColors.white,
+        //   textInputAction: TextInputAction.search,
+        //   barLeading: SizedBox.shrink(),
+        //   suggestionsBuilder: (context, controller) async {
+        //     final List<String> viableBanks = _search(
+        //       ref,
+        //       controller.text,
+        //     ).toList();
+
+        //     return List<Widget>.generate(
+        //       viableBanks.length,
+        //       (int index) {
+        //         final String bank = viableBanks[index];
+        //         return ListTile(
+        //           title: Text(bank),
+        //           onTap: () {
+        //             controller.closeView(bank);
+        //             bankController.text = bank;
+        //           },
+        //         );
+        //       },
+        //     );
+        //   },
+        // ),
+
         Values.v12.verticalSpacing,
       ],
     );
   }
+
+  // Iterable<String> _search(WidgetRef ref, String query) {
+  //   final banks = ref.watch(bankListProvider).value ?? [];
+
+  //   if (query.isEmpty) {
+  //     return banks;
+  //   }
+
+  //   return banks.where(
+  //     (String bankName) => bankName.toLowerCase().contains(query.toLowerCase()),
+  //   );
+  // }
 }

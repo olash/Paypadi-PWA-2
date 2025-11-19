@@ -23,7 +23,7 @@ class PayPadi extends ConsumerWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       designSize: appDesignSize,
-      builder: (context, _) {
+        builder: (context, _) {
         return ToastificationWrapper(
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

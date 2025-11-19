@@ -54,4 +54,25 @@ abstract class AppException implements Exception {
       return ClientException(message: "${ex.toString()}\n$st");
     }
   }
+
+  String getExceptionMessage() {
+    return switch (this) {
+      ServerException e => e.map(
+        receiveTimeout: (_) => "A receive timeout occurred",
+        requestCancelled: (_) => "Your request was cancelled.",
+        internalServerError: (_) => "Internal Server Error",
+        serviceUnavailable: (_) => "Service unavailable",
+        requestTimeout: (_) => "Connection request timeout",
+        noInternetConnection: (_) => "No internet connection",
+        sendTimeout: (_) => "Send timeout in connection with API server",
+        notFound: (e) => e.reason ?? "Resource not found",
+        badRequest: (e) => e.error ?? "Bad request",
+        unauthorizedRequest: (e) => e.reason ?? "Unauthorized request",
+        unprocessableEntity: (e) => e.reason ?? "Unprocessable entity",
+        defaultError: (e) => e.error ?? "An unexpected error occurred",
+      ),
+      ClientException(:final message) => message,
+      _ => "Oops!, we ran into technical difficulties. Try again later.",
+    };
+  }
 }

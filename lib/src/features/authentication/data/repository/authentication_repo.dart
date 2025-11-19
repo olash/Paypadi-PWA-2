@@ -1,8 +1,9 @@
-import 'package:paypadi/core/api/response/api_response.dart' show ApiResponse;
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
 import 'package:paypadi/src/features/authentication/data/datasource/authentication_client.dart'
     show AuthenticationClient, authClientProvider;
+import 'package:paypadi/src/features/authentication/domain/dtos/authentication_request.dart';
+import 'package:paypadi/src/features/authentication/domain/dtos/authentication_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_repo.g.dart';
@@ -11,9 +12,34 @@ class AuthenticationRepo {
   const AuthenticationRepo(this.authClient);
   final AuthenticationClient authClient;
 
-  FutureResultOf createAccount() async {
-    final response = await Result.fromAsync<ApiResponse>(
-      () => authClient.createAccount(payload: ""),
+  // FutureResultOf createAccount() async {
+  //   final response = await Result.fromAsync<ApiResponse>(
+  //     () => authClient.createAccount(payload: ),
+  //   );
+  //   return response;
+  // }
+
+  //   FutureResultOf createAccount() async {
+  //   final response = await Result.fromAsync<ApiResponse>(
+  //     () => authClient.createAccount(payload: ),
+  //   );
+  //   return response;
+  // }
+
+  FutureResultOf<RequestForOtpResponse> requestForOtpCode(
+    RequestForOtpPayload payload,
+  ) async {
+    final response = await Result.fromAsync<RequestForOtpResponse>(
+      () => authClient.requestForOTP(payload: payload),
+    );
+    return response;
+  }
+
+  FutureResultOf<VerifyOtpResponse> verifyOtpCode(
+    VerifyOtpPayload payload,
+  ) async {
+    final response = await Result.fromAsync<VerifyOtpResponse>(
+      () => authClient.verifyOTP(payload: payload),
     );
     return response;
   }

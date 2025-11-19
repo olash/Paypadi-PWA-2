@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // Package imports:
 
-class LoginPayload {
-  const LoginPayload({
+class LoginRequest {
+  const LoginRequest({
     required this.phoneNumber,
     required this.password,
   });
@@ -15,12 +15,12 @@ class LoginPayload {
     'password': password,
   };
 
-  factory LoginPayload.fromJson(Map<String, dynamic> json) => LoginPayload(
+  factory LoginRequest.fromJson(Map<String, dynamic> json) => LoginRequest(
     phoneNumber: json['phone_number'] as String,
     password: json['password'] as String,
   );
 
   @override
   String toString() =>
-      'LoginPayload(phoneNumber: $phoneNumber, password: $password)';
+      'LoginRequest(phoneNumber: $phoneNumber, password: $password)';
 }

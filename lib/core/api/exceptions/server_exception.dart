@@ -62,22 +62,4 @@ sealed class ServerException extends AppException with _$ServerException {
     }
   }
 
-  static String getErrorMessage(ServerException appException) {
-    return switch (appException) {
-      ServerException.receiveTimeout => "A receive timeout occurred",
-      ServerException.requestCancelled => "Your request was cancelled.",
-      ServerException.internalServerError => "Internal Server Error",
-      ServerException.serviceUnavailable => "Service unavailable",
-      ServerException.requestTimeout => "Connection request timeout",
-      ServerException.noInternetConnection => "No internet connection",
-      ServerException.sendTimeout =>
-        "Send timeout in connection with API server",
-      _NotFound(:final reason) => "$reason",
-      _BadRequest(:final error) => "$error",
-      _UnauthorizedRequest(:final reason) => "$reason",
-      _UnprocessableEntity(:final reason) => "$reason",
-      // The default error message below is a generic fallback for unexpected exceptions.
-      _ => "Oops!, we ran into technical difficulties. Try again later.",
-    };
-  }
 }
