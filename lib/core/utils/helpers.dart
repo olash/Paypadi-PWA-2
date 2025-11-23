@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toastification/toastification.dart';
 
@@ -29,19 +28,44 @@ String obfuscateEmail(String email) {
 }
 
 String obfuscatePhoneNumber(String phoneNumber) {
-  final phoneRegex = RegExp(r"^\+(\d{1,3})(\d+)$");
-  final match = phoneRegex.firstMatch(phoneNumber);
-  if (match == null) return phoneNumber;
+  // Remove any spaces, dashes, or other formatting
+  final cleaned = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
 
-  final countryCode = match.group(1)!;
-  final rest = match.group(2)!;
+  // Handle different Nigerian phone number formats
+  String digits = cleaned;
 
-  if (rest.length <= 3) return phoneNumber;
+  // Remove country code if present (+234 or 234)
+  if (digits.startsWith('+234')) {
+    digits = digits.substring(4);
+  } else if (digits.startsWith('234')) {
+    digits = digits.substring(3);
+  }
 
-  final obfuscated = '*' * (rest.length - 3);
-  final visible = rest.substring(rest.length - 3);
+  // Nigerian mobile numbers should be 11 digits starting with 0
+  // or 10 digits without the leading 0
+  if (digits.length == 10 && !digits.startsWith('0')) {
+    digits = '0$digits'; // Add leading 0 if missing
+  }
 
-  return '+$countryCode$obfuscated$visible';
+  // Validate Nigerian mobile number format
+  if (digits.length != 11 || !digits.startsWith('0')) {
+    return phoneNumber; // Return original if invalid format
+  }
+
+  // Nigerian mobile prefixes (080, 081, 070, 090, 091, etc.)
+  final validPrefixes = ['080', '081', '070', '090', '091', '070', '071'];
+  final prefix = digits.substring(0, 3);
+
+  if (!validPrefixes.contains(prefix)) {
+    return phoneNumber; // Return original if invalid prefix
+  }
+
+  // Format: 081 **** 6507 (show first 3 and last 4 digits)
+  final firstPart = digits.substring(0, 3); // 081
+  final lastPart = digits.substring(7); // 6507
+  final obfuscated = '*' * 4; // ****
+
+  return '$firstPart $obfuscated $lastPart';
 }
 
 String formatAmount(int amount) {
@@ -66,8 +90,9 @@ String getDateAndTime(DateTime date) {
   return '$year-$month-${day}_$hour:$minute';
 }
 
-void showErrorDialog({String? desc}) {
+void showErrorDialog(BuildContext context, {String? message}) {
   toastification.show(
+    context: context,
     title: Text("Error"),
     applyBlurEffect: true,
     alignment: Alignment.topCenter,
@@ -75,7 +100,7 @@ void showErrorDialog({String? desc}) {
     style: ToastificationStyle.flat,
     icon: Icon(Iconsax.danger_outline),
     borderRadius: BorderRadius.circular(Values.v120),
-    description: desc != null ? Text(desc) : SizedBox.shrink(),
+    description: message != null ? Text(message) : SizedBox.shrink(),
     autoCloseDuration: const Duration(seconds: 4),
     animationBuilder: (context, animation, alignment, child) {
       return FadeTransition(opacity: animation, child: child);

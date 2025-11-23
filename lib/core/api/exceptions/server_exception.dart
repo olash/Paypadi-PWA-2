@@ -11,7 +11,7 @@ sealed class ServerException extends AppException with _$ServerException {
   const factory ServerException.requestTimeout() = _RequestTimeout;
   const factory ServerException.sendTimeout() = _SendTimeout;
   const factory ServerException.receiveTimeout() = _ReceiveTimeout;
-  const factory ServerException.badRequest(String? error) = _BadRequest;
+  const factory ServerException.badRequest(String? reason) = _BadRequest;
   const factory ServerException.unauthorizedRequest(String? reason) =
       _UnauthorizedRequest;
   const factory ServerException.notFound(String? reason) = _NotFound;
@@ -27,8 +27,8 @@ sealed class ServerException extends AppException with _$ServerException {
 
     // Safely extract message from response data if available
     String? message;
-    if (response?.data is Map && response?.data.containsKey("message")) {
-      message = response?.data["message"] as String?;
+    if (response?.data is Map && response?.data.containsKey("detail")) {
+      message = response?.data["detail"] as String?;
     }
 
     if (statusCode == null) {
@@ -62,4 +62,20 @@ sealed class ServerException extends AppException with _$ServerException {
     }
   }
 
+  String getServerErrorMessage(ServerException se) {
+    return se.map(
+      requestCancelled: (_) => "Your request was cancelled",
+      requestTimeout: (_) => "Connection request timeout",
+      sendTimeout: (_) => "Send timeout in connection with API server",
+      receiveTimeout: (_) => "A receive timeout occurred",
+      badRequest: (e) => e.reason ?? "Bad request",
+      unauthorizedRequest: (e) => e.reason ?? "Unauthorized request",
+      notFound: (e) => e.reason ?? "Resource not found",
+      unprocessableEntity: (e) => e.reason ?? "Unprocessable entity",
+      internalServerError: (_) => "Internal Server Error",
+      serviceUnavailable: (_) => "Service unavailable",
+      noInternetConnection: (_) => "No internet connection",
+      defaultError: (e) => e.error ?? "An unexpected error occurred",
+    );
+  }
 }

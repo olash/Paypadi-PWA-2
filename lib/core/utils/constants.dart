@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -130,5 +130,7 @@ class CacheKeys {
   static final String loginPin = "loginPin";
   static final String transactionPin = "transactionPin";
   static final String colorTheme = "colorTheme";
+  static final String sessionId = "session_id";
 }
 
+final GetIt diLocator = GetIt.instance;

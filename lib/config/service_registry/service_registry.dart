@@ -53,15 +53,8 @@ AppTheme appTheme(Ref ref) {
 
 @Riverpod(keepAlive: true)
 Future<SharedPreferencesWithCache> sharedPreferencesFuture(Ref ref) {
-  final Set<String> allowList = {
-    CacheKeys.enabledBiometrics,
-    CacheKeys.viewedOnboarding,
-    CacheKeys.isDarkMode,
-    CacheKeys.colorTheme,
-  };
-
   return SharedPreferencesWithCache.create(
-    cacheOptions: SharedPreferencesWithCacheOptions(allowList: allowList),
+    cacheOptions: SharedPreferencesWithCacheOptions(),
   );
 }
 

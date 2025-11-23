@@ -5,6 +5,17 @@ String? requiredValidator(String? text) {
   return null;
 }
 
+String? pinCodeValidator(String? code) {
+  if (code == null || code.trim().isEmpty) return 'Enter your PIN';
+
+  final trimmed = code.trim();
+
+  // Accept only 6-digit numeric PINs
+  if (!RegExp(r'^\d{6}$').hasMatch(trimmed)) return 'Enter a valid 6-digit PIN';
+
+  return null;
+}
+
 String? nameValidator(String? name) {
   if (name == null || name.trim().isEmpty) return 'Enter a name';
 

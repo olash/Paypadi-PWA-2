@@ -29,22 +29,25 @@ class CreateAccountScreen extends HookConsumerWidget {
 
     useEffect(() {
       signInRecognizer.onTap = () {
-        ref.read(appRouterProvider).push(LoginRoute());
+        ref.read(appRouterProvider).push(SignInRoute());
       };
       return () => signInRecognizer.dispose();
     }, []);
 
-    ref.listen(authControllerProvider, (_, state) {
-      state.when(
+    ref.listen(authControllerProvider, (previous, current) {
+      current.when(
         data: (d) {
           dismissLoadingOverlay(context);
-          ref.read(appRouterProvider).push(OtpRoute());
+          phoneNumber.clear();
         },
         error: (e, st) {
           dismissLoadingOverlay(context);
-          showErrorDialog(desc: e.toString());
+          showErrorDialog(context, message: e.toString());
+          phoneNumber.clear();
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () {
+          showLoadingOverlay(context, ref);
+        },
       );
     });
 
@@ -69,7 +72,7 @@ class CreateAccountScreen extends HookConsumerWidget {
             _TermsAndPrivacyRichText(),
             Values.v16.verticalSpacing,
             FilledButton(
-              onPressed: () => createAccount(ref, phoneNumber.text, form),
+              onPressed: () => requestForOtp(ref, phoneNumber.text),
               child: Text("Create Account"),
             ),
             Values.v8.verticalSpacing,
@@ -93,18 +96,13 @@ class CreateAccountScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            // LoadingIndicator(),
           ],
         ),
       ),
     );
   }
 
-  void createAccount(
-    WidgetRef ref,
-    String phoneNumber,
-    GlobalKey<FormState> form,
-  ) {
+  void requestForOtp(WidgetRef ref, String phoneNumber) {
     if (form.currentState!.validate()) {
       ref.read(authControllerProvider.notifier).requestForOtp(phoneNumber);
     }

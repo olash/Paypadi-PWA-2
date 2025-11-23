@@ -30,7 +30,6 @@ class AppRouter extends RootStackRouter {
       path: "/login",
       page: LoginRoute.page,
     ),
-
     AutoRoute(
       path: "/account-role",
       page: AccountRoleRoute.page,
@@ -54,6 +53,14 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       path: "/password",
       page: PasswordRoute.page,
+    ),
+    AutoRoute(
+      path: "/enter-password",
+      page: EnterPasswordRoute.page,
+    ),
+    AutoRoute(
+      path: "/sign-in",
+      page: SignInRoute.page,
     ),
     AutoRoute(
       path: "/confirm-password",

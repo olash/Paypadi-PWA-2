@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:paypadi/src/features/authentication/domain/dtos/authentication_request.dart';
-import 'package:paypadi/src/features/authentication/domain/dtos/authentication_response.dart';
+import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
+import 'package:paypadi/src/features/authentication/domain/dtos/responses.dart/responses.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,10 +13,12 @@ const String _basePath = "/auth";
 
 @RestApi()
 abstract class AuthenticationClient {
-  factory AuthenticationClient(Dio dio, {String baseUrl}) = _AuthenticationClient;
+  factory AuthenticationClient(Dio dio, {String baseUrl}) =
+      _AuthenticationClient;
 
-  @POST('$_basePath/register')
+  @POST('$_basePath/register/')
   Future<RegisterUserResponse> createAccount({
+    @Header("Cookie") required String cookie,
     @Body() required RegisterUserPayload payload,
   });
 
@@ -25,12 +27,12 @@ abstract class AuthenticationClient {
   //   @Body() required LoginPayload payload,
   // });
 
-  @POST('$_basePath/otp/request')
+  @POST('$_basePath/otp/request/')
   Future<RequestForOtpResponse> requestForOTP({
     @Body() required RequestForOtpPayload payload,
   });
 
-  @POST('$_basePath/otp/verify')
+  @POST('$_basePath/otp/verify/')
   Future<VerifyOtpResponse> verifyOTP({
     @Body() required VerifyOtpPayload payload,
   });
@@ -50,31 +52,31 @@ abstract class AuthenticationClient {
   //   @Body() required LoginPayload token,
   // });
 
-  @POST('$_basePath/password/change')
+  @POST('$_basePath/password/change/')
   Future<ApiResponse<dynamic>> changePassword();
 
-  @POST('$_basePath/pin/set')
+  @POST('$_basePath/pin/set/')
   Future<ApiResponse<dynamic>> setTransactionPin();
 
-  @GET('$_basePath/profile')
+  @GET('$_basePath/profile/')
   Future<ApiResponse<dynamic>> getUser();
 
-  @PUT('$_basePath/profile')
+  @PUT('$_basePath/profile/')
   Future<ApiResponse<dynamic>> updateUser();
 
-  @PATCH('$_basePath/profile')
+  @PATCH('$_basePath/profile/')
   Future<ApiResponse<dynamic>> partiallyUpdateUser();
 
-  @GET('$_basePath/driver/profile')
+  @GET('$_basePath/driver/profile/')
   Future<ApiResponse<dynamic>> getDriverProfile();
 
-  @PUT('$_basePath/driver/profile')
+  @PUT('$_basePath/driver/profile/')
   Future<ApiResponse<dynamic>> updateDriverProfile();
 
-  @PATCH('$_basePath/driver/profile')
+  @PATCH('$_basePath/driver/profile/')
   Future<ApiResponse<dynamic>> partiallyUpdateDriverProfile();
 
-  @POST('$_basePath/me')
+  @POST('$_basePath/me/')
   Future<ApiResponse<dynamic>> getUserInformation();
 }
 

@@ -9,7 +9,6 @@ import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/service_registry/service_registry.dart';
-import 'package:toastification/toastification.dart';
 
 class PayPadi extends ConsumerWidget {
   const PayPadi({super.key});
@@ -24,21 +23,19 @@ class PayPadi extends ConsumerWidget {
       splitScreenMode: true,
       designSize: appDesignSize,
         builder: (context, _) {
-        return ToastificationWrapper(
-          child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            theme: appTheme.theme(),
-            routerConfig: router.config(
-              navigatorObservers: () {
-                return [if (kDebugMode) TalkerRouteObserver(debugLogger)];
-              },
-            ),
-            builder: (context, child) {
-              return Env.isDev
-                  ? Stack(children: [child!, _flavorBanner()])
-                  : child!;
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: appTheme.theme(),
+          routerConfig: router.config(
+            navigatorObservers: () {
+              return [if (kDebugMode) TalkerRouteObserver(debugLogger)];
             },
           ),
+          builder: (context, child) {
+            return Env.isDev
+                ? Stack(children: [child!, _flavorBanner()])
+                : child!;
+          },
         );
       },
     );

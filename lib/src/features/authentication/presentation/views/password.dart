@@ -5,11 +5,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/service_registry/service_registry.dart';
 import 'package:paypadi/core/utils/constants.dart'
-    show passwordPinLength, Values, CacheKeys;
+    show Values, diLocator, passwordPinLength;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
+import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class PasswordScreen extends HookConsumerWidget {
@@ -66,6 +70,35 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmPassword = useState<String>('');
 
+    ref.listen(authControllerProvider, (previous, current) {
+      current.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+          confirmPassword.value = "";
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(context, message: e.toString());
+          confirmPassword.value = "";
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
+
+    ref.listen(authControllerProvider, (_, state) {
+      state.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+          ref.read(appRouterProvider).push(AccountRoleRoute());
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(context, message: e.toString());
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
+
     return AppScaffold(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,11 +125,15 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             onSubmit: (confirmedPassword) {
               if (password == confirmedPassword) {
-                ref
-                    .read(secureCacheProvider)
-                    .write(key: CacheKeys.loginPin, value: password);
+                diLocator.get<RegisterUserPayloadBuilder>().password(
+                  confirmedPassword,
+                );
+                ref.read(authControllerProvider.notifier).createAccount();
+                // ref
+                //     .read(secureCacheProvider)
+                //     .write(key: CacheKeys.loginPin, value: password);
 
-                ref.read(appRouterProvider).push(TransactionPinRoute());
+                // ref.read(appRouterProvider).push(TransactionPinRoute());
               }
             },
             onChanged: (value) => confirmPassword.value = value,
@@ -105,5 +142,51 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+@RoutePage()
+class EnterPasswordScreen extends HookConsumerWidget {
+  const EnterPasswordScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final password = useState<String>('');
+
+    return AppScaffold(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Values.v32.verticalSpacing,
+          Text(
+            "Enter Password",
+            style: context.textTheme.headlineMedium,
+          ),
+          Values.v12.verticalSpacing,
+          Text(
+            "Enter the password associated with your account",
+            style: context.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Values.v32.verticalSpacing,
+          AppPinIndicator(
+            text: password.value,
+            pinLength: passwordPinLength,
+          ),
+          Spacer(flex: 3),
+          AppKeypad(
+            pinLength: passwordPinLength,
+            onSubmit: (value) => onSubmit(ref, value),
+            onChanged: (value) => password.value = value,
+          ),
+          Spacer(),
+        ],
+      ),
+    );
+  }
+
+  void onSubmit(WidgetRef ref, String password) {
+    ref.read(appRouterProvider).push(ConfirmPasswordRoute(password: password));
   }
 }

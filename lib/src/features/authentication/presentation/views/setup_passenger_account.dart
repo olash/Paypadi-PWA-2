@@ -5,9 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/service_registry/service_registry.dart';
-import 'package:paypadi/core/utils/constants.dart' show Values;
+import 'package:paypadi/core/utils/constants.dart' show Values, diLocator;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
+import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -18,7 +19,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController firstName = useTextEditingController();
-    final TextEditingController surname = useTextEditingController();
+    final TextEditingController lastName = useTextEditingController();
     final TextEditingController referralCode = useTextEditingController();
     final GlobalKey<FormState> form = GlobalKey<FormState>();
 
@@ -53,7 +54,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
             AppTextformfield(
               title: "Surname",
               hint: "Enter surname",
-              controller: surname,
+              controller: lastName,
               validator: (surname) => nameValidator(surname),
             ),
             AppTextformfield(
@@ -63,7 +64,13 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => submit(ref, form),
+              onPressed: () => submit(
+                ref,
+                form,
+                referralCode.text,
+                firstName.text,
+                lastName.text,
+              ),
               child: Text("Submit"),
             ),
           ],
@@ -72,8 +79,22 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void submit(WidgetRef ref, GlobalKey<FormState> form) {
+  void submit(
+    WidgetRef ref,
+    GlobalKey<FormState> form,
+    String referralCode,
+    String firstName,
+    String lastName,
+  ) {
     if (form.currentState!.validate()) {
+      if (referralCode.isNotEmpty) {
+        diLocator.get<RegisterUserPayloadBuilder>().referredBy(referralCode);
+      }
+
+      diLocator.get<RegisterUserPayloadBuilder>()
+        ..firstName(firstName)
+        ..lastName(lastName);
+
       ref.read(appRouterProvider).push(PasswordRoute());
     }
   }

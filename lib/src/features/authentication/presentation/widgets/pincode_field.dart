@@ -5,6 +5,7 @@ import 'package:paypadi/config/service_registry/service_registry.dart'
     show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/validators.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart'
     show PinCodeTextField;
 
@@ -14,19 +15,41 @@ class PinCodeField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return PinCodeTextField(
-      maxLength: Values.v6.toInt(),
-      pinBoxWidth: Values.v48,
-      pinBoxHeight: Values.v48,
-      pinBoxRadius: Values.v12,
-      pinBoxBorderWidth: Values.v1,
-      pinBoxOuterPadding: EdgeInsets.only(right: Values.v4),
-      hasTextBorderColor: ref.watch(appPrimaryColorProvider),
-      defaultBorderColor: AppColors.unfocusedTextField,
-      pinTextStyle: context.textTheme.bodyLarge?.copyWith(
-        fontWeight: FontWeight.w400,
-      ),
-      controller: controller,
+    return FormField<String>(
+      validator: (value) => pinCodeValidator(controller.text),
+      builder: (field) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            PinCodeTextField(
+              controller: controller,
+              maxLength: Values.v6.toInt(),
+              pinBoxWidth: Values.v48,
+              pinBoxHeight: Values.v48,
+              pinBoxRadius: Values.v12,
+              pinBoxBorderWidth: Values.v1,
+              pinBoxOuterPadding: EdgeInsets.only(right: Values.v4),
+              hasTextBorderColor: ref.watch(appPrimaryColorProvider),
+              defaultBorderColor: field.hasError
+                  ? AppColors.failure
+                  : AppColors.unfocusedTextField,
+              pinTextStyle: context.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w400,
+              ),
+              onTextChanged: (value) => field.didChange(value),
+            ),
+            if (field.hasError) ...[
+              Values.v8.verticalSpacing,
+              Text(
+                field.errorText!,
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ],
+        );
+      },
     );
   }
 }

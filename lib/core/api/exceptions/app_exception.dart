@@ -55,24 +55,70 @@ abstract class AppException implements Exception {
     }
   }
 
-  String getExceptionMessage() {
-    return switch (this) {
-      ServerException e => e.map(
-        receiveTimeout: (_) => "A receive timeout occurred",
-        requestCancelled: (_) => "Your request was cancelled.",
-        internalServerError: (_) => "Internal Server Error",
-        serviceUnavailable: (_) => "Service unavailable",
-        requestTimeout: (_) => "Connection request timeout",
-        noInternetConnection: (_) => "No internet connection",
-        sendTimeout: (_) => "Send timeout in connection with API server",
-        notFound: (e) => e.reason ?? "Resource not found",
-        badRequest: (e) => e.error ?? "Bad request",
-        unauthorizedRequest: (e) => e.reason ?? "Unauthorized request",
-        unprocessableEntity: (e) => e.reason ?? "Unprocessable entity",
-        defaultError: (e) => e.error ?? "An unexpected error occurred",
+  // Add this static method to the AppException class
+  static String getExceptionMessage(AppException exception) {
+    return switch (exception) {
+      ServerException serverEx => serverEx.map(
+        requestCancelled: (_) =>
+            "Your request was cancelled. Please try again.",
+        requestTimeout: (_) =>
+            "Connection timed out. Please check your internet connection and try again.",
+        sendTimeout: (_) =>
+            "Request is taking too long to send. Please try again.",
+        receiveTimeout: (_) =>
+            "Server is taking too long to respond. Please try again later.",
+        badRequest: (e) =>
+            e.reason ??
+            "Invalid request. Please check your input and try again.",
+        unauthorizedRequest: (e) =>
+            e.reason ?? "You are not authorized to perform this action.",
+        notFound: (e) => e.reason ?? "The requested resource was not found.",
+        unprocessableEntity: (e) =>
+            e.reason ??
+            "Unable to process your request. Please check your input.",
+        internalServerError: (_) =>
+            "Something went wrong on our end. Please try again later.",
+        serviceUnavailable: (_) =>
+            "Service is currently unavailable. Please try again later.",
+        noInternetConnection: (_) =>
+            "No internet connection. Please check your network and try again.",
+        defaultError: (e) =>
+            e.error ?? "An unexpected error occurred. Please try again.",
       ),
-      ClientException(:final message) => message,
-      _ => "Oops!, we ran into technical difficulties. Try again later.",
+      ClientException clientEx => _getClientExceptionMessage(clientEx.message),
+      _ => "Something went wrong. Please try again later.",
     };
+  }
+
+  // Helper method to provide more specific client error messages
+  static String _getClientExceptionMessage(String originalMessage) {
+    final lowercaseMessage = originalMessage.toLowerCase();
+
+    if (lowercaseMessage.contains('network') ||
+        lowercaseMessage.contains('connection')) {
+      return "Network connection problem. Please check your internet and try again.";
+    }
+
+    if (lowercaseMessage.contains('timeout')) {
+      return "Request timed out. Please try again.";
+    }
+
+    if (lowercaseMessage.contains('certificate') ||
+        lowercaseMessage.contains('ssl')) {
+      return "Security connection error. Please try again later.";
+    }
+
+    if (lowercaseMessage.contains('permission') ||
+        lowercaseMessage.contains('denied')) {
+      return "Permission denied. Please check your settings.";
+    }
+
+    if (lowercaseMessage.contains('format') ||
+        lowercaseMessage.contains('parse')) {
+      return "Data format error. Please try again.";
+    }
+
+    // Return a user-friendly version or fallback
+    return "An error occurred. Please try again later.";
   }
 }
