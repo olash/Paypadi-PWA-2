@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart'
+import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -34,7 +34,7 @@ class OtpScreen extends HookConsumerWidget {
         },
         error: (e, st) {
           dismissLoadingOverlay(context);
-          showErrorDialog(context, message: e.toString());
+          showErrorDialog(message: e.toString());
           otpCode.clear();
         },
         loading: () {
@@ -99,7 +99,7 @@ class OtpScreen extends HookConsumerWidget {
   }
 
   void verifyOtp(WidgetRef ref, String phoneNumber, String otpCode) {
-    diLocator.get<RegisterUserPayloadBuilder>().phoneNumber(phoneNumber);
+    diLocator.get<RegisterPayloadBuilder>().setPhoneNumber(phoneNumber);
     if (formKey.currentState!.validate()) {
       ref
           .read(authControllerProvider.notifier)

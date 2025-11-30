@@ -14,7 +14,7 @@ abstract class HomeClient {
   factory HomeClient(Dio dio) = _HomeClient;
 
   @POST('$_basePath/register')
-  Future<ApiResponse<dynamic>> getBalance({
+  Future<dynamic> getBalance({
     @Body() required dynamic payload,
   });
 }

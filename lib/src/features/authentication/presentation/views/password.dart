@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show Values, diLocator, passwordPinLength;
 import 'package:paypadi/core/utils/extensions.dart';
@@ -78,22 +78,8 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
         },
         error: (e, st) {
           dismissLoadingOverlay(context);
-          showErrorDialog(context, message: e.toString());
+          showErrorDialog(message: e.toString());
           confirmPassword.value = "";
-        },
-        loading: () => showLoadingOverlay(context, ref),
-      );
-    });
-
-    ref.listen(authControllerProvider, (_, state) {
-      state.when(
-        data: (d) {
-          dismissLoadingOverlay(context);
-          ref.read(appRouterProvider).push(AccountRoleRoute());
-        },
-        error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(context, message: e.toString());
         },
         loading: () => showLoadingOverlay(context, ref),
       );
@@ -125,15 +111,10 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             onSubmit: (confirmedPassword) {
               if (password == confirmedPassword) {
-                diLocator.get<RegisterUserPayloadBuilder>().password(
+                diLocator.get<RegisterPayloadBuilder>().setPassword(
                   confirmedPassword,
                 );
                 ref.read(authControllerProvider.notifier).createAccount();
-                // ref
-                //     .read(secureCacheProvider)
-                //     .write(key: CacheKeys.loginPin, value: password);
-
-                // ref.read(appRouterProvider).push(TransactionPinRoute());
               }
             },
             onChanged: (value) => confirmPassword.value = value,

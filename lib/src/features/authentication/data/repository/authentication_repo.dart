@@ -1,23 +1,20 @@
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
-import 'package:paypadi/src/features/authentication/data/datasource/authentication_client.dart'
-    show AuthenticationClient, authClientProvider;
+import 'package:paypadi/src/features/authentication/data/datasource/auth/authentication_client.dart';
+
 import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
 import 'package:paypadi/src/features/authentication/domain/dtos/responses.dart/responses.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'authentication_repo.g.dart';
-
-class AuthenticationRepo {
-  const AuthenticationRepo(this.authClient);
-  final AuthenticationClient authClient;
+class AuthenticationRepository {
+  const AuthenticationRepository({required this.client});
+  final AuthenticationClient client;
 
   FutureResultOf<RegisterUserResponse> createAccount(
     String sessionId,
-    RegisterUserPayload payload,
+    RegisterPayload payload,
   ) async {
     final response = await Result.fromAsync<RegisterUserResponse>(
-      () => authClient.createAccount(
+      () => client.createAccount(
         cookie: "sessionid=$sessionId",
         payload: payload,
       ),
@@ -29,7 +26,7 @@ class AuthenticationRepo {
     RequestForOtpPayload payload,
   ) async {
     final response = await Result.fromAsync<RequestForOtpResponse>(
-      () => authClient.requestForOTP(payload: payload),
+      () => client.requestForOTP(payload: payload),
     );
     return response;
   }
@@ -38,14 +35,8 @@ class AuthenticationRepo {
     VerifyOtpPayload payload,
   ) async {
     final response = await Result.fromAsync<VerifyOtpResponse>(
-      () => authClient.verifyOTP(payload: payload),
+      () => client.verifyOTP(payload: payload),
     );
     return response;
   }
-}
-
-@riverpod
-AuthenticationRepo authRepo(Ref ref) {
-  final apiClient = ref.watch(authClientProvider);
-  return AuthenticationRepo(apiClient);
 }

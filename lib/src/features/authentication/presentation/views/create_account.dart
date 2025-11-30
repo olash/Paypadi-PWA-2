@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/gen/fonts.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
@@ -42,12 +42,10 @@ class CreateAccountScreen extends HookConsumerWidget {
         },
         error: (e, st) {
           dismissLoadingOverlay(context);
-          showErrorDialog(context, message: e.toString());
+          showErrorDialog(message: e.toString());
           phoneNumber.clear();
         },
-        loading: () {
-          showLoadingOverlay(context, ref);
-        },
+        loading: () => showLoadingOverlay(context, ref),
       );
     });
 

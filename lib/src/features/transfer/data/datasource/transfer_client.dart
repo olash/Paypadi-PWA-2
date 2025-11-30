@@ -14,7 +14,7 @@ abstract class TransferClient {
   factory TransferClient(Dio dio) = _TransferClient;
 
   @POST('$_basePath/transfer')
-  Future<ApiResponse<dynamic>> transfer({
+  Future<dynamic> transfer({
     @Body() required dynamic payload,
   });
 }

@@ -13,11 +13,10 @@ class RequestForOtpResponse {
     required this.otp,
   });
 
-  final String detail;
-
   @JsonKey(name: "expires_in")
   final int expiresIn;
 
+  final String detail;
   final String otp;
 
   factory RequestForOtpResponse.fromJson(Map<String, dynamic> json) =>
@@ -26,7 +25,10 @@ class RequestForOtpResponse {
 
 @JsonSerializable(createToJson: false)
 class VerifyOtpResponse {
-  const VerifyOtpResponse({required this.detail, required this.sessionId});
+  const VerifyOtpResponse({
+    required this.detail,
+    required this.sessionId,
+  });
 
   @JsonKey(name: "session_id")
   final String sessionId;
@@ -40,19 +42,36 @@ class VerifyOtpResponse {
 @JsonSerializable(createToJson: false)
 class RegisterUserResponse {
   const RegisterUserResponse({
+    required this.detail,
     required this.refreshToken,
     required this.accessToken,
     required this.user,
   });
 
-  @JsonKey(name: "refresh_token")
+  @JsonKey(name: "refresh")
   final String refreshToken;
 
-  @JsonKey(name: "access_token")
+  @JsonKey(name: "access")
   final String accessToken;
 
+  final String detail;
+  
   final UserModel user;
 
   factory RegisterUserResponse.fromJson(Map<String, dynamic> json) =>
       _$RegisterUserResponseFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class TokenResponse {
+  const TokenResponse({
+    required this.refresh,
+    required this.access,
+  });
+
+  final String refresh;
+  final String access;
+
+  factory TokenResponse.fromJson(Map<String, dynamic> json) =>
+      _$TokenResponseFromJson(json);
 }

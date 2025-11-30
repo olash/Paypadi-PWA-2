@@ -1,8 +1,10 @@
+import 'dart:async' show Completer;
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
 
 class LoadingIndicator extends ConsumerWidget {
@@ -21,10 +23,22 @@ class LoadingIndicator extends ConsumerWidget {
   }
 }
 
+// Track active overlays to prevent multiple overlays
+final Map<Object, Completer<void>> _activeOverlays = {};
+
 /// Shows a modal loading overlay that blocks user interaction
-/// Returns a function to dismiss the loading overlay
-void showLoadingOverlay(BuildContext context, WidgetRef ref) {
-  showModalBottomSheet(
+/// Returns a function to dismiss the loading overlay safely
+VoidCallback? showLoadingOverlay(BuildContext context, WidgetRef ref) {
+  // Use hashCode as a safer key instead of BuildContext directly
+  final contextKey = context.hashCode;
+
+  // Prevent multiple overlays on the same context
+  if (_activeOverlays.containsKey(contextKey)) return null;
+
+  final Completer<void> completer = Completer<void>();
+  _activeOverlays[contextKey] = completer;
+
+  showModalBottomSheet<void>(
     context: context,
     enableDrag: false,
     isDismissible: false,
@@ -47,11 +61,38 @@ void showLoadingOverlay(BuildContext context, WidgetRef ref) {
         ),
       );
     },
-  );
+  ).then((_) {
+    // Clean up when modal is dismissed - no BuildContext usage
+    _activeOverlays.remove(contextKey);
+    if (!completer.isCompleted) {
+      completer.complete();
+    }
+  });
+
+  // Return safe dismiss function
+  return () {
+    if (_activeOverlays.containsKey(contextKey) &&
+        !completer.isCompleted &&
+        Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+      _activeOverlays.remove(contextKey);
+      completer.complete();
+    }
+  };
 }
 
 void dismissLoadingOverlay(BuildContext context) {
-  if (Navigator.of(context).canPop()) {
+  final contextKey = context.hashCode;
+
+  if (_activeOverlays.containsKey(contextKey) &&
+      Navigator.of(context).canPop()) {
     Navigator.of(context).pop();
+    _activeOverlays.remove(contextKey);
+
+    // Complete the completer if it exists
+    final completer = _activeOverlays[contextKey];
+    if (completer != null && !completer.isCompleted) {
+      completer.complete();
+    }
   }
 }

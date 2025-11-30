@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart'
+import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 

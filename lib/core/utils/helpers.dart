@@ -90,9 +90,8 @@ String getDateAndTime(DateTime date) {
   return '$year-$month-${day}_$hour:$minute';
 }
 
-void showErrorDialog(BuildContext context, {String? message}) {
+void showErrorDialog({String? message}) {
   toastification.show(
-    context: context,
     title: Text("Error"),
     applyBlurEffect: true,
     alignment: Alignment.topCenter,

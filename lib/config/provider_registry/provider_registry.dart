@@ -2,6 +2,7 @@ import 'dart:ui' show Color;
 
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
+import 'package:paypadi/core/services/api_service.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show CacheKeys, availableColors;
 import 'package:paypadi/core/services/biometrics_service.dart'
@@ -10,11 +11,19 @@ import 'package:paypadi/core/services/local_cache_service.dart'
     show LocalCacheService;
 import 'package:paypadi/core/services/secure_cache_service.dart'
     show SecureCacheService;
+import 'package:paypadi/src/features/authentication/data/datasource/auth/authentication_client.dart';
+import 'package:paypadi/src/features/authentication/data/datasource/jwt/jwt_client.dart';
+import 'package:paypadi/src/features/authentication/data/datasource/payout_account/account_payout_client.dart';
+import 'package:paypadi/src/features/authentication/data/datasource/profile/profile_client.dart';
+import 'package:paypadi/src/features/authentication/data/repository/authentication_repo.dart';
+import 'package:paypadi/src/features/authentication/data/repository/jwt_repo.dart';
+import 'package:paypadi/src/features/authentication/data/repository/payout_account_repo.dart';
+import 'package:paypadi/src/features/authentication/data/repository/profile_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
 
-part 'service_registry.g.dart';
+part 'provider_registry.g.dart';
 
 @Riverpod(keepAlive: true)
 class ColorIndexNotifier extends _$ColorIndexNotifier {
@@ -71,4 +80,52 @@ SecureCacheService secureCache(Ref ref) => SecureCacheService();
 @riverpod
 BiometricsService biometrics(Ref ref) {
   return BiometricsService();
+}
+
+@riverpod
+AuthenticationClient authenticationClient(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  return AuthenticationClient(dio);
+}
+
+@riverpod
+JwtClient jwtClient(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  return JwtClient(dio);
+}
+
+@riverpod
+AccountPayoutClient accountPayoutClient(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  return AccountPayoutClient(dio);
+}
+
+@riverpod
+ProfileClient profileClient(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  return ProfileClient(dio);
+}
+
+@riverpod
+AuthenticationRepository authenticationRepository(Ref ref) {
+  final AuthenticationClient client = ref.watch(authenticationClientProvider);
+  return AuthenticationRepository(client: client);
+}
+
+@riverpod
+JwtRepository jwtRepository(Ref ref) {
+  final JwtClient client = ref.watch(jwtClientProvider);
+  return JwtRepository(client: client);
+}
+
+@riverpod
+PayoutAccountRepository payoutAccountRepository(Ref ref) {
+  final AccountPayoutClient client = ref.watch(accountPayoutClientProvider);
+  return PayoutAccountRepository(client: client);
+}
+
+@riverpod
+ProfileRepository profileRepository(Ref ref) {
+  final ProfileClient client = ref.watch(profileClientProvider);
+  return ProfileRepository(client: client);
 }

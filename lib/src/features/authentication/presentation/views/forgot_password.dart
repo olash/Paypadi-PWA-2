@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart'
+import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';

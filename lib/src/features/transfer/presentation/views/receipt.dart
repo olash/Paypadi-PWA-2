@@ -12,7 +12,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart'
     show ImageGallerySaverPlus;
 import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/config/service_registry/service_registry.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 
 import 'package:screenshot/screenshot.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
