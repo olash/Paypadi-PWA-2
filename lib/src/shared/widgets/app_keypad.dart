@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+
 import 'package:paypadi/config/gen/assets.gen.dart';
-import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appPrimaryColorProvider;
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
 class AppKeypad extends ConsumerStatefulWidget {
@@ -38,6 +38,12 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
   void initState() {
     super.initState();
     _pin = '';
+  }
+
+  @override
+  void dispose() {
+    _pin = '';
+    super.dispose();
   }
 
   @override

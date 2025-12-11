@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
@@ -44,7 +44,7 @@ class AccountRoleScreen extends HookConsumerWidget {
           _RoleWidget(
             role: AccountRole.driver,
             onWidgetTapped: () {
-              diLocator.get<RegisterPayloadBuilder>().setRole("driver");
+              // diLocator.get<RegisterPayloadBuilder>().setRole("driver");
               ref.read(appRouterProvider).push(SetupDriverAccountRoute());
             },
           ),

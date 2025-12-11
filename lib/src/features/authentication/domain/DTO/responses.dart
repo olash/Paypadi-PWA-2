@@ -17,6 +17,7 @@ class RequestForOtpResponse {
   final int expiresIn;
 
   final String detail;
+
   final String otp;
 
   factory RequestForOtpResponse.fromJson(Map<String, dynamic> json) =>
@@ -40,9 +41,8 @@ class VerifyOtpResponse {
 }
 
 @JsonSerializable(createToJson: false)
-class RegisterUserResponse {
-  const RegisterUserResponse({
-    required this.detail,
+class CreateAccountResponse {
+  const CreateAccountResponse({
     required this.refreshToken,
     required this.accessToken,
     required this.user,
@@ -54,12 +54,30 @@ class RegisterUserResponse {
   @JsonKey(name: "access")
   final String accessToken;
 
-  final String detail;
-  
   final UserModel user;
 
-  factory RegisterUserResponse.fromJson(Map<String, dynamic> json) =>
-      _$RegisterUserResponseFromJson(json);
+  factory CreateAccountResponse.fromJson(Map<String, dynamic> json) =>
+      _$CreateAccountResponseFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class LoginResponse {
+  const LoginResponse({
+    required this.refreshToken,
+    required this.accessToken,
+    required this.user,
+  });
+
+  @JsonKey(name: "refresh")
+  final String refreshToken;
+
+  @JsonKey(name: "access")
+  final String accessToken;
+
+  final UserModel user;
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -74,4 +92,13 @@ class TokenResponse {
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
       _$TokenResponseFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SetPinResponse {
+  const SetPinResponse({required this.detail});
+  final String detail;
+
+  factory SetPinResponse.fromJson(Map<String, dynamic> json) =>
+      _$SetPinResponseFromJson(json);
 }

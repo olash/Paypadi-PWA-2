@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values, diLocator;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
-import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -66,7 +66,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
             FilledButton(
               onPressed: () => submit(
                 ref,
-                form,
+                form.currentState!,
                 referralCode.text,
                 firstName.text,
                 lastName.text,
@@ -81,19 +81,19 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
 
   void submit(
     WidgetRef ref,
-    GlobalKey<FormState> form,
+    FormState form,
     String referralCode,
     String firstName,
     String lastName,
   ) {
-    if (form.currentState!.validate()) {
+    if (form.validate()) {
       if (referralCode.isNotEmpty) {
-        diLocator.get<RegisterPayloadBuilder>().setReferredBy(referralCode);
+        // diLocator.get<RegisterPayloadBuilder>().setReferredBy(referralCode);
       }
 
-      diLocator.get<RegisterPayloadBuilder>()
-        ..setFirstName(firstName)
-        ..setLastName(lastName);
+      // diLocator.get<RegisterPayloadBuilder>()
+      //   ..setFirstName(firstName)
+      //   ..setLastName(lastName);
 
       ref.read(appRouterProvider).push(PasswordRoute());
     }

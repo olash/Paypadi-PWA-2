@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/config/router/router.gr.dart';
+
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
+import 'package:paypadi/core/utils/helpers.dart';
+import 'package:paypadi/src/features/authentication/domain/models/bank_model.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -37,7 +39,7 @@ class DriverPayoutScreen extends HookConsumerWidget {
             style: context.textTheme.bodyMedium,
           ),
           Values.v32.verticalSpacing,
-          _BankList(bankController: bank),
+          _BankList(controller: bank),
           AppTextformfield(
             title: "Account Number",
             hint: "Enter account number",
@@ -63,8 +65,8 @@ class DriverPayoutScreen extends HookConsumerWidget {
 }
 
 class _BankList extends ConsumerWidget {
-  const _BankList({required this.bankController});
-  final TextEditingController bankController;
+  const _BankList({required this.controller});
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,50 +78,65 @@ class _BankList extends ConsumerWidget {
           style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
         Values.v6.verticalSpacing,
+        SearchAnchor.bar(
+          isFullScreen: false,
+          barHintText: "Select Bank",
+          viewHintText: "Select Bank",
+          dividerColor: AppColors.white,
+          textInputAction: TextInputAction.search,
+          barLeading: SizedBox.shrink(),
+          suggestionsBuilder: (context, searchController) {
+            final List<BankModel> viableBanks = _search(
+              ref,
+              searchController.text,
+            ).toList();
 
-        // SearchAnchor.bar(
-        //   isFullScreen: false,
-        //   barHintText: "Select Bank",
-        //   viewHintText: "Select Bank",
-        //   dividerColor: AppColors.white,
-        //   textInputAction: TextInputAction.search,
-        //   barLeading: SizedBox.shrink(),
-        //   suggestionsBuilder: (context, controller) async {
-        //     final List<String> viableBanks = _search(
-        //       ref,
-        //       controller.text,
-        //     ).toList();
+            viableBanks.print();
 
-        //     return List<Widget>.generate(
-        //       viableBanks.length,
-        //       (int index) {
-        //         final String bank = viableBanks[index];
-        //         return ListTile(
-        //           title: Text(bank),
-        //           onTap: () {
-        //             controller.closeView(bank);
-        //             bankController.text = bank;
-        //           },
-        //         );
-        //       },
-        //     );
-        //   },
-        // ),
+            return List<Widget>.generate(
+              viableBanks.length,
+              (int index) {
+                final BankModel bank = viableBanks[index];
+                return ListTile(
+                  title: Text(
+                    bank.name,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.grey500,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    searchController.closeView(bank.code);
+                    controller.text = bank.name;
+                  },
+                );
+              },
+            );
+          },
+        ),
 
         Values.v12.verticalSpacing,
       ],
     );
   }
 
-  // Iterable<String> _search(WidgetRef ref, String query) {
-  //   final banks = ref.watch(bankListProvider).value ?? [];
+  Iterable<BankModel> _search(WidgetRef ref, String query) {
+    final banks = ref.watch(banksListProvider);
 
-  //   if (query.isEmpty) {
-  //     return banks;
-  //   }
+    banks.print();
+    
+    return banks.when(
+      data: (banks) {
+        if (query.isEmpty) return banks;
 
-  //   return banks.where(
-  //     (String bankName) => bankName.toLowerCase().contains(query.toLowerCase()),
-  //   );
-  // }
+        return banks.where(
+          (bank) => bank.name.toLowerCase().contains(query.toLowerCase()),
+        );
+      },
+      error: (error, st) {
+        return const Iterable.empty();
+      },
+      loading: () => const Iterable.empty(),
+    );
+  }
 }

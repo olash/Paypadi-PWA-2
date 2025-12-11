@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';
@@ -122,15 +121,14 @@ final Talker debugLogger = TalkerFlutter.init(
 );
 
 class CacheKeys {
-  static final String role = "role";
-  static final String userToken = "userToken";
-  static final String viewedOnboarding = "hasViewedOnboarding";
-  static final String isDarkMode = "isDarkMode";
-  static final String enabledBiometrics = "enabledBiometrics";
-  static final String loginPin = "loginPin";
-  static final String transactionPin = "transactionPin";
+  static final String viewedOnboarding = "onboarding";
+  static final String isDarkMode = "dark_mode";
+  static final String enabledBiometrics = "biometrics";
+  static final String loginPin = "login_pin";
+  static final String transactionPin = "transaction_pin";
   static final String colorTheme = "colorTheme";
   static final String sessionId = "session_id";
+  static final String refreshToken = "refresh_token";
+  static final String accessToken = "access_token";
 }
 
-final GetIt diLocator = GetIt.instance;

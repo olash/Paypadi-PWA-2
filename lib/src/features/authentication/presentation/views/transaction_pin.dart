@@ -2,14 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/router/router.gr.dart';
+
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart'
-    show transactionPinLength, Values, CacheKeys;
+    show transactionPinLength, Values;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
+import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class TransactionPinScreen extends HookConsumerWidget {
@@ -18,6 +22,7 @@ class TransactionPinScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionPin = useState<String>('');
+
     return AppScaffold(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,6 +69,20 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmTransactionPin = useState<String>('');
+
+    ref.listen(profileControllerProvider, (_, state) {
+      state.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(message: e.toString());
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
+
     return AppScaffold(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,20 +108,19 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
           AppKeypad(
             pinLength: transactionPinLength,
             onChanged: (value) => confirmTransactionPin.value = value,
-            onSubmit: (confirmedPin) {
-              if (pin == confirmedPin) {
-                ref
-                    .read(secureCacheProvider)
-                    .write(key: CacheKeys.transactionPin, value: confirmedPin);
-                ref
-                    .read(appRouterProvider)
-                    .push(BiometricAuthenticationRoute());
-              }
-            },
+            onSubmit: (confirmedPin) => submitPin(ref, pin, confirmedPin),
           ),
           Spacer(),
         ],
       ),
     );
+  }
+
+  void submitPin(WidgetRef ref, String pin, String confirmedPin) {
+    if (pin == confirmedPin) {
+      ref
+          .read(profileControllerProvider.notifier)
+          .setTransactionPin(pin, confirmedPin);
+    }
   }
 }

@@ -3,28 +3,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'api_response.freezed.dart';
 part 'api_response.g.dart';
 
-// @Freezed(genericArgumentFactories: true)
-// sealed class ApiResponse<T> with _$ApiResponse<T> {
-//   const factory ApiResponse({
-//     required String status,
-//     required String message,
-//     T? data,
-//     List<String>? errors,
-//   }) = _ApiResponse;
-
-//   factory ApiResponse.fromJson(
-//     Map<String, Object?> json,
-//     T Function(Object? json) fromJsonT,
-//   ) => _$ApiResponseFromJson(json, fromJsonT);
-// }
-
 @Freezed(genericArgumentFactories: true)
 sealed class ApiListResponse<T> with _$ApiListResponse<T> {
   const factory ApiListResponse({
-    required int count,
-    required String next,
-    required String previous,
-    required List<T> results,
+    required bool status,
+    required String message,
+    required List<T> data,
   }) = _ApiListResponse;
 
   factory ApiListResponse.fromJson(

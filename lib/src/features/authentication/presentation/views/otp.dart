@@ -8,7 +8,6 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart'
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
-import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/features/authentication/presentation/widgets/pincode_field.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -99,7 +98,7 @@ class OtpScreen extends HookConsumerWidget {
   }
 
   void verifyOtp(WidgetRef ref, String phoneNumber, String otpCode) {
-    diLocator.get<RegisterPayloadBuilder>().setPhoneNumber(phoneNumber);
+    // diLocator.get<RegisterPayloadBuilder>().setPhoneNumber(phoneNumber);
     if (formKey.currentState!.validate()) {
       ref
           .read(authControllerProvider.notifier)

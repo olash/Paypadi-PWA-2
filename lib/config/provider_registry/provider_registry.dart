@@ -13,12 +13,13 @@ import 'package:paypadi/core/services/secure_cache_service.dart'
     show SecureCacheService;
 import 'package:paypadi/src/features/authentication/data/datasource/auth/authentication_client.dart';
 import 'package:paypadi/src/features/authentication/data/datasource/jwt/jwt_client.dart';
-import 'package:paypadi/src/features/authentication/data/datasource/payout_account/account_payout_client.dart';
+import 'package:paypadi/src/features/authentication/data/datasource/payout_account/payout_account_client.dart';
 import 'package:paypadi/src/features/authentication/data/datasource/profile/profile_client.dart';
 import 'package:paypadi/src/features/authentication/data/repository/authentication_repo.dart';
 import 'package:paypadi/src/features/authentication/data/repository/jwt_repo.dart';
 import 'package:paypadi/src/features/authentication/data/repository/payout_account_repo.dart';
 import 'package:paypadi/src/features/authentication/data/repository/profile_repo.dart';
+import 'package:paypadi/src/features/authentication/domain/models/bank_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
@@ -95,9 +96,9 @@ JwtClient jwtClient(Ref ref) {
 }
 
 @riverpod
-AccountPayoutClient accountPayoutClient(Ref ref) {
+PayoutAccountClient payoutAccountClient(Ref ref) {
   final dio = ref.watch(dioProvider);
-  return AccountPayoutClient(dio);
+  return PayoutAccountClient(dio);
 }
 
 @riverpod
@@ -120,7 +121,7 @@ JwtRepository jwtRepository(Ref ref) {
 
 @riverpod
 PayoutAccountRepository payoutAccountRepository(Ref ref) {
-  final AccountPayoutClient client = ref.watch(accountPayoutClientProvider);
+  final PayoutAccountClient client = ref.watch(payoutAccountClientProvider);
   return PayoutAccountRepository(client: client);
 }
 
@@ -128,4 +129,16 @@ PayoutAccountRepository payoutAccountRepository(Ref ref) {
 ProfileRepository profileRepository(Ref ref) {
   final ProfileClient client = ref.watch(profileClientProvider);
   return ProfileRepository(client: client);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<BankModel>> banksList(Ref ref) async {
+  final result = await ref
+      .read(payoutAccountRepositoryProvider)
+      .getListOfBanks();
+
+  return result.fold(
+    (response) => response,
+    (error) => throw error,
+  );
 }

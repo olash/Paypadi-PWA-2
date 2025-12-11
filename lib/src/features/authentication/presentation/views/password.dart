@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/router/router.gr.dart';
+
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart'
-    show Values, diLocator, passwordPinLength;
+    show Values, passwordPinLength;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
-import 'package:paypadi/src/features/authentication/domain/dtos/requests/payloads.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
@@ -111,10 +111,10 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             onSubmit: (confirmedPassword) {
               if (password == confirmedPassword) {
-                diLocator.get<RegisterPayloadBuilder>().setPassword(
-                  confirmedPassword,
-                );
-                ref.read(authControllerProvider.notifier).createAccount();
+                // diLocator.get<RegisterPayloadBuilder>().setPassword(
+                //   confirmedPassword,
+                // );
+                // ref.read(authControllerProvider.notifier).createAccount();
               }
             },
             onChanged: (value) => confirmPassword.value = value,
@@ -133,6 +133,19 @@ class EnterPasswordScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final password = useState<String>('');
+
+    ref.listen(authControllerProvider, (_, state) {
+      state.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(message: e.toString());
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
 
     return AppScaffold(
       child: Column(
@@ -168,6 +181,7 @@ class EnterPasswordScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String password) {
-    ref.read(appRouterProvider).push(ConfirmPasswordRoute(password: password));
+    // diLocator.get<LoginPayloadBuilder>().setPassword(password);
+    ref.read(authControllerProvider.notifier).login();
   }
 }

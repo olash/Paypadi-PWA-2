@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/core/utils/validators.dart';
-import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class SignInScreen extends HookConsumerWidget {
@@ -22,20 +19,6 @@ class SignInScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final phoneNumber = useTextEditingController();
-
-    ref.listen(authControllerProvider, (_, state) {
-      state.when(
-        data: (d) {
-          dismissLoadingOverlay(context);
-          ref.read(appRouterProvider).push(PasswordRoute());
-        },
-        error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog( message: e.toString());
-        },
-        loading: () => showLoadingOverlay(context, ref),
-      );
-    });
 
     return AppScaffold(
       showAppBar: true,
@@ -74,13 +57,10 @@ class SignInScreen extends HookConsumerWidget {
     );
   }
 
-  void signin(
-    WidgetRef ref,
-    String phoneNumber,
-    GlobalKey<FormState> form,
-  ) {
+  void signin(WidgetRef ref, String phoneNumber, GlobalKey<FormState> form) {
     if (form.currentState!.validate()) {
-      // ref.read(authControllerProvider.notifier).requestForOtp(phoneNumber);
+      // ref
+      ref.read(appRouterProvider).push(EnterPasswordRoute());
     }
   }
 }
