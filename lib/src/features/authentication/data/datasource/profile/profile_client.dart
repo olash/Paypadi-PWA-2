@@ -26,12 +26,12 @@ abstract class ProfileClient {
 
   @PUT('$_basePath/driver/profile/')
   Future<DriverModel> updateDriverProfile({
-    @Body() Map<String, dynamic> payload,
+    @Body() required Map<String, dynamic> payload,
   });
 
   @PATCH('$_basePath/driver/profile/')
   Future<DriverModel> partiallyUpdateDriverProfile({
-    @Body() Map<String, dynamic> payload,
+    @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/me/')

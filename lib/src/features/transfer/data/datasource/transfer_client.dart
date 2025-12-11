@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/services/api_service.dart' show dioProvider;
 
 part 'transfer_client.g.dart';

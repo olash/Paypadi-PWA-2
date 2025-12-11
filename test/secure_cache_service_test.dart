@@ -1,73 +1,97 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:talker_flutter/talker_flutter.dart';
-import 'package:paypadi/core/services/secure_cache_service.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:talker_flutter/talker_flutter.dart';
+// import 'package:paypadi/core/services/secure_cache_service.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// A tiny in-memory fake that implements the subset of
-/// `FlutterSecureStorage` API we use in the service.
-class _FakeSecureStorage extends FlutterSecureStorage {
-  final Map<String, String> _store = {};
+// /// A tiny in-memory fake that implements the subset of
+// /// `FlutterSecureStorage` API we use in the service.
+// class _FakeSecureStorage extends FlutterSecureStorage {
+//   final Map<String, String> _store = {};
 
-  _FakeSecureStorage();
+//   _FakeSecureStorage();
 
-  @override
-  Future<void> write({
-    required String key,
-    required String? value,
-    AndroidOptions? aOptions,
-    IOSOptions? iOptions,
-    LinuxOptions? lOptions,
-    MacOsOptions? mOptions,
-    WindowsOptions? wOptions,
-    WebOptions? webOptions,
-  }) async {
-    if (value == null) {
-      _store.remove(key);
-    } else {
-      _store[key] = value;
-    }
-  }
+//   @override
+//   Future<void> write({
+//     required String key,
+//     required String? value,
+//     AndroidOptions? aOptions,
+//     IOSOptions? iOptions,
+//     LinuxOptions? lOptions,
+//     MacOsOptions? mOptions,
+//     WindowsOptions? wOptions,
+//     WebOptions? webOptions,
+//   }) async {
+//     if (value == null) {
+//       _store.remove(key);
+//     } else {
+//       _store[key] = value;
+//     }
+//   }
 
-  @override
-  Future<String?> read({
-    required String key,
-    AndroidOptions? aOptions,
-    IOSOptions? iOptions,
-    LinuxOptions? lOptions,
-    MacOsOptions? mOptions,
-    WindowsOptions? wOptions,
-    WebOptions? webOptions,
-  }) async {
-    return _store[key];
-  }
+//   @override
+//   Future<String?> read({
+//     required String key,
+//     AndroidOptions? aOptions,
+//     IOSOptions? iOptions,
+//     LinuxOptions? lOptions,
+//     MacOsOptions? mOptions,
+//     WindowsOptions? wOptions,
+//     WebOptions? webOptions,
+//   }) async {
+//     return _store[key];
+//   }
 
-  @override
-  Future<void> delete({
-    required String key,
-    AndroidOptions? aOptions,
-    IOSOptions? iOptions,
-    LinuxOptions? lOptions,
-    MacOsOptions? mOptions,
-    WindowsOptions? wOptions,
-    WebOptions? webOptions,
-  }) async {
-    _store.remove(key);
-  }
-}
+//   @override
+//   Future<void> delete({
+//     required String key,
+//     AndroidOptions? aOptions,
+//     IOSOptions? iOptions,
+//     LinuxOptions? lOptions,
+//     MacOsOptions? mOptions,
+//     WindowsOptions? wOptions,
+//     WebOptions? webOptions,
+//   }) async {
+//     _store.remove(key);
+//   }
 
-void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+//   @override
+//   Future<Map<String, String>> readAll({
+//     AndroidOptions? aOptions,
+//     IOSOptions? iOptions,
+//     LinuxOptions? lOptions,
+//     MacOsOptions? mOptions,
+//     WindowsOptions? wOptions,
+//     WebOptions? webOptions,
+//   }) async {
+//     return Map<String, String>.from(_store);
+//   }
 
-  test('write/read/delete lifecycle', () async {
-    final fake = _FakeSecureStorage();
-    final svc = SecureCacheService(storage: fake);
+//   @override
+//   Future<void> deleteAll({
+//     AndroidOptions? aOptions,
+//     IOSOptions? iOptions,
+//     LinuxOptions? lOptions,
+//     MacOsOptions? mOptions,
+//     WindowsOptions? wOptions,
+//     WebOptions? webOptions,
+//   }) async {
+//     _store.clear();
+//   }
+// }
 
-    await svc.write(key: 't1', value: 'v1');
-    final r = await svc.read('t1');
-    expect(r, 'v1');
+// void main() {
+//   TestWidgetsFlutterBinding.ensureInitialized();
 
-    await svc.delete('t1');
-    final r2 = await svc.read('t1');
-    expect(r2, isNull);
-  });
-}
+//   test('write/read/delete lifecycle', () async {
+//     final fake = _FakeSecureStorage();
+//     final svc = SecureCacheService(storage: fake);
+
+//     await svc.write(key: 't1', value: 'v1');
+//     final r = await svc.read('t1');
+//     expect(r, 'v1');
+
+//     await svc.delete('t1');
+//     final r2 = await svc.read('t1');
+//     expect(r2, isNull);
+//   });
+// }

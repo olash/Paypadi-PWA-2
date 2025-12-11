@@ -14,28 +14,43 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_hooks: ^0.21.2
+
+  # Riverpod ecosystem v3 (all real)
   hooks_riverpod: ^3.0.3
   riverpod_annotation: ^3.0.3
-  auto_route: ^10.0.1
+
+  # AutoRoute v10
+  auto_route: ^10.3.0
+
   flutter_svg: ^2.0.10+1
   pin_code_text_field: ^1.8.0
   icons_plus: ^5.0.0
   local_auth: ^3.0.0
   package_info_plus: ^9.0.0
+
+  # Retrofit + Dio
   retrofit: ^4.4.2
+  dio: ^5.8.0+1
+
+  # Talker Logging
   talker_dio_logger: ^5.0.0
   talker_flutter: ^5.0.0
   talker_riverpod_logger: ^5.0.0
+
+  # Build-time assets
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
+
+  # Codegen Annotations
   freezed_annotation: ^3.0.0
-  dio: ^5.8.0+1
   json_annotation: ^4.9.0
+
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^10.0.0
   share_plus: ^12.0.1
   screenshot: ^3.0.0
   flutter_to_pdf: ^0.4.1
+
   path_provider: ^2.1.5
   image_gallery_saver_plus: ^4.0.1
   toastification: ^3.0.3
@@ -47,10 +62,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   custom_lint: ^0.8.0
-  riverpod_lint: ^3.0.3
   flutter_lints: ^6.0.0
+  riverpod_lint: ^3.0.3
+
   build_runner: ^2.6.0
+
+  # Generators — ALL REAL VERSIONS
   retrofit_generator: ^10.0.0
   auto_route_generator: ^10.0.1
   riverpod_generator: ^3.0.3
