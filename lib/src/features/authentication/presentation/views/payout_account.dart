@@ -8,7 +8,7 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/features/authentication/domain/models/bank_model.dart';
+import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -90,8 +90,6 @@ class _BankList extends ConsumerWidget {
               searchController.text,
             ).toList();
 
-            viableBanks.print();
-
             return List<Widget>.generate(
               viableBanks.length,
               (int index) {
@@ -105,7 +103,7 @@ class _BankList extends ConsumerWidget {
                     ),
                   ),
                   onTap: () {
-                    searchController.closeView(bank.code);
+                    searchController.closeView(bank.name);
                     controller.text = bank.name;
                   },
                 );
@@ -122,12 +120,9 @@ class _BankList extends ConsumerWidget {
   Iterable<BankModel> _search(WidgetRef ref, String query) {
     final banks = ref.watch(banksListProvider);
 
-    banks.print();
-    
     return banks.when(
       data: (banks) {
         if (query.isEmpty) return banks;
-
         return banks.where(
           (bank) => bank.name.toLowerCase().contains(query.toLowerCase()),
         );

@@ -14,6 +14,7 @@ import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 @RoutePage()
 class SignInScreen extends HookConsumerWidget {
   SignInScreen({super.key});
+
   final GlobalKey<FormState> form = GlobalKey<FormState>();
 
   @override
@@ -59,8 +60,9 @@ class SignInScreen extends HookConsumerWidget {
 
   void signin(WidgetRef ref, String phoneNumber, GlobalKey<FormState> form) {
     if (form.currentState!.validate()) {
-      // ref
-      ref.read(appRouterProvider).push(EnterPasswordRoute());
+      ref
+          .read(appRouterProvider)
+          .push(EnterPasswordRoute(phoneNumber: phoneNumber));
     }
   }
 }

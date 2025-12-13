@@ -128,7 +128,8 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
 
 @RoutePage()
 class EnterPasswordScreen extends HookConsumerWidget {
-  const EnterPasswordScreen({super.key});
+  const EnterPasswordScreen({super.key, required this.phoneNumber});
+  final String phoneNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -181,7 +182,6 @@ class EnterPasswordScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String password) {
-    // diLocator.get<LoginPayloadBuilder>().setPassword(password);
-    ref.read(authControllerProvider.notifier).login();
+    ref.read(authControllerProvider.notifier).login(phoneNumber, password);
   }
 }

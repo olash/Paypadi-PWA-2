@@ -11,15 +11,19 @@ import 'package:paypadi/core/services/local_cache_service.dart'
     show LocalCacheService;
 import 'package:paypadi/core/services/secure_cache_service.dart'
     show SecureCacheService;
-import 'package:paypadi/src/features/authentication/data/datasource/auth/authentication_client.dart';
-import 'package:paypadi/src/features/authentication/data/datasource/jwt/jwt_client.dart';
-import 'package:paypadi/src/features/authentication/data/datasource/payout_account/payout_account_client.dart';
-import 'package:paypadi/src/features/authentication/data/datasource/profile/profile_client.dart';
-import 'package:paypadi/src/features/authentication/data/repository/authentication_repo.dart';
-import 'package:paypadi/src/features/authentication/data/repository/jwt_repo.dart';
-import 'package:paypadi/src/features/authentication/data/repository/payout_account_repo.dart';
-import 'package:paypadi/src/features/authentication/data/repository/profile_repo.dart';
-import 'package:paypadi/src/features/authentication/domain/models/bank_model.dart';
+import 'package:paypadi/core/datasource/authentication_ds/authentication_client.dart';
+import 'package:paypadi/core/datasource/jwt_ds/jwt_client.dart';
+import 'package:paypadi/core/datasource/payout_account_ds/payout_account_client.dart';
+import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
+import 'package:paypadi/core/repositories/authentication_repo.dart';
+import 'package:paypadi/core/repositories/jwt_repo.dart';
+import 'package:paypadi/core/repositories/payout_account_repo.dart';
+import 'package:paypadi/core/repositories/profile_repo.dart';
+import 'package:paypadi/core/models/bank_model/bank_model.dart';
+import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
+import 'package:paypadi/core/repositories/wallet_repo.dart';
+import 'package:paypadi/core/datasource/wallet_action_ds/wallet_action_client.dart';
+import 'package:paypadi/core/repositories/wallet_action_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
@@ -108,6 +112,18 @@ ProfileClient profileClient(Ref ref) {
 }
 
 @riverpod
+WalletClient walletClient(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  return WalletClient(dio);
+}
+
+@riverpod
+WalletActionClient walletActionClient(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  return WalletActionClient(dio);
+}
+
+@riverpod
 AuthenticationRepository authenticationRepository(Ref ref) {
   final AuthenticationClient client = ref.watch(authenticationClientProvider);
   return AuthenticationRepository(client: client);
@@ -129,6 +145,18 @@ PayoutAccountRepository payoutAccountRepository(Ref ref) {
 ProfileRepository profileRepository(Ref ref) {
   final ProfileClient client = ref.watch(profileClientProvider);
   return ProfileRepository(client: client);
+}
+
+@riverpod
+WalletRepository walletRepository(Ref ref) {
+  final WalletClient client = ref.watch(walletClientProvider);
+  return WalletRepository(client);
+}
+
+@riverpod
+WalletActionRepository walletActionRepository(Ref ref) {
+  final WalletActionClient client = ref.watch(walletActionClientProvider);
+  return WalletActionRepository(client);
 }
 
 @Riverpod(keepAlive: true)

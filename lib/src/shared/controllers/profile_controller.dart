@@ -1,6 +1,6 @@
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/src/features/authentication/data/repository/profile_repo.dart';
+import 'package:paypadi/core/repositories/profile_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/core/api/exceptions/app_exception.dart';

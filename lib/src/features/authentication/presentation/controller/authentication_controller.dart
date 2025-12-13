@@ -1,6 +1,6 @@
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/src/features/authentication/data/repository/authentication_repo.dart';
+import 'package:paypadi/core/repositories/authentication_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
@@ -161,12 +161,12 @@ class AuthController extends _$AuthController {
     );
   }
 
-  void login() async {
+  void login(String phoneNumber, String password) async {
     state = AsyncLoading();
 
     final Map<String, dynamic> payload = {
-      "phone_number": _phoneNumber,
-      "password": _password,
+      "phone_number": phoneNumber,
+      "password": password,
     };
 
     final result = await _authRepository.login(payload);
@@ -179,12 +179,14 @@ class AuthController extends _$AuthController {
               key: CacheKeys.refreshToken,
               value: success.refreshToken,
             );
+
         ref
             .read(secureCacheProvider)
             .write(
               key: CacheKeys.accessToken,
               value: success.accessToken,
             );
+
         ref.read(appRouterProvider).push(AppBottomNavBarRoute());
         return AsyncData(null);
       },
