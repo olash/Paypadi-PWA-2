@@ -1,6 +1,7 @@
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/repositories/authentication_repo.dart';
+import 'package:paypadi/src/features/authentication/domain/responses.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
@@ -173,20 +174,7 @@ class AuthController extends _$AuthController {
 
     state = result.fold(
       (success) {
-        ref
-            .read(secureCacheProvider)
-            .write(
-              key: CacheKeys.refreshToken,
-              value: success.refreshToken,
-            );
-
-        ref
-            .read(secureCacheProvider)
-            .write(
-              key: CacheKeys.accessToken,
-              value: success.accessToken,
-            );
-
+        _saveToCache(success, password);
         ref.read(appRouterProvider).push(AppBottomNavBarRoute());
         return AsyncData(null);
       },
@@ -196,5 +184,46 @@ class AuthController extends _$AuthController {
         return AsyncError(message, StackTrace.current);
       },
     );
+  }
+
+  void logout() async {
+    await ref.read(secureCacheProvider).clearStorage();
+    await ref.read(localCacheProvider).clearStorage();
+    ref.read(appRouterProvider).popUntilRoot();
+
+    // .pushAndPopUntil(
+    //   OnboardingRoute(),
+    //   predicate: (route) => route.settings.name == "/sign-in",
+    // );
+  }
+
+  void _saveToCache(LoginResponse success, String password) {
+    ref
+        .read(secureCacheProvider)
+        .write(
+          key: CacheKeys.refreshToken,
+          value: success.refreshToken,
+        );
+
+    ref
+        .read(secureCacheProvider)
+        .write(
+          key: CacheKeys.accessToken,
+          value: success.accessToken,
+        );
+
+    ref
+        .read(secureCacheProvider)
+        .write(
+          key: CacheKeys.password,
+          value: password,
+        );
+
+    ref
+        .read(localCacheProvider)
+        .saveToCache(
+          key: CacheKeys.user,
+          value: success.user.toJson(),
+        );
   }
 }

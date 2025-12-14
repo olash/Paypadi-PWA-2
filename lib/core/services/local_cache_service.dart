@@ -6,19 +6,6 @@ import 'package:talker_flutter/talker_flutter.dart' show Talker;
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys, debugLogger;
 
 abstract class LocalCache {
-  /// Mark that the onboarding flow has been viewed.
-  ///
-  /// This should persist a boolean flag in the local cache so the
-  /// application can skip the onboarding screen for returning users.
-  /// Implementations should store this under a stable cache key
-  /// (for example, `CacheKeys.viewedOnboarding`).
-  ///
-  /// Returns a [Future] that completes when the value has been saved.
-  /// On error, implementations may either throw or log and swallow the
-  /// exception — callers shouldn't rely on this method to throw for
-  /// normal flow control.
-  Future<void> markOnboardingAsSeen();
-
   /// Enable biometric authentication in the cache.
   ///
   /// Implementations should persist a boolean flag indicating biometric
@@ -99,6 +86,11 @@ abstract class LocalCache {
   /// may log the error). This is typically used for sign-out flows or
   /// when clearing user-specific data.
   Future<void> removeFromCache(String key);
+
+  /// Clears all values from the local cache.
+  ///
+  /// Implementations should swallow and log non-fatal errors.
+  Future<void> clearStorage();
 }
 
 class LocalCacheService implements LocalCache {
@@ -107,11 +99,6 @@ class LocalCacheService implements LocalCache {
 
   final Talker logger = debugLogger;
   late final SharedPreferencesWithCache _sharedPreferences;
-
-  @override
-  Future<void> markOnboardingAsSeen() async {
-    await saveToCache(key: CacheKeys.viewedOnboarding, value: true);
-  }
 
   @override
   Future<void> enableBiometrics() async {
@@ -208,5 +195,15 @@ class LocalCacheService implements LocalCache {
   @override
   Future<void> removeFromCache(String key) async {
     await _sharedPreferences.remove(key);
+  }
+
+  @override
+  Future<void> clearStorage() async {
+    try {
+      await _sharedPreferences.clear();
+      logger.debug('Cleared all local cache in $runtimeType');
+    } catch (e, st) {
+      logger.error('$runtimeType: failed to clear local cache', e, st);
+    }
   }
 }

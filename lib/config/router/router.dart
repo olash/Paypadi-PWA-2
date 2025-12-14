@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
-    show localCacheProvider;
+    show localCacheProvider, secureCacheProvider;
+import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
 
 import 'router.gr.dart';
 
@@ -18,9 +18,9 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(
       path: "/",
-      page: OnboardingRoute.page,
       initial: true,
-      // guards: [DefaultRouteGuard(ref)],
+      page: OnboardingRoute.page,
+      guards: [LandingPageGuard(ref)],
     ),
     AutoRoute(
       path: "/create-account",
@@ -81,30 +81,37 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       path: "/qr-code",
       page: QrCodeRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/transfer",
       page: TransferRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/make-payment",
       page: MakePaymentRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/enter-transaction-pin",
       page: EnterPinRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/confirm-payment",
       page: ConfirmPaymentRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/receipt",
       page: ReceiptRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/change-theme",
       page: ChangeThemeRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/forgot-password",
@@ -113,37 +120,46 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       path: "/change-password",
       page: ChangePasswordRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/change-pin",
       page: ChangePinRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/notifications",
       page: NotificationsRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/profile",
       page: ProfileRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/referral",
       page: ReferralRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/support",
       page: SupportRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/legal",
       page: LegalRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/add-money",
       page: AddMoneyRoute.page,
+      guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
       path: "/app-navigation-bar-page",
+      guards: [AuthenticationGuard(ref)],
       page: AppBottomNavBarRoute.page,
       children: [
         AutoRoute(
@@ -164,21 +180,45 @@ class AppRouter extends RootStackRouter {
   ];
 }
 
-class DefaultRouteGuard extends AutoRouteGuard {
-  const DefaultRouteGuard(this.ref);
+class AuthenticationGuard extends AutoRouteGuard {
+  const AuthenticationGuard(this.ref);
   final Ref ref;
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final bool hasCompletedOnboarding =
-        ref
-            .read(localCacheProvider)
-            .getFromCache<bool>(CacheKeys.viewedOnboarding) ??
-        false;
+    final String? accessToken = await ref
+        .read(secureCacheProvider)
+        .read(CacheKeys.accessToken);
 
-    if (!hasCompletedOnboarding && router.currentPath != "/") {
-      resolver.redirectUntil(OnboardingRoute());
+    if (accessToken == null) {
+      resolver.redirectUntil(SignInRoute());
     }
+
+    resolver.next();
+  }
+}
+
+class LandingPageGuard extends AutoRouteGuard {
+  const LandingPageGuard(this.ref);
+  final Ref ref;
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    final String? accessToken = await ref
+        .read(secureCacheProvider)
+        .read(CacheKeys.accessToken);
+
+    final bool? biometricLoginEnabled = ref
+        .read(localCacheProvider)
+        .getFromCache<bool>(CacheKeys.enabledBiometrics);
+
+    // Check if user is authenticated and has enabled biometric sign-in
+    if (biometricLoginEnabled == true && accessToken != null) {
+      router.replace(LoginRoute());
+      return;
+    }
+
+    // allow navigation
     resolver.next();
   }
 }

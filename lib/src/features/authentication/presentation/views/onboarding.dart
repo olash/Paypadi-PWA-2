@@ -64,17 +64,12 @@ class OnboardingScreen extends HookConsumerWidget {
           ),
           Values.v24.verticalSpacing,
           FilledButton(
-            onPressed: () {
-              ref.read(localCacheProvider).markOnboardingAsSeen();
-              ref.read(appRouterProvider).push(CreateAccountRoute());
-            },
+            onPressed: () =>
+                ref.read(appRouterProvider).push(CreateAccountRoute()),
             child: Text("Create Account"),
           ),
           OutlinedButton(
-            onPressed: () {
-              ref.read(localCacheProvider).markOnboardingAsSeen();
-              ref.read(appRouterProvider).push(SignInRoute());
-            },
+            onPressed: () => ref.read(appRouterProvider).push(SignInRoute()),
             child: Text("Sign In"),
           ),
         ],

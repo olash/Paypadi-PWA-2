@@ -25,6 +25,11 @@ abstract class SecureCache {
   /// Remove the stored value for [key]. Implementations should swallow
   /// and log non-fatal errors.
   Future<void> delete(String key);
+
+  /// Clears all values from storage.
+  ///
+  /// Implementations should swallow and log non-fatal errors.
+  Future<void> clearStorage();
 }
 
 class SecureCacheService implements SecureCache {
@@ -37,7 +42,7 @@ class SecureCacheService implements SecureCache {
     : _storage =
           storage ??
           const FlutterSecureStorage(
-            aOptions: AndroidOptions(encryptedSharedPreferences: true),
+            aOptions: AndroidOptions(),
             iOptions: IOSOptions(
               synchronizable: false,
               accessibility: KeychainAccessibility.first_unlock_this_device,
@@ -77,6 +82,16 @@ class SecureCacheService implements SecureCache {
       logger.debug("Deleted key '$key' from $runtimeType");
     } catch (e, st) {
       logger.error('$runtimeType: failed to delete', e, st);
+    }
+  }
+
+  @override
+  Future<void> clearStorage() async {
+    try {
+      await _storage.deleteAll();
+      logger.debug('Cleared all secure storage in $runtimeType');
+    } catch (e, st) {
+      logger.error('$runtimeType: failed to clear storage', e, st);
     }
   }
 }

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/features/settings/widgets/setting_tile.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -75,15 +77,15 @@ class SettingsScreen extends HookConsumerWidget {
             SettingTile(
               name: "Notification Preferences",
               icon: Iconsax.notification_outline,
-              onTap:
-                  () => ref.read(appRouterProvider).push(NotificationsRoute()),
+              onTap: () =>
+                  ref.read(appRouterProvider).push(NotificationsRoute()),
             ),
             SettingTile(
               name: "Change Password",
               showTrailingIcon: false,
               icon: Iconsax.lock_1_outline,
-              onTap:
-                  () => ref.read(appRouterProvider).push(ChangePasswordRoute()),
+              onTap: () =>
+                  ref.read(appRouterProvider).push(ChangePasswordRoute()),
             ),
             SettingTile(
               name: "Change Pin",
@@ -128,13 +130,7 @@ class SettingsScreen extends HookConsumerWidget {
               name: "Log out",
               showTrailingIcon: false,
               icon: Iconsax.logout_1_outline,
-              onTap:
-                  () => ref
-                      .read(appRouterProvider)
-                      .pushAndPopUntil(
-                        LoginRoute(),
-                        predicate: (route) => route.settings.name == "/login",
-                      ),
+              onTap: () => ref.read(authControllerProvider.notifier).logout(),
             ),
           ],
         ),

@@ -38,6 +38,8 @@ Future<void> initializeApp() async {
     // Optionally, handle the error further or rethrow
   }
 
+  
+
   runApp(
     UncontrolledProviderScope(
       container: providerContainer,

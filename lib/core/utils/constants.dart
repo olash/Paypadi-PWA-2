@@ -121,14 +121,16 @@ final Talker debugLogger = TalkerFlutter.init(
 );
 
 class CacheKeys {
-  static final String viewedOnboarding = "onboarding";
   static final String isDarkMode = "dark_mode";
   static final String enabledBiometrics = "biometrics";
-  static final String loginPin = "login_pin";
-  static final String transactionPin = "transaction_pin";
-  static final String colorTheme = "colorTheme";
+  static final String colorTheme = "color_theme";
+
   static final String sessionId = "session_id";
   static final String refreshToken = "refresh_token";
   static final String accessToken = "access_token";
-}
 
+  static final String user = "user";
+  static final String password = "user_password";
+  static final String phoneNumber = "user_phone_number";
+  static final String transactionPin = "user_transaction_pin";
+}

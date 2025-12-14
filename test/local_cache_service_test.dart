@@ -21,7 +21,6 @@ void main() {
     prefs = await SharedPreferencesWithCache.create(
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          CacheKeys.viewedOnboarding,
           CacheKeys.colorTheme,
           CacheKeys.enabledBiometrics,
           CacheKeys.isDarkMode,
@@ -83,12 +82,6 @@ void main() {
     await cache.disableDarkMode();
     dark = cache.getFromCache<bool>(CacheKeys.isDarkMode);
     expect(dark, isFalse);
-  });
-
-  test('markOnboardingAsSeen stores viewed flag', () async {
-    await cache.markOnboardingAsSeen();
-    final viewed = cache.getFromCache<bool>(CacheKeys.viewedOnboarding);
-    expect(viewed, isTrue);
   });
 
   test('removeFromCache deletes key', () async {
