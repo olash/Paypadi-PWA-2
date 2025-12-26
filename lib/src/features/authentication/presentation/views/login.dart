@@ -71,7 +71,7 @@ class LoginScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 2),
           AppKeypad(
-            pinLength: passwordPinLength,
+            keyLength: passwordPinLength,
             showBiometric: enabledBiometrics.value,
             onChanged: (value) => password.value = value,
             onBiometricKeyPressed: () => loginWithBiometrics(

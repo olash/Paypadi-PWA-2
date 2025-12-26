@@ -4,6 +4,20 @@ part 'api_response.freezed.dart';
 part 'api_response.g.dart';
 
 @Freezed(genericArgumentFactories: true)
+sealed class ApiResponse<T> with _$ApiResponse<T> {
+  const factory ApiResponse({
+    required bool status,
+    required String message,
+    required T data,
+  }) = _ApiResponse;
+
+  factory ApiResponse.fromJson(
+    Map<String, Object?> json,
+    T Function(Object? json) fromJsonT,
+  ) => _$ApiResponseFromJson(json, fromJsonT);
+}
+
+@Freezed(genericArgumentFactories: true)
 sealed class ApiListResponse<T> with _$ApiListResponse<T> {
   const factory ApiListResponse({
     required bool status,

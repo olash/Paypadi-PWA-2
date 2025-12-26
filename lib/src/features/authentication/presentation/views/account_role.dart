@@ -10,6 +10,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
@@ -38,13 +39,17 @@ class AccountRoleScreen extends HookConsumerWidget {
           Values.v32.verticalSpacing,
           _RoleWidget(
             role: AccountRole.passenger,
-            onWidgetTapped: () =>
-                ref.read(appRouterProvider).push(SetupPassengerAccountRoute()),
+            onWidgetTapped: () {
+              ref.read(authControllerProvider.notifier).payloadBuilder["role"] =
+                  "rider";
+              ref.read(appRouterProvider).push(SetupPassengerAccountRoute());
+            },
           ),
           _RoleWidget(
             role: AccountRole.driver,
             onWidgetTapped: () {
-              // diLocator.get<RegisterPayloadBuilder>().setRole("driver");
+              ref.read(authControllerProvider.notifier).payloadBuilder["role"] =
+                  "driver";
               ref.read(appRouterProvider).push(SetupDriverAccountRoute());
             },
           ),

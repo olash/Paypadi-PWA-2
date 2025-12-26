@@ -5,8 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/utils/constants.dart'
-    show transactionPinLength, Values;
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/shared/controllers/profile_controller.dart';
@@ -46,7 +45,7 @@ class TransactionPinScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: transactionPinLength,
+            keyLength: transactionPinLength,
             onSubmit: (pin) => onSubmit(ref, pin),
             onChanged: (value) => transactionPin.value = value,
           ),
@@ -102,11 +101,11 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
           Values.v32.verticalSpacing,
           AppPinIndicator(
             text: confirmTransactionPin.value,
-            pinLength: transactionPinLength,
+         pinLength: transactionPinLength,
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: transactionPinLength,
+            keyLength: transactionPinLength,
             onChanged: (value) => confirmTransactionPin.value = value,
             onSubmit: (confirmedPin) => submitPin(ref, pin, confirmedPin),
           ),

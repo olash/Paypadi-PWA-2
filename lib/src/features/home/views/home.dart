@@ -11,6 +11,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/features/home/widgets/amount_display.dart';
 import 'package:paypadi/src/features/home/widgets/user_wallet.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
@@ -23,7 +24,7 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final amount = useState<String>("");
+    final amount = useState<String>("0");
 
     final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
       CacheKeys.user,
@@ -33,53 +34,60 @@ class HomeScreen extends HookConsumerWidget {
       },
     );
 
-    return AppScaffold(
-      showAppBar: false,
-      leftPadding: Values.zero,
-      rightPadding: Values.zero,
-      appBar: CustomAppbar(name: user?.firstName ?? ""),
-      child: Column(
-        children: [
-          Values.v24.verticalSpacing,
-          UserWallet(),
-          Values.v24.verticalSpacing,
-          AmountDisplay(
-            amountEntered: int.tryParse(amount.value) ?? 0,
-            onAmountPressed: (selected) => amount.value = selected.toString(),
-          ),
-          Values.v32.verticalSpacing,
-          AppKeypad(
-            pinLength: 10,
-            onChanged: (value) => amount.value = value,
-          ),
-          Values.v32.verticalSpacing,
-          Row(
-            spacing: Values.v12,
-            children: [
-              Flexible(
-                child: FilledButton.icon(
-                  onPressed: () =>
-                      ref.read(appRouterProvider).push(TransferRoute()),
-                  label: Text("Send Cash"),
-                  iconAlignment: IconAlignment.end,
-                  icon: Icon(Icons.arrow_forward, size: 24),
-                  style: context.filledButtonTheme.style?.copyWith(
-                    textStyle: WidgetStatePropertyAll(
-                      context.textTheme.bodyLarge?.copyWith(
-                        letterSpacing: -0.43,
-                        fontWeight: FontWeight.w600,
+    return RefreshIndicator.adaptive(
+      onRefresh: () {
+        return Future(() {
+          ref.invalidate(walletControllerProvider);
+        });
+      },
+      child: AppScaffold(
+        showAppBar: false,
+        leftPadding: Values.zero,
+        rightPadding: Values.zero,
+        appBar: CustomAppbar(name: user?.firstName ?? ""),
+        child: Column(
+          children: [
+            Values.v24.verticalSpacing,
+            UserWallet(),
+            Values.v24.verticalSpacing,
+            AmountDisplay(
+              amountEntered: amount.value,
+              onAmountPressed: (selected) => amount.value = selected.toString(),
+            ),
+            Values.v32.verticalSpacing,
+            AppKeypad(
+              keyLength: 10,
+              onChanged: (value) => amount.value = value,
+            ),
+            Values.v32.verticalSpacing,
+            Row(
+              spacing: Values.v12,
+              children: [
+                Flexible(
+                  child: FilledButton.icon(
+                    onPressed: () =>
+                        ref.read(appRouterProvider).push(TransferRoute()),
+                    label: Text("Send Cash"),
+                    iconAlignment: IconAlignment.end,
+                    icon: Icon(Icons.arrow_forward, size: 24),
+                    style: context.filledButtonTheme.style?.copyWith(
+                      textStyle: WidgetStatePropertyAll(
+                        context.textTheme.bodyLarge?.copyWith(
+                          letterSpacing: -0.43,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () => ref.read(appRouterProvider).push(QrCodeRoute()),
-                child: AppAssets.icons.qrCode.svg(),
-              ),
-            ],
-          ),
-        ],
+                GestureDetector(
+                  onTap: () => ref.read(appRouterProvider).push(QrCodeRoute()),
+                  child: AppAssets.icons.qrCode.svg(),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -16,11 +16,11 @@ class AppKeypad extends ConsumerStatefulWidget {
     this.onSubmit,
     this.onChanged,
     this.onBiometricKeyPressed,
-    this.pinLength = 4,
+    this.keyLength = 4,
     this.showBiometric = false,
   });
 
-  final int pinLength;
+  final int keyLength;
   final bool showBiometric;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onBiometricKeyPressed;
@@ -85,12 +85,12 @@ class _AppKeypadState extends ConsumerState<AppKeypad> {
     }
 
     // Handle numeric input
-    if (_pin.length < widget.pinLength && key != '.') {
+    if (_pin.length < widget.keyLength && key != '.') {
       setState(() {
         _pin += key;
         widget.onChanged?.call(_pin);
         // Auto-submit when PIN is complete
-        if (_pin.length == widget.pinLength) {
+        if (_pin.length == widget.keyLength) {
           widget.onSubmit?.call(_pin);
         }
       });

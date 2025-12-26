@@ -38,41 +38,26 @@ import 'package:paypadi/src/features/authentication/presentation/views/sign_in.d
     as _i30;
 import 'package:paypadi/src/features/authentication/presentation/views/transaction_pin.dart'
     as _i10;
-import 'package:paypadi/src/features/home/views/add_money.dart'
-    as _i2;
-import 'package:paypadi/src/features/home/views/history.dart'
-    as _i15;
+import 'package:paypadi/src/features/home/views/add_money.dart' as _i2;
+import 'package:paypadi/src/features/home/views/history.dart' as _i15;
 import 'package:paypadi/src/features/home/views/home.dart' as _i16;
-import 'package:paypadi/src/features/home/views/qr_code.dart'
-    as _i24;
+import 'package:paypadi/src/features/home/views/qr_code.dart' as _i24;
 import 'package:paypadi/src/features/settings/views/change_password.dart'
     as _i5;
-import 'package:paypadi/src/features/settings/views/change_pin.dart'
-    as _i6;
-import 'package:paypadi/src/features/settings/views/change_theme.dart'
-    as _i7;
-import 'package:paypadi/src/features/settings/views/legal.dart'
-    as _i17;
-import 'package:paypadi/src/features/settings/views/notifications.dart'
-    as _i20;
-import 'package:paypadi/src/features/settings/views/profile.dart'
-    as _i23;
-import 'package:paypadi/src/features/settings/views/referral.dart'
-    as _i26;
-import 'package:paypadi/src/features/settings/views/settings.dart'
-    as _i27;
-import 'package:paypadi/src/features/settings/views/support.dart'
-    as _i31;
+import 'package:paypadi/src/features/settings/views/change_pin.dart' as _i6;
+import 'package:paypadi/src/features/settings/views/change_theme.dart' as _i7;
+import 'package:paypadi/src/features/settings/views/legal.dart' as _i17;
+import 'package:paypadi/src/features/settings/views/notifications.dart' as _i20;
+import 'package:paypadi/src/features/settings/views/profile.dart' as _i23;
+import 'package:paypadi/src/features/settings/views/referral.dart' as _i26;
+import 'package:paypadi/src/features/settings/views/settings.dart' as _i27;
+import 'package:paypadi/src/features/settings/views/support.dart' as _i31;
 import 'package:paypadi/src/features/transfer/views/confirm_payment.dart'
     as _i9;
-import 'package:paypadi/src/features/transfer/views/enter_pin.dart'
-    as _i13;
-import 'package:paypadi/src/features/transfer/views/make_payment.dart'
-    as _i19;
-import 'package:paypadi/src/features/transfer/views/receipt.dart'
-    as _i25;
-import 'package:paypadi/src/features/transfer/views/transfer.dart'
-    as _i32;
+import 'package:paypadi/src/features/transfer/views/enter_pin.dart' as _i13;
+import 'package:paypadi/src/features/transfer/views/make_payment.dart' as _i19;
+import 'package:paypadi/src/features/transfer/views/receipt.dart' as _i25;
+import 'package:paypadi/src/features/transfer/views/transfer.dart' as _i32;
 import 'package:paypadi/src/shared/widgets/app_bottom_nav_bar.dart' as _i3;
 
 /// generated route for

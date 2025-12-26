@@ -22,6 +22,7 @@ class PinCodeField extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PinCodeTextField(
+              autofocus: true,
               controller: controller,
               maxLength: Values.v6.toInt(),
               pinBoxWidth: Values.v48,

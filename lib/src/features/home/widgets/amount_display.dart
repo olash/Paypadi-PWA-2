@@ -14,7 +14,7 @@ class AmountDisplay extends HookWidget {
     required this.onAmountPressed,
   });
 
-  final int amountEntered;
+  final String amountEntered;
   final ValueSetter<int> onAmountPressed;
 
   @override

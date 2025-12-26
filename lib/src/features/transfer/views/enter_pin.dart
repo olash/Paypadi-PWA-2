@@ -44,7 +44,7 @@ class EnterPinScreen extends HookConsumerWidget {
           Spacer(),
           AppKeypad(
             showBiometric: true,
-            pinLength: transactionPinLength,
+            keyLength: transactionPinLength,
             padding: EdgeInsets.symmetric(horizontal: 24),
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();

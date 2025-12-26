@@ -29,3 +29,19 @@ enum PickedAmount {
 enum BeneficiaryStatus { recent, saved }
 
 enum PaymentStatus { success, failure }
+
+enum TransactionType {
+  withdrawal,
+  deposit,
+  unknown;
+
+  const TransactionType();
+
+  TransactionType getType(String type) {
+    return switch (type) {
+      'withdraw' => TransactionType.withdrawal,
+      'deposit' => TransactionType.deposit,
+      _ => TransactionType.unknown,
+    };
+  }
+}

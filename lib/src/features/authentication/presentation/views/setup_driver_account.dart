@@ -8,6 +8,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -113,16 +114,19 @@ class SetupDriverAccountScreen extends HookConsumerWidget {
     String plateNumber,
   ) {
     if (form.validate()) {
-      // if (referralCode.isNotEmpty) {
-      //   diLocator.get<RegisterPayloadBuilder>().setReferredBy(referralCode);
-      // }
+      if (referralCode.isNotEmpty) {
+        ref
+                .read(authControllerProvider.notifier)
+                .payloadBuilder["referred_by"] =
+            referralCode;
+      }
 
-      // diLocator.get<RegisterPayloadBuilder>()
-      //   ..setFirstName(firstName)
-      //   ..setLastName(lastName)
-      //   ..setCabNumber(cabNumber)
-      //   ..setDriverLicenseNumber(driverLicense)
-      //   ..setLicensePlate(plateNumber);
+      ref.read(authControllerProvider.notifier)
+        ..payloadBuilder["first_name"] = firstName
+        ..payloadBuilder["last_name"] = lastName
+        ..payloadBuilder["cab_number"] = cabNumber
+        ..payloadBuilder["driver_license_number"] = driverLicense
+        ..payloadBuilder["license_plate"] = plateNumber;
 
       ref.read(appRouterProvider).push(DriverPayoutRoute());
     }

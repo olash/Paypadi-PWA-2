@@ -117,3 +117,14 @@ String? plateNumberValidator(String? plate) {
 
   return null;
 }
+
+String? accountNumberValidator(String? accountNumber) {
+  if (accountNumber == null || accountNumber.trim().isEmpty) {
+    return 'Enter an account number';
+  }
+  final trimmed = accountNumber.trim();
+  if (!RegExp(r'^\d{10}\$').hasMatch(trimmed)) {
+    return 'Account number must be exactly 10 digits';
+  }
+  return null;
+}

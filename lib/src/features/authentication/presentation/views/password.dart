@@ -5,8 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/utils/constants.dart'
-    show Values, passwordPinLength;
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
@@ -46,7 +45,7 @@ class PasswordScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: passwordPinLength,
+            keyLength: passwordPinLength,
             onSubmit: (value) => onSubmit(ref, value),
             onChanged: (value) => password.value = value,
           ),
@@ -108,21 +107,28 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: passwordPinLength,
-            onSubmit: (confirmedPassword) {
-              if (password == confirmedPassword) {
-                // diLocator.get<RegisterPayloadBuilder>().setPassword(
-                //   confirmedPassword,
-                // );
-                // ref.read(authControllerProvider.notifier).createAccount();
-              }
-            },
+            keyLength: passwordPinLength,
+            onSubmit: (confirmedPassword) =>
+                createAccount(ref, password, confirmedPassword),
             onChanged: (value) => confirmPassword.value = value,
           ),
           Spacer(),
         ],
       ),
     );
+  }
+
+  void createAccount(
+    WidgetRef ref,
+    String password,
+    String confirmedPassword,
+  ) {
+    if (password == confirmedPassword) {
+      ref.read(authControllerProvider.notifier).payloadBuilder["password"] =
+          confirmedPassword;
+
+      ref.read(authControllerProvider.notifier).createAccount();
+    }
   }
 }
 
@@ -171,7 +177,7 @@ class EnterPasswordScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: passwordPinLength,
+            keyLength: passwordPinLength,
             onSubmit: (value) => onSubmit(ref, value),
             onChanged: (value) => password.value = value,
           ),

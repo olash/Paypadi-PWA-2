@@ -102,7 +102,15 @@ class CreateAccountScreen extends HookConsumerWidget {
 
   void requestForOtp(WidgetRef ref, String phoneNumber) {
     if (form.currentState!.validate()) {
-      ref.read(authControllerProvider.notifier).requestForOtp(phoneNumber);
+      ref.read(authControllerProvider.notifier).payloadBuilder["phone_number"] =
+          phoneNumber;
+          
+      final Map<String, dynamic> payload = {
+        "phone_number": phoneNumber,
+        "purpose": "login",
+      };
+
+      ref.read(authControllerProvider.notifier).requestForOtp(payload);
     }
   }
 }

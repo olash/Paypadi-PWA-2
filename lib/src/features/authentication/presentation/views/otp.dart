@@ -88,7 +88,7 @@ class OtpScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => verifyOtp(ref, phoneNumber, otpCode.text),
+              onPressed: () => verifyOtp(ref, otpCode.text),
               child: Text("Verify"),
             ),
           ],
@@ -97,12 +97,9 @@ class OtpScreen extends HookConsumerWidget {
     );
   }
 
-  void verifyOtp(WidgetRef ref, String phoneNumber, String otpCode) {
-    // diLocator.get<RegisterPayloadBuilder>().setPhoneNumber(phoneNumber);
+  void verifyOtp(WidgetRef ref, String otpCode) {
     if (formKey.currentState!.validate()) {
-      ref
-          .read(authControllerProvider.notifier)
-          .verifyOtpCode(phoneNumber, otpCode);
+      ref.read(authControllerProvider.notifier).verifyOtpCode(otpCode);
     }
   }
 }

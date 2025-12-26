@@ -1,4 +1,5 @@
 import 'package:paypadi/core/api/result.dart';
+import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
 import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
@@ -10,6 +11,20 @@ class WalletRepository {
   FutureResultOf<WalletModel> fetchWalletBalance() async {
     final response = await Result.fromAsync<WalletModel>(
       () => client.getBalance(),
+    );
+    return response;
+  }
+
+  FutureResultOf<BankAccountModel> verifyBankAndGetAccountName(
+    Map<String, dynamic> payload,
+  ) async {
+    final response = await Result.fromAsync<BankAccountModel>(
+      () async {
+        final result = await client.verifyBankAndGetAccountName(
+          payload: payload,
+        );
+        return result.data;
+      },
     );
     return response;
   }

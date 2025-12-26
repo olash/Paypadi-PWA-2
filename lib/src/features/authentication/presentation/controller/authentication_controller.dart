@@ -11,41 +11,29 @@ part 'authentication_controller.g.dart';
 
 @riverpod
 class AuthController extends _$AuthController {
+  late Map<String, dynamic> payloadBuilder;
   late final AuthenticationRepository _authRepository;
 
   @override
   FutureOr<void> build() {
+    payloadBuilder = {};
     _authRepository = ref.watch(authenticationRepositoryProvider);
   }
 
-  String? _phoneNumber;
-  String? _password;
-
-  void setPhoneNumer(String number) {
-    _phoneNumber = number;
-  }
-
-  void setPassword(String password) {
-    _password = password;
-  }
-
-  void createRiderAccount() async {
+  void createAccount() async {
     state = AsyncLoading();
 
     final String sessionId = ref
         .read(localCacheProvider)
         .getFromCache(CacheKeys.sessionId);
 
-    final Map<String, dynamic> payload = {};
-
-    final result = await _authRepository.createAccount(sessionId, payload);
+    final result = await _authRepository.createAccount(
+      sessionId,
+      payloadBuilder,
+    );
 
     state = result.fold(
       (success) {
-        // ref
-        //     .read(secureCacheProvider)
-        //     .write(key: CacheKeys.loginPin, value: payload.password);
-        // ref.read(appRouterProvider).push(TransactionPinRoute());
         ref.read(appRouterProvider).push(TransactionPinRoute());
         return AsyncData(null);
       },
@@ -57,74 +45,13 @@ class AuthController extends _$AuthController {
     );
   }
 
-  void createDriverAccount() async {
-    state = AsyncLoading();
-
-    final String sessionId = ref
-        .read(localCacheProvider)
-        .getFromCache(CacheKeys.sessionId);
-
-    final Map<String, dynamic> payload = {};
-
-    // String? email,
-    // required String password,
-    // @Default("rider") String? role,
-    // @JsonKey(name: "phone_number") required String phoneNumber,
-    // @JsonKey(name: "first_name") required String firstName,
-    // @JsonKey(name: "last_name") required String lastName,
-    // @JsonKey(name: "cab_number") String? cabNumber,
-    // @JsonKey(name: "license_plate") String? licensePlate,
-    // @JsonKey(name: "driver_license_number") String? driverLicenseNumber,
-    // @JsonKey(name: "referred_by") String? referredBy,
-
-    // @JsonKey(name: "account_type")
-    // final String accountType;
-
-    // @JsonKey(name: "account_name")
-    // final String accountName;
-
-    // @JsonKey(name: "account_number")
-    // final String accountNumber;
-
-    // @JsonKey(name: "bank_name")
-    // final String bankName;
-
-    // @JsonKey(name: "bank_code")
-    // final String bankCode;
-
-    // @JsonKey(name: "is_primary")
-    // final bool isPrimary;
-
-    final result = await _authRepository.createAccount(sessionId, payload);
-
-    state = result.fold(
-      (success) {
-        // ref
-        //     .read(secureCacheProvider)
-        //     .write(key: CacheKeys.loginPin, value: payload.password);
-        // ref.read(appRouterProvider).push(TransactionPinRoute());
-        ref.read(appRouterProvider).push(TransactionPinRoute());
-        return AsyncData(null);
-      },
-      (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        return AsyncError(message, StackTrace.current);
-      },
-    );
-  }
-
-  void requestForOtp(String phoneNumber) async {
-    final Map<String, dynamic> payload = {
-      "phone_number": phoneNumber,
-      "purpose": "login",
-    };
-
+  void requestForOtp(Map<String, dynamic> payload) async {
     state = AsyncLoading();
     final result = await _authRepository.requestForOtpCode(payload);
 
     state = result.fold(
       (success) {
+        final String phoneNumber = payloadBuilder["phone_number"];
         ref.read(appRouterProvider).push(OtpRoute(phoneNumber: phoneNumber));
         return AsyncData(null);
       },
@@ -136,9 +63,9 @@ class AuthController extends _$AuthController {
     );
   }
 
-  void verifyOtpCode(String phoneNumber, String code) async {
+  void verifyOtpCode(String code) async {
     final Map<String, dynamic> payload = {
-      "phone_number": phoneNumber,
+      "phone_number": payloadBuilder["phone_number"],
       "purpose": "login",
       "code": code,
     };

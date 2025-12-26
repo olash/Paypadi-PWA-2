@@ -63,12 +63,21 @@ String obfuscatePhoneNumber(String phoneNumber) {
   return '$firstPart $obfuscated $lastPart';
 }
 
-String formatAmount(int amount) {
-  final formatted = amount.toString().replaceAllMapped(
-    RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-    (Match m) => '${m[1]},',
-  );
-  return '$formatted.00';
+String formatAmount(String amount) {
+  if (amount.contains('.00')) {
+    final formatted = amount.replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
+    return formatted;
+  } else {
+    final withDecimal = '$amount.00';
+    final formatted = withDecimal.replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
+    return formatted;
+  }
 }
 
 String capitalizeFirstChar(String s) {

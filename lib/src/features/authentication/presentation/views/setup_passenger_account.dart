@@ -9,6 +9,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -64,7 +65,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => submit(
+              onPressed: () => registerRider(
                 ref,
                 form.currentState!,
                 referralCode.text,
@@ -79,7 +80,7 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void submit(
+  void registerRider(
     WidgetRef ref,
     FormState form,
     String referralCode,
@@ -88,12 +89,15 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
   ) {
     if (form.validate()) {
       if (referralCode.isNotEmpty) {
-        // diLocator.get<RegisterPayloadBuilder>().setReferredBy(referralCode);
+        ref
+                .read(authControllerProvider.notifier)
+                .payloadBuilder["referred_by"] =
+            referralCode;
       }
 
-      // diLocator.get<RegisterPayloadBuilder>()
-      //   ..setFirstName(firstName)
-      //   ..setLastName(lastName);
+      ref.read(authControllerProvider.notifier)
+        ..payloadBuilder["first_name"] = firstName
+        ..payloadBuilder["last_name"] = lastName;
 
       ref.read(appRouterProvider).push(PasswordRoute());
     }

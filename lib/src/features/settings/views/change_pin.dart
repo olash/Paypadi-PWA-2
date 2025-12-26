@@ -38,7 +38,7 @@ class ChangePinScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: transactionPinLength,
+            keyLength: transactionPinLength,
             onChanged: (value) {
               pin.value = value;
               debugLogger.debug(pin.value);

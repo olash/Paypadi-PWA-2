@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart' show formatAmount;
+import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
 
 class UserWallet extends HookConsumerWidget {
@@ -15,6 +18,7 @@ class UserWallet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final wallet = ref.watch(walletControllerProvider);
     final hideBalance = useState<bool>(true);
 
     return AppCard(
@@ -48,10 +52,16 @@ class UserWallet extends HookConsumerWidget {
                   ),
                 ],
               ),
-              Text(
-                hideBalance.value ? "₦******" : "₦${formatAmount(50000)}",
-                style: context.textTheme.headlineSmall,
+              Skeletonizer(
+                enabled: wallet.isLoading,
+                child: Text(
+                  hideBalance.value
+                      ? "${wallet.value?.currency ?? "₦"} ****"
+                      : "${wallet.value?.currency ?? "₦"} ${formatAmount(wallet.value?.availableBalance ?? "0")}",
+                  style: context.textTheme.headlineSmall,
+                ),
               ),
+
               // Row(
               //   children: [
               //     Text(
@@ -77,7 +87,6 @@ class UserWallet extends HookConsumerWidget {
               //     ),
               //   ],
               // ),
-              
             ],
           ),
 

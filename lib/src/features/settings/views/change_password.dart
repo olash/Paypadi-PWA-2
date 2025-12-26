@@ -39,7 +39,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           AppKeypad(
-            pinLength: passwordPinLength,
+            keyLength: passwordPinLength,
             onChanged: (value) => password.value = value,
             onSubmit: (password) {},
           ),
