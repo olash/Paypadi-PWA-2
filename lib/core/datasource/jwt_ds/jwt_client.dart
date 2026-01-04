@@ -18,11 +18,11 @@ abstract class JwtClient {
 
   @POST('$_basePath/jwt/token/refresh')
   Future<TokenResponse> refreshJwtToken({
-    @Body() required Map<String, dynamic> refresh,
+    @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/jwt/token/verify')
   Future<String> verifyJwtToken({
-    @Body() required Map<String, dynamic> token,
+    @Body() required Map<String, dynamic> payload,
   });
 }

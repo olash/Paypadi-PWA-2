@@ -22,7 +22,7 @@ class ProfileController extends _$ProfileController {
 
     final Map<String, dynamic> payload = {
       "new_pin": newPin,
-      "current_pin": confirmedPin,
+      "confirm_pin": confirmedPin,
     };
 
     final result = await _profileRepository.setTransactionPin(payload);

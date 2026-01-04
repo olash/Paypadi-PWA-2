@@ -123,7 +123,7 @@ String? accountNumberValidator(String? accountNumber) {
     return 'Enter an account number';
   }
   final trimmed = accountNumber.trim();
-  if (!RegExp(r'^\d{10}\$').hasMatch(trimmed)) {
+  if (!RegExp(r'^\d{10}$').hasMatch(trimmed)) {
     return 'Account number must be exactly 10 digits';
   }
   return null;

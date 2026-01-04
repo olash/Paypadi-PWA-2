@@ -1,10 +1,10 @@
-import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/repositories/authentication_repo.dart';
-import 'package:paypadi/src/features/authentication/domain/responses.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
+import 'package:paypadi/core/models/user_model/user_model.dart';
+import 'package:paypadi/core/repositories/authentication_repo.dart';
 import 'package:paypadi/core/utils/constants.dart';
 
 part 'authentication_controller.g.dart';
@@ -34,6 +34,8 @@ class AuthController extends _$AuthController {
 
     state = result.fold(
       (success) {
+        _saveUserToCache(success.user);
+        _saveAuthenticationTokens(success.refreshToken, success.accessToken);
         ref.read(appRouterProvider).push(TransactionPinRoute());
         return AsyncData(null);
       },
@@ -101,7 +103,10 @@ class AuthController extends _$AuthController {
 
     state = result.fold(
       (success) {
-        _saveToCache(success, password);
+        _saveAuthenticationTokens(success.refreshToken, success.accessToken);
+        _savePasswordToCache(password);
+        _saveUserToCache(success.user);
+
         ref.read(appRouterProvider).push(AppBottomNavBarRoute());
         return AsyncData(null);
       },
@@ -124,33 +129,37 @@ class AuthController extends _$AuthController {
     // );
   }
 
-  void _saveToCache(LoginResponse success, String password) {
+  void _saveUserToCache(UserModel user) {
     ref
-        .read(secureCacheProvider)
-        .write(
-          key: CacheKeys.refreshToken,
-          value: success.refreshToken,
+        .read(localCacheProvider)
+        .saveToCache(
+          key: CacheKeys.user,
+          value: user.toJson(),
         );
+  }
 
-    ref
-        .read(secureCacheProvider)
-        .write(
-          key: CacheKeys.accessToken,
-          value: success.accessToken,
-        );
-
+  void _savePasswordToCache(String password) {
     ref
         .read(secureCacheProvider)
         .write(
           key: CacheKeys.password,
           value: password,
         );
+  }
+
+  void _saveAuthenticationTokens(String refreshToken, String accessToken) {
+    ref
+        .read(secureCacheProvider)
+        .write(
+          key: CacheKeys.refreshToken,
+          value: refreshToken,
+        );
 
     ref
-        .read(localCacheProvider)
-        .saveToCache(
-          key: CacheKeys.user,
-          value: success.user.toJson(),
+        .read(secureCacheProvider)
+        .write(
+          key: CacheKeys.accessToken,
+          value: accessToken,
         );
   }
 }

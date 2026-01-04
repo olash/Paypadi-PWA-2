@@ -46,6 +46,7 @@ class CreateAccountResponse {
     required this.refreshToken,
     required this.accessToken,
     required this.user,
+    required this.detail,
   });
 
   @JsonKey(name: "refresh")
@@ -53,6 +54,8 @@ class CreateAccountResponse {
 
   @JsonKey(name: "access")
   final String accessToken;
+
+  final String detail;
 
   final UserModel user;
 

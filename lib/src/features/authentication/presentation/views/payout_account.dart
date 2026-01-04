@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
 
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
+import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/models/bank_model/bank_model.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -29,22 +29,20 @@ class DriverPayoutScreen extends HookConsumerWidget {
     final accountName = useTextEditingController();
     final form = GlobalKey<FormState>();
 
-    useEffect(() {
-      void listener() {
-        if (selectedBank.value.isNotEmpty) {
-          getAccountName(
-            ref,
-            form,
-            selectedBankCode.value,
-            accountName,
-            accountNumber.text,
-          );
-        }
-      }
+      ref.listen(walletControllerProvider, (previous, current) {
+      current.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+    
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(message: e.toString());
 
-      accountNumber.addListener(listener);
-      return () => accountNumber.removeListener(listener);
-    }, [selectedBank.value]);
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
 
     return AppScaffold(
       showAppBar: true,
@@ -85,15 +83,13 @@ class DriverPayoutScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () async {
-                final payload = {
-                  "account_number": accountNumber,
-                  "bank_code": selectedBankCode.value,
-                };
-                final BankAccountModel? accountInfo = await ref
-                    .read(walletControllerProvider.notifier)
-                    .verifyBankAndGetAccountName(payload);
-              },
+              onPressed: () => getAccountName(
+                ref,
+                form,
+                selectedBankCode.value,
+                accountName,
+                accountNumber.text,
+              ),
               child: Text("Submit"),
             ),
           ],
@@ -115,11 +111,12 @@ class DriverPayoutScreen extends HookConsumerWidget {
         "bank_code": bankCode,
       };
 
-      final BankAccountModel? accountInfo = await ref
+      ref
           .read(walletControllerProvider.notifier)
           .verifyBankAndGetAccountName(payload);
 
-      accountNameController.text = accountInfo?.name ?? "";
+      accountNameController.text =
+          ref.watch(bankAccountControllerProvider)?.name ?? "";
     }
   }
 
