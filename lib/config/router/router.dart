@@ -8,8 +8,8 @@ import 'router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
-  AppRouter({required this.ref});
   final Ref ref;
+  AppRouter({required this.ref});
 
   @override
   RouteType get defaultRouteType => RouteType.adaptive();
@@ -23,7 +23,7 @@ class AppRouter extends RootStackRouter {
       guards: [LandingPageGuard(ref)],
     ),
     AutoRoute(
-      path: "/create-account",
+      path: "/account",
       page: CreateAccountRoute.page,
     ),
     AutoRoute(
@@ -35,12 +35,12 @@ class AppRouter extends RootStackRouter {
       page: AccountRoleRoute.page,
     ),
     AutoRoute(
-      path: "/setup-passenger-account",
-      page: SetupPassengerAccountRoute.page,
+      path: "/setup-passenger",
+      page: SetupPassengerRoute.page,
     ),
     AutoRoute(
-      path: "/setup-driver-account",
-      page: SetupDriverAccountRoute.page,
+      path: "/setup-driver",
+      page: SetupDriverRoute.page,
     ),
     AutoRoute(
       path: "/driver-payout",
@@ -52,7 +52,7 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(
       path: "/password",
-      page: PasswordRoute.page,
+      page: CreatePasswordRoute.page,
     ),
     AutoRoute(
       path: "/enter-password",
@@ -68,7 +68,7 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(
       path: "/transaction-pin",
-      page: TransactionPinRoute.page,
+      page: CreateTransactionPinRoute.page,
     ),
     AutoRoute(
       path: "/confirm-transaction-pin",
@@ -158,9 +158,9 @@ class AppRouter extends RootStackRouter {
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/app-navigation-bar-page",
+      path: "/dashboard",
       guards: [AuthenticationGuard(ref)],
-      page: AppBottomNavBarRoute.page,
+      page: DashboardRoute.page,
       children: [
         AutoRoute(
           path: "home",
@@ -168,8 +168,8 @@ class AppRouter extends RootStackRouter {
           page: HomeRoute.page,
         ),
         AutoRoute(
-          path: "history",
-          page: HistoryRoute.page,
+          path: "transaction-history",
+          page: TransactionHistoryRoute.page,
         ),
         AutoRoute(
           path: "settings",
@@ -181,8 +181,8 @@ class AppRouter extends RootStackRouter {
 }
 
 class AuthenticationGuard extends AutoRouteGuard {
-  const AuthenticationGuard(this.ref);
   final Ref ref;
+  const AuthenticationGuard(this.ref);
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
@@ -199,8 +199,8 @@ class AuthenticationGuard extends AutoRouteGuard {
 }
 
 class LandingPageGuard extends AutoRouteGuard {
-  const LandingPageGuard(this.ref);
   final Ref ref;
+  const LandingPageGuard(this.ref);
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {

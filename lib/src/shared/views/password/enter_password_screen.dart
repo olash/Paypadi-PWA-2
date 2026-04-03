@@ -1,0 +1,79 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
+import 'package:paypadi/src/shared/widgets/app_keypad.dart';
+import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
+import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
+
+
+
+@RoutePage()
+class EnterPasswordScreen extends HookConsumerWidget {
+  const EnterPasswordScreen({super.key, required this.phoneNumber});
+  final String phoneNumber;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final passwordState = useState<String>('');
+
+    ref.listen(authControllerProvider, (_, state) {
+  
+      state.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(message: e.toString());
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
+
+    return AppScaffold(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Values.v32.verticalSpacing,
+          Text(
+            "Enter Password",
+            style: context.textTheme.headlineMedium,
+          ),
+          Values.v12.verticalSpacing,
+          Text(
+            "Enter the password associated with your account",
+            style: context.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Values.v32.verticalSpacing,
+          AppPinIndicator(
+            text: passwordState.value,
+            pinLength: passwordPinLength,
+          ),
+          Spacer(flex: 3),
+          AppKeypad(
+            keyLength: passwordPinLength,
+            onSubmit: (value) => onSubmit(ref, value),
+            onChanged: (value) => passwordState.value = value,
+          ),
+          Spacer(),
+        ],
+      ),
+    );
+  }
+
+  void onSubmit(WidgetRef ref, String password) {
+    ref.read(authControllerProvider.notifier).login(phoneNumber, password);
+      
+  }
+}

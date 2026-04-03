@@ -23,6 +23,14 @@ abstract class WalletClient {
   @GET('$_basePath/beneficiaries/')
   Future<ApiListResponse<BeneficiaryModel>> getBeneficiaries();
 
+  @GET('$_basePath/deposit/account/')
+  Future<WalletModel> getDepositAccount();
+
+  @POST('$_basePath/payments/lookup/')
+  Future<WalletModel> getAccountDetails({
+    @Body() required Map<String, dynamic> payload,
+  });
+
   @GET('$_basePath/transactions/{reference}/')
   Future<WalletModel> getTransactionByRefNo({
     @Path("reference") required String reference,

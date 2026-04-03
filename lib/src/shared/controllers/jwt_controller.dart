@@ -18,17 +18,17 @@ class JwtController extends _$JwtController with WidgetsBindingObserver {
   FutureOr<void> build() {
     _repository = ref.watch(jwtRepositoryProvider);
 
-    // Register as app lifecycle observer
-    WidgetsBinding.instance.addObserver(this);
+    // // Register as app lifecycle observer
+    // WidgetsBinding.instance.addObserver(this);
 
-    // Start the timer to refresh token every 5 minutes
-    _startRefreshTimer();
+    // // Start the timer to refresh token every 5 minutes
+    // _startRefreshTimer();
 
-    // Dispose the timer and remove observer when the provider is disposed
-    ref.onDispose(() {
-      _refreshTimer?.cancel();
-      WidgetsBinding.instance.removeObserver(this);
-    });
+    // // Dispose the timer and remove observer when the provider is disposed
+    // ref.onDispose(() {
+    //   _refreshTimer?.cancel();
+    //   WidgetsBinding.instance.removeObserver(this);
+    // });
   }
 
   @override

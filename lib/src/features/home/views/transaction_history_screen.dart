@@ -6,8 +6,8 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class HistoryScreen extends HookConsumerWidget {
-  const HistoryScreen({super.key});
+class TransactionHistoryScreen extends HookConsumerWidget {
+  const TransactionHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

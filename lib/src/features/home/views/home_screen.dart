@@ -5,8 +5,8 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class AppBottomNavBarScreen extends HookWidget {
-  const AppBottomNavBarScreen({super.key});
+class DashboardScreen extends HookWidget {
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class AppBottomNavBarScreen extends HookWidget {
               context.router.push(HomeRoute());
               break;
             case 1:
-              context.router.push(HistoryRoute());
+              context.router.push(TransactionHistoryRoute());
               break;
             case 2:
               context.router.push(SettingsRoute());

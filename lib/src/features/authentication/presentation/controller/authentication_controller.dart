@@ -36,7 +36,7 @@ class AuthController extends _$AuthController {
       (success) {
         _saveUserToCache(success.user);
         _saveAuthenticationTokens(success.refreshToken, success.accessToken);
-        ref.read(appRouterProvider).push(TransactionPinRoute());
+        ref.read(appRouterProvider).push(CreateTransactionPinRoute());
         return AsyncData(null);
       },
       (failure) {
@@ -107,7 +107,7 @@ class AuthController extends _$AuthController {
         _savePasswordToCache(password);
         _saveUserToCache(success.user);
 
-        ref.read(appRouterProvider).push(AppBottomNavBarRoute());
+        ref.read(appRouterProvider).push(DashboardRoute());
         return AsyncData(null);
       },
       (failure) {

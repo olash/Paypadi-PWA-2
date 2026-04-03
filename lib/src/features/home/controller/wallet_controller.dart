@@ -1,3 +1,4 @@
+import 'package:paypadi/src/shared/views/password/create_password_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -56,7 +57,7 @@ class WalletController extends _$WalletController {
 
         await Future.delayed(
           Duration(seconds: 2),
-          () => ref.read(appRouterProvider).push(PasswordRoute()),
+          () => ref.read(appRouterProvider).push(CreatePasswordRoute()),
         );
 
         state = AsyncValue.data(null);

@@ -28,4 +28,20 @@ class WalletRepository {
     );
     return response;
   }
+
+  FutureResultOf<WalletModel> lookupAccount(
+    Map<String, dynamic> payload,
+  ) async {
+    final response = await Result.fromAsync<WalletModel>(
+      () => client.getAccountDetails(payload: payload),
+    );
+    return response;
+  }
+
+  FutureResultOf<WalletModel> getDepositAccount() async {
+    final response = await Result.fromAsync<WalletModel>(
+      () => client.getDepositAccount(),
+    );
+    return response;
+  }
 }

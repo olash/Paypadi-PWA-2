@@ -52,7 +52,7 @@ class ReceiptScreen extends HookConsumerWidget {
               CloseButton(
                 onPressed: () => ref
                     .read(appRouterProvider)
-                    .popUntilRouteWithName(AppBottomNavBarRoute.name),
+                    .popUntilRouteWithName(DashboardRoute.name),
               ),
               IconButton(
                 onPressed: () async => await _shareReceipt(pixelRatio),
@@ -134,7 +134,7 @@ class ReceiptScreen extends HookConsumerWidget {
           FilledButton(
             onPressed: () => ref
                 .read(appRouterProvider)
-                .popUntilRouteWithName(AppBottomNavBarRoute.name),
+                .popUntilRouteWithName(DashboardRoute.name),
             child: Text("Back to Home"),
           ),
           Spacer(),

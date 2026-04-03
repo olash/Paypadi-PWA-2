@@ -121,7 +121,7 @@ class DriverPayoutScreen extends HookConsumerWidget {
   }
 
   void submit(WidgetRef ref) {
-    ref.read(appRouterProvider).push(PasswordRoute());
+    ref.read(appRouterProvider).push(CreatePasswordRoute());
   }
 }
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
@@ -14,14 +13,17 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
-class SetupPassengerAccountScreen extends HookConsumerWidget {
-  const SetupPassengerAccountScreen({super.key});
+class SetupDriverScreen extends HookConsumerWidget {
+  const SetupDriverScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController firstName = useTextEditingController();
-    final TextEditingController lastName = useTextEditingController();
-    final TextEditingController referralCode = useTextEditingController();
+    final firstName = useTextEditingController();
+    final surname = useTextEditingController();
+    final cabNumber = useTextEditingController();
+    final license = useTextEditingController();
+    final plateNumber = useTextEditingController();
+    final referralCode = useTextEditingController();
     final GlobalKey<FormState> form = GlobalKey<FormState>();
 
     return AppScaffold(
@@ -38,25 +40,43 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
+
             Text(
               "Kindly provide the details below to help give you the best experience.",
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: AppColors.grey600,
-                fontWeight: FontWeight.w400,
-              ),
+              style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
             AppTextformfield(
               title: "First Name",
               hint: "Enter first name",
               controller: firstName,
-              validator: (firstname) => nameValidator(firstname),
+              validator: (firstName) => nameValidator(firstName),
             ),
             AppTextformfield(
               title: "Surname",
               hint: "Enter surname",
-              controller: lastName,
-              validator: (surname) => nameValidator(surname),
+              controller: surname,
+              validator: (firstName) => nameValidator(firstName),
+            ),
+
+            AppTextformfield(
+              title: "Cab Number",
+              hint: "Enter your cab number",
+              controller: cabNumber,
+              keyboardType: TextInputType.number,
+              validator: (cabNumber) => requiredValidator(cabNumber),
+            ),
+            AppTextformfield(
+              title: "Driver's License",
+              hint: "Enter your driver’s license",
+              controller: license,
+              validator: (license) => requiredValidator(license),
+            ),
+            AppTextformfield(
+              title: "Plate Number",
+              hint: "Enter your plate number",
+              controller: plateNumber,
+              validator: (plateNo) => plateNumberValidator(plateNo),
             ),
             AppTextformfield(
               title: "Referral Code (Optional)",
@@ -65,12 +85,15 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => registerRider(
+              onPressed: () => submit(
                 ref,
                 form.currentState!,
                 referralCode.text,
                 firstName.text,
-                lastName.text,
+                surname.text,
+                cabNumber.text,
+                license.text,
+                plateNumber.text,
               ),
               child: Text("Submit"),
             ),
@@ -80,12 +103,15 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void registerRider(
+  void submit(
     WidgetRef ref,
     FormState form,
     String referralCode,
     String firstName,
     String lastName,
+    String cabNumber,
+    String driverLicense,
+    String plateNumber,
   ) {
     if (form.validate()) {
       if (referralCode.isNotEmpty) {
@@ -97,9 +123,12 @@ class SetupPassengerAccountScreen extends HookConsumerWidget {
 
       ref.read(authControllerProvider.notifier)
         ..payloadBuilder["first_name"] = firstName
-        ..payloadBuilder["last_name"] = lastName;
+        ..payloadBuilder["last_name"] = lastName
+        ..payloadBuilder["cab_number"] = cabNumber
+        ..payloadBuilder["driver_license_number"] = driverLicense
+        ..payloadBuilder["license_plate"] = plateNumber;
 
-      ref.read(appRouterProvider).push(PasswordRoute());
+      ref.read(appRouterProvider).push(DriverPayoutRoute());
     }
   }
 }
