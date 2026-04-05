@@ -15,16 +15,16 @@ import 'package:flutter/material.dart' as _i37;
 import 'package:paypadi/src/features/authentication/presentation/views/account_role_screen.dart'
     as _i1;
 import 'package:paypadi/src/features/authentication/presentation/views/biometric_auth_screen.dart'
-    as _i3;
+    as _i2;
 import 'package:paypadi/src/features/authentication/presentation/views/create_account_screen.dart'
-    as _i10;
-import 'package:paypadi/src/features/authentication/presentation/views/driver_payout_screen.dart'
-    as _i14;
+    as _i9;
 import 'package:paypadi/src/features/authentication/presentation/views/login_screen.dart'
-    as _i20;
+    as _i19;
 import 'package:paypadi/src/features/authentication/presentation/views/onboarding_screen.dart'
-    as _i23;
+    as _i22;
 import 'package:paypadi/src/features/authentication/presentation/views/otp_screen.dart'
+    as _i23;
+import 'package:paypadi/src/features/authentication/presentation/views/payout_account_screen.dart'
     as _i24;
 import 'package:paypadi/src/features/authentication/presentation/views/setup_driver_screen.dart'
     as _i30;
@@ -32,24 +32,22 @@ import 'package:paypadi/src/features/authentication/presentation/views/setup_pas
     as _i31;
 import 'package:paypadi/src/features/authentication/presentation/views/sign_in_screen.dart'
     as _i32;
-import 'package:paypadi/src/features/home/views/add_money_screen.dart'
-    as _i2;
-import 'package:paypadi/src/features/home/views/home_screen.dart'
+import 'package:paypadi/src/features/home/views/dashboard_screen.dart' as _i12;
+import 'package:paypadi/src/features/home/views/deposit_money_screen.dart'
     as _i13;
-import 'package:paypadi/src/features/home/views/dashboard_screen.dart' as _i18;
-import 'package:paypadi/src/features/home/views/qr_code_screen.dart'
-    as _i26;
+import 'package:paypadi/src/features/home/views/home_screen.dart' as _i17;
+import 'package:paypadi/src/features/home/views/qr_code_screen.dart' as _i26;
 import 'package:paypadi/src/features/home/views/transaction_history_screen.dart'
     as _i34;
 import 'package:paypadi/src/features/settings/views/change_password_screen.dart'
-    as _i4;
+    as _i3;
 import 'package:paypadi/src/features/settings/views/change_pin_screen.dart'
-    as _i5;
+    as _i4;
 import 'package:paypadi/src/features/settings/views/change_theme_screen.dart'
-    as _i6;
-import 'package:paypadi/src/features/settings/views/legal_screen.dart' as _i19;
+    as _i5;
+import 'package:paypadi/src/features/settings/views/legal_screen.dart' as _i18;
 import 'package:paypadi/src/features/settings/views/notifications_screen.dart'
-    as _i22;
+    as _i21;
 import 'package:paypadi/src/features/settings/views/profile_screen.dart'
     as _i25;
 import 'package:paypadi/src/features/settings/views/referral_screen.dart'
@@ -59,27 +57,27 @@ import 'package:paypadi/src/features/settings/views/settings_screen.dart'
 import 'package:paypadi/src/features/settings/views/support_screen.dart'
     as _i33;
 import 'package:paypadi/src/features/transfer/views/confirm_payment.dart'
-    as _i8;
+    as _i7;
 import 'package:paypadi/src/features/transfer/views/enter_pin_screen.dart'
-    as _i16;
+    as _i15;
 import 'package:paypadi/src/features/transfer/views/make_payment_screen.dart'
-    as _i21;
+    as _i20;
 import 'package:paypadi/src/features/transfer/views/receipt_screen.dart'
     as _i27;
 import 'package:paypadi/src/features/transfer/views/transfer_screen.dart'
     as _i35;
 import 'package:paypadi/src/shared/views/password/confirm_password_screen.dart'
-    as _i7;
+    as _i6;
 import 'package:paypadi/src/shared/views/password/create_password_screen.dart'
-    as _i11;
+    as _i10;
 import 'package:paypadi/src/shared/views/password/enter_password_screen.dart'
-    as _i15;
+    as _i14;
 import 'package:paypadi/src/shared/views/password/forgot_password_screen.dart'
-    as _i17;
+    as _i16;
 import 'package:paypadi/src/shared/views/transaction_pin/confirm_transaction_pin_screen.dart'
-    as _i9;
+    as _i8;
 import 'package:paypadi/src/shared/views/transaction_pin/create_transaction_pin_screen.dart'
-    as _i12;
+    as _i11;
 
 /// generated route for
 /// [_i1.AccountRoleScreen]
@@ -98,23 +96,7 @@ class AccountRoleRoute extends _i36.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.AddMoneyScreen]
-class AddMoneyRoute extends _i36.PageRouteInfo<void> {
-  const AddMoneyRoute({List<_i36.PageRouteInfo>? children})
-    : super(AddMoneyRoute.name, initialChildren: children);
-
-  static const String name = 'AddMoneyRoute';
-
-  static _i36.PageInfo page = _i36.PageInfo(
-    name,
-    builder: (data) {
-      return const _i2.AddMoneyScreen();
-    },
-  );
-}
-
-/// generated route for
-/// [_i3.BiometricAuthenticationScreen]
+/// [_i2.BiometricAuthenticationScreen]
 class BiometricAuthenticationRoute extends _i36.PageRouteInfo<void> {
   const BiometricAuthenticationRoute({List<_i36.PageRouteInfo>? children})
     : super(BiometricAuthenticationRoute.name, initialChildren: children);
@@ -124,13 +106,13 @@ class BiometricAuthenticationRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i3.BiometricAuthenticationScreen();
+      return const _i2.BiometricAuthenticationScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i4.ChangePasswordScreen]
+/// [_i3.ChangePasswordScreen]
 class ChangePasswordRoute extends _i36.PageRouteInfo<void> {
   const ChangePasswordRoute({List<_i36.PageRouteInfo>? children})
     : super(ChangePasswordRoute.name, initialChildren: children);
@@ -140,13 +122,13 @@ class ChangePasswordRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i4.ChangePasswordScreen();
+      return const _i3.ChangePasswordScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i5.ChangePinScreen]
+/// [_i4.ChangePinScreen]
 class ChangePinRoute extends _i36.PageRouteInfo<void> {
   const ChangePinRoute({List<_i36.PageRouteInfo>? children})
     : super(ChangePinRoute.name, initialChildren: children);
@@ -156,13 +138,13 @@ class ChangePinRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i5.ChangePinScreen();
+      return const _i4.ChangePinScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i6.ChangeThemeScreen]
+/// [_i5.ChangeThemeScreen]
 class ChangeThemeRoute extends _i36.PageRouteInfo<void> {
   const ChangeThemeRoute({List<_i36.PageRouteInfo>? children})
     : super(ChangeThemeRoute.name, initialChildren: children);
@@ -172,13 +154,13 @@ class ChangeThemeRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i6.ChangeThemeScreen();
+      return const _i5.ChangeThemeScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i7.ConfirmPasswordScreen]
+/// [_i6.ConfirmPasswordScreen]
 class ConfirmPasswordRoute
     extends _i36.PageRouteInfo<ConfirmPasswordRouteArgs> {
   ConfirmPasswordRoute({
@@ -197,7 +179,7 @@ class ConfirmPasswordRoute
     name,
     builder: (data) {
       final args = data.argsAs<ConfirmPasswordRouteArgs>();
-      return _i7.ConfirmPasswordScreen(key: args.key, password: args.password);
+      return _i6.ConfirmPasswordScreen(key: args.key, password: args.password);
     },
   );
 }
@@ -226,7 +208,7 @@ class ConfirmPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i8.ConfirmPaymentScreen]
+/// [_i7.ConfirmPaymentScreen]
 class ConfirmPaymentRoute extends _i36.PageRouteInfo<void> {
   const ConfirmPaymentRoute({List<_i36.PageRouteInfo>? children})
     : super(ConfirmPaymentRoute.name, initialChildren: children);
@@ -236,13 +218,13 @@ class ConfirmPaymentRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i8.ConfirmPaymentScreen();
+      return const _i7.ConfirmPaymentScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i9.ConfirmTransactionPinScreen]
+/// [_i8.ConfirmTransactionPinScreen]
 class ConfirmTransactionPinRoute
     extends _i36.PageRouteInfo<ConfirmTransactionPinRouteArgs> {
   ConfirmTransactionPinRoute({
@@ -261,7 +243,7 @@ class ConfirmTransactionPinRoute
     name,
     builder: (data) {
       final args = data.argsAs<ConfirmTransactionPinRouteArgs>();
-      return _i9.ConfirmTransactionPinScreen(key: args.key, pin: args.pin);
+      return _i8.ConfirmTransactionPinScreen(key: args.key, pin: args.pin);
     },
   );
 }
@@ -290,7 +272,7 @@ class ConfirmTransactionPinRouteArgs {
 }
 
 /// generated route for
-/// [_i10.CreateAccountScreen]
+/// [_i9.CreateAccountScreen]
 class CreateAccountRoute extends _i36.PageRouteInfo<CreateAccountRouteArgs> {
   CreateAccountRoute({_i37.Key? key, List<_i36.PageRouteInfo>? children})
     : super(
@@ -307,7 +289,7 @@ class CreateAccountRoute extends _i36.PageRouteInfo<CreateAccountRouteArgs> {
       final args = data.argsAs<CreateAccountRouteArgs>(
         orElse: () => const CreateAccountRouteArgs(),
       );
-      return _i10.CreateAccountScreen(key: args.key);
+      return _i9.CreateAccountScreen(key: args.key);
     },
   );
 }
@@ -334,7 +316,7 @@ class CreateAccountRouteArgs {
 }
 
 /// generated route for
-/// [_i11.CreatePasswordScreen]
+/// [_i10.CreatePasswordScreen]
 class CreatePasswordRoute extends _i36.PageRouteInfo<void> {
   const CreatePasswordRoute({List<_i36.PageRouteInfo>? children})
     : super(CreatePasswordRoute.name, initialChildren: children);
@@ -344,13 +326,13 @@ class CreatePasswordRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i11.CreatePasswordScreen();
+      return const _i10.CreatePasswordScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i12.CreateTransactionPinScreen]
+/// [_i11.CreateTransactionPinScreen]
 class CreateTransactionPinRoute extends _i36.PageRouteInfo<void> {
   const CreateTransactionPinRoute({List<_i36.PageRouteInfo>? children})
     : super(CreateTransactionPinRoute.name, initialChildren: children);
@@ -360,13 +342,13 @@ class CreateTransactionPinRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i12.CreateTransactionPinScreen();
+      return const _i11.CreateTransactionPinScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i13.DashboardScreen]
+/// [_i12.DashboardScreen]
 class DashboardRoute extends _i36.PageRouteInfo<void> {
   const DashboardRoute({List<_i36.PageRouteInfo>? children})
     : super(DashboardRoute.name, initialChildren: children);
@@ -376,29 +358,29 @@ class DashboardRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i13.DashboardScreen();
+      return const _i12.DashboardScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i14.DriverPayoutScreen]
-class DriverPayoutRoute extends _i36.PageRouteInfo<void> {
-  const DriverPayoutRoute({List<_i36.PageRouteInfo>? children})
-    : super(DriverPayoutRoute.name, initialChildren: children);
+/// [_i13.DepositMoneyScreen]
+class DepositMoneyRoute extends _i36.PageRouteInfo<void> {
+  const DepositMoneyRoute({List<_i36.PageRouteInfo>? children})
+    : super(DepositMoneyRoute.name, initialChildren: children);
 
-  static const String name = 'DriverPayoutRoute';
+  static const String name = 'DepositMoneyRoute';
 
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i14.DriverPayoutScreen();
+      return const _i13.DepositMoneyScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i15.EnterPasswordScreen]
+/// [_i14.EnterPasswordScreen]
 class EnterPasswordRoute extends _i36.PageRouteInfo<EnterPasswordRouteArgs> {
   EnterPasswordRoute({
     _i37.Key? key,
@@ -416,7 +398,7 @@ class EnterPasswordRoute extends _i36.PageRouteInfo<EnterPasswordRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<EnterPasswordRouteArgs>();
-      return _i15.EnterPasswordScreen(
+      return _i14.EnterPasswordScreen(
         key: args.key,
         phoneNumber: args.phoneNumber,
       );
@@ -448,7 +430,7 @@ class EnterPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i16.EnterPinScreen]
+/// [_i15.EnterPinScreen]
 class EnterPinRoute extends _i36.PageRouteInfo<void> {
   const EnterPinRoute({List<_i36.PageRouteInfo>? children})
     : super(EnterPinRoute.name, initialChildren: children);
@@ -458,13 +440,13 @@ class EnterPinRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i16.EnterPinScreen();
+      return const _i15.EnterPinScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i17.ForgotPasswordScreen]
+/// [_i16.ForgotPasswordScreen]
 class ForgotPasswordRoute extends _i36.PageRouteInfo<ForgotPasswordRouteArgs> {
   ForgotPasswordRoute({
     _i37.Key? key,
@@ -482,7 +464,7 @@ class ForgotPasswordRoute extends _i36.PageRouteInfo<ForgotPasswordRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ForgotPasswordRouteArgs>();
-      return _i17.ForgotPasswordScreen(key: args.key, email: args.email);
+      return _i16.ForgotPasswordScreen(key: args.key, email: args.email);
     },
   );
 }
@@ -511,7 +493,7 @@ class ForgotPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i18.HomeScreen]
+/// [_i17.HomeScreen]
 class HomeRoute extends _i36.PageRouteInfo<void> {
   const HomeRoute({List<_i36.PageRouteInfo>? children})
     : super(HomeRoute.name, initialChildren: children);
@@ -521,13 +503,13 @@ class HomeRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i18.HomeScreen();
+      return const _i17.HomeScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i19.LegalScreen]
+/// [_i18.LegalScreen]
 class LegalRoute extends _i36.PageRouteInfo<LegalRouteArgs> {
   LegalRoute({_i37.Key? key, List<_i36.PageRouteInfo>? children})
     : super(
@@ -544,7 +526,7 @@ class LegalRoute extends _i36.PageRouteInfo<LegalRouteArgs> {
       final args = data.argsAs<LegalRouteArgs>(
         orElse: () => const LegalRouteArgs(),
       );
-      return _i19.LegalScreen(key: args.key);
+      return _i18.LegalScreen(key: args.key);
     },
   );
 }
@@ -571,7 +553,7 @@ class LegalRouteArgs {
 }
 
 /// generated route for
-/// [_i20.LoginScreen]
+/// [_i19.LoginScreen]
 class LoginRoute extends _i36.PageRouteInfo<void> {
   const LoginRoute({List<_i36.PageRouteInfo>? children})
     : super(LoginRoute.name, initialChildren: children);
@@ -581,13 +563,13 @@ class LoginRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i20.LoginScreen();
+      return const _i19.LoginScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i21.MakePaymentScreen]
+/// [_i20.MakePaymentScreen]
 class MakePaymentRoute extends _i36.PageRouteInfo<void> {
   const MakePaymentRoute({List<_i36.PageRouteInfo>? children})
     : super(MakePaymentRoute.name, initialChildren: children);
@@ -597,13 +579,13 @@ class MakePaymentRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i21.MakePaymentScreen();
+      return const _i20.MakePaymentScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i22.NotificationsScreen]
+/// [_i21.NotificationsScreen]
 class NotificationsRoute extends _i36.PageRouteInfo<void> {
   const NotificationsRoute({List<_i36.PageRouteInfo>? children})
     : super(NotificationsRoute.name, initialChildren: children);
@@ -613,13 +595,13 @@ class NotificationsRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i22.NotificationsScreen();
+      return const _i21.NotificationsScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i23.OnboardingScreen]
+/// [_i22.OnboardingScreen]
 class OnboardingRoute extends _i36.PageRouteInfo<void> {
   const OnboardingRoute({List<_i36.PageRouteInfo>? children})
     : super(OnboardingRoute.name, initialChildren: children);
@@ -629,13 +611,13 @@ class OnboardingRoute extends _i36.PageRouteInfo<void> {
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i23.OnboardingScreen();
+      return const _i22.OnboardingScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i24.OtpScreen]
+/// [_i23.OtpScreen]
 class OtpRoute extends _i36.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     _i37.Key? key,
@@ -653,7 +635,7 @@ class OtpRoute extends _i36.PageRouteInfo<OtpRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<OtpRouteArgs>();
-      return _i24.OtpScreen(key: args.key, phoneNumber: args.phoneNumber);
+      return _i23.OtpScreen(key: args.key, phoneNumber: args.phoneNumber);
     },
   );
 }
@@ -679,6 +661,22 @@ class OtpRouteArgs {
 
   @override
   int get hashCode => key.hashCode ^ phoneNumber.hashCode;
+}
+
+/// generated route for
+/// [_i24.PayoutAccountScreen]
+class PayoutAccountRoute extends _i36.PageRouteInfo<void> {
+  const PayoutAccountRoute({List<_i36.PageRouteInfo>? children})
+    : super(PayoutAccountRoute.name, initialChildren: children);
+
+  static const String name = 'PayoutAccountRoute';
+
+  static _i36.PageInfo page = _i36.PageInfo(
+    name,
+    builder: (data) {
+      return const _i24.PayoutAccountScreen();
+    },
+  );
 }
 
 /// generated route for

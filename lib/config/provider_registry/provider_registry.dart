@@ -22,8 +22,8 @@ import 'package:paypadi/core/repositories/profile_repo.dart';
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
-import 'package:paypadi/core/datasource/wallet_action_ds/wallet_action_client.dart';
-import 'package:paypadi/core/repositories/wallet_action_repo.dart';
+import 'package:paypadi/core/datasource/transaction_ds/transaction_client.dart';
+import 'package:paypadi/core/repositories/transaction_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
@@ -118,9 +118,9 @@ WalletClient walletClient(Ref ref) {
 }
 
 @riverpod
-WalletActionClient walletActionClient(Ref ref) {
+TransactionClient transactionClient(Ref ref) {
   final dio = ref.watch(dioProvider);
-  return WalletActionClient(dio);
+  return TransactionClient(dio);
 }
 
 @riverpod
@@ -154,9 +154,9 @@ WalletRepository walletRepository(Ref ref) {
 }
 
 @riverpod
-WalletActionRepository walletActionRepository(Ref ref) {
-  final WalletActionClient client = ref.watch(walletActionClientProvider);
-  return WalletActionRepository(client);
+TransactionRepository transactionRepository(Ref ref) {
+  final TransactionClient client = ref.watch(transactionClientProvider);
+  return TransactionRepository(client);
 }
 
 @Riverpod(keepAlive: true)

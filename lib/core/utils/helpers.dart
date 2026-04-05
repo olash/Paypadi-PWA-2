@@ -94,6 +94,23 @@ String getDateAndTime(DateTime date) {
   return '$year-$month-${day}_$hour:$minute';
 }
 
+void showSuccessDialog({String? message}) {
+  toastification.show(
+    title: Text("Success"),
+    applyBlurEffect: true,
+    alignment: Alignment.topCenter,
+    type: ToastificationType.success,
+    style: ToastificationStyle.flat,
+    icon: Icon(Iconsax.tick_circle_outline),
+    borderRadius: BorderRadius.circular(Values.v120),
+    description: message != null ? Text(message) : SizedBox.shrink(),
+    autoCloseDuration: const Duration(seconds: 4),
+    animationBuilder: (context, animation, alignment, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
+  );
+}
+
 void showErrorDialog({String? message}) {
   toastification.show(
     title: Text("Error"),

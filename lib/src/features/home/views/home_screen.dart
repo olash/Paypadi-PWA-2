@@ -5,8 +5,8 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class DashboardScreen extends HookWidget {
-  const DashboardScreen({super.key});
+class HomeScreen extends HookWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

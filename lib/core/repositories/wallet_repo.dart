@@ -15,14 +15,12 @@ class WalletRepository {
     return response;
   }
 
-  FutureResultOf<BankAccountModel> verifyBankAndGetAccountName(
+  FutureResultOf<BankAccountModel> verifyBankInformation(
     Map<String, dynamic> payload,
   ) async {
     final response = await Result.fromAsync<BankAccountModel>(
       () async {
-        final result = await client.verifyBankAndGetAccountName(
-          payload: payload,
-        );
+        final result = await client.verifyBankInformation(payload: payload);
         return result.data;
       },
     );
@@ -38,8 +36,8 @@ class WalletRepository {
     return response;
   }
 
-  FutureResultOf<WalletModel> getDepositAccount() async {
-    final response = await Result.fromAsync<WalletModel>(
+  FutureResultOf<BankAccountModel> getDepositAccount() async {
+    final response = await Result.fromAsync<BankAccountModel>(
       () => client.getDepositAccount(),
     );
     return response;

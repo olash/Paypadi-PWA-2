@@ -1,21 +1,28 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/core/utils/helpers.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart'
-    show appPrimaryColorProvider;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/home/controller/bank_account_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:share_plus/share_plus.dart';
 
 @RoutePage()
-class AddMoneyScreen extends HookConsumerWidget {
-  const AddMoneyScreen({super.key});
+class DepositMoneyScreen extends HookConsumerWidget {
+  const DepositMoneyScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final depositAccount = ref.watch(bankAccountControllerProvider);
+
     return AppScaffold(
       title: "Add money",
       child: Padding(
@@ -34,12 +41,16 @@ class AddMoneyScreen extends HookConsumerWidget {
                   color: AppColors.walletCardTextColor,
                 ),
               ),
-              Text(
-                "Available Balance",
-                style: context.textTheme.bodyLarge?.copyWith(
-                  letterSpacing: kZeroLetterSpacing,
+              Skeletonizer(
+                enabled: depositAccount.isLoading,
+                child: Text(
+                  depositAccount.value?.name ?? "John Doe",
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    letterSpacing: kZeroLetterSpacing,
+                  ),
                 ),
               ),
+
               Values.v16.verticalSpacing,
               Text(
                 "Account Number",
@@ -49,10 +60,13 @@ class AddMoneyScreen extends HookConsumerWidget {
                   color: AppColors.walletCardTextColor,
                 ),
               ),
-              Text(
-                "Available Balance",
-                style: context.textTheme.bodyLarge?.copyWith(
-                  letterSpacing: kZeroLetterSpacing,
+              Skeletonizer(
+                enabled: depositAccount.isLoading,
+                child: Text(
+                  depositAccount.value?.number ?? "123456789",
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    letterSpacing: kZeroLetterSpacing,
+                  ),
                 ),
               ),
               Values.v12.verticalSpacing,
@@ -60,7 +74,9 @@ class AddMoneyScreen extends HookConsumerWidget {
                 spacing: Values.v12,
                 children: [
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: depositAccount.value == null
+                        ? null
+                        : () => copyAccountToClipBoard(depositAccount.value!),
                     style: context.filledButtonTheme.style?.copyWith(
                       fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
                       foregroundColor: WidgetStatePropertyAll(
@@ -90,13 +106,10 @@ class AddMoneyScreen extends HookConsumerWidget {
                   ),
                   Flexible(
                     child: FilledButton(
-                      onPressed: () async {
-                        await SharePlus.instance.share(
-                          ShareParams(
-                            text: "Bank:\nGTB, \nAccount Number:\n123456788",
-                          ),
-                        );
-                      },
+                      onPressed: depositAccount.value == null
+                          ? null
+                          : () =>
+                                shareAccountInformation(depositAccount.value!),
                       style: context.filledButtonTheme.style?.copyWith(
                         fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
                       ),
@@ -109,6 +122,26 @@ class AddMoneyScreen extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void copyAccountToClipBoard(BankAccountModel account) async {
+    final String depositAccountInfo =
+        "Bank: ${account.name} \n"
+        "Account Number: ${account.number}";
+
+    await Clipboard.setData(ClipboardData(text: depositAccountInfo)).then(
+      (value) => showSuccessDialog(message: "Successfully copied information"),
+    );
+  }
+
+  void shareAccountInformation(BankAccountModel account) async {
+    final String depositAccountInfo =
+        "Bank: ${account.name} \n"
+        "Account Number: ${account.number}";
+
+    await SharePlus.instance.share(
+      ShareParams(text: depositAccountInfo),
     );
   }
 }

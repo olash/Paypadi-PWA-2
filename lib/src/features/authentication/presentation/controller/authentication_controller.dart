@@ -47,14 +47,20 @@ class AuthController extends _$AuthController {
     );
   }
 
-  void requestForOtp(Map<String, dynamic> payload) async {
+  void requestForOtp() async {
+    final Map<String, dynamic> payload = {
+      "phone_number": payloadBuilder["phone_number"],
+      "purpose": "registration",
+    };
+
     state = AsyncLoading();
     final result = await _authRepository.requestForOtpCode(payload);
 
     state = result.fold(
       (success) {
-        final String phoneNumber = payloadBuilder["phone_number"];
-        ref.read(appRouterProvider).push(OtpRoute(phoneNumber: phoneNumber));
+        ref
+            .read(appRouterProvider)
+            .push(OtpRoute(phoneNumber: payloadBuilder["phone_number"]));
         return AsyncData(null);
       },
       (failure) {
@@ -68,7 +74,6 @@ class AuthController extends _$AuthController {
   void verifyOtpCode(String code) async {
     final Map<String, dynamic> payload = {
       "phone_number": payloadBuilder["phone_number"],
-      "purpose": "login",
       "code": code,
     };
 

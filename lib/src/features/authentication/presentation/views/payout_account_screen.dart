@@ -11,38 +11,41 @@ import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/core/utils/validators.dart';
-import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/payout_account_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
-class DriverPayoutScreen extends HookConsumerWidget {
-  const DriverPayoutScreen({super.key});
+class PayoutAccountScreen extends HookConsumerWidget {
+  const PayoutAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bankController = useSearchController();
-    final selectedBank = useState<String>("");
-    final selectedBankCode = useState<String>("");
-    final accountNumber = useTextEditingController();
-    final accountName = useTextEditingController();
     final form = GlobalKey<FormState>();
+    final bankSearchController = useSearchController();
+    final accountName = useTextEditingController();
+    final accountNumber = useTextEditingController();
 
-      ref.listen(walletControllerProvider, (previous, current) {
-      current.when(
-        data: (d) {
-          dismissLoadingOverlay(context);
-    
-        },
-        error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+    final selectedBank = useState<BankModel?>(null);
 
-        },
-        loading: () => showLoadingOverlay(context, ref),
-      );
-    });
+    ref.listen(
+      payoutAccountControllerProvider,
+      (previous, current) {
+        current.when(
+          data: (value) {
+            accountName.text = value?.bankName ?? '';
+            dismissLoadingOverlay(context);
+            submit(ref);
+          },
+          error: (e, st) {
+            dismissLoadingOverlay(context);
+            showErrorDialog(message: e.toString());
+          },
+          loading: () => showLoadingOverlay(context, ref),
+        );
+      },
+    );
 
     return AppScaffold(
       showAppBar: true,
@@ -62,12 +65,9 @@ class DriverPayoutScreen extends HookConsumerWidget {
               style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
-            _BankList(
-              controller: bankController,
-              onBankSelected: (bank) {
-                selectedBank.value = bank.name;
-                selectedBankCode.value = bank.code;
-              },
+            _ListOfBanks(
+              controller: bankSearchController,
+              onBankSelected: (bank) => selectedBank.value = bank,
             ),
             AppTextformfield(
               title: "Account Number",
@@ -83,12 +83,11 @@ class DriverPayoutScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => getAccountName(
+              onPressed: () => verifyAccountInfo(
                 ref,
-                form,
-                selectedBankCode.value,
-                accountName,
+                selectedBank.value,
                 accountNumber.text,
+                form,
               ),
               child: Text("Submit"),
             ),
@@ -98,35 +97,34 @@ class DriverPayoutScreen extends HookConsumerWidget {
     );
   }
 
-  void getAccountName(
+  void verifyAccountInfo(
     WidgetRef ref,
-    GlobalKey<FormState> form,
-    String bankCode,
-    TextEditingController accountNameController,
+    BankModel? bank,
     String accountNumber,
+    GlobalKey<FormState> form,
   ) async {
-    if (form.currentState?.validate() ?? false) {
+    if (form.currentState?.validate() ?? false && bank != null) {
       final payload = {
         "account_number": accountNumber,
-        "bank_code": bankCode,
+        "bank_code": bank!.code,
       };
 
       ref
-          .read(walletControllerProvider.notifier)
-          .verifyBankAndGetAccountName(payload);
-
-      accountNameController.text =
-          ref.watch(bankAccountControllerProvider)?.name ?? "";
+          .read(payoutAccountControllerProvider.notifier)
+          .verifyBankInformation(payload);
     }
   }
 
-  void submit(WidgetRef ref) {
-    ref.read(appRouterProvider).push(CreatePasswordRoute());
+  void submit(WidgetRef ref) async {
+    await Future.delayed(
+      Duration(seconds: 2),
+      () => ref.read(appRouterProvider).push(CreatePasswordRoute()),
+    );
   }
 }
 
-class _BankList extends HookConsumerWidget {
-  const _BankList({required this.controller, required this.onBankSelected});
+class _ListOfBanks extends HookConsumerWidget {
+  const _ListOfBanks({required this.controller, required this.onBankSelected});
   final SearchController controller;
   final ValueSetter<BankModel> onBankSelected;
 

@@ -43,8 +43,8 @@ class AppRouter extends RootStackRouter {
       page: SetupDriverRoute.page,
     ),
     AutoRoute(
-      path: "/driver-payout",
-      page: DriverPayoutRoute.page,
+      path: "/payout-account",
+      page: PayoutAccountRoute.page,
     ),
     AutoRoute(
       path: "/otp",
@@ -154,18 +154,18 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(
       path: "/add-money",
-      page: AddMoneyRoute.page,
+      page: DepositMoneyRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/dashboard",
+      path: "/home",
       guards: [AuthenticationGuard(ref)],
-      page: DashboardRoute.page,
+      page: HomeRoute.page,
       children: [
         AutoRoute(
-          path: "home",
+          path: "dashboard",
           initial: true,
-          page: HomeRoute.page,
+          page: DashboardRoute.page,
         ),
         AutoRoute(
           path: "transaction-history",

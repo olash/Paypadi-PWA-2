@@ -128,7 +128,7 @@ class SetupDriverScreen extends HookConsumerWidget {
         ..payloadBuilder["driver_license_number"] = driverLicense
         ..payloadBuilder["license_plate"] = plateNumber;
 
-      ref.read(appRouterProvider).push(DriverPayoutRoute());
+      ref.read(appRouterProvider).push(PayoutAccountRoute());
     }
   }
 }

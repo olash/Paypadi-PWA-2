@@ -24,7 +24,7 @@ abstract class WalletClient {
   Future<ApiListResponse<BeneficiaryModel>> getBeneficiaries();
 
   @GET('$_basePath/deposit/account/')
-  Future<WalletModel> getDepositAccount();
+  Future<BankAccountModel> getDepositAccount();
 
   @POST('$_basePath/payments/lookup/')
   Future<WalletModel> getAccountDetails({
@@ -37,7 +37,7 @@ abstract class WalletClient {
   });
 
   @POST('$_basePath/bank/verify/')
-  Future<ApiResponse<BankAccountModel>> verifyBankAndGetAccountName({
+  Future<ApiResponse<BankAccountModel>> verifyBankInformation({
     @Body() required Map<String, dynamic> payload,
   });
 }

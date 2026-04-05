@@ -19,8 +19,8 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/custom_appbar.dart';
 
 @RoutePage()
-class HomeScreen extends HookConsumerWidget {
-  const HomeScreen({super.key});
+class DashboardScreen extends HookConsumerWidget {
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

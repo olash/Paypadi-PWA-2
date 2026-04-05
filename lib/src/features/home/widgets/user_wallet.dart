@@ -91,7 +91,8 @@ class UserWallet extends HookConsumerWidget {
           ),
 
           FilledButton.icon(
-            onPressed: () => ref.read(appRouterProvider).push(AddMoneyRoute()),
+            onPressed: () =>
+                ref.read(appRouterProvider).push(DepositMoneyRoute()),
             label: Text("Add Money"),
             icon: Icon(Iconsax.add_outline, size: 24),
             style: context.filledButtonTheme.style?.copyWith(
