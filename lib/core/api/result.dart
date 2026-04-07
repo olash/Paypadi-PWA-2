@@ -9,6 +9,11 @@ import 'package:paypadi/core/api/exceptions/client_exception.dart'
 import 'package:paypadi/core/api/exceptions/server_exception.dart'
     show ServerException;
 
+bool _isResponseParsingError(Error error) =>
+    error is TypeError ||
+    error.runtimeType.toString() == 'CastError' ||
+    error is NoSuchMethodError;
+
 /// This class will be used by class users in their methods.
 ///
 /// A base class `Result` with two implementations — Success and Failure.
@@ -66,10 +71,9 @@ sealed class Result<S, F> {
   /// ```
   S get successValue => fold<S>(
     (s) => s,
-    (f) =>
-        throw Exception(
-          'Illegal use. You should check isSuccess before calling',
-        ),
+    (f) => throw Exception(
+      'Illegal use. You should check isSuccess before calling',
+    ),
   );
 
   /// Get [failure] value. May throw an exception when the value is [success]
@@ -79,10 +83,9 @@ sealed class Result<S, F> {
   /// print(result.falureValue); // throws an exception
   /// ```
   F get failureValue => fold<F>(
-    (s) =>
-        throw Exception(
-          'Illegal use. You should check isFailure before calling',
-        ),
+    (s) => throw Exception(
+      'Illegal use. You should check isFailure before calling',
+    ),
     (f) => f,
   );
 
@@ -207,8 +210,17 @@ sealed class Result<S, F> {
     } on Exception catch (e) {
       // Convert other exceptions to Failure so callers don't need to try/catch.
       return failure(e);
-    } on Error {
-      // Let programming errors surface — do not swallow Errors.
+    } on Error catch (e) {
+      if (_isResponseParsingError(e)) {
+        return failure(
+          ClientException(
+            message:
+                'Failed to parse server response. Please update the app or try again later.',
+          ),
+        );
+      }
+
+      // Let real programming errors surface — do not swallow unrelated Errors.
       rethrow;
     }
   }
@@ -226,7 +238,16 @@ sealed class Result<S, F> {
       return success(result);
     } on Exception catch (e) {
       return failure(e);
-    } on Error {
+    } on Error catch (e) {
+      if (_isResponseParsingError(e)) {
+        return failure(
+          ClientException(
+            message:
+                'Failed to parse server response. Please update the app or try again later.',
+          ),
+        );
+      }
+
       // Don't swallow programming errors — let them surface to the caller.
       rethrow;
     }

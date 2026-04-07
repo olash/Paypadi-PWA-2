@@ -11,7 +11,7 @@ sealed class BeneficiaryModel with _$BeneficiaryModel {
     @JsonKey(name: "account_number") required String accountNumber,
     @JsonKey(name: "account_name") required String accountName,
     @JsonKey(name: "bank_code") required String bankCode,
-    @JsonKey(name: "bank_name") required String bankName,
+    @JsonKey(name: "bank_name")  String? bankName,
     @JsonKey(name: "is_verified") required bool isVerified,
     @JsonKey(name: "created_at") required String createdAt,
     @JsonKey(name: "updated_at") required String updatedAt,

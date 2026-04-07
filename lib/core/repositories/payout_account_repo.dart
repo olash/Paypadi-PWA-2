@@ -7,7 +7,7 @@ class PayoutAccountRepository {
   const PayoutAccountRepository({required this.client});
   final PayoutAccountClient client;
 
-  FutureResultListOf<BankModel> getListOfBanks() async {
+  FutureResultApiListOf<BankModel> getListOfBanks() async {
     final response = await Result.fromAsync<List<BankModel>>(
       () async {
         final banks = await client.getListOfAllBanks();

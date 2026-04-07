@@ -2,6 +2,7 @@ import 'dart:ui' show Color;
 
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
+import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/services/api_service.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show CacheKeys, availableColors;
@@ -164,6 +165,21 @@ Future<List<BankModel>> banksList(Ref ref) async {
   final result = await ref
       .read(payoutAccountRepositoryProvider)
       .getListOfBanks();
+
+  return result.fold(
+    (response) => response,
+    (error) => throw error,
+  );
+}
+
+@riverpod
+Future<AccountLookupModel> receipientAccountDetails(
+  Ref ref, {
+  required String receipientNumber,
+}) async {
+  final result = await ref
+      .read(transactionRepositoryProvider)
+      .getAccountDetails(receipientNumber);
 
   return result.fold(
     (response) => response,

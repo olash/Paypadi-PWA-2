@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
+import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -92,6 +93,20 @@ final List<String> kAppKeyPadKeys = [
   '0',
   'x',
 ];
+
+final List<BeneficiaryModel> kMockBeneficiaries = List.generate(
+  8,
+  (index) => BeneficiaryModel(
+    id: index.toString(),
+    type: "User",
+    accountNumber: "1234567890",
+    accountName: "Fake Beneficiary",
+    bankCode: "Fake Code",
+    isVerified: true,
+    createdAt: DateTime.now().toIso8601String(),
+    updatedAt: DateTime.now().toIso8601String(),
+  ),
+);
 
 final Talker debugLogger = TalkerFlutter.init(
   settings: TalkerSettings(

@@ -26,7 +26,13 @@ enum PickedAmount {
   final int value;
 }
 
-enum BeneficiaryStatus { recent, saved }
+enum BeneficiaryType {
+  recent(typeName: "Recent"),
+  saved(typeName: "Saved");
+
+  const BeneficiaryType({required this.typeName});
+  final String typeName;
+}
 
 enum PaymentStatus { success, failure }
 

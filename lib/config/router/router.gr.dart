@@ -570,18 +570,55 @@ class LoginRoute extends _i36.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.MakePaymentScreen]
-class MakePaymentRoute extends _i36.PageRouteInfo<void> {
-  const MakePaymentRoute({List<_i36.PageRouteInfo>? children})
-    : super(MakePaymentRoute.name, initialChildren: children);
+class MakePaymentRoute extends _i36.PageRouteInfo<MakePaymentRouteArgs> {
+  MakePaymentRoute({
+    _i37.Key? key,
+    required String receipientNumber,
+    List<_i36.PageRouteInfo>? children,
+  }) : super(
+         MakePaymentRoute.name,
+         args: MakePaymentRouteArgs(
+           key: key,
+           receipientNumber: receipientNumber,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'MakePaymentRoute';
 
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      return const _i20.MakePaymentScreen();
+      final args = data.argsAs<MakePaymentRouteArgs>();
+      return _i20.MakePaymentScreen(
+        key: args.key,
+        receipientNumber: args.receipientNumber,
+      );
     },
   );
+}
+
+class MakePaymentRouteArgs {
+  const MakePaymentRouteArgs({this.key, required this.receipientNumber});
+
+  final _i37.Key? key;
+
+  final String receipientNumber;
+
+  @override
+  String toString() {
+    return 'MakePaymentRouteArgs{key: $key, receipientNumber: $receipientNumber}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! MakePaymentRouteArgs) return false;
+    return key == other.key && receipientNumber == other.receipientNumber;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ receipientNumber.hashCode;
 }
 
 /// generated route for

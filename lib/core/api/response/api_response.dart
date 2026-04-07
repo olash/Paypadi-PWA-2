@@ -20,7 +20,7 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
 @Freezed(genericArgumentFactories: true)
 sealed class ApiListResponse<T> with _$ApiListResponse<T> {
   const factory ApiListResponse({
-    required bool status,
+    required String status,
     required String message,
     required List<T> data,
   }) = _ApiListResponse;
@@ -29,4 +29,19 @@ sealed class ApiListResponse<T> with _$ApiListResponse<T> {
     Map<String, Object?> json,
     T Function(Object? json) fromJsonT,
   ) => _$ApiListResponseFromJson(json, fromJsonT);
+}
+
+@Freezed(genericArgumentFactories: true)
+sealed class PaginatedListResponse<T> with _$PaginatedListResponse<T> {
+  const factory PaginatedListResponse({
+    String? next,
+    String? previous,
+    required int count,
+    required List<T> results,
+  }) = _PaginatedListResponse;
+
+  factory PaginatedListResponse.fromJson(
+    Map<String, Object?> json,
+    T Function(Object? json) fromJsonT,
+  ) => _$PaginatedListResponseFromJson(json, fromJsonT);
 }

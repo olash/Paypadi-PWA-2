@@ -9,42 +9,41 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
-  const MakePaymentScreen({super.key});
+  const MakePaymentScreen({super.key, required this.receipientNumber});
+
+  final String receipientNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final commentController = useTextEditingController();
     final hasSavedAsBeneficiary = useState<bool>(false);
-    final TextEditingController comments = useTextEditingController();
 
     return AppScaffold(
       title: "Transfer",
       child: Column(
         children: [
-          32.0.verticalSpacing,
-          _BankAccountInformation(
-            bankImageUrl: kDemoProfilePic,
-            accountName: "Dantanna Aguerro",
-            accountNumber: "1287319231",
-          ),
-          16.0.verticalSpacing,
+          Values.v16.verticalSpacing,
+          _BankAccountInformation(receipientNumber: receipientNumber),
+          Values.v32.verticalSpacing,
           AppTextformfield(
             title: "Comments",
             hint: "Enter a narration",
-            controller: comments,
+            controller: commentController,
             titleStyle: context.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w400,
               letterSpacing: kZeroLetterSpacing,
             ),
           ),
-          20.0.verticalSpacing,
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 14),
+                padding: EdgeInsets.symmetric(vertical: Values.v14),
                 child: Text(
                   "Save as Beneficiary",
                   style: context.textTheme.labelMedium?.copyWith(
@@ -60,8 +59,7 @@ class MakePaymentScreen extends HookConsumerWidget {
               ),
             ],
           ),
-
-          20.0.verticalSpacing,
+          Values.v48.verticalSpacing,
           FilledButton(
             onPressed: () {
               ref.read(appRouterProvider).push(EnterPinRoute());
@@ -75,18 +73,15 @@ class MakePaymentScreen extends HookConsumerWidget {
 }
 
 class _BankAccountInformation extends ConsumerWidget {
-  const _BankAccountInformation({
-    required this.bankImageUrl,
-    required this.accountName,
-    required this.accountNumber,
-  });
-
-  final String bankImageUrl;
-  final String accountName;
-  final String accountNumber;
+  const _BankAccountInformation({required this.receipientNumber});
+  final String receipientNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final receipientDetails = ref.watch(
+      receipientAccountDetailsProvider(receipientNumber: receipientNumber),
+    );
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: Values.v12,
@@ -94,35 +89,48 @@ class _BankAccountInformation extends ConsumerWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.bankBorderColor),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(Values.v48),
       ),
       child: Row(
-        spacing: 20,
+        spacing: Values.v20,
         children: [
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              image: DecorationImage(
-                image: NetworkImage(bankImageUrl),
-                fit: BoxFit.fill,
+          Skeletonizer(
+            enabled: receipientDetails.isLoading,
+            child: Container(
+              width: Values.v64,
+              height: Values.v64,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Values.v24),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    receipientDetails.value?.profilePicUrl ?? kDemoProfilePic,
+                  ),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  accountName,
-                  style: context.textTheme.bodyLarge,
+                Skeletonizer(
+                  enabled: receipientDetails.isLoading,
+                  child: Text(
+                    "${receipientDetails.value?.firstName ?? "FirstName"} "
+                    "${receipientDetails.value?.lastName ?? "LastName"}",
+                    style: context.textTheme.bodyLarge,
+                  ),
                 ),
-                Text(
-                  accountNumber,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    letterSpacing: kZeroLetterSpacing,
-                    color: AppColors.grey600,
+                Skeletonizer(
+                  enabled: receipientDetails.isLoading,
+                  child: Text(
+                    "${receipientDetails.value?.accountNumber ?? "AccountNumber"} ",
+                    style: context.textTheme.bodySmall?.copyWith(
+                      letterSpacing: kZeroLetterSpacing,
+                      color: AppColors.grey600,
+                    ),
                   ),
                 ),
               ],

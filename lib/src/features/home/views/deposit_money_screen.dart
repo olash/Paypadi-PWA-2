@@ -44,7 +44,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
               Skeletonizer(
                 enabled: depositAccount.isLoading,
                 child: Text(
-                  depositAccount.value?.name ?? "John Doe",
+                  depositAccount.value?.bankName ?? "John Doe",
                   style: context.textTheme.bodyLarge?.copyWith(
                     letterSpacing: kZeroLetterSpacing,
                   ),

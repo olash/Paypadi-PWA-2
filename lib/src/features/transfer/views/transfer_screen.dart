@@ -6,11 +6,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/transfer/controller/beneficiaries_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class TransferScreen extends HookConsumerWidget {
@@ -18,7 +21,7 @@ class TransferScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController accountNo = useTextEditingController();
+    final receipientAccountNumber = useTextEditingController();
 
     return AppScaffold(
       title: "Transfer",
@@ -29,14 +32,13 @@ class TransferScreen extends HookConsumerWidget {
             AppTextformfield(
               title: "Account Number",
               hint: "Enter 10-digit Account number or Phone Number",
-              controller: accountNo,
+              controller: receipientAccountNumber,
               keyboardType: TextInputType.number,
             ),
             Values.v32.verticalSpacing,
             FilledButton(
-              onPressed: () {
-                ref.read(appRouterProvider).push(MakePaymentRoute());
-              },
+              onPressed: () =>
+                  continueAction(ref, receipientAccountNumber.text),
               child: Text("Continue"),
             ),
             Values.v32.verticalSpacing,
@@ -46,18 +48,27 @@ class TransferScreen extends HookConsumerWidget {
       ),
     );
   }
+
+  void continueAction(WidgetRef ref, String receipientNumber) {
+    ref
+        .read(appRouterProvider)
+        .push(MakePaymentRoute(receipientNumber: receipientNumber));
+  }
 }
 
-class _BeneficiariesList extends HookConsumerWidget {
-  const _BeneficiariesList();
-
+class _BeneficiariesList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final beneficiaryStatus = useState<BeneficiaryStatus>(
-      BeneficiaryStatus.recent,
-    );
+    final beneficiaryType = ref.watch(beneficiaryTypeControllerProvider);
 
-    final savedBeneficiariesList = useState<List>([]);
+    final beneficiaries = switch (beneficiaryType) {
+      BeneficiaryType.recent => ref.watch(
+        recentBeneficiariesControllerProvider,
+      ),
+      BeneficiaryType.saved => ref.watch(
+        savedBeneficiariesControllerProvider,
+      ),
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,57 +81,72 @@ class _BeneficiariesList extends HookConsumerWidget {
           ),
         ),
         Values.v8.verticalSpacing,
-
         Row(
           children: [
-            _BeneficiaryListAction(
-              text: "Recent",
-              listenable: beneficiaryStatus,
-              selected: beneficiaryStatus.value == BeneficiaryStatus.recent,
-              onTap: () => beneficiaryStatus.value = BeneficiaryStatus.recent,
+            _BeneficiaryTypeButton(
+              beneficiaryType: BeneficiaryType.recent,
+              onTap: () {
+                ref
+                    .read(beneficiaryTypeControllerProvider.notifier)
+                    .switchToRecent();
+                ref
+                    .read(recentBeneficiariesControllerProvider.notifier)
+                    .getRecentBeneficiaries();
+              },
             ),
-            _BeneficiaryListAction(
-              text: "Saved",
-              listenable: beneficiaryStatus,
-              selected: beneficiaryStatus.value == BeneficiaryStatus.saved,
-              onTap: () => beneficiaryStatus.value = BeneficiaryStatus.saved,
+            _BeneficiaryTypeButton(
+              beneficiaryType: BeneficiaryType.saved,
+              onTap: () {
+                ref
+                    .read(beneficiaryTypeControllerProvider.notifier)
+                    .switchToSaved();
+                ref
+                    .read(savedBeneficiariesControllerProvider.notifier)
+                    .getSavedBeneficiaries();
+              },
             ),
           ],
         ),
         Values.v4.verticalSpacing,
-        // SizedBox(
-        //   height: context.screenHeight * .6,
-        //   child: ListView.builder(
-        //     physics: NeverScrollableScrollPhysics(),
-        //     itemCount: switch (beneficiaryStatus.value) {
-        //       BeneficiaryStatus.recent => recentBeneficiariesList.value.length,
-        //       BeneficiaryStatus.saved => savedBeneficiariesList.value.length,
-        //     },
-        //     itemBuilder: (context, index) {
-        //       final List data = switch (beneficiaryStatus.value) {
-        //         BeneficiaryStatus.recent => recentBeneficiariesList.value,
-        //         BeneficiaryStatus.saved => savedBeneficiariesList.value,
-        //       };
+        if (beneficiaries.value != null && beneficiaries.value!.isEmpty) ...[
+          Values.v64.verticalSpacing,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.punch_clock_outlined),
+              Text(
+                "No ${beneficiaryType == BeneficiaryType.recent ? 'Recent' : 'Saved'} beneficiary",
+              ),
+            ],
+          ),
+        ] else
+          SizedBox(
+            height: context.screenHeight * .6,
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: beneficiaries.isLoading
+                  ? kMockBeneficiaries.length
+                  : beneficiaries.value!.length,
+              itemBuilder: (context, index) {
+                final data = beneficiaries.isLoading
+                    ? kMockBeneficiaries
+                    : beneficiaries.value!;
 
-        //       if (data.isEmpty) {
-        //         return Row(
-        //           children: [
-        //             Icon(Icons.punch_clock_outlined),
-        //             Text("No recent beneficiary"),
-        //           ],
-        //         );
-        //       }
-
-        //       return _BeneficiaryTile(
-        //         name: data[index].name,
-        //         transferType: data[index].transferType,
-        //         transactionTime: data[index].transactionTime,
-        //         onTap: () =>
-        //             ref.read(appRouterProvider).push(MakePaymentRoute()),
-        //       );
-        //     },
-        //   ),
-        // ),
+                return _BeneficiaryTile(
+                  isLoading: beneficiaries.isLoading,
+                  beneficiary: data[index],
+                  onTap: () => ref
+                      .read(appRouterProvider)
+                      .push(
+                        MakePaymentRoute(
+                          receipientNumber: data[index].accountNumber,
+                        ),
+                      ),
+                );
+              },
+            ),
+          ),
       ],
     );
   }
@@ -128,53 +154,60 @@ class _BeneficiariesList extends HookConsumerWidget {
 
 class _BeneficiaryTile extends ConsumerWidget {
   const _BeneficiaryTile({
-    required this.name,
-    required this.transferType,
-    required this.transactionTime,
+    required this.isLoading,
+    required this.beneficiary,
     required this.onTap,
   });
 
-  final String name;
-  final String transferType;
-  final String transactionTime;
+  final bool isLoading;
+  final BeneficiaryModel beneficiary;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final color = ref.watch(appPrimaryColorProvider);
+
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(Values.v10),
         child: Row(
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.withValues(alpha: .22),
-              ),
-              child: Text(
-                name.split("").first,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: color,
+            Skeletonizer(
+              enabled: isLoading,
+              child: Container(
+                width: Values.v48,
+                height: Values.v48,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color.withValues(alpha: .22),
                 ),
+                child: isLoading
+                    ? null
+                    : Text(
+                        beneficiary.accountName.split(" ").first,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: color,
+                        ),
+                      ),
               ),
             ),
-            Values.v16.horizontalSpacing,
+            Values.v8.horizontalSpacing,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w400,
+                Skeletonizer(
+                  enabled: isLoading,
+                  child: Text(
+                    beneficiary.accountName,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
                 Text(
-                  "$transferType . $transactionTime",
+                  "Withdrawal . 5.56pm",
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,
                   ),
@@ -182,7 +215,7 @@ class _BeneficiaryTile extends ConsumerWidget {
               ],
             ),
             Spacer(),
-            Icon(CupertinoIcons.chevron_forward),
+            if (!isLoading) Icon(CupertinoIcons.chevron_forward),
           ],
         ),
       ),
@@ -190,47 +223,42 @@ class _BeneficiaryTile extends ConsumerWidget {
   }
 }
 
-class _BeneficiaryListAction extends ConsumerWidget {
-  const _BeneficiaryListAction({
+class _BeneficiaryTypeButton extends ConsumerWidget {
+  const _BeneficiaryTypeButton({
     required this.onTap,
-    required this.text,
-    required this.selected,
-    required this.listenable,
+    required this.beneficiaryType,
   });
 
-  final bool selected;
-  final String text;
   final VoidCallback onTap;
-  final ValueNotifier<BeneficiaryStatus> listenable;
+  final BeneficiaryType beneficiaryType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ValueListenableBuilder<BeneficiaryStatus>(
-      valueListenable: listenable,
-      builder: (context, value, child) {
-        return GestureDetector(
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: Durations.long4,
-            padding: EdgeInsets.all(10),
-            decoration: selected
-                ? BoxDecoration(
-                    color: ref.watch(appPrimaryColorProvider).withAlpha(20),
-                    border: Border.all(
-                      color: ref.watch(appPrimaryColorProvider),
-                    ),
-                    borderRadius: BorderRadius.circular(32),
-                  )
-                : null,
-            child: Text(
-              text,
-              style: context.textTheme.labelMedium?.copyWith(
-                color: selected ? ref.watch(appPrimaryColorProvider) : null,
+    final BeneficiaryType type = ref.watch(beneficiaryTypeControllerProvider);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: Durations.long4,
+        padding: EdgeInsets.all(Values.v10),
+        decoration: type != beneficiaryType
+            ? null
+            : BoxDecoration(
+                color: ref.watch(appPrimaryColorProvider).withAlpha(20),
+                border: Border.all(
+                  color: ref.watch(appPrimaryColorProvider),
+                ),
+                borderRadius: BorderRadius.circular(32),
               ),
-            ),
+        child: Text(
+          beneficiaryType.typeName,
+          style: context.textTheme.labelMedium?.copyWith(
+            color: type != beneficiaryType
+                ? null
+                : ref.watch(appPrimaryColorProvider),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

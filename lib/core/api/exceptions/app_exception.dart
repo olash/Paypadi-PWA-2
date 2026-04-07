@@ -8,6 +8,11 @@ import 'package:paypadi/core/api/exceptions/client_exception.dart';
 
 import 'server_exception.dart';
 
+bool _isResponseParsingError(Object error) =>
+    error is TypeError ||
+    error.runtimeType.toString() == 'CastError' ||
+    error is NoSuchMethodError;
+
 abstract class AppException implements Exception {
   const AppException();
 
@@ -35,6 +40,12 @@ abstract class AppException implements Exception {
         HttpException he => ClientException(message: he.message),
         HandshakeException _ => const ServerException.internalServerError(),
         WebSocketException we => ClientException(message: we.message),
+        TypeError te => ClientException(
+          message: 'Invalid response format from server: ${te.toString()}',
+        ),
+        NoSuchMethodError ne => ClientException(
+          message: 'Invalid response shape from server: ${ne.toString()}',
+        ),
         // Rethrow Dart Errors so programming errors surface in tests/runtime.
         Error e => throw e,
         PlatformException pe => ClientException(
@@ -46,8 +57,15 @@ abstract class AppException implements Exception {
         Object() => ClientException(message: "$exception"),
         null => ClientException(message: "Null Exception"),
       };
-    } on Error {
-      // Don't swallow programming errors — let them surface
+    } on Error catch (e) {
+      if (_isResponseParsingError(e)) {
+        return ClientException(
+          message:
+              'Failed to parse server response. Please update the app or try again later.',
+        );
+      }
+
+      // Don't swallow programming errors — let them surface.
       rethrow;
     } on Exception catch (ex, st) {
       // Preserve stack trace when wrapping
