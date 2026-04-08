@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'package:paypadi/core/api/response/api_response.dart';
@@ -14,7 +15,7 @@ abstract class TransactionClient {
   factory TransactionClient(Dio dio, {String baseUrl}) = _TransactionClient;
 
   @POST('$_basePath/transfer/')
-  Future<dynamic> transfer({@Body() required Map<String, dynamic> payload});
+  Future<TransactionModel> transfer({@Body() required Map<String, dynamic> payload});
 
   @POST('$_basePath/transfer/')
   Future<dynamic> withdraw({@Body() required Map<String, dynamic> payload});

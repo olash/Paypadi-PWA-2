@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
+import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'package:paypadi/core/api/response/api_response.dart';
@@ -18,7 +19,10 @@ abstract class WalletClient {
   Future<WalletModel> getBalance();
 
   @GET('$_basePath/transactions/')
-  Future<WalletModel> getTransactionHistory();
+  Future<PaginatedListResponse<TransactionHistoryModel>> getTransactionHistory({
+    @Query('page') required int page,
+    @Query('page_size') required int pageSize,
+  });
 
   @GET('$_basePath/deposit/account/')
   Future<BankAccountModel> getDepositAccount();

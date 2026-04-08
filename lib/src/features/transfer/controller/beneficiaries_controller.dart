@@ -36,15 +36,16 @@ class RecentBeneficiariesController extends _$RecentBeneficiariesController {
     state = AsyncLoading();
     final result = await _repository.getRecentBeneficiaries();
 
-    if (ref.mounted) {
-      result.fold(
-        (success) => state = AsyncData(success.results),
-        (failure) {
-          ref.showExceptionToast(failure);
-          state = const AsyncData(<BeneficiaryModel>[]);
-        },
-      );
-    }
+    // Check if provider is still mounted
+    if (!ref.mounted) return;
+
+    result.fold(
+      (success) => state = AsyncData(success.results),
+      (failure) {
+        ref.showExceptionToast(failure);
+        state = const AsyncData(<BeneficiaryModel>[]);
+      },
+    );
   }
 }
 
@@ -76,15 +77,16 @@ class SavedBeneficiariesController extends _$SavedBeneficiariesController {
     state = AsyncLoading();
     final result = await _repository.getSavedBeneficiaries();
 
-    if (ref.mounted) {
-      result.fold(
-        (success) => state = AsyncData(success.results),
-        (failure) {
-          ref.showExceptionToast(failure);
-          state = const AsyncData(<BeneficiaryModel>[]);
-        },
-      );
-    }
+    // Check if provider is still mounted
+    if (!ref.mounted) return;
+
+    result.fold(
+      (success) => state = AsyncData(success.results),
+      (failure) {
+        ref.showExceptionToast(failure);
+        state = const AsyncData(<BeneficiaryModel>[]);
+      },
+    );
   }
 }
 

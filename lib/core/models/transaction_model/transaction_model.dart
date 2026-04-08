@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:paypadi/core/utils/enums.dart';
 
 part 'transaction_model.freezed.dart';
 part 'transaction_model.g.dart';
@@ -6,19 +7,47 @@ part 'transaction_model.g.dart';
 @freezed
 sealed class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
-    required String id,
-    required String amount,
     required String status,
-    required String reference,
-    required String description,
-    @JsonKey(name: "recipient_account_number")
-    required String recipientAccountNo,
-    @JsonKey(name: "transaction_type") required String type,
-    @JsonKey(name: "recipient_phone") required String recipientPhone,
-    @JsonKey(name: "recipient_bank_code") required String recipientBankCode,
-    @JsonKey(name: "created_at") required String createdAt,
+    required String amount,
+    @JsonKey(name: "transacion_id") required String id,
+    @JsonKey(name: "transaction_reference") required String reference,
+    @JsonKey(name: "recipient_account") required String recipientAccount,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       _$TransactionModelFromJson(json);
+}
+
+@freezed
+sealed class TransactionHistoryModel with _$TransactionHistoryModel {
+  const factory TransactionHistoryModel({
+    required String id,
+    required String amount,
+    required String reference,
+    required String description,
+    required TransactionHistoryMetadata metadata,
+    @JsonKey(unknownEnumValue: TransactionStatus.failure,)
+    required TransactionStatus status,
+    @JsonKey(
+      name: "transaction_type",
+      unknownEnumValue: TransactionType.unknown,
+    )
+    required TransactionType type,
+    @JsonKey(name: "created_at") required String createdAt,
+  }) = _TransactionHistoryModel;
+
+  factory TransactionHistoryModel.fromJson(Map<String, dynamic> json) =>
+      _$TransactionHistoryModelFromJson(json);
+}
+
+@freezed
+sealed class TransactionHistoryMetadata with _$TransactionHistoryMetadata {
+  const factory TransactionHistoryMetadata({
+    @JsonKey(name: "recipient_account") required String receipientAccount,
+    @JsonKey(name: "recipient_bank_code") required String receipientBankCode,
+    @JsonKey(name: "pin_verified") required bool isPinVerified,
+  }) = _TransactionHistoryMetadata;
+
+  factory TransactionHistoryMetadata.fromJson(Map<String, dynamic> json) =>
+      _$TransactionHistoryMetadataFromJson(json);
 }

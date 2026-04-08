@@ -7,6 +7,8 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
+import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -14,13 +16,17 @@ import 'package:skeletonizer/skeletonizer.dart';
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
   const MakePaymentScreen({super.key, required this.receipientNumber});
-
   final String receipientNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commentController = useTextEditingController();
     final hasSavedAsBeneficiary = useState<bool>(false);
+
+    final commentController = useTextEditingController();
+
+    final receipientDetails = ref.watch(
+      accountLookupControllerProvider(receipientNumber),
+    );
 
     return AppScaffold(
       title: "Transfer",
@@ -53,9 +59,14 @@ class MakePaymentScreen extends HookConsumerWidget {
               ),
               Switch.adaptive(
                 value: hasSavedAsBeneficiary.value,
-                onChanged: (value) {
-                  hasSavedAsBeneficiary.value = value;
-                },
+                onChanged: receipientDetails.isLoading
+                    ? null
+                    : (value) {
+                        hasSavedAsBeneficiary.value = true;
+                        ref
+                            .read(walletControllerProvider.notifier)
+                            .saveBeneficiary(receipientDetails.value!);
+                      },
               ),
             ],
           ),
@@ -78,8 +89,8 @@ class _BankAccountInformation extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final receipientDetails = ref.watch(
-      receipientAccountDetailsProvider(receipientNumber: receipientNumber),
+    final receipientDetails = ref.read(
+      accountLookupControllerProvider(receipientNumber),
     );
 
     return Container(

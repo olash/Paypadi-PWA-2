@@ -172,17 +172,3 @@ Future<List<BankModel>> banksList(Ref ref) async {
   );
 }
 
-@riverpod
-Future<AccountLookupModel> receipientAccountDetails(
-  Ref ref, {
-  required String receipientNumber,
-}) async {
-  final result = await ref
-      .read(transactionRepositoryProvider)
-      .getAccountDetails(receipientNumber);
-
-  return result.fold(
-    (response) => response,
-    (error) => throw error,
-  );
-}

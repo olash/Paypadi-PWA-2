@@ -29,10 +29,13 @@ extension NullableObjextExtension on Object? {
 
 extension AppToastChannelRefExtension on Ref {
   void showErrorToast(String message) {
+      if (!mounted) return;
     read(appToastChannelProvider.notifier).showMessage(message);
   }
 
   void showExceptionToast(Object? error) {
+    if (!mounted) return;
+
     read(appToastChannelProvider.notifier).showException(error);
   }
 }

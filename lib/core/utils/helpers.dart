@@ -148,3 +148,56 @@ String getDayTime() {
     return 'evening';
   }
 }
+
+String getInitials(String fullName) {
+  final trimmedName = fullName.trim();
+  if (trimmedName.isEmpty) return '';
+
+  final parts = trimmedName
+      .split(RegExp(r'\s+'))
+      .where((part) => part.isNotEmpty)
+      .toList();
+
+  if (parts.isEmpty) return '';
+  if (parts.length == 1) {
+    final word = parts.first;
+    if (word.length == 1) return word.toUpperCase();
+    return word.substring(0, 2).toUpperCase();
+  }
+
+  final firstInitial = parts.first[0];
+  final lastInitial = parts.last[0];
+  return '$firstInitial$lastInitial'.toUpperCase();
+}
+
+String getTransactionDate(String date) {
+  final parsedDate = DateTime.tryParse(date);
+  if (parsedDate == null) return date;
+
+  final localDate = parsedDate.toLocal();
+  final months = <String>[
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  final month = months[localDate.month - 1];
+  final day = localDate.day.toString().padLeft(2, '0');
+  final year = localDate.year.toString();
+  final hour24 = localDate.hour;
+  final hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12;
+  final hour = hour12.toString().padLeft(2, '0');
+  final minute = localDate.minute.toString().padLeft(2, '0');
+  final meridiem = hour24 >= 12 ? 'PM' : 'AM';
+
+  return '$month $day, $year, $hour:$minute $meridiem';
+}

@@ -13,6 +13,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart'
 import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/core/utils/enums.dart';
 
 import 'package:screenshot/screenshot.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
@@ -39,7 +40,9 @@ class ReceiptScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final double pixelRatio = context.devicePixelRatio;
-    final paymentStatus = useState<PaymentStatus>(PaymentStatus.success);
+    final transactionStatus = useState<TransactionStatus>(
+      TransactionStatus.success,
+    );
 
     return AppScaffold(
       showAppBar: false,
@@ -69,10 +72,10 @@ class ReceiptScreen extends HookConsumerWidget {
               child: ReceiptCard(
                 child: Column(
                   children: [
-                    _PaymentDetailsStatusIcon(status: paymentStatus.value),
+                    _PaymentDetailsStatusIcon(status: transactionStatus.value),
                     Values.v16.verticalSpacing,
                     Text(
-                      "Payment ${capitalizeFirstChar(paymentStatus.value.name)}!",
+                      "Payment ${capitalizeFirstChar(transactionStatus.value.name)}!",
                       style: context.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w400,
                         letterSpacing: kZeroLetterSpacing,
@@ -183,7 +186,7 @@ class ReceiptScreen extends HookConsumerWidget {
 
 class _PaymentDetailsStatusIcon extends HookWidget {
   const _PaymentDetailsStatusIcon({required this.status});
-  final PaymentStatus status;
+  final TransactionStatus status;
 
   @override
   Widget build(BuildContext context) {
@@ -194,22 +197,25 @@ class _PaymentDetailsStatusIcon extends HookWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: switch (status) {
-          PaymentStatus.success => AppColors.success.withValues(alpha: .12),
-          PaymentStatus.failure => AppColors.failure.withValues(alpha: .12),
+          TransactionStatus.success => AppColors.success.withValues(alpha: .12),
+          TransactionStatus.failure => AppColors.failure.withValues(alpha: .12),
+          TransactionStatus.pending => throw UnimplementedError(),
         },
       ),
       child: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: switch (status) {
-            PaymentStatus.success => AppColors.success,
-            PaymentStatus.failure => AppColors.failure,
+            TransactionStatus.success => AppColors.success,
+            TransactionStatus.failure => AppColors.failure,
+            TransactionStatus.pending => throw UnimplementedError(),
           },
         ),
         child: Icon(
           switch (status) {
-            PaymentStatus.success => Icons.check,
-            PaymentStatus.failure => Icons.close,
+            TransactionStatus.success => Icons.check,
+            TransactionStatus.failure => Icons.close,
+            TransactionStatus.pending => throw UnimplementedError(),
           },
           color: AppColors.white,
         ),

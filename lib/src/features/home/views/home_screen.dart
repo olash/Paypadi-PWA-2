@@ -20,7 +20,7 @@ class HomeScreen extends HookWidget {
           navTracker.value = value;
           switch (value) {
             case 0:
-              context.router.push(HomeRoute());
+              context.router.push(DashboardRoute());
               break;
             case 1:
               context.router.push(TransactionHistoryRoute());

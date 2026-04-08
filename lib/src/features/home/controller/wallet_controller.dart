@@ -1,10 +1,11 @@
-import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
+import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 
 part 'wallet_controller.g.dart';
 
@@ -15,42 +16,96 @@ class WalletController extends _$WalletController {
   @override
   FutureOr<WalletModel?> build() async {
     _repository = ref.watch(walletRepositoryProvider);
-    state = const AsyncLoading();
 
+    state = const AsyncLoading();
     final result = await _repository.fetchWalletBalance();
 
-    return result.fold(
-      (success) {
-        state = AsyncValue.data(success);
-        return success;
-      },
+    result.fold(
+      (success) => state = AsyncValue.data(success),
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        state = AsyncError(message, StackTrace.current);
-        return null;
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
       },
     );
+
+    return state.value;
   }
 
   void getWalletInfo() async {
     state = const AsyncLoading();
-
     final result = await _repository.fetchWalletBalance();
 
     // Check if provider is still mounted
     if (!ref.mounted) return;
 
     result.fold(
-      (success) {
-        state = AsyncValue.data(success);
-        return;
-      },
+      (success) => state = AsyncValue.data(success),
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        state = AsyncError(message, StackTrace.current);
-        return;
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
+      },
+    );
+  }
+
+  void saveBeneficiary(AccountLookupModel beneficiary) async {
+    final Map<String, dynamic> payload = {
+      "beneficiary_type": "user",
+      "account_number": beneficiary.accountNumber,
+      "account_name": "${beneficiary.firstName} ${beneficiary.lastName}",
+      "bank_code": beneficiary.bankCode,
+    };
+
+    state = const AsyncLoading();
+    final result = await _repository.saveBeneficiary(payload);
+
+    // Check if provider is still mounted
+    if (!ref.mounted) return;
+
+    result.fold(
+      (success) => state = AsyncValue.data(null),
+      (failure) {
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
+      },
+    );
+  }
+}
+
+@riverpod
+class HistoryController extends _$HistoryController {
+  late final WalletRepository _repository;
+
+  @override
+  FutureOr<List<TransactionHistoryModel>> build() async {
+    _repository = ref.watch(walletRepositoryProvider);
+
+    state = AsyncLoading();
+    final result = await _repository.getTransactionHistory();
+
+    if (!ref.mounted) return List.empty();
+
+    result.fold(
+      (success) => state = AsyncData(success.results),
+      (failure) {
+        ref.showExceptionToast(failure);
+        state = const AsyncData(<TransactionHistoryModel>[]);
+      },
+    );
+
+    return state.value ?? List.empty();
+  }
+
+  void fetchMore(int page) async {
+    state = AsyncLoading();
+    final result = await _repository.getTransactionHistory(page: page);
+
+    if (!ref.mounted) return;
+
+    result.fold(
+      (success) => state = AsyncData([...?state.value, ...success.results]),
+      (failure) {
+        ref.showExceptionToast(failure);
+        state = const AsyncData(<TransactionHistoryModel>[]);
       },
     );
   }

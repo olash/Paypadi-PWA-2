@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -10,10 +12,10 @@ import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/transfer/controller/beneficiaries_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class TransferScreen extends HookConsumerWidget {
@@ -108,19 +110,14 @@ class _BeneficiariesList extends ConsumerWidget {
           ],
         ),
         Values.v4.verticalSpacing,
-        if (beneficiaries.value != null && beneficiaries.value!.isEmpty) ...[
-          Values.v64.verticalSpacing,
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.punch_clock_outlined),
-              Text(
+        if (beneficiaries.value != null && beneficiaries.value!.isEmpty)
+          AppZeroItem(
+            topPaddingScaleFactor: .2,
+            icon: Icons.group_off_outlined,
+            message:
                 "No ${beneficiaryType == BeneficiaryType.recent ? 'Recent' : 'Saved'} beneficiary",
-              ),
-            ],
-          ),
-        ] else
+          )
+        else
           SizedBox(
             height: context.screenHeight * .6,
             child: ListView.builder(
@@ -186,7 +183,7 @@ class _BeneficiaryTile extends ConsumerWidget {
                 child: isLoading
                     ? null
                     : Text(
-                        beneficiary.accountName.split(" ").first,
+                        getInitials(beneficiary.accountName),
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: color,
                         ),

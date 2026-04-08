@@ -34,20 +34,6 @@ enum BeneficiaryType {
   final String typeName;
 }
 
-enum PaymentStatus { success, failure }
+enum TransactionStatus { success, pending, failure }
 
-enum TransactionType {
-  withdrawal,
-  deposit,
-  unknown;
-
-  const TransactionType();
-
-  TransactionType getType(String type) {
-    return switch (type) {
-      'withdraw' => TransactionType.withdrawal,
-      'deposit' => TransactionType.deposit,
-      _ => TransactionType.unknown,
-    };
-  }
-}
+enum TransactionType { transfer, deposit, withdrawal, unknown }
