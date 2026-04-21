@@ -10,7 +10,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i36;
-import 'package:flutter/foundation.dart' as _i38;
 import 'package:flutter/material.dart' as _i37;
 import 'package:paypadi/src/features/authentication/presentation/views/account_role_screen.dart'
     as _i1;
@@ -751,45 +750,48 @@ class QrCodeRoute extends _i36.PageRouteInfo<void> {
 /// generated route for
 /// [_i27.ReceiptScreen]
 class ReceiptRoute extends _i36.PageRouteInfo<ReceiptRouteArgs> {
-  ReceiptRoute({_i38.Key? key, List<_i36.PageRouteInfo>? children})
-    : super(
-        ReceiptRoute.name,
-        args: ReceiptRouteArgs(key: key),
-        initialChildren: children,
-      );
+  ReceiptRoute({
+    _i37.Key? key,
+    required String referenceId,
+    List<_i36.PageRouteInfo>? children,
+  }) : super(
+         ReceiptRoute.name,
+         args: ReceiptRouteArgs(key: key, referenceId: referenceId),
+         initialChildren: children,
+       );
 
   static const String name = 'ReceiptRoute';
 
   static _i36.PageInfo page = _i36.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ReceiptRouteArgs>(
-        orElse: () => const ReceiptRouteArgs(),
-      );
-      return _i27.ReceiptScreen(key: args.key);
+      final args = data.argsAs<ReceiptRouteArgs>();
+      return _i27.ReceiptScreen(key: args.key, referenceId: args.referenceId);
     },
   );
 }
 
 class ReceiptRouteArgs {
-  const ReceiptRouteArgs({this.key});
+  const ReceiptRouteArgs({this.key, required this.referenceId});
 
-  final _i38.Key? key;
+  final _i37.Key? key;
+
+  final String referenceId;
 
   @override
   String toString() {
-    return 'ReceiptRouteArgs{key: $key}';
+    return 'ReceiptRouteArgs{key: $key, referenceId: $referenceId}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ReceiptRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && referenceId == other.referenceId;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ referenceId.hashCode;
 }
 
 /// generated route for

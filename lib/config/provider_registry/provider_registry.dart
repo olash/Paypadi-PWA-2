@@ -2,8 +2,8 @@ import 'dart:ui' show Color;
 
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
-import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/services/api_service.dart';
+import 'package:paypadi/core/services/receipt_service.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show CacheKeys, availableColors;
 import 'package:paypadi/core/services/biometrics_service.dart'
@@ -89,6 +89,11 @@ BiometricsService biometrics(Ref ref) {
 }
 
 @riverpod
+ReceiptService receiptService(Ref ref) {
+  return ReceiptService();
+}
+
+@riverpod
 AuthenticationClient authenticationClient(Ref ref) {
   final dio = ref.watch(dioProvider);
   return AuthenticationClient(dio);
@@ -171,4 +176,3 @@ Future<List<BankModel>> banksList(Ref ref) async {
     (error) => throw error,
   );
 }
-

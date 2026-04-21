@@ -10,7 +10,9 @@ class TransactionRepository {
   const TransactionRepository(this.client);
   final TransactionClient client;
 
-  FutureResultOf<TransactionModel> transfer(Map<String, dynamic> payload) async {
+  FutureResultOf<TransactionModel> transfer(
+    Map<String, dynamic> payload,
+  ) async {
     final response = await Result.fromAsync<TransactionModel>(
       () => client.transfer(payload: payload),
     );
@@ -38,6 +40,15 @@ class TransactionRepository {
   ) async {
     final response = await Result.fromAsync<AccountLookupModel>(
       () => client.getAccountDetails(payload: payload),
+    );
+    return response;
+  }
+
+  FutureResultOf<TransactionHistoryModel> getTransactionDetailsById(
+    String reference,
+  ) async {
+    final response = await Result.fromAsync<TransactionHistoryModel>(
+      () => client.getTransactionByRefNo(reference: reference),
     );
     return response;
   }

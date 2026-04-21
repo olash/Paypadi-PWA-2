@@ -26,7 +26,7 @@ sealed class TransactionHistoryModel with _$TransactionHistoryModel {
     required String reference,
     required String description,
     required TransactionHistoryMetadata metadata,
-    @JsonKey(unknownEnumValue: TransactionStatus.failure,)
+    @JsonKey(unknownEnumValue: TransactionStatus.failure)
     required TransactionStatus status,
     @JsonKey(
       name: "transaction_type",
@@ -34,6 +34,9 @@ sealed class TransactionHistoryModel with _$TransactionHistoryModel {
     )
     required TransactionType type,
     @JsonKey(name: "created_at") required String createdAt,
+    @JsonKey(name: "sender_name") required String senderName,
+    @JsonKey(name: "recipient_name") required String recipientName,
+    @JsonKey(name: "fee_amount") required String transactionFee,
   }) = _TransactionHistoryModel;
 
   factory TransactionHistoryModel.fromJson(Map<String, dynamic> json) =>

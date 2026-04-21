@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:paypadi/core/utils/constants.dart' show kZeroLetterSpacing;
+import 'package:paypadi/core/utils/constants.dart'
+    show Values, kZeroLetterSpacing, placeholder;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class PaymentDetails extends StatelessWidget {
   const PaymentDetails({
     super.key,
     required this.detail,
     required this.value,
+    this.isLoading = false,
   });
 
   final String detail;
-  final String value;
+  final String? value;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 14),
+      padding: EdgeInsets.only(bottom: Values.v14),
       child: Row(
         children: [
           Text(
@@ -26,11 +30,14 @@ class PaymentDetails extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: context.textTheme.bodySmall?.copyWith(
-                letterSpacing: kZeroLetterSpacing,
+            child: Skeletonizer(
+              enabled: isLoading,
+              child: Text(
+                value ?? placeholder,
+                textAlign: TextAlign.end,
+                style: context.textTheme.bodySmall?.copyWith(
+                  letterSpacing: kZeroLetterSpacing,
+                ),
               ),
             ),
           ),

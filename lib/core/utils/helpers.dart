@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/core/utils/enums.dart';
 import 'package:toastification/toastification.dart';
 
 import 'package:paypadi/config/gen/assets.gen.dart';
@@ -63,26 +64,25 @@ String obfuscatePhoneNumber(String phoneNumber) {
   return '$firstPart $obfuscated $lastPart';
 }
 
-String formatAmount(String amount) {
-  if (amount.contains('.00')) {
-    final formatted = amount.replaceAllMapped(
-      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
-    return formatted;
-  } else {
-    final withDecimal = '$amount.00';
-    final formatted = withDecimal.replaceAllMapped(
-      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
-    return formatted;
-  }
+String formatAmount(String? amount) {
+  if (amount == null || amount.trim().isEmpty) return '';
+
+  final normalized = amount.trim();
+  final value = normalized.contains('.00') ? normalized : '$normalized.00';
+
+  return value.replaceAllMapped(
+    RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+    (Match m) => '${m[1]},',
+  );
 }
 
-String capitalizeFirstChar(String s) {
-  if (s.isEmpty) return s;
-  return s[0].toUpperCase() + s.substring(1);
+String capitalizeFirstChar(String? s) {
+  if (s == null || s.trim().isEmpty) return '';
+
+  final value = s.trim();
+  if (value.length == 1) return value.toUpperCase();
+
+  return value[0].toUpperCase() + value.substring(1);
 }
 
 String getDateAndTime(DateTime date) {
@@ -170,7 +170,17 @@ String getInitials(String fullName) {
   return '$firstInitial$lastInitial'.toUpperCase();
 }
 
-String getTransactionDate(String date) {
+String getTransactionDirectionLabel(TransactionType type) {
+  return switch (type) {
+    TransactionType.deposit => "From",
+    TransactionType.transfer || TransactionType.withdrawal => "To",
+    TransactionType.unknown => '?',
+  };
+}
+
+String getTransactionDate(String? date) {
+  if (date == null || date.trim().isEmpty) return '';
+
   final parsedDate = DateTime.tryParse(date);
   if (parsedDate == null) return date;
 

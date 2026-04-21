@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.paypadi"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "29.0.13113456 rc1"
+    ndkVersion = "30.0.14904198 rc1"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

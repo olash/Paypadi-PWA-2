@@ -1,48 +1,47 @@
-import 'dart:io' show Directory;
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_to_pdf/flutter_to_pdf.dart'
     show ExportDelegate, ExportFrame, PageFormatOptions, ExportOptions;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart'
-    show ImageGallerySaverPlus;
-import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/enums.dart';
+import 'package:paypadi/src/features/transfer/controller/receipt_controller.dart';
 
 import 'package:screenshot/screenshot.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/transfer/widgets/dotted_line.dart';
 import 'package:paypadi/src/features/transfer/widgets/payment_details.dart';
 import 'package:paypadi/src/features/transfer/widgets/receipt_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
-class ReceiptScreen extends HookConsumerWidget {
-  ReceiptScreen({super.key});
+class ReceiptScreen extends ConsumerStatefulWidget {
+  const ReceiptScreen({super.key, required this.referenceId});
+  final String referenceId;
 
-  final ScreenshotController screenshotController = ScreenshotController();
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _ReceiptScreenState();
+}
+
+class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
+  final ScreenshotController _screenshotController = ScreenshotController();
+
   final ExportDelegate exportDelegate = ExportDelegate(
     options: ExportOptions(pageFormatOptions: PageFormatOptions.a4()),
     ttfFonts: {"Poppins": "fonts/Poppins-Regular.ttf"},
   );
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final double pixelRatio = context.devicePixelRatio;
-    final transactionStatus = useState<TransactionStatus>(
-      TransactionStatus.success,
-    );
+    final receipt = ref.watch(receiptControllerProvider(widget.referenceId));
 
     return AppScaffold(
       showAppBar: false,
@@ -55,72 +54,102 @@ class ReceiptScreen extends HookConsumerWidget {
               CloseButton(
                 onPressed: () => ref
                     .read(appRouterProvider)
-                    .popUntilRouteWithName(DashboardRoute.name),
+                    .popUntilRouteWithName(HomeRoute.name),
               ),
               IconButton(
-                onPressed: () async => await _shareReceipt(pixelRatio),
+                onPressed: () async => ref
+                    .read(receiptServiceProvider)
+                    .shareReceipt(pixelRatio, _screenshotController),
                 icon: Icon(OctIcons.share),
               ),
             ],
           ),
           Values.v16.verticalSpacing,
           Screenshot(
-            controller: screenshotController,
+            controller: _screenshotController,
             child: ExportFrame(
               frameId: "receipt",
               exportDelegate: exportDelegate,
               child: ReceiptCard(
                 child: Column(
                   children: [
-                    _PaymentDetailsStatusIcon(status: transactionStatus.value),
+                    _PaymentDetailsStatusIcon(status: receipt.value?.status),
                     Values.v16.verticalSpacing,
-                    Text(
-                      "Payment ${capitalizeFirstChar(transactionStatus.value.name)}!",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: kZeroLetterSpacing,
+                    Skeletonizer(
+                      enabled: receipt.isLoading,
+                      child: Text(
+                        receipt.isLoading
+                            ? placeholder
+                            : "Payment ${capitalizeFirstChar(receipt.value?.status.name)}",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: kZeroLetterSpacing,
+                        ),
                       ),
                     ),
                     Values.v8.verticalSpacing,
-                    Text(
-                      "₦1,000,000",
-                      style: context.textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: kZeroLetterSpacing,
+                    Skeletonizer(
+                      enabled: receipt.isLoading,
+                      child: Text(
+                        receipt.isLoading
+                            ? placeholder
+                            : "₦ ${formatAmount(receipt.value?.amount)}",
+                        style: context.textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: kZeroLetterSpacing,
+                        ),
                       ),
                     ),
                     Values.v32.verticalSpacing,
                     Divider(
-                      indent: 8,
-                      endIndent: 8,
+                      indent: Values.v8,
+                      endIndent: Values.v8,
                       color: AppColors.dividerColor,
                     ),
                     Values.v32.verticalSpacing,
                     PaymentDetails(
                       detail: "Ref Number",
-                      value: "enfioejnfowse",
+                      isLoading: receipt.isLoading,
+                      value: receipt.value?.reference,
                     ),
                     PaymentDetails(
                       detail: "Payment Time",
-                      value: "enfioejnfowse",
+                      isLoading: receipt.isLoading,
+                      value: receipt.isLoading
+                          ? placeholderShort
+                          : getTransactionDate(receipt.value?.createdAt),
                     ),
                     PaymentDetails(
                       detail: "Payment Method",
-                      value: "enfioejnfowse",
+                      isLoading: receipt.isLoading,
+                      value: receipt.isLoading
+                          ? placeholderShort
+                          : capitalizeFirstChar(receipt.value?.type.name),
                     ),
                     PaymentDetails(
                       detail: "Sender Name",
-                      value: "enfioejnfowse",
+                      isLoading: receipt.isLoading,
+                      value: receipt.value?.senderName,
                     ),
                     PaymentDetails(
                       detail: "Receiver Name",
-                      value: "enfioejnfowse",
+                      isLoading: receipt.isLoading,
+                      value: receipt.value?.recipientName,
                     ),
-                    DottedDivider(topPadding: 2),
-                    PaymentDetails(detail: "Amount", value: "enfioejnfowse"),
+                    DottedDivider(topPadding: Values.v2),
+                    PaymentDetails(
+                      detail: "Amount",
+                      isLoading: receipt.isLoading,
+                      value: receipt.isLoading
+                          ? placeholderShort
+                          : "₦ ${formatAmount(receipt.value?.amount)}",
+                    ),
                     PaymentDetails(
                       detail: "Transaction Fee",
-                      value: "enfioejnfowse",
+                      isLoading: receipt.isLoading,
+                      value: receipt.isLoading
+                          ? placeholderShort
+                          : "₦ ${formatAmount(receipt.value?.transactionFee)}",
                     ),
                   ],
                 ),
@@ -129,7 +158,8 @@ class ReceiptScreen extends HookConsumerWidget {
           ),
           Spacer(flex: 3),
           OutlinedButton.icon(
-            onPressed: () async => await _generatePdfReceipt(),
+            onPressed: () async =>
+                await ref.read(receiptServiceProvider).generateReceiptInPdf(),
             label: Text("Get PDF Receipt"),
             icon: Icon(OctIcons.download),
           ),
@@ -137,7 +167,7 @@ class ReceiptScreen extends HookConsumerWidget {
           FilledButton(
             onPressed: () => ref
                 .read(appRouterProvider)
-                .popUntilRouteWithName(DashboardRoute.name),
+                .popUntilRouteWithName(HomeRoute.name),
             child: Text("Back to Home"),
           ),
           Spacer(),
@@ -145,61 +175,25 @@ class ReceiptScreen extends HookConsumerWidget {
       ),
     );
   }
-
-  Future<void> _shareReceipt(double pixelRatio) async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final String fileName =
-        "paypadi_receipt_${getDateAndTime(DateTime.now())}.png";
-    final String? savedReceiptPath = await screenshotController.captureAndSave(
-      directory.path,
-      fileName: fileName,
-      pixelRatio: pixelRatio,
-    );
-
-    if (savedReceiptPath == null) {
-      return;
-    }
-
-    final XFile shareableFile = XFile("${directory.path}/$fileName");
-
-    final Uint8List imageToSave = await shareableFile.readAsBytes();
-    final result = await ImageGallerySaverPlus.saveImage(imageToSave);
-
-    final ShareResult shareStatus = await SharePlus.instance.share(
-      ShareParams(files: [shareableFile]),
-    );
-
-    debugLogger.debug(savedReceiptPath);
-    debugLogger.debug(shareStatus);
-    debugLogger.debug(result);
-  }
-
-  Future<void> _generatePdfReceipt() async {
-    // try {
-    //   final pdf = await exportDelegate.exportToPdfDocument('receipt');
-    //   debugLogger.debug(pdf);
-    // } on Exception catch (e) {
-    //   debugLogger.debug(e.toString(), e);
-    // }
-  }
 }
 
 class _PaymentDetailsStatusIcon extends HookWidget {
   const _PaymentDetailsStatusIcon({required this.status});
-  final TransactionStatus status;
+  final TransactionStatus? status;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 72,
-      height: 72,
-      padding: EdgeInsets.all(22),
+      width: Values.v72,
+      height: Values.v72,
+      padding: EdgeInsets.all(Values.v24),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: switch (status) {
           TransactionStatus.success => AppColors.success.withValues(alpha: .12),
           TransactionStatus.failure => AppColors.failure.withValues(alpha: .12),
-          TransactionStatus.pending => throw UnimplementedError(),
+          TransactionStatus.pending => Colors.amber.withValues(alpha: .12),
+          null => AppColors.disabled.withValues(alpha: .12),
         },
       ),
       child: Container(
@@ -208,14 +202,16 @@ class _PaymentDetailsStatusIcon extends HookWidget {
           color: switch (status) {
             TransactionStatus.success => AppColors.success,
             TransactionStatus.failure => AppColors.failure,
-            TransactionStatus.pending => throw UnimplementedError(),
+            TransactionStatus.pending => Colors.amber,
+            null => AppColors.disabled,
           },
         ),
         child: Icon(
           switch (status) {
             TransactionStatus.success => Icons.check,
             TransactionStatus.failure => Icons.close,
-            TransactionStatus.pending => throw UnimplementedError(),
+            TransactionStatus.pending => Icons.pending,
+            null => Icons.question_mark,
           },
           color: AppColors.white,
         ),

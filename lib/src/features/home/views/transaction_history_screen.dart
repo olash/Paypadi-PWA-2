@@ -1,15 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class TransactionHistoryScreen extends ConsumerWidget {
@@ -46,7 +50,7 @@ class TransactionHistoryScreen extends ConsumerWidget {
               )
             else
               SizedBox(
-                height: context.screenHeight * .8,
+                height: context.screenHeight * .75,
                 child: ListView.builder(
                   padding: EdgeInsets.only(top: Values.v16),
                   physics: NeverScrollableScrollPhysics(),
@@ -61,7 +65,11 @@ class TransactionHistoryScreen extends ConsumerWidget {
                     return _TransactionTile(
                       isLoading: transactionHistory.isLoading,
                       transaction: data[index],
-                      onTap: () {},
+                      onTap: () => ref
+                          .read(appRouterProvider)
+                          .push(
+                            ReceiptRoute(referenceId: data[index].reference),
+                          ),
                     );
                   },
                 ),
@@ -88,51 +96,100 @@ class _TransactionTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final color = ref.watch(appPrimaryColorProvider);
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: Values.v8),
-      child: Row(
-        children: [
-          Skeletonizer(
-            enabled: isLoading,
-            child: Container(
-              width: Values.v48,
-              height: Values.v48,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: .1),
-                borderRadius: BorderRadius.circular(Values.v16),
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: Values.v8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Skeletonizer(
+              enabled: isLoading,
+              child: Container(
+                width: Values.v48,
+                height: Values.v48,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: .1),
+                  borderRadius: BorderRadius.circular(Values.v16),
+                ),
+                child: isLoading
+                    ? Icon(Icons.question_mark, color: color)
+                    : Icon(
+                        switch (transaction.type) {
+                          TransactionType.deposit => Icons.arrow_downward,
+                          TransactionType.transfer ||
+                          TransactionType.withdrawal => Icons.arrow_upward,
+                          TransactionType.unknown => Icons.question_mark,
+                        },
+                        color: color,
+                      ),
               ),
-              child: isLoading ? null : Icon(Icons.arrow_upward, color: color),
             ),
-          ),
-          Values.v12.horizontalSpacing,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Skeletonizer(
-                enabled: isLoading,
-                child: Text(
-                  "Transfer ${transaction.type}",
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w400,
+            Values.v12.horizontalSpacing,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Skeletonizer(
+                    enabled: isLoading,
+                    child: Text(
+                      "Transfer ${getTransactionDirectionLabel(transaction.type)} ${name(transaction.type)}",
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
-                ),
+                  Skeletonizer(
+                    enabled: isLoading,
+                    child: Text(
+                      getTransactionDate(transaction.createdAt),
+                      style: context.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                getTransactionDate(transaction.createdAt),
-                style: context.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w400,
-                ),
+            ),
+            Values.v12.horizontalSpacing,
+            Text(
+              "${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}",
+              style: context.textTheme.bodyLarge?.copyWith(
+                color: transactionColor(transaction.type),
               ),
-            ],
-          ),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  String name(TransactionType type) {
+    return switch (type) {
+      TransactionType.deposit => transaction.senderName,
+      TransactionType.transfer ||
+      TransactionType.withdrawal => transaction.recipientName,
+      TransactionType.unknown => '?',
+    };
+  }
+
+  String amountSign(TransactionType type) {
+    return switch (type) {
+      TransactionType.deposit => "+",
+      TransactionType.transfer || TransactionType.withdrawal => "-",
+      TransactionType.unknown => '?',
+    };
+  }
+
+  Color transactionColor(TransactionType type) {
+    return switch (type) {
+      TransactionType.deposit => AppColors.success,
+      TransactionType.transfer ||
+      TransactionType.withdrawal => AppColors.failure,
+      TransactionType.unknown => AppColors.disabled,
+    };
   }
 }

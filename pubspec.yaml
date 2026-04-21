@@ -17,10 +17,10 @@ dependencies:
 
   # Riverpod ecosystem v3 (all real)
   hooks_riverpod: ^3.0.3
-  riverpod_annotation: ^3.0.3
+  riverpod_annotation: ^4.0.0
 
   # AutoRoute v10
-  auto_route: ^10.3.0
+  auto_route: ^11.1.0
 
   flutter_svg: ^2.0.10+1
   pin_code_text_field: ^1.8.0
@@ -74,7 +74,7 @@ dev_dependencies:
   # Generators — ALL REAL VERSIONS
   retrofit_generator: ^10.0.0
   auto_route_generator: ^10.0.1
-  riverpod_generator: ^3.0.3
+  riverpod_generator: ^4.0.0+1
   flutter_gen_runner: ^5.10.0
   freezed: ^3.0.6
   json_serializable: ^6.10.0

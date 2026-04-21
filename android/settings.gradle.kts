@@ -18,10 +18,11 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "8.13.2" apply false
+    id("com.android.application") version "9.1.0" apply false
     // Bumped to a modern Kotlin Gradle Plugin version to stay compatible
     // with the current Flutter tooling. Update further as needed.
     id("org.jetbrains.kotlin.android") version "2.1.0" apply false
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
 }
 
 include(":app")

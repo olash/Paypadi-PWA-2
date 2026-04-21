@@ -2,9 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/transfer/widgets/dotted_line.dart';
 import 'package:paypadi/src/features/transfer/widgets/payment_details.dart';
@@ -47,7 +45,7 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
                   endIndent: 8,
                   color: AppColors.dividerColor,
                 ),
-                32.0.verticalSpacing,
+                Values.v32.verticalSpacing,
                 PaymentDetails(detail: "Ref Number", value: "enfioejnfowse"),
                 PaymentDetails(detail: "Payment time", value: "enfioejnfowse"),
                 PaymentDetails(detail: "Payment", value: "enfioejnfowse"),
@@ -70,7 +68,7 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
               ),
             ),
             onPressed: () {
-              ref.read(appRouterProvider).push(ReceiptRoute());
+              // ref.read(appRouterProvider).push(ReceiptRoute());
             },
             child: Text("Make Payment"),
           ),

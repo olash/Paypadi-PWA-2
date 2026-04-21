@@ -66,6 +66,12 @@ final Duration animatedFooDuration = Durations.medium4;
 final String kDemoProfilePic =
     "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
 
+final String placeholder = "Placeholder";
+
+final String placeholderShort = "Placeholder Short";
+
+final String placeholderLong = "Placeholder Text Long";
+
 final List<Color> availableColors = [
   AppColors.primary,
   AppColors.blueThemeColor,
@@ -141,6 +147,9 @@ final List<TransactionHistoryModel> kMockTransactionHistory = List.generate(
     createdAt: DateTime.now()
         .subtract(Duration(days: index, hours: index + 1))
         .toIso8601String(),
+    senderName: index.isEven ? 'PayPadi Wallet' : 'GTBank Card',
+    recipientName: index.isEven ? 'Tunde Adebayo' : 'PayPadi Wallet',
+    transactionFee: index.isEven ? '15' : '0',
   ),
 );
 

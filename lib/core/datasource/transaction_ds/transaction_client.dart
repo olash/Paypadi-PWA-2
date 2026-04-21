@@ -35,7 +35,7 @@ abstract class TransactionClient {
   Future<PaginatedListResponse<BeneficiaryModel>> getRecentBeneficiaries();
 
   @GET('$_basePath/transactions/{reference}/')
-  Future<dynamic> getTransactionByRefNo({
+  Future<TransactionHistoryModel> getTransactionByRefNo({
     @Path("reference") required String reference,
   });
 }
