@@ -14,8 +14,15 @@ const String _basePath = "/wallets";
 abstract class TransactionClient {
   factory TransactionClient(Dio dio, {String baseUrl}) = _TransactionClient;
 
+  @POST('$_basePath/payments/initiate/')
+  Future<TransactionModel> initiatePayment({
+    @Body() required Map<String, dynamic> payload,
+  });
+
   @POST('$_basePath/transfer/')
-  Future<TransactionModel> transfer({@Body() required Map<String, dynamic> payload});
+  Future<TransactionModel> transfer({
+    @Body() required Map<String, dynamic> payload,
+  });
 
   @POST('$_basePath/transfer/')
   Future<dynamic> withdraw({@Body() required Map<String, dynamic> payload});
@@ -37,5 +44,10 @@ abstract class TransactionClient {
   @GET('$_basePath/transactions/{reference}/')
   Future<TransactionHistoryModel> getTransactionByRefNo({
     @Path("reference") required String reference,
+  });
+
+  @DELETE('$_basePath/beneficiaries/{id}/')
+  Future<void> deleteBeneficiary({
+    @Path("id") required String beneficiaryId,
   });
 }

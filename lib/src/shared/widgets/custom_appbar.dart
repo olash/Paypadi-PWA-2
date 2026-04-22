@@ -43,7 +43,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     required this.name,
   });
 
-  final String name;
+  final String? name;
   final String? profilePic;
 
   @override

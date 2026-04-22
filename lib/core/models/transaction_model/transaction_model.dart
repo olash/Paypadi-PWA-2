@@ -46,9 +46,10 @@ sealed class TransactionHistoryModel with _$TransactionHistoryModel {
 @freezed
 sealed class TransactionHistoryMetadata with _$TransactionHistoryMetadata {
   const factory TransactionHistoryMetadata({
-    @JsonKey(name: "recipient_account") required String receipientAccount,
-    @JsonKey(name: "recipient_bank_code") required String receipientBankCode,
-    @JsonKey(name: "pin_verified") required bool isPinVerified,
+    @JsonKey(name: "recipient_account") String? receipientAccount,
+    @JsonKey(name: "recipient_bank_code") String? receipientBankCode,
+    @JsonKey(name: "gateway_reference") String? gatewayReference,
+    @JsonKey(name: "pin_verified") bool? isPinVerified,
   }) = _TransactionHistoryMetadata;
 
   factory TransactionHistoryMetadata.fromJson(Map<String, dynamic> json) =>

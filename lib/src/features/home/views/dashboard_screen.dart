@@ -14,6 +14,7 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/features/home/widgets/amount_display.dart';
 import 'package:paypadi/src/features/home/widgets/user_wallet.dart';
+import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/custom_appbar.dart';
@@ -44,7 +45,7 @@ class DashboardScreen extends HookConsumerWidget {
         showAppBar: false,
         leftPadding: Values.zero,
         rightPadding: Values.zero,
-        appBar: CustomAppbar(name: user?.firstName ?? ""),
+        appBar: CustomAppbar(name: user?.firstName),
         child: Column(
           children: [
             Values.v24.verticalSpacing,
@@ -65,8 +66,9 @@ class DashboardScreen extends HookConsumerWidget {
               children: [
                 Flexible(
                   child: FilledButton.icon(
-                    onPressed: () =>
-                        ref.read(appRouterProvider).push(TransferRoute()),
+                    onPressed: canTransfer(amount.value)
+                        ? () => initializeTransferProcess(ref, amount.value)
+                        : null,
                     label: Text("Send Cash"),
                     iconAlignment: IconAlignment.end,
                     icon: Icon(Icons.arrow_forward, size: 24),
@@ -90,5 +92,20 @@ class DashboardScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  void initializeTransferProcess(WidgetRef ref, String amount) {
+    ref.read(transactionControllerProvider.notifier).payloadBuilder["amount"] =
+        amount;
+    ref.read(appRouterProvider).push(TransferRoute());
+  }
+
+  bool canTransfer(String value) {
+    if (value.trim().isEmpty) return false;
+
+    final parsedAmount = num.tryParse(value.trim());
+    if (parsedAmount == null) return false;
+
+    return parsedAmount > 0;
   }
 }

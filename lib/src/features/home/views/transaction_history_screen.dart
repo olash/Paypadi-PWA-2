@@ -155,10 +155,13 @@ class _TransactionTile extends ConsumerWidget {
               ),
             ),
             Values.v12.horizontalSpacing,
-            Text(
-              "${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}",
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: transactionColor(transaction.type),
+            Skeletonizer(
+              enabled: isLoading,
+              child: Text(
+                 "${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}",
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: transactionColor(transaction.type),
+                ),
               ),
             ),
           ],

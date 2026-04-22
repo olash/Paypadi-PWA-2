@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -54,7 +55,7 @@ class TransferScreen extends HookConsumerWidget {
   void continueAction(WidgetRef ref, String receipientNumber) {
     ref
         .read(appRouterProvider)
-        .push(MakePaymentRoute(receipientNumber: receipientNumber));
+        .push(MakePaymentRoute(recipientNumber: receipientNumber));
   }
 }
 
@@ -137,7 +138,7 @@ class _BeneficiariesList extends ConsumerWidget {
                       .read(appRouterProvider)
                       .push(
                         MakePaymentRoute(
-                          receipientNumber: data[index].accountNumber,
+                          recipientNumber: data[index].accountNumber,
                         ),
                       ),
                 );
@@ -162,58 +163,95 @@ class _BeneficiaryTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final beneficiaryType = ref.watch(beneficiaryTypeControllerProvider);
     final color = ref.watch(appPrimaryColorProvider);
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.all(Values.v10),
+    return Dismissible(
+      key: ValueKey<BeneficiaryModel>(beneficiary),
+      direction: DismissDirection.startToEnd,
+      onDismissed: (direction) {
+        ref
+            .read(transactionRepositoryProvider)
+            .deleteBeneficiaryById(beneficiary.id);
+        if (beneficiaryType == BeneficiaryType.recent) {
+          ref
+              .read(recentBeneficiariesControllerProvider.notifier)
+              .getRecentBeneficiaries();
+        } else {
+          ref
+              .read(savedBeneficiariesControllerProvider.notifier)
+              .getSavedBeneficiaries();
+        }
+      },
+      background: Container(
+        padding: EdgeInsets.symmetric(horizontal: Values.v8),
+        color: Colors.redAccent,
         child: Row(
           children: [
-            Skeletonizer(
-              enabled: isLoading,
-              child: Container(
-                width: Values.v48,
-                height: Values.v48,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color.withValues(alpha: .22),
-                ),
-                child: isLoading
-                    ? null
-                    : Text(
-                        getInitials(beneficiary.accountName),
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: color,
-                        ),
-                      ),
+            Icon(
+              Icons.delete_outline,
+              color: AppColors.white,
+            ),
+            Text(
+              "Delete",
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: AppColors.white,
               ),
             ),
-            Values.v8.horizontalSpacing,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Skeletonizer(
-                  enabled: isLoading,
-                  child: Text(
-                    beneficiary.accountName,
-                    style: context.textTheme.bodyLarge?.copyWith(
+          ],
+        ),
+      ),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(Values.v10),
+          child: Row(
+            children: [
+              Skeletonizer(
+                enabled: isLoading,
+                child: Container(
+                  width: Values.v48,
+                  height: Values.v48,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color.withValues(alpha: .22),
+                  ),
+                  child: isLoading
+                      ? null
+                      : Text(
+                          getInitials(beneficiary.accountName),
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: color,
+                          ),
+                        ),
+                ),
+              ),
+              Values.v8.horizontalSpacing,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Skeletonizer(
+                    enabled: isLoading,
+                    child: Text(
+                      beneficiary.accountName,
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Withdrawal . 5.56pm",
+                    style: context.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                ),
-                Text(
-                  "Withdrawal . 5.56pm",
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-            Spacer(),
-            if (!isLoading) Icon(CupertinoIcons.chevron_forward),
-          ],
+                ],
+              ),
+              Spacer(),
+              if (!isLoading) Icon(CupertinoIcons.chevron_forward),
+            ],
+          ),
         ),
       ),
     );

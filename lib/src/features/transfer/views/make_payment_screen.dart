@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -15,8 +16,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
-  const MakePaymentScreen({super.key, required this.receipientNumber});
-  final String receipientNumber;
+  const MakePaymentScreen({super.key, required this.recipientNumber});
+  final String recipientNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +26,7 @@ class MakePaymentScreen extends HookConsumerWidget {
     final commentController = useTextEditingController();
 
     final receipientDetails = ref.watch(
-      accountLookupControllerProvider(receipientNumber),
+      accountLookupControllerProvider(recipientNumber),
     );
 
     return AppScaffold(
@@ -33,7 +34,7 @@ class MakePaymentScreen extends HookConsumerWidget {
       child: Column(
         children: [
           Values.v16.verticalSpacing,
-          _BankAccountInformation(receipientNumber: receipientNumber),
+          _BankAccountInformation(receipientNumber: recipientNumber),
           Values.v32.verticalSpacing,
           AppTextformfield(
             title: "Comments",
@@ -72,14 +73,34 @@ class MakePaymentScreen extends HookConsumerWidget {
           ),
           Values.v48.verticalSpacing,
           FilledButton(
-            onPressed: () {
-              ref.read(appRouterProvider).push(EnterPinRoute());
-            },
+            onPressed: receipientDetails.value == null
+                ? null
+                : () => continueToPinPage(
+                    ref,
+                    commentController.text,
+                    receipientDetails.value!,
+                  ),
             child: Text("Make Payment"),
           ),
         ],
       ),
     );
+  }
+
+  void continueToPinPage(
+    WidgetRef ref,
+    String desc,
+    AccountLookupModel recipient,
+  ) {
+    Map<String, dynamic> payload = ref
+        .read(transactionControllerProvider.notifier)
+        .payloadBuilder;
+
+    payload["description"] = desc;
+    payload["recipient_account_number"] = recipient.accountNumber;
+    payload["recipient_bank_code"] = recipient.bankCode;
+
+    ref.read(appRouterProvider).push(EnterPinRoute());
   }
 }
 

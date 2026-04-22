@@ -7,6 +7,7 @@ import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appRouterProvider, biometricsProvider;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -24,24 +25,24 @@ class EnterPinScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          25.0.verticalSpacing,
+          Values.v24.verticalSpacing,
           Text(
             "Enter PIN",
             style: context.textTheme.headlineMedium,
           ),
-          12.0.verticalSpacing,
+          Values.v12.verticalSpacing,
           Text(
             "Enter transaction 4-digit PIN-code or use your biometrics to perform action.",
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          32.0.verticalSpacing,
+          Values.v64.verticalSpacing,
           AppPinIndicator(
             text: password.value,
             pinLength: transactionPinLength,
           ),
-          Spacer(),
+          Spacer(flex: 2),
           AppKeypad(
             showBiometric: true,
             keyLength: transactionPinLength,
@@ -52,8 +53,18 @@ class EnterPinScreen extends HookConsumerWidget {
             onChanged: (value) {
               password.value = value;
             },
-            onSubmit: (value) =>
-                ref.read(appRouterProvider).push(ConfirmPaymentRoute()),
+            onSubmit: (value) {
+              ref
+                      .read(transactionControllerProvider.notifier)
+                      .payloadBuilder["pin"] =
+                  value;
+
+              ref.read(appRouterProvider).push(ConfirmPaymentRoute());
+
+              ref
+                  .read(transactionControllerProvider.notifier)
+                  .initiatePayment();
+            },
           ),
           Spacer(),
         ],
