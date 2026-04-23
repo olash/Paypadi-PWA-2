@@ -7,11 +7,18 @@ part 'transaction_model.g.dart';
 @freezed
 sealed class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
-    required String status,
     required String amount,
-    @JsonKey(name: "transacion_id") required String id,
     @JsonKey(name: "transaction_reference") required String reference,
     @JsonKey(name: "recipient_account") required String recipientAccount,
+    @JsonKey(name: "transaction_id") required String id,
+    @JsonKey(name: "created_at") required String createdAt,
+    @JsonKey(unknownEnumValue: TransactionStatus.failure)
+    required TransactionStatus status,
+    @JsonKey(
+      name: "transaction_type",
+      unknownEnumValue: TransactionType.unknown,
+    )
+    required TransactionType type,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

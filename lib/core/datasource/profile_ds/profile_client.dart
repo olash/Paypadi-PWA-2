@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:paypadi/src/features/authentication/domain/responses.dart';
 import 'package:retrofit/retrofit.dart';
 
-import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
-
 part 'profile_client.g.dart';
 
 const String _basePath = "/auth";

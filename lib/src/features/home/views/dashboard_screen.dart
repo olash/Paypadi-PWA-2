@@ -35,61 +35,58 @@ class DashboardScreen extends HookConsumerWidget {
       },
     );
 
-    return RefreshIndicator.adaptive(
-      onRefresh: () {
-        return Future(() {
-          ref.invalidate(walletControllerProvider);
-        });
-      },
-      child: AppScaffold(
-        showAppBar: false,
-        leftPadding: Values.zero,
-        rightPadding: Values.zero,
-        appBar: CustomAppbar(name: user?.firstName),
-        child: Column(
-          children: [
-            Values.v24.verticalSpacing,
-            UserWallet(),
-            Values.v24.verticalSpacing,
-            AmountDisplay(
-              amountEntered: amount.value,
-              onAmountPressed: (selected) => amount.value = selected.toString(),
-            ),
-            Values.v32.verticalSpacing,
-            AppKeypad(
-              keyLength: 10,
-              onChanged: (value) => amount.value = value,
-            ),
-            Values.v32.verticalSpacing,
-            Row(
-              spacing: Values.v12,
-              children: [
-                Flexible(
-                  child: FilledButton.icon(
-                    onPressed: canTransfer(amount.value)
-                        ? () => initializeTransferProcess(ref, amount.value)
-                        : null,
-                    label: Text("Send Cash"),
-                    iconAlignment: IconAlignment.end,
-                    icon: Icon(Icons.arrow_forward, size: 24),
-                    style: context.filledButtonTheme.style?.copyWith(
-                      textStyle: WidgetStatePropertyAll(
-                        context.textTheme.bodyLarge?.copyWith(
-                          letterSpacing: -0.43,
-                          fontWeight: FontWeight.w600,
-                        ),
+    return AppScaffold(
+      showAppBar: false,
+      leftPadding: Values.zero,
+      rightPadding: Values.zero,
+      appBar: CustomAppbar(name: user?.firstName),
+      onRefresh: () => Future(
+        () => ref.invalidate(walletControllerProvider),
+      ),
+      makeScrollable: true,
+      child: Column(
+        children: [
+          Values.v24.verticalSpacing,
+          UserWallet(),
+          Values.v24.verticalSpacing,
+          AmountDisplay(
+            amountEntered: amount.value,
+            onAmountPressed: (selected) => amount.value = selected.toString(),
+          ),
+          Values.v32.verticalSpacing,
+          AppKeypad(
+            keyLength: 10,
+            onChanged: (value) => amount.value = value,
+          ),
+          Values.v32.verticalSpacing,
+          Row(
+            spacing: Values.v12,
+            children: [
+              Flexible(
+                child: FilledButton.icon(
+                  onPressed: canTransfer(amount.value)
+                      ? () => initializeTransferProcess(ref, amount.value)
+                      : null,
+                  label: Text("Send Cash"),
+                  iconAlignment: IconAlignment.end,
+                  icon: Icon(Icons.arrow_forward, size: 24),
+                  style: context.filledButtonTheme.style?.copyWith(
+                    textStyle: WidgetStatePropertyAll(
+                      context.textTheme.bodyLarge?.copyWith(
+                        letterSpacing: -0.43,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => ref.read(appRouterProvider).push(QrCodeRoute()),
-                  child: AppAssets.icons.qrCode.svg(),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              GestureDetector(
+                onTap: () => ref.read(appRouterProvider).push(QrCodeRoute()),
+                child: AppAssets.icons.qrCode.svg(),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

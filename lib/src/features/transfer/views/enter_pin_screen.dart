@@ -2,15 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart'
-    show appRouterProvider, biometricsProvider;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class EnterPinScreen extends HookConsumerWidget {
@@ -20,6 +22,19 @@ class EnterPinScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final password = useState<String>("");
     final biometricService = ref.watch(biometricsProvider);
+
+    ref.listen(initiatePaymentControllerProvider, (_, state) {
+      state.when(
+        data: (d) {
+          dismissLoadingOverlay(context);
+        },
+        error: (e, st) {
+          dismissLoadingOverlay(context);
+          showErrorDialog(message: e.toString());
+        },
+        loading: () => showLoadingOverlay(context, ref),
+      );
+    });
 
     return AppScaffold(
       child: Column(
@@ -46,7 +61,7 @@ class EnterPinScreen extends HookConsumerWidget {
           AppKeypad(
             showBiometric: true,
             keyLength: transactionPinLength,
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: Values.v24),
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
             },
@@ -59,10 +74,8 @@ class EnterPinScreen extends HookConsumerWidget {
                       .payloadBuilder["pin"] =
                   value;
 
-              ref.read(appRouterProvider).push(ConfirmPaymentRoute());
-
               ref
-                  .read(transactionControllerProvider.notifier)
+                  .read(initiatePaymentControllerProvider.notifier)
                   .initiatePayment();
             },
           ),

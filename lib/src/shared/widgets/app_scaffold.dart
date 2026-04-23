@@ -14,6 +14,7 @@ class AppScaffold extends StatelessWidget {
     this.showAppBar = true,
     this.makeScrollable = false,
     this.bottomNavigationBar,
+    this.onRefresh,
     required this.child,
   });
 
@@ -26,6 +27,7 @@ class AppScaffold extends StatelessWidget {
   final double? bottomPadding;
   final double? leftPadding;
   final double? rightPadding;
+  final Future<void> Function()? onRefresh;
   final PreferredSizeWidget? appBar;
   final BottomNavigationBar? bottomNavigationBar;
 
@@ -38,11 +40,9 @@ class AppScaffold extends StatelessWidget {
       top: topPadding ?? 0,
     );
 
-    return Scaffold(
+    final scaffold = Scaffold(
       backgroundColor: bgColor,
-      appBar: showAppBar
-          ? CustomAppbarWithTitle(title: title)
-          :  appBar,
+      appBar: showAppBar ? CustomAppbarWithTitle(title: title) : appBar,
       body: SafeArea(
         child: makeScrollable
             ? SingleChildScrollView(
@@ -54,5 +54,9 @@ class AppScaffold extends StatelessWidget {
       ),
       bottomNavigationBar: bottomNavigationBar,
     );
+
+    return onRefresh != null
+        ? RefreshIndicator.adaptive(onRefresh: onRefresh!, child: scaffold)
+        : scaffold;
   }
 }

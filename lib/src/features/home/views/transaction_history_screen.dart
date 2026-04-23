@@ -23,59 +23,55 @@ class TransactionHistoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionHistory = ref.watch(historyControllerProvider);
 
-    return RefreshIndicator.adaptive(
-      onRefresh: () {
-        return Future(() {
-          ref.invalidate(historyControllerProvider);
-        });
-      },
+    return AppScaffold(
+      onRefresh: () => Future(
+        () => ref.invalidate(historyControllerProvider),
+      ),
+      showAppBar: false,
+      leftPadding: Values.zero,
+      rightPadding: Values.zero,
+      makeScrollable: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Transactions",
+            style: context.textTheme.titleMedium,
+          ),
+          if (transactionHistory.value != null &&
+              transactionHistory.value!.isEmpty)
+            AppZeroItem(
+              topPaddingScaleFactor: .4,
+              icon: Icons.receipt_long_outlined,
+              message: "No Recent Transaction",
+            )
+          else
+            SizedBox(
+              height: context.screenHeight * .9,
+              child: ListView.builder(
+                padding: EdgeInsets.only(top: Values.v16),
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: transactionHistory.isLoading
+                    ? kMockTransactionHistory.length
+                    : transactionHistory.value!.length,
+                itemBuilder: (context, index) {
+                  final data = transactionHistory.isLoading
+                      ? kMockTransactionHistory
+                      : transactionHistory.value!;
 
-      child: AppScaffold(
-        showAppBar: false,
-        leftPadding: Values.zero,
-        rightPadding: Values.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Transactions",
-              style: context.textTheme.titleMedium,
-            ),
-            if (transactionHistory.value != null &&
-                transactionHistory.value!.isEmpty)
-              AppZeroItem(
-                topPaddingScaleFactor: .4,
-                icon: Icons.receipt_long_outlined,
-                message: "No Recent Transaction",
-              )
-            else
-              SizedBox(
-                height: context.screenHeight * .75,
-                child: ListView.builder(
-                  padding: EdgeInsets.only(top: Values.v16),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: transactionHistory.isLoading
-                      ? kMockTransactionHistory.length
-                      : transactionHistory.value!.length,
-                  itemBuilder: (context, index) {
-                    final data = transactionHistory.isLoading
-                        ? kMockTransactionHistory
-                        : transactionHistory.value!;
-
-                    return _TransactionTile(
-                      isLoading: transactionHistory.isLoading,
-                      transaction: data[index],
-                      onTap: () => ref
-                          .read(appRouterProvider)
-                          .push(
-                            ReceiptRoute(referenceId: data[index].reference),
-                          ),
-                    );
-                  },
-                ),
+                  return _TransactionTile(
+                    isLoading: transactionHistory.isLoading,
+                    transaction: data[index],
+                    onTap: () => ref
+                        .read(appRouterProvider)
+                        .push(
+                          ReceiptRoute(referenceId: data[index].reference),
+                        ),
+                  );
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -158,7 +154,7 @@ class _TransactionTile extends ConsumerWidget {
             Skeletonizer(
               enabled: isLoading,
               child: Text(
-                 "${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}",
+                "${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}",
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: transactionColor(transaction.type),
                 ),

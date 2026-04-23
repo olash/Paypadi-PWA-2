@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
-import 'package:paypadi/src/features/transfer/views/receipt_screen.dart';
 import 'package:paypadi/src/features/transfer/widgets/dotted_line.dart';
 import 'package:paypadi/src/features/transfer/widgets/payment_details.dart';
 import 'package:paypadi/src/features/transfer/widgets/receipt_card.dart';
@@ -15,20 +15,17 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
-class ConfirmPaymentScreen extends HookConsumerWidget {
+class ConfirmPaymentScreen extends ConsumerWidget {
   const ConfirmPaymentScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paymentSummary = ref
-        .watch(transactionControllerProvider.notifier)
-        .payloadBuilder;
+    final paymentSummary = ref.watch(initiatePaymentControllerProvider);
 
     ref.listen(transactionControllerProvider, (_, state) {
       state.when(
         data: (d) {
           dismissLoadingOverlay(context);
-          // ref.read(appRouterProvider).push(ReceiptScreen(referenceId: ,));
         },
         error: (e, st) {
           dismissLoadingOverlay(context);
@@ -55,45 +52,75 @@ class ConfirmPaymentScreen extends HookConsumerWidget {
                   ),
                 ),
                 Values.v8.verticalSpacing,
-                Text(
-                  "₦ ${formatAmount(paymentSummary["amount"])}",
-                  style: context.textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: kZeroLetterSpacing,
+                Skeletonizer(
+                  enabled: paymentSummary.isLoading,
+                  child: Text(
+                    paymentSummary.isLoading
+                        ? placeholder
+                        : "₦ ${formatAmount(paymentSummary.value?.amount)}",
+                    style: context.textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: kZeroLetterSpacing,
+                    ),
                   ),
                 ),
                 Values.v32.verticalSpacing,
                 Divider(
                   indent: Values.v8,
-                  endIndent: 8,
+                  endIndent: Values.v8,
                   color: AppColors.dividerColor,
                 ),
                 Values.v32.verticalSpacing,
-                // PaymentDetails(detail: "Ref Number", value: "enfioejnfowse"),
-                // PaymentDetails(detail: "Payment time", value: "enfioejnfowse"),
-                PaymentDetails(detail: "Payment", value: "enfioejnfowse"),
+                PaymentDetails(
+                  detail: "Ref Number",
+                  isLoading: paymentSummary.isLoading,
+                  value: paymentSummary.value?.reference,
+                ),
+                PaymentDetails(
+                  detail: "Payment time",
+                  isLoading: paymentSummary.isLoading,
+                  value: paymentSummary.isLoading
+                      ? placeholderShort
+                      : getTransactionDate(paymentSummary.value?.createdAt),
+                ),
+                PaymentDetails(
+                  detail: "Payment",
+                  isLoading: paymentSummary.isLoading,
+                  value: paymentSummary.isLoading
+                      ? placeholder
+                      : capitalizeFirstChar(
+                          paymentSummary.value?.paymentType.name,
+                        ),
+                ),
                 DottedDivider(topPadding: Values.v2),
-                PaymentDetails(detail: "Amount", value: "enfioejnfowse"),
+                PaymentDetails(
+                  detail: "Amount",
+                  isLoading: paymentSummary.isLoading,
+                  value: paymentSummary.isLoading
+                      ? placeholder
+                      : "₦ ${formatAmount(paymentSummary.value?.amount)}",
+                ),
                 PaymentDetails(
                   detail: "Transaction Fee",
-                  value: "enfioejnfowse",
+                  isLoading: paymentSummary.isLoading,
+                  value: paymentSummary.isLoading
+                      ? placeholder
+                      : "₦ ${formatAmount(paymentSummary.value?.amount)}",
                 ),
               ],
             ),
           ),
-          Spacer(flex: 4),
+          Spacer(flex: Values.v4.toInt()),
           FilledButton(
             style: ButtonStyle(
               shape: WidgetStatePropertyAll(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(50),
+                  borderRadius: BorderRadiusGeometry.circular(Values.v48),
                 ),
               ),
             ),
-            onPressed: () {
-              ref.read(transactionControllerProvider.notifier).transfer();
-       
-            },
+            onPressed: () =>
+                ref.read(transactionControllerProvider.notifier).transfer(),
             child: Text("Make Payment"),
           ),
           Spacer(),

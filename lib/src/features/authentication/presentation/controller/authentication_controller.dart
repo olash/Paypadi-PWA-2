@@ -74,6 +74,7 @@ class AuthController extends _$AuthController {
   void verifyOtpCode(String code) async {
     final Map<String, dynamic> payload = {
       "phone_number": payloadBuilder["phone_number"],
+      "purpose": "registration",
       "code": code,
     };
 

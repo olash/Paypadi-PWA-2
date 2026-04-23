@@ -4,21 +4,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
-import 'package:paypadi/core/repositories/wallet_repo.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
 part 'wallet_controller.g.dart';
 
 @riverpod
 class WalletController extends _$WalletController {
-  late final WalletRepository _repository;
-
   @override
   FutureOr<WalletModel?> build() async {
-    _repository = ref.watch(walletRepositoryProvider);
+    final repository = ref.watch(walletRepositoryProvider);
 
     state = const AsyncLoading();
-    final result = await _repository.fetchWalletBalance();
+    final result = await repository.fetchWalletBalance();
 
     result.fold(
       (success) => state = AsyncValue.data(success),
@@ -33,7 +30,9 @@ class WalletController extends _$WalletController {
 
   void getWalletInfo() async {
     state = const AsyncLoading();
-    final result = await _repository.fetchWalletBalance();
+    final result = await ref
+        .read(walletRepositoryProvider)
+        .fetchWalletBalance();
 
     // Check if provider is still mounted
     if (!ref.mounted) return;
@@ -56,7 +55,11 @@ class WalletController extends _$WalletController {
     };
 
     state = const AsyncLoading();
-    final result = await _repository.saveBeneficiary(payload);
+    final result = await ref
+        .read(walletRepositoryProvider)
+        .saveBeneficiary(
+          payload,
+        );
 
     // Check if provider is still mounted
     if (!ref.mounted) return;
@@ -73,14 +76,12 @@ class WalletController extends _$WalletController {
 
 @riverpod
 class HistoryController extends _$HistoryController {
-  late final WalletRepository _repository;
-
   @override
   FutureOr<List<TransactionHistoryModel>> build() async {
-    _repository = ref.watch(walletRepositoryProvider);
+    final repository = ref.watch(walletRepositoryProvider);
 
     state = AsyncLoading();
-    final result = await _repository.getTransactionHistory();
+    final result = await repository.getTransactionHistory();
 
     if (!ref.mounted) return List.empty();
 
@@ -97,7 +98,9 @@ class HistoryController extends _$HistoryController {
 
   void fetchMore(int page) async {
     state = AsyncLoading();
-    final result = await _repository.getTransactionHistory(page: page);
+    final result = await ref
+        .read(walletRepositoryProvider)
+        .getTransactionHistory(page: page);
 
     if (!ref.mounted) return;
 
