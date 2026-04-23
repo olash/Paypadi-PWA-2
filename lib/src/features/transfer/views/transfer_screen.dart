@@ -158,8 +158,8 @@ class _BeneficiaryTile extends ConsumerWidget {
   });
 
   final bool isLoading;
-  final BeneficiaryModel beneficiary;
   final VoidCallback onTap;
+  final BeneficiaryModel beneficiary;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -240,16 +240,17 @@ class _BeneficiaryTile extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    "Withdrawal . 5.56pm",
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w400,
+                  Skeletonizer(
+                    enabled: isLoading,
+                    child: Text(
+                      beneficiary.accountNumber,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ],
               ),
-              Spacer(),
-              if (!isLoading) Icon(CupertinoIcons.chevron_forward),
             ],
           ),
         ),

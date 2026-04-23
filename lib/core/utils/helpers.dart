@@ -85,15 +85,6 @@ String capitalizeFirstChar(String? s) {
   return value[0].toUpperCase() + value.substring(1);
 }
 
-String getDateAndTime(DateTime date) {
-  final year = date.year.toString().padLeft(4, '0');
-  final month = date.month.toString().padLeft(2, '0');
-  final day = date.day.toString().padLeft(2, '0');
-  final hour = date.hour.toString().padLeft(2, '0');
-  final minute = date.minute.toString().padLeft(2, '0');
-  return '$year-$month-${day}_$hour:$minute';
-}
-
 void showSuccessDialog({String? message}) {
   toastification.show(
     title: Text("Success"),
@@ -210,4 +201,45 @@ String getTransactionDate(String? date) {
   final meridiem = hour24 >= 12 ? 'PM' : 'AM';
 
   return '$month $day, $year, $hour:$minute $meridiem';
+}
+
+String getDate(String? date) {
+  if (date == null || date.trim().isEmpty) return '';
+
+  final parsedDate = DateTime.tryParse(date);
+  if (parsedDate == null) return date;
+
+  final localDate = parsedDate.toLocal();
+  final months = <String>[
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  final month = months[localDate.month - 1];
+  final day = localDate.day;
+  final year = localDate.year;
+
+  String suffix;
+  if (day >= 11 && day <= 13) {
+    suffix = 'th';
+  } else {
+    suffix = switch (day % 10) {
+      1 => 'st',
+      2 => 'nd',
+      3 => 'rd',
+      _ => 'th',
+    };
+  }
+
+  return '$month $day$suffix $year';
 }

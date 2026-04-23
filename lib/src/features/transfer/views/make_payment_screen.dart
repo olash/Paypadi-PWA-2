@@ -152,14 +152,14 @@ class _BankAccountInformation extends ConsumerWidget {
                   child: Text(
                     "${receipientDetails.value?.firstName ?? "FirstName"} "
                     "${receipientDetails.value?.lastName ?? "LastName"}",
-                    style: context.textTheme.bodyLarge,
+                    style: context.textTheme.titleLarge,
                   ),
                 ),
                 Skeletonizer(
                   enabled: receipientDetails.isLoading,
                   child: Text(
                     "${receipientDetails.value?.accountNumber ?? "AccountNumber"} ",
-                    style: context.textTheme.bodySmall?.copyWith(
+                    style: context.textTheme.titleSmall?.copyWith(
                       letterSpacing: kZeroLetterSpacing,
                       color: AppColors.grey600,
                     ),

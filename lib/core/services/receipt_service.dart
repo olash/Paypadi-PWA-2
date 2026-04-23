@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -15,7 +14,7 @@ class ReceiptService {
   ) async {
     final Directory directory = await getApplicationDocumentsDirectory();
     final String fileName =
-        "paypadi_receipt_${getDateAndTime(DateTime.now())}.png";
+        "paypadi_receipt_${_getDateAndTime(DateTime.now())}.png";
     final String? savedReceiptPath = await controller.captureAndSave(
       directory.path,
       fileName: fileName,
@@ -47,5 +46,14 @@ class ReceiptService {
     // } on Exception catch (e) {
     //   debugLogger.debug(e.toString(), e);
     // }
+  }
+
+  String _getDateAndTime(DateTime date) {
+    final year = date.year.toString().padLeft(4, '0');
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+    return '$year-$month-${day}_$hour:$minute';
   }
 }

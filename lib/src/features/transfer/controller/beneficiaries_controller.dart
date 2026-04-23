@@ -42,7 +42,6 @@ class RecentBeneficiariesController extends _$RecentBeneficiariesController {
     result.fold(
       (success) => state = AsyncData(success.results),
       (failure) {
-        ref.showExceptionToast(failure);
         state = const AsyncData(<BeneficiaryModel>[]);
       },
     );
@@ -65,7 +64,6 @@ class SavedBeneficiariesController extends _$SavedBeneficiariesController {
     result.fold(
       (success) => state = AsyncData(success.results),
       (failure) {
-        ref.showExceptionToast(failure);
         state = const AsyncData(<BeneficiaryModel>[]);
       },
     );
