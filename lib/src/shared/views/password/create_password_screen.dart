@@ -16,7 +16,7 @@ class CreatePasswordScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final password = useState<String>('');
+    final passwordController = useTextEditingController();
 
     return AppScaffold(
       child: Column(
@@ -36,14 +36,14 @@ class CreatePasswordScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: password.value,
             pinLength: passwordPinLength,
+            controller: passwordController,
           ),
           Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
+            controller: passwordController,
             onSubmit: (value) => onSubmit(ref, value),
-            onChanged: (value) => password.value = value,
           ),
           Spacer(),
         ],

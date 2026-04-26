@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
@@ -17,6 +15,7 @@ import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/transfer/controller/beneficiaries_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
+import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
 
 @RoutePage()
 class TransferScreen extends HookConsumerWidget {

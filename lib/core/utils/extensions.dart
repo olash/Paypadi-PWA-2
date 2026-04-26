@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/src/shared/controllers/app_toast_channel.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/core/utils/constants.dart' show debugLogger;
+import 'package:paypadi/src/shared/controllers/app_loading_controller.dart';
+import 'package:paypadi/src/shared/controllers/app_toast_controller.dart';
 
 extension BuildContextExtension on BuildContext {
   double get screenWidth => MediaQuery.sizeOf(this).width;
@@ -27,15 +28,40 @@ extension NullableObjextExtension on Object? {
       debugLogger.debug(this, exception, stackTrace);
 }
 
-extension AppToastChannelRefExtension on Ref {
-  void showErrorToast(String message) {
-      if (!mounted) return;
-    read(appToastChannelProvider.notifier).showMessage(message);
-  }
+extension AppToastOnRef on Ref {
+  void showInfoToast(String message) => _toast.showInfo(message);
 
-  void showExceptionToast(Object? error) {
-    if (!mounted) return;
+  void showSuccessToast(String message) => _toast.showSuccess(message);
 
-    read(appToastChannelProvider.notifier).showException(error);
-  }
+  void showErrorToast(String message) => _toast.showError(message);
+
+  void showExceptionToast(Object? error, [StackTrace? stackTrace]) =>
+      _toast.showExceptionMessage(error, stackTrace);
+
+  AppToastController get _toast => read(appToastControllerProvider.notifier);
+}
+
+extension AppToastOnWidgetRef on WidgetRef {
+  void showInfoToast(String message) => _toast.showInfo(message);
+
+  void showSuccessToast(String message) => _toast.showSuccess(message);
+
+  void showErrorToast(String message) => _toast.showError(message);
+
+  void showExceptionMessage(Object? error, [StackTrace? stackTrace]) =>
+      _toast.showExceptionMessage(error, stackTrace);
+
+  AppToastController get _toast => read(appToastControllerProvider.notifier);
+}
+
+extension AppLoadingOnRef on Ref {
+  void showLoading() => read(appLoadingControllerProvider.notifier).show();
+  void dismissLoading() =>
+      read(appLoadingControllerProvider.notifier).dismiss();
+}
+
+extension AppLoadingOnWidgetRef on WidgetRef {
+  void showLoading() => read(appLoadingControllerProvider.notifier).show();
+  void dismissLoading() =>
+      read(appLoadingControllerProvider.notifier).dismiss();
 }

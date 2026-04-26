@@ -5,12 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class ConfirmTransactionPinScreen extends HookConsumerWidget {
@@ -19,18 +17,18 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final confirmTransactionPin = useState<String>('');
+    final confirmPinController = useTextEditingController();
 
-    ref.listen(profileControllerProvider, (_, state) {
-      state.when(
+    ref.listen(profileControllerProvider, (previous, current) {
+      current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
+          ref.dismissLoading();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () => ref.showLoading(),
       );
     });
 
@@ -52,13 +50,13 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: confirmTransactionPin.value,
             pinLength: transactionPinLength,
+            controller: confirmPinController,
           ),
           Spacer(flex: 3),
           AppKeypad(
             keyLength: transactionPinLength,
-            onChanged: (value) => confirmTransactionPin.value = value,
+            controller: confirmPinController,
             onSubmit: (confirmedPin) => submitPin(ref, pin, confirmedPin),
           ),
           Spacer(),

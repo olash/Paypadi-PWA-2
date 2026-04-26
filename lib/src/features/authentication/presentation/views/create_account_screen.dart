@@ -5,54 +5,50 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/gen/fonts.gen.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class CreateAccountScreen extends HookConsumerWidget {
-  CreateAccountScreen({super.key});
-
-  final TapGestureRecognizer signInRecognizer = TapGestureRecognizer();
-  final GlobalKey<FormState> form = GlobalKey<FormState>();
+  const CreateAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final form = useRef(GlobalKey<FormState>());
     final phoneNumber = useTextEditingController();
 
+    final signInRecognizer = useMemoized(TapGestureRecognizer.new);
     useEffect(() {
-      signInRecognizer.onTap = () {
-        ref.read(appRouterProvider).push(SignInRoute());
-      };
-      return () => signInRecognizer.dispose();
-    }, []);
+      signInRecognizer.onTap = () =>
+          ref.read(appRouterProvider).push(SignInRoute());
+      return signInRecognizer.dispose;
+    }, const []);
 
     ref.listen(authControllerProvider, (previous, current) {
       current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
+          ref.dismissLoading();
           phoneNumber.clear();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
           phoneNumber.clear();
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () => ref.showLoading(),
       );
     });
 
     return AppScaffold(
       showAppBar: true,
       child: Form(
-        key: form,
+        key: form.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,7 +66,7 @@ class CreateAccountScreen extends HookConsumerWidget {
             _TermsAndPrivacyRichText(),
             Values.v16.verticalSpacing,
             FilledButton(
-              onPressed: () => requestForOtp(ref, phoneNumber.text),
+              onPressed: () => requestForOtp(ref, form.value, phoneNumber.text),
               child: Text("Create Account"),
             ),
             Values.v8.verticalSpacing,
@@ -100,62 +96,61 @@ class CreateAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void requestForOtp(WidgetRef ref, String phoneNumber) {
-    if (form.currentState!.validate()) {
-      ref.read(authControllerProvider.notifier).payloadBuilder["phone_number"] =
-          phoneNumber;
-      ref.read(authControllerProvider.notifier).requestForOtp();
-    }
+  void requestForOtp(
+    WidgetRef ref,
+    GlobalKey<FormState> form,
+    String phoneNumber,
+  ) async {
+    if (!(form.currentState?.validate() ?? false)) return;
+
+    ref.read(payloadBuilderProvider)['phone_number'] = phoneNumber;
+    ref.read(authControllerProvider.notifier).requestForOtp();
   }
 }
 
 class _TermsAndPrivacyRichText extends HookConsumerWidget {
-  final TapGestureRecognizer termsOfServiceRecognizer = TapGestureRecognizer();
-  final TapGestureRecognizer privacyPolicyRecognizer = TapGestureRecognizer();
+  const _TermsAndPrivacyRichText();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final termsRecognizer = useMemoized(TapGestureRecognizer.new);
+    final privacyRecognizer = useMemoized(TapGestureRecognizer.new);
+
     useEffect(() {
-      termsOfServiceRecognizer.onTap = () {};
-      privacyPolicyRecognizer.onTap = () {};
-      return () {
-        termsOfServiceRecognizer.dispose();
-        privacyPolicyRecognizer.dispose();
+      termsRecognizer.onTap = () {
+        /* TODO: open terms */
       };
-    }, []);
+      privacyRecognizer.onTap = () {
+        /* TODO: open privacy policy */
+      };
+      return () {
+        termsRecognizer.dispose();
+        privacyRecognizer.dispose();
+      };
+    }, const []);
+
+    final primaryColor = ref.watch(appPrimaryColorProvider);
+    final style = context.textTheme.bodyMedium?.copyWith(
+      fontWeight: FontWeight.w400,
+      fontFamily: FontFamily.manrope,
+    );
+    final linkedStyle = style?.copyWith(color: primaryColor);
 
     return RichText(
       text: TextSpan(
-        text: "By proceeding, you agree to our",
-        style: context.textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w400,
-          fontFamily: FontFamily.manrope,
-        ),
+        text: 'By proceeding, you agree to our',
+        style: style,
         children: [
           TextSpan(
-            text: " Terms of Service ",
-            recognizer: termsOfServiceRecognizer,
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w400,
-              fontFamily: FontFamily.manrope,
-              color: ref.watch(appPrimaryColorProvider),
-            ),
+            text: ' Terms of Service ',
+            recognizer: termsRecognizer,
+            style: linkedStyle,
           ),
+          TextSpan(text: 'and ', style: style),
           TextSpan(
-            text: "and ",
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w400,
-              fontFamily: FontFamily.manrope,
-            ),
-          ),
-          TextSpan(
-            text: "Privacy Policy",
-            recognizer: privacyPolicyRecognizer,
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w400,
-              fontFamily: FontFamily.manrope,
-              color: ref.watch(appPrimaryColorProvider),
-            ),
+            text: 'Privacy Policy',
+            recognizer: privacyRecognizer,
+            style: linkedStyle,
           ),
         ],
       ),

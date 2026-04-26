@@ -14,7 +14,8 @@ class ChangePinScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pin = useState<String>('');
+    final pinController = useTextEditingController();
+
     return AppScaffold(
       title: "",
       child: Column(
@@ -33,16 +34,13 @@ class ChangePinScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: pin.value,
             pinLength: transactionPinLength,
+            controller: pinController,
           ),
           Spacer(flex: 3),
           AppKeypad(
             keyLength: transactionPinLength,
-            onChanged: (value) {
-              pin.value = value;
-              debugLogger.debug(pin.value);
-            },
+            controller: pinController,
             onSubmit: (currentPin) {},
           ),
           Spacer(),
@@ -50,44 +48,4 @@ class ChangePinScreen extends HookConsumerWidget {
       ),
     );
   }
-
-  // void _changePinRouteOnSubmit(WidgetRef ref, String currentPin) {
-  //   ref
-  //       .read(appRouterProvider)
-  //       .push(
-  //         TransactionPinRoute(
-  //           onSubmit: (newPin) => _transactionPinRouteOnSubmit(ref, newPin),
-  //         ),
-  //       );
-  // }
-
-  // void _transactionPinRouteOnSubmit(WidgetRef ref, String pin) {
-  //   ref
-  //       .read(appRouterProvider)
-  //       .push(
-  //         ConfirmTransactionPinRoute(
-  //           onSubmit:
-  //               (confirmTransactionPin) => _confirmTransactionPinRouteOnSubmit(
-  //                 ref,
-  //                 pin,
-  //                 confirmTransactionPin,
-  //               ),
-  //         ),
-  //       );
-  // }
-
-  // void _confirmTransactionPinRouteOnSubmit(
-  //   WidgetRef ref,
-  //   String pin,
-  //   String confirmedPin,
-  // ) {
-  //   if (pin == confirmedPin) {
-  //     ref
-  //         .read(secureCacheProvider)
-  //         .write(key: CacheKeys.transactionPin, value: confirmedPin);
-  //     ref
-  //         .read(appRouterProvider)
-  //         .popUntilRouteWithName(AppBottomNavBarRoute.name);
-  //   }
-  // }
 }

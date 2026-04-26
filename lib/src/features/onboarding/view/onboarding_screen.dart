@@ -9,6 +9,7 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/features/onboarding/controller/onboarding_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
@@ -17,12 +18,28 @@ class OnboardingScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentImg = useState<int>(0);
     final pageController = usePageController();
 
-    // Convert keys and values to lists once for efficiency
-    final onboardingKeys = onboardingStoryAndAsset.keys.toList();
-    final onboardingValues = onboardingStoryAndAsset.values.toList();
+    // Animate to the new page whenever the controller advances.
+    ref.listen(onboardingControllerProvider, (previous, next) {
+      if (!pageController.hasClients) return;
+
+      final isRestart =
+          previous == OnboardingController.pageCount - 1 && next == 0;
+
+      if (isRestart) {
+        pageController.jumpToPage(0);
+      } else {
+        pageController.animateToPage(
+          next,
+          duration: Durations.medium3,
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+
+    final currentPage = ref.watch(onboardingControllerProvider);
+    final primaryColor = ref.watch(appPrimaryColorProvider);
 
     return AppScaffold(
       showAppBar: false,
@@ -30,33 +47,35 @@ class OnboardingScreen extends HookConsumerWidget {
       bottomPadding: kBottomPadding,
       child: Column(
         spacing: Values.v12,
-        children: <Widget>[
+        children: [
           Flexible(
             child: PageView.builder(
               controller: pageController,
-              itemCount: onboardingStoryAndAsset.length,
-              onPageChanged: (value) => currentImg.value = value,
-              itemBuilder: (context, index) {
-                return _OnboardingStory(
-                  text: onboardingKeys[index],
-                  imagePath: onboardingValues[index],
-                );
-              },
+              itemCount: OnboardingController.pageCount,
+              // User swipe keeps the controller in sync but does NOT restart
+              // the timer — the periodic tick continues uninterrupted.
+              onPageChanged: ref
+                  .read(onboardingControllerProvider.notifier)
+                  .onPageChanged,
+              itemBuilder: (context, index) => _OnboardingStory(
+                text: OnboardingController.keys[index],
+                imagePath: OnboardingController.values[index],
+              ),
             ),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: List.generate(
-              onboardingStoryAndAsset.length,
+              OnboardingController.pageCount,
               (index) => AnimatedContainer(
                 height: Values.v6,
                 duration: animatedFooDuration,
-                width: currentImg.value == index ? Values.v36 : Values.v6,
+                width: currentPage == index ? Values.v36 : Values.v6,
                 margin: EdgeInsets.only(right: Values.v4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Values.v24.r),
-                  color: currentImg.value == index
-                      ? ref.watch(appPrimaryColorProvider)
+                  color: currentPage == index
+                      ? primaryColor
                       : AppColors.unselectedIndicator,
                 ),
               ),
@@ -66,11 +85,11 @@ class OnboardingScreen extends HookConsumerWidget {
           FilledButton(
             onPressed: () =>
                 ref.read(appRouterProvider).push(CreateAccountRoute()),
-            child: Text("Create Account"),
+            child: const Text('Create Account'),
           ),
           OutlinedButton(
             onPressed: () => ref.read(appRouterProvider).push(SignInRoute()),
-            child: Text("Sign In"),
+            child: const Text('Sign In'),
           ),
         ],
       ),
@@ -89,9 +108,8 @@ class _OnboardingStory extends StatelessWidget {
       children: [
         Image.asset(
           imagePath,
-          height: context.screenHeight * .45,
+          height: context.screenHeight * .5,
         ),
-
         Values.v12.verticalSpacing,
         Text(
           text,

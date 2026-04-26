@@ -1,103 +1,107 @@
+import 'dart:convert';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/repositories/authentication_repo.dart';
 import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 
 part 'authentication_controller.g.dart';
 
+@Riverpod(keepAlive: true)
+Map<String, dynamic> payloadBuilder(Ref ref) => {};
+
 @riverpod
 class AuthController extends _$AuthController {
-  late Map<String, dynamic> payloadBuilder;
   late final AuthenticationRepository _authRepository;
 
   @override
   FutureOr<void> build() {
-    payloadBuilder = {};
     _authRepository = ref.watch(authenticationRepositoryProvider);
   }
 
-  void createAccount() async {
+  Future<void> createAccount() async {
     state = AsyncLoading();
+    final Map<String, dynamic> payload = ref.watch(payloadBuilderProvider);
 
     final String sessionId = ref
         .read(localCacheProvider)
         .getFromCache(CacheKeys.sessionId);
 
-    final result = await _authRepository.createAccount(
-      sessionId,
-      payloadBuilder,
-    );
+    final result = await _authRepository.createAccount(sessionId, payload);
 
-    state = result.fold(
+    result.fold(
       (success) {
         _saveUserToCache(success.user);
         _saveAuthenticationTokens(success.refreshToken, success.accessToken);
         ref.read(appRouterProvider).push(CreateTransactionPinRoute());
-        return AsyncData(null);
+        state = AsyncData(null);
       },
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        return AsyncError(message, StackTrace.current);
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
       },
     );
   }
 
-  void requestForOtp() async {
+  Future<void> requestForOtp() async {
+    state = AsyncLoading();
+
+    final Map<String, dynamic> payloadBuilder = ref.watch(
+      payloadBuilderProvider,
+    );
+
     final Map<String, dynamic> payload = {
       "phone_number": payloadBuilder["phone_number"],
       "purpose": "registration",
     };
 
-    state = AsyncLoading();
     final result = await _authRepository.requestForOtpCode(payload);
 
-    state = result.fold(
+    result.fold(
       (success) {
-        ref
-            .read(appRouterProvider)
-            .push(OtpRoute(phoneNumber: payloadBuilder["phone_number"]));
-        return AsyncData(null);
+        ref.read(appRouterProvider).push(OtpRoute());
+        state = AsyncData(null);
       },
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        return AsyncError(message, StackTrace.current);
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
       },
     );
   }
 
-  void verifyOtpCode(String code) async {
+  Future<void> verifyOtpCode(String code) async {
+    state = AsyncLoading();
+
+    final Map<String, dynamic> payloadBuilder = ref.watch(
+      payloadBuilderProvider,
+    );
+
     final Map<String, dynamic> payload = {
       "phone_number": payloadBuilder["phone_number"],
       "purpose": "registration",
       "code": code,
     };
 
-    state = AsyncLoading();
     final result = await _authRepository.verifyOtpCode(payload);
 
-    state = result.fold(
+    result.fold(
       (success) {
-        ref
-            .read(localCacheProvider)
-            .saveToCache(key: CacheKeys.sessionId, value: success.sessionId);
+        _saveSessionId(success.sessionId);
         ref.read(appRouterProvider).push(AccountRoleRoute());
-        return AsyncData(null);
+        state = AsyncData(null);
       },
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        return AsyncError(message, StackTrace.current);
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
       },
     );
   }
 
-  void login(String phoneNumber, String password) async {
+  Future<void> login(String phoneNumber, String password) async {
     state = AsyncLoading();
 
     final Map<String, dynamic> payload = {
@@ -106,20 +110,45 @@ class AuthController extends _$AuthController {
     };
 
     final result = await _authRepository.login(payload);
-
-    state = result.fold(
+    result.fold(
       (success) {
         _saveAuthenticationTokens(success.refreshToken, success.accessToken);
         _savePasswordToCache(password);
         _saveUserToCache(success.user);
 
         ref.read(appRouterProvider).push(DashboardRoute());
-        return AsyncData(null);
+        state = AsyncData(null);
       },
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        return AsyncError(message, StackTrace.current);
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
+      },
+    );
+  }
+
+  Future<void> loginWithBiometrics() async {
+    final biometricService = ref.watch(biometricsProvider);
+    final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
+      CacheKeys.user,
+      (data) {
+        final json = jsonDecode(data) as Map<String, dynamic>;
+        return UserModel.fromJson(json);
+      },
+    );
+
+    final result = await biometricService.authenticate();
+
+    result.fold(
+      (success) async {
+        final String? password = await ref
+            .read(secureCacheProvider)
+            .read(CacheKeys.password);
+
+        await login(user?.phoneNumber ?? '', password ?? '');
+      },
+      (failure) {
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
       },
     );
   }
@@ -133,6 +162,12 @@ class AuthController extends _$AuthController {
     //   OnboardingRoute(),
     //   predicate: (route) => route.settings.name == "/sign-in",
     // );
+  }
+
+  void _saveSessionId(String sessionId) {
+    ref
+        .read(localCacheProvider)
+        .saveToCache(key: CacheKeys.sessionId, value: sessionId);
   }
 
   void _saveUserToCache(UserModel user) {

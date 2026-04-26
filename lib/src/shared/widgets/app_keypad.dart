@@ -9,106 +9,81 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart'
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
-class AppKeypad extends ConsumerStatefulWidget {
+class AppKeypad extends ConsumerWidget {
   const AppKeypad({
     super.key,
     this.padding,
     this.onSubmit,
-    this.onChanged,
-    this.onBiometricKeyPressed,
     this.keyLength = 4,
     this.showBiometric = false,
+    this.onBiometricKeyPressed,
+    required this.controller,
   });
 
+  final TextEditingController controller;
   final int keyLength;
   final bool showBiometric;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onBiometricKeyPressed;
   final ValueChanged<String>? onSubmit;
-  final ValueChanged<String>? onChanged;
 
   @override
-  ConsumerState<AppKeypad> createState() => _AppKeypadState();
-}
-
-class _AppKeypadState extends ConsumerState<AppKeypad> {
-  late String _pin;
-
-  @override
-  void initState() {
-    super.initState();
-    _pin = '';
-  }
-
-  @override
-  void dispose() {
-    _pin = '';
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GridView.builder(
       shrinkWrap: true,
       itemCount: kAppKeyPadKeys.length,
-      padding: widget.padding ?? EdgeInsets.symmetric(horizontal: 24),
+      padding: padding ?? EdgeInsets.symmetric(horizontal: Values.v24),
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 1.4,
         mainAxisSpacing: 14,
         crossAxisSpacing: 36,
       ),
       itemBuilder: (context, index) =>
-          buildKeyButton(context, kAppKeyPadKeys[index]),
+          _buildKeyButton(context, ref, kAppKeyPadKeys[index]),
     );
   }
 
-  void onTap(String key) {
+  void _onTap(String key) {
     HapticFeedback.lightImpact();
 
-    // Calls [onBiometricKeyPressed] if keypad shows biometric button
-    if (widget.showBiometric && key == '.') {
-      widget.onBiometricKeyPressed?.call();
+    if (showBiometric && key == '.') {
+      onBiometricKeyPressed?.call();
       return;
     }
 
-    // Handle backspace
     if (key == 'x') {
-      if (_pin.isNotEmpty) {
-        setState(() {
-          _pin = _pin.substring(0, _pin.length - 1);
-          widget.onChanged?.call(_pin);
-        });
+      if (controller.text.isNotEmpty) {
+        controller.text = controller.text.substring(
+          0,
+          controller.text.length - 1,
+        );
       }
       return;
     }
 
-    // Handle numeric input
-    if (_pin.length < widget.keyLength && key != '.') {
-      setState(() {
-        _pin += key;
-        widget.onChanged?.call(_pin);
-        // Auto-submit when PIN is complete
-        if (_pin.length == widget.keyLength) {
-          widget.onSubmit?.call(_pin);
-        }
-      });
+    if (key != '.' && controller.text.length < keyLength) {
+      controller.text += key;
+      // Auto-submit when PIN is complete
+      if (controller.text.length == keyLength) {
+        onSubmit?.call(controller.text);
+      }
     }
   }
 
-  Widget buildKeyButton(BuildContext context, String key) {
+  Widget _buildKeyButton(BuildContext context, WidgetRef ref, String key) {
     return InkWell(
-      onTap: (key == "." && !widget.showBiometric) ? null : () => onTap(key),
-      customBorder: CircleBorder(),
+      onTap: (key == '.' && !showBiometric) ? null : () => _onTap(key),
+      customBorder: const CircleBorder(),
       splashColor: ref.watch(appPrimaryColorProvider).withValues(alpha: .1),
       child: Center(
         child: switch (key) {
-          "x" => AppAssets.icons.keypadBackspace.svg(),
-          "." => switch (widget.showBiometric) {
-            true => Icon(IonIcons.finger_print, size: Values.v48),
-            false => SizedBox.shrink(),
-          },
+          'x' => AppAssets.icons.keypadBackspace.svg(),
+          '.' =>
+            showBiometric
+                ? Icon(IonIcons.finger_print, size: Values.v48)
+                : const SizedBox.shrink(),
           _ => Text(
             key,
             style: context.textTheme.headlineSmall?.copyWith(

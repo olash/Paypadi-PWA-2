@@ -7,28 +7,27 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
-class SetupDriverScreen extends HookConsumerWidget {
-  const SetupDriverScreen({super.key});
+class VehicleInformationScreen extends HookConsumerWidget {
+  const VehicleInformationScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstName = useTextEditingController();
-    final surname = useTextEditingController();
-    final email = useTextEditingController();
-    final referralCode = useTextEditingController();
+    final carMake = useTextEditingController();
+    final carModel = useTextEditingController();
+    final productionYear = useTextEditingController();
+    final licensePlate = useTextEditingController();
     final GlobalKey<FormState> form = GlobalKey<FormState>();
 
     return AppScaffold(
       showAppBar: true,
       appBar: AppBar(
         title: Text(
-          "Step 1 out of 5",
+          "Step 2 out of 5",
           style: context.textTheme.titleSmall,
         ),
         centerTitle: true,
@@ -41,7 +40,7 @@ class SetupDriverScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Set up your account",
+              "Vehicle Information",
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
@@ -52,36 +51,35 @@ class SetupDriverScreen extends HookConsumerWidget {
             ),
             Values.v32.verticalSpacing,
             AppTextformfield(
-              title: "First Name",
-              hint: "Enter first name",
-              controller: firstName,
-              validator: (firstName) => nameValidator(firstName),
+              title: "Car Make",
+              hint: "Enter your car make",
+              controller: carMake,
             ),
             AppTextformfield(
-              title: "Surname",
-              hint: "Enter surname",
-              controller: surname,
-              validator: (firstName) => nameValidator(firstName),
+              title: "Car Model",
+              hint: "Enter your car model",
+              controller: carModel,
             ),
             AppTextformfield(
-              title: "Email (Optional)",
-              hint: "Enter your email",
-              controller: email,
+              title: "Year of Production",
+              hint: "Enter your car's year of production",
+              keyboardType: TextInputType.number,
+              controller: productionYear,
             ),
             AppTextformfield(
-              title: "Referral Code (Optional)",
-              hint: "Enter referral code",
-              controller: referralCode,
+              title: "License Plate",
+              hint: "Enter your license plate",
+              controller: licensePlate,
             ),
             Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(
                 ref,
                 form.currentState!,
-                firstName.text,
-                surname.text,
-                email.text,
-                referralCode.text,
+                carMake.text,
+                carModel.text,
+                productionYear.text,
+                licensePlate.text,
               ),
               child: Text("Continue"),
             ),
@@ -94,22 +92,24 @@ class SetupDriverScreen extends HookConsumerWidget {
   void submit(
     WidgetRef ref,
     FormState form,
-    String firstName,
-    String lastName,
-    String email,
-    String referralCode,
+    String carMake,
+    String carModel,
+    String productionYear,
+    String licensePlate,
   ) {
-    if (form.validate()) {
-      if (referralCode.isNotEmpty) {
-        ref.read(payloadBuilderProvider)["referred_by"] = referralCode;
-      }
+    // if (form.validate()) {
+    //   if (productionYear.isNotEmpty) {
+    //     ref.read(payloadBuilderProvider)["year_of_production"] = productionYear;
+    //   }
 
-      ref.read(payloadBuilderProvider)
-        ..["first_name"] = firstName
-        ..["last_name"] = lastName
-        ..["email"] = email;
+    //   ref.read(payloadBuilderProvider)
+    //     ..["car_make"] = carMake
+    //     ..["car_model"] = carModel
+    //     ..["license_plate"] = productionYear;
 
-      ref.read(appRouterProvider).push(VehicleInformationRoute());
-    }
+    //   ref.read(appRouterProvider).push(LicensingRoute());
+    // }
+
+    ref.read(appRouterProvider).push(LicensingRoute());
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/shared/controllers/jwt_controller.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
@@ -27,6 +28,7 @@ Future<void> initializeApp() async {
     ],
   );
 
+  AppException.logger = (ex, st) => debugLogger.error('[Error]', ex, st);
   // Initializes SharedPreferencesWithCache and JwtRefreshController
   try {
     await providerContainer.read(sharedPreferencesFutureProvider.future);

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-import 'package:paypadi/config/env.dart' show Env;
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart';
 import 'package:paypadi/core/utils/constants.dart';
@@ -33,23 +33,10 @@ class PayPadi extends ConsumerWidget {
                 return [if (kDebugMode) TalkerRouteObserver(debugLogger)];
               },
             ),
-            builder: (context, child) {
-              return Env.isDev
-                  ? Stack(children: [child!, _flavorBanner()])
-                  : child!;
-            },
+            builder: (context, child) => AppLoadingOverlay(child: child!),
           ),
         );
       },
     );
   }
-}
-
-Widget _flavorBanner() {
-  return Banner(
-    message: "${Env.flavor}",
-    color: Env.color,
-    textDirection: TextDirection.ltr,
-    location: BannerLocation.topStart,
-  );
 }

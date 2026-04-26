@@ -3,18 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
-
-
 
 @RoutePage()
 class EnterPasswordScreen extends HookConsumerWidget {
@@ -23,19 +17,19 @@ class EnterPasswordScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final passwordState = useState<String>('');
+    final passwordController = useTextEditingController();
 
-    ref.listen(authControllerProvider, (_, state) {
-  
-      state.when(
+    ref.listen(authControllerProvider, (previous, current) {
+      current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
+          ref.dismissLoading();
+          passwordController.clear();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+          ref.dismissLoading();
+          passwordController.clear();
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () => ref.showLoading(),
       );
     });
 
@@ -57,14 +51,14 @@ class EnterPasswordScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: passwordState.value,
             pinLength: passwordPinLength,
+            controller: passwordController,
           ),
           Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
+            controller: passwordController,
             onSubmit: (value) => onSubmit(ref, value),
-            onChanged: (value) => passwordState.value = value,
           ),
           Spacer(),
         ],
@@ -74,6 +68,5 @@ class EnterPasswordScreen extends HookConsumerWidget {
 
   void onSubmit(WidgetRef ref, String password) {
     ref.read(authControllerProvider.notifier).login(phoneNumber, password);
-      
   }
 }

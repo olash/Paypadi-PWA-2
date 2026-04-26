@@ -7,28 +7,25 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
-class SetupDriverScreen extends HookConsumerWidget {
-  const SetupDriverScreen({super.key});
+class LicensingScreen extends HookConsumerWidget {
+  const LicensingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstName = useTextEditingController();
-    final surname = useTextEditingController();
-    final email = useTextEditingController();
-    final referralCode = useTextEditingController();
+    final driverLicense = useTextEditingController();
+    final expiryDate = useTextEditingController();
     final GlobalKey<FormState> form = GlobalKey<FormState>();
 
     return AppScaffold(
       showAppBar: true,
       appBar: AppBar(
         title: Text(
-          "Step 1 out of 5",
+          "Step 3 out of 5",
           style: context.textTheme.titleSmall,
         ),
         centerTitle: true,
@@ -41,47 +38,34 @@ class SetupDriverScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Set up your account",
+              "Licensing",
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
-
             Text(
               "Kindly provide the details below to help give you the best experience.",
               style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
             AppTextformfield(
-              title: "First Name",
-              hint: "Enter first name",
-              controller: firstName,
-              validator: (firstName) => nameValidator(firstName),
+              title: "Driver's License",
+              hint: "Enter your driver's license number",
+              controller: driverLicense,
             ),
             AppTextformfield(
-              title: "Surname",
-              hint: "Enter surname",
-              controller: surname,
-              validator: (firstName) => nameValidator(firstName),
+              title: "Expiry Date",
+              hint: "dd/mm/yyyy",
+              keyboardType: TextInputType.datetime,
+              controller: expiryDate,
             ),
-            AppTextformfield(
-              title: "Email (Optional)",
-              hint: "Enter your email",
-              controller: email,
-            ),
-            AppTextformfield(
-              title: "Referral Code (Optional)",
-              hint: "Enter referral code",
-              controller: referralCode,
-            ),
+
             Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(
                 ref,
                 form.currentState!,
-                firstName.text,
-                surname.text,
-                email.text,
-                referralCode.text,
+                driverLicense.text,
+                expiryDate.text,
               ),
               child: Text("Continue"),
             ),
@@ -94,22 +78,17 @@ class SetupDriverScreen extends HookConsumerWidget {
   void submit(
     WidgetRef ref,
     FormState form,
-    String firstName,
-    String lastName,
-    String email,
-    String referralCode,
+    String driverLicense,
+    String expiryDate,
   ) {
-    if (form.validate()) {
-      if (referralCode.isNotEmpty) {
-        ref.read(payloadBuilderProvider)["referred_by"] = referralCode;
-      }
+    // if (form.validate()) {
+    //   ref.read(payloadBuilderProvider)
+    //     ..["driver_license"] = driverLicense
+    //     ..["expiry_date"] = expiryDate;
 
-      ref.read(payloadBuilderProvider)
-        ..["first_name"] = firstName
-        ..["last_name"] = lastName
-        ..["email"] = email;
+    //   ref.read(appRouterProvider).push(DocumentUploadRoute());
+    // }
 
-      ref.read(appRouterProvider).push(VehicleInformationRoute());
-    }
+    ref.read(appRouterProvider).push(DocumentUploadRoute());
   }
 }

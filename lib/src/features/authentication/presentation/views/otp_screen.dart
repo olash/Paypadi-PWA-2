@@ -11,34 +11,31 @@ import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/features/authentication/presentation/widgets/pincode_field.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class OtpScreen extends HookConsumerWidget {
-  OtpScreen({super.key, required this.phoneNumber});
+  OtpScreen({super.key});
 
-  final String phoneNumber;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TapGestureRecognizer resendCode = TapGestureRecognizer();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final otpCode = useTextEditingController();
+    final phoneNumber = ref.watch(payloadBuilderProvider)["phone_number"];
 
     ref.listen(authControllerProvider, (previous, current) {
       current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
+          ref.dismissLoading();
           otpCode.clear();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
           otpCode.clear();
         },
-        loading: () {
-          showLoadingOverlay(context, ref);
-        },
+        loading: () => ref.showLoading(),
       );
     });
 
@@ -56,7 +53,8 @@ class OtpScreen extends HookConsumerWidget {
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly provide the verification code sent to your ${obfuscatePhoneNumber(phoneNumber)}",
+              "Kindly provide the verification code "
+              "sent to your ${obfuscatePhoneNumber(phoneNumber)}",
               style: context.textTheme.bodyLarge,
             ),
             Values.v24.verticalSpacing,
@@ -97,9 +95,9 @@ class OtpScreen extends HookConsumerWidget {
     );
   }
 
-  void verifyOtp(WidgetRef ref, String otpCode) {
+  void verifyOtp(WidgetRef ref, String otpCode) async {
     if (formKey.currentState!.validate()) {
-      ref.read(authControllerProvider.notifier).verifyOtpCode(otpCode);
+      await ref.read(authControllerProvider.notifier).verifyOtpCode(otpCode);
     }
   }
 }

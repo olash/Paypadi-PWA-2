@@ -2,13 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
+import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/home/controller/bank_account_controller.dart';
@@ -76,7 +75,10 @@ class DepositMoneyScreen extends HookConsumerWidget {
                   FilledButton(
                     onPressed: depositAccount.value == null
                         ? null
-                        : () => copyAccountToClipBoard(depositAccount.value!),
+                        : () => copyAccountToClipBoard(
+                            ref,
+                            depositAccount.value!,
+                          ),
                     style: context.filledButtonTheme.style?.copyWith(
                       fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
                       foregroundColor: WidgetStatePropertyAll(
@@ -125,17 +127,20 @@ class DepositMoneyScreen extends HookConsumerWidget {
     );
   }
 
-  void copyAccountToClipBoard(BankAccountModel account) async {
+  void copyAccountToClipBoard(
+    WidgetRef ref,
+    UserBankAccountModel account,
+  ) async {
     final String depositAccountInfo =
         "Bank: ${account.name} \n"
         "Account Number: ${account.number}";
 
-    await Clipboard.setData(ClipboardData(text: depositAccountInfo)).then(
-      (value) => showSuccessDialog(message: "Successfully copied information"),
-    );
+    await Clipboard.setData(
+      ClipboardData(text: depositAccountInfo),
+    ).then((value) => ref.showSuccessToast("Successfully copied information"));
   }
 
-  void shareAccountInformation(BankAccountModel account) async {
+  void shareAccountInformation(UserBankAccountModel account) async {
     final String depositAccountInfo =
         "Bank: ${account.name} \n"
         "Account Number: ${account.number}";

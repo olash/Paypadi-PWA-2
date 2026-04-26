@@ -43,6 +43,18 @@ class AppRouter extends RootStackRouter {
       page: SetupDriverRoute.page,
     ),
     AutoRoute(
+      path: "/vehicle-information",
+      page: VehicleInformationRoute.page,
+    ),
+    AutoRoute(
+      path: "/license",
+      page: LicensingRoute.page,
+    ),
+    AutoRoute(
+      path: "/document-upload",
+      page: DocumentUploadRoute.page,
+    ),
+    AutoRoute(
       path: "/payout-account",
       page: PayoutAccountRoute.page,
     ),

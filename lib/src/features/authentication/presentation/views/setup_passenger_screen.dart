@@ -89,16 +89,12 @@ class SetupPassengerScreen extends HookConsumerWidget {
   ) {
     if (form.validate()) {
       if (referralCode.isNotEmpty) {
-        ref
-                .read(authControllerProvider.notifier)
-                .payloadBuilder["referred_by"] =
-            referralCode;
+        ref.read(payloadBuilderProvider)["referred_by"] = referralCode;
       }
 
-      ref.read(authControllerProvider.notifier)
-        ..payloadBuilder["first_name"] = firstName
-        ..payloadBuilder["last_name"] = lastName;
-
+      ref.read(payloadBuilderProvider)
+        ..["first_name"] = firstName
+        ..["last_name"] = lastName;
       ref.read(appRouterProvider).push(CreatePasswordRoute());
     }
   }

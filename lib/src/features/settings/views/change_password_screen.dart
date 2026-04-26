@@ -14,7 +14,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final password = useState<String>('');
+    final passwordController = useTextEditingController();
 
     return AppScaffold(
       title: "",
@@ -34,13 +34,13 @@ class ChangePasswordScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: password.value,
             pinLength: passwordPinLength,
+            controller: passwordController,
           ),
           Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
-            onChanged: (value) => password.value = value,
+            controller: passwordController,
             onSubmit: (password) {},
           ),
           Spacer(),

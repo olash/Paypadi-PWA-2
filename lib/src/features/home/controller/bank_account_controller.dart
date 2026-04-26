@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
-import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
+import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
 
 part 'bank_account_controller.g.dart';
@@ -12,7 +12,7 @@ class BankAccountController extends _$BankAccountController {
   late final WalletRepository _repository;
 
   @override
-  FutureOr<BankAccountModel?> build() async {
+  FutureOr<UserBankAccountModel?> build() async {
     _repository = ref.watch(walletRepositoryProvider);
     state = const AsyncLoading();
 

@@ -1,7 +1,7 @@
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
-import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
+import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
@@ -18,8 +18,8 @@ class WalletRepository {
     return response;
   }
 
-  FutureResultOf<BankAccountModel> getDepositAccount() async {
-    final response = await Result.fromAsync<BankAccountModel>(
+  FutureResultOf<UserBankAccountModel> getDepositAccount() async {
+    final response = await Result.fromAsync<UserBankAccountModel>(
       () => client.getDepositAccount(),
     );
     return response;
@@ -29,16 +29,17 @@ class WalletRepository {
     int page = 1,
     int pageSize = 10,
   }) async {
-    final response = await Result.fromAsync<PaginatedListResponse<TransactionHistoryModel>>(
-      () => client.getTransactionHistory(page: page, pageSize: pageSize),
-    );
+    final response =
+        await Result.fromAsync<PaginatedListResponse<TransactionHistoryModel>>(
+          () => client.getTransactionHistory(page: page, pageSize: pageSize),
+        );
     return response;
   }
 
-  FutureResultOf<BankAccountModel> verifyBankInformation(
+  FutureResultOf<UserBankAccountModel> verifyBankInformation(
     Map<String, dynamic> payload,
   ) async {
-    final response = await Result.fromAsync<BankAccountModel>(
+    final response = await Result.fromAsync<UserBankAccountModel>(
       () async {
         final result = await client.verifyBankInformation(payload: payload);
         return result.data;

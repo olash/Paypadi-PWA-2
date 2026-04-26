@@ -4,7 +4,7 @@ import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'package:paypadi/core/api/response/api_response.dart';
-import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
+import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 
 part 'wallet_client.g.dart';
@@ -25,7 +25,7 @@ abstract class WalletClient {
   });
 
   @GET('$_basePath/deposit/account/')
-  Future<BankAccountModel> getDepositAccount();
+  Future<UserBankAccountModel> getDepositAccount();
 
   @POST('$_basePath/beneficiaries/')
   Future<BeneficiaryModel> saveBeneficiary({
@@ -33,7 +33,7 @@ abstract class WalletClient {
   });
 
   @POST('$_basePath/bank/verify/')
-  Future<ApiResponse<BankAccountModel>> verifyBankInformation({
+  Future<ApiResponse<UserBankAccountModel>> verifyBankInformation({
     @Body() required Map<String, dynamic> payload,
   });
 }

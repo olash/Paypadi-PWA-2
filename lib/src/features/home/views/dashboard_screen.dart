@@ -12,7 +12,6 @@ import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
-import 'package:paypadi/src/features/home/widgets/amount_display.dart';
 import 'package:paypadi/src/features/home/widgets/user_wallet.dart';
 import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
@@ -25,7 +24,7 @@ class DashboardScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final amount = useState<String>("0");
+    final amountController = useTextEditingController();
 
     final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
       CacheKeys.user,
@@ -49,14 +48,14 @@ class DashboardScreen extends HookConsumerWidget {
           Values.v24.verticalSpacing,
           UserWallet(),
           Values.v24.verticalSpacing,
-          AmountDisplay(
-            amountEntered: amount.value,
-            onAmountPressed: (selected) => amount.value = selected.toString(),
-          ),
+          // AmountDisplay(
+          //   amountEntered: amount.value,
+          //   onAmountPressed: (selected) => amount.value = selected.toString(),
+          // ),
           Values.v32.verticalSpacing,
           AppKeypad(
             keyLength: 10,
-            onChanged: (value) => amount.value = value,
+            controller: amountController,
           ),
           Values.v32.verticalSpacing,
           Row(
@@ -64,8 +63,11 @@ class DashboardScreen extends HookConsumerWidget {
             children: [
               Flexible(
                 child: FilledButton.icon(
-                  onPressed: canTransfer(amount.value)
-                      ? () => initializeTransferProcess(ref, amount.value)
+                  onPressed: canTransfer(amountController.text)
+                      ? () => initializeTransferProcess(
+                          ref,
+                          amountController.text,
+                        )
                       : null,
                   label: Text("Send Cash"),
                   iconAlignment: IconAlignment.end,

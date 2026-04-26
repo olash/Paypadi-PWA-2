@@ -12,7 +12,6 @@ import 'package:paypadi/src/features/transfer/widgets/dotted_line.dart';
 import 'package:paypadi/src/features/transfer/widgets/payment_details.dart';
 import 'package:paypadi/src/features/transfer/widgets/receipt_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class ConfirmPaymentScreen extends ConsumerWidget {
@@ -22,16 +21,16 @@ class ConfirmPaymentScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final paymentSummary = ref.watch(initiatePaymentControllerProvider);
 
-    ref.listen(transactionControllerProvider, (_, state) {
-      state.when(
+    ref.listen(transactionControllerProvider, (previous, current) {
+      current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
+          ref.dismissLoading();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () => ref.showLoading(),
       );
     });
 

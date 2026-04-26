@@ -5,13 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
-
 
 @RoutePage()
 class ConfirmPasswordScreen extends HookConsumerWidget {
@@ -20,20 +17,18 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final confirmPassword = useState<String>('');
+    final confirmPasswordController = useTextEditingController();
 
     ref.listen(authControllerProvider, (previous, current) {
       current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
-          confirmPassword.value = "";
+          ref.dismissLoading();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
-          confirmPassword.value = "";
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () => ref.showLoading(),
       );
     });
 
@@ -55,15 +50,15 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: confirmPassword.value,
             pinLength: passwordPinLength,
+            controller: confirmPasswordController,
           ),
           Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
+            controller: confirmPasswordController,
             onSubmit: (confirmedPassword) =>
                 createAccount(ref, password, confirmedPassword),
-            onChanged: (value) => confirmPassword.value = value,
           ),
           Spacer(),
         ],
@@ -77,9 +72,7 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
     String confirmedPassword,
   ) {
     if (password == confirmedPassword) {
-      ref.read(authControllerProvider.notifier).payloadBuilder["password"] =
-          confirmedPassword;
-
+      ref.read(payloadBuilderProvider)["password"] = confirmedPassword;
       ref.read(authControllerProvider.notifier).createAccount();
     }
   }

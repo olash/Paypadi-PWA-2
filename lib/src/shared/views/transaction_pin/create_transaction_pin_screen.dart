@@ -17,7 +17,7 @@ class CreateTransactionPinScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionPin = useState<String>('');
+    final pinController = useTextEditingController();
 
     return AppScaffold(
       child: Column(
@@ -37,14 +37,14 @@ class CreateTransactionPinScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            text: transactionPin.value,
             pinLength: transactionPinLength,
+            controller: pinController,
           ),
           Spacer(flex: 3),
           AppKeypad(
+            controller: pinController,
             keyLength: transactionPinLength,
             onSubmit: (pin) => onSubmit(ref, pin),
-            onChanged: (value) => transactionPin.value = value,
           ),
           Spacer(),
         ],

@@ -40,16 +40,14 @@ class AccountRoleScreen extends HookConsumerWidget {
           _RoleWidget(
             role: AccountRole.passenger,
             onWidgetTapped: () {
-              ref.read(authControllerProvider.notifier).payloadBuilder["role"] =
-                  "rider";
+              ref.read(payloadBuilderProvider)["role"] = "rider";
               ref.read(appRouterProvider).push(SetupPassengerRoute());
             },
           ),
           _RoleWidget(
             role: AccountRole.driver,
             onWidgetTapped: () {
-              ref.read(authControllerProvider.notifier).payloadBuilder["role"] =
-                  "driver";
+              ref.read(payloadBuilderProvider)["role"] = "driver";
               ref.read(appRouterProvider).push(SetupDriverRoute());
             },
           ),

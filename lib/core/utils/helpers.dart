@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/utils/enums.dart';
-import 'package:toastification/toastification.dart';
 
 import 'package:paypadi/config/gen/assets.gen.dart';
-import 'package:paypadi/core/utils/constants.dart';
 
 String obfuscateEmail(String email) {
   final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
@@ -83,40 +79,6 @@ String capitalizeFirstChar(String? s) {
   if (value.length == 1) return value.toUpperCase();
 
   return value[0].toUpperCase() + value.substring(1);
-}
-
-void showSuccessDialog({String? message}) {
-  toastification.show(
-    title: Text("Success"),
-    applyBlurEffect: true,
-    alignment: Alignment.topCenter,
-    type: ToastificationType.success,
-    style: ToastificationStyle.flat,
-    icon: Icon(Iconsax.tick_circle_outline),
-    borderRadius: BorderRadius.circular(Values.v120),
-    description: message != null ? Text(message) : SizedBox.shrink(),
-    autoCloseDuration: const Duration(seconds: 4),
-    animationBuilder: (context, animation, alignment, child) {
-      return FadeTransition(opacity: animation, child: child);
-    },
-  );
-}
-
-void showErrorDialog({String? message}) {
-  toastification.show(
-    title: Text("Error"),
-    applyBlurEffect: true,
-    alignment: Alignment.topCenter,
-    type: ToastificationType.error,
-    style: ToastificationStyle.flat,
-    icon: Icon(Iconsax.danger_outline),
-    borderRadius: BorderRadius.circular(Values.v120),
-    description: message != null ? Text(message) : SizedBox.shrink(),
-    autoCloseDuration: const Duration(seconds: 4),
-    animationBuilder: (context, animation, alignment, child) {
-      return FadeTransition(opacity: animation, child: child);
-    },
-  );
 }
 
 Future<void> preCacheSVGs() async {

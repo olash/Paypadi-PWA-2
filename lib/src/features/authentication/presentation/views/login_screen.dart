@@ -16,7 +16,6 @@ import 'package:paypadi/src/shared/widgets/app_avatar.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class LoginScreen extends HookConsumerWidget {
@@ -24,7 +23,7 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final password = useState<String>("");
+    final passwordController = useTextEditingController();
 
     final enabledBiometrics = useState<bool>(
       ref.read(localCacheProvider).getFromCache(CacheKeys.enabledBiometrics) ??
@@ -39,16 +38,11 @@ class LoginScreen extends HookConsumerWidget {
       },
     );
 
-    ref.listen(authControllerProvider, (_, state) {
-      state.when(
-        data: (d) {
-          dismissLoadingOverlay(context);
-        },
-        error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
-        },
-        loading: () => showLoadingOverlay(context, ref),
+    ref.listen(authControllerProvider, (previous, current) {
+      current.when(
+        data: (d) => ref.dismissLoading(),
+        error: (e, st) => ref.dismissLoading(),
+        loading: () => ref.showLoading(),
       );
     });
 
@@ -66,28 +60,26 @@ class LoginScreen extends HookConsumerWidget {
           ),
           Values.v24.verticalSpacing,
           AppPinIndicator(
-            text: password.value,
             pinLength: passwordPinLength,
+            controller: passwordController,
           ),
           Spacer(flex: 2),
           AppKeypad(
             keyLength: passwordPinLength,
+            controller: passwordController,
             showBiometric: enabledBiometrics.value,
-            onChanged: (value) => password.value = value,
-            onBiometricKeyPressed: () => loginWithBiometrics(
-              ref,
-              user?.phoneNumber ?? "",
-            ),
-            onSubmit: (loginPassword) => login(
-              ref,
-              user?.phoneNumber ?? "",
-              loginPassword,
-            ),
+            onBiometricKeyPressed: () =>
+                ref.read(authControllerProvider.notifier).loginWithBiometrics(),
+            onSubmit: (password) => ref
+                .read(authControllerProvider.notifier)
+                .login(user?.phoneNumber ?? '', password),
           ),
           Spacer(),
           Center(
             child: GestureDetector(
-              onTap: () => onForgotPasswordPressed(ref, user?.email ?? ""),
+              onTap: () => ref
+                  .read(appRouterProvider)
+                  .push(ForgotPasswordRoute(email: user?.email ?? '')),
               child: Text(
                 "Forgot Password?",
                 style: context.textTheme.bodyMedium?.copyWith(
@@ -99,31 +91,5 @@ class LoginScreen extends HookConsumerWidget {
         ],
       ),
     );
-  }
-
-  void onForgotPasswordPressed(WidgetRef ref, String email) {
-    ref.read(appRouterProvider).push(ForgotPasswordRoute(email: email));
-  }
-
-  void loginWithBiometrics(WidgetRef ref, String phoneNumber) async {
-    final biometricService = ref.watch(biometricsProvider);
-    final result = await biometricService.authenticate();
-
-    result.fold(
-      (success) async {
-        final String? password = await ref
-            .read(secureCacheProvider)
-            .read(CacheKeys.password);
-
-        ref
-            .read(authControllerProvider.notifier)
-            .login(phoneNumber, password ?? "");
-      },
-      (error) {},
-    );
-  }
-
-  void login(WidgetRef ref, String phoneNumber, String password) {
-    ref.read(authControllerProvider.notifier).login(phoneNumber, password);
   }
 }

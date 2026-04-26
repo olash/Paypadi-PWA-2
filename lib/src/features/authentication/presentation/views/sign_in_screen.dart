@@ -45,7 +45,6 @@ class SignInScreen extends HookConsumerWidget {
               controller: phoneNumber,
               validator: (number) => phoneNumberValidator(number),
             ),
-
             Values.v16.verticalSpacing,
             FilledButton(
               onPressed: () => signin(ref, phoneNumber.text, form),

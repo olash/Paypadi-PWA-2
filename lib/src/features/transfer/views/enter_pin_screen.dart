@@ -4,15 +4,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_keypad.dart';
 import 'package:paypadi/src/shared/widgets/app_pin_indicator.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class EnterPinScreen extends HookConsumerWidget {
@@ -20,19 +17,19 @@ class EnterPinScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final password = useState<String>("");
+    final pinController = useTextEditingController();
     final biometricService = ref.watch(biometricsProvider);
 
-    ref.listen(initiatePaymentControllerProvider, (_, state) {
-      state.when(
+    ref.listen(initiatePaymentControllerProvider, (previous, current) {
+      current.when(
         data: (d) {
-          dismissLoadingOverlay(context);
+          ref.dismissLoading();
         },
         error: (e, st) {
-          dismissLoadingOverlay(context);
-          showErrorDialog(message: e.toString());
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
         },
-        loading: () => showLoadingOverlay(context, ref),
+        loading: () => ref.showLoading(),
       );
     });
 
@@ -54,20 +51,19 @@ class EnterPinScreen extends HookConsumerWidget {
           ),
           Values.v64.verticalSpacing,
           AppPinIndicator(
-            text: password.value,
             pinLength: transactionPinLength,
+            controller: pinController,
           ),
           Spacer(flex: 2),
           AppKeypad(
             showBiometric: true,
             keyLength: transactionPinLength,
+            controller: pinController,
             padding: EdgeInsets.symmetric(horizontal: Values.v24),
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
             },
-            onChanged: (value) {
-              password.value = value;
-            },
+
             onSubmit: (value) {
               ref
                       .read(transactionControllerProvider.notifier)

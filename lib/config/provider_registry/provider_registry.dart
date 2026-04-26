@@ -164,15 +164,3 @@ TransactionRepository transactionRepository(Ref ref) {
   final TransactionClient client = ref.watch(transactionClientProvider);
   return TransactionRepository(client);
 }
-
-@Riverpod(keepAlive: true)
-Future<List<BankModel>> banksList(Ref ref) async {
-  final result = await ref
-      .read(payoutAccountRepositoryProvider)
-      .getListOfBanks();
-
-  return result.fold(
-    (response) => response,
-    (error) => throw error,
-  );
-}

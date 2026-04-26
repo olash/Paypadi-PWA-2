@@ -1,18 +1,33 @@
+import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/api/exceptions/app_exception.dart';
-import 'package:paypadi/core/models/bank_account_model/bank_account_model.dart';
+import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 
 part 'payout_account_controller.g.dart';
+
+@riverpod
+Future<List<BankModel>> banksList(Ref ref) async {
+  final result = await ref
+      .read(payoutAccountRepositoryProvider)
+      .getListOfBanks();
+
+  return result.fold(
+    (response) => response,
+    (error) {
+      throw error;
+    },
+  );
+}
 
 @riverpod
 class PayoutAccountController extends _$PayoutAccountController {
   late final WalletRepository _repository;
 
   @override
-  FutureOr<BankAccountModel?> build() {
+  FutureOr<UserBankAccountModel?> build() {
     _repository = ref.watch(walletRepositoryProvider);
     return null;
   }
@@ -27,9 +42,8 @@ class PayoutAccountController extends _$PayoutAccountController {
     result.fold(
       (success) async => state = AsyncData(success),
       (failure) {
-        final AppException exception = AppException.handleException(failure);
-        final String message = AppException.getExceptionMessage(exception);
-        state = AsyncError(message, StackTrace.current);
+        ref.showExceptionToast(failure);
+        state = const AsyncData(null);
       },
     );
   }
