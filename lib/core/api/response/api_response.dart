@@ -20,7 +20,7 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
 @Freezed(genericArgumentFactories: true)
 sealed class ApiListResponse<T> with _$ApiListResponse<T> {
   const factory ApiListResponse({
-    required String status,
+    required bool status,
     required String message,
     required List<T> data,
   }) = _ApiListResponse;

@@ -22,10 +22,11 @@ class SetupDriverScreen extends HookConsumerWidget {
     final surname = useTextEditingController();
     final email = useTextEditingController();
     final referralCode = useTextEditingController();
-    final GlobalKey<FormState> form = GlobalKey<FormState>();
+    final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
       showAppBar: true,
+      makeScrollable: true,
       appBar: AppBar(
         title: Text(
           "Step 1 out of 5",
@@ -33,9 +34,8 @@ class SetupDriverScreen extends HookConsumerWidget {
         ),
         centerTitle: true,
       ),
-
       child: Form(
-        key: form,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,7 +45,6 @@ class SetupDriverScreen extends HookConsumerWidget {
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
-
             Text(
               "Kindly provide the details below to help give you the best experience.",
               style: context.textTheme.bodyMedium,
@@ -77,11 +76,11 @@ class SetupDriverScreen extends HookConsumerWidget {
             FilledButton(
               onPressed: () => submit(
                 ref,
-                form.currentState!,
                 firstName.text,
                 surname.text,
                 email.text,
                 referralCode.text,
+                formRef.value,
               ),
               child: Text("Continue"),
             ),
@@ -93,23 +92,26 @@ class SetupDriverScreen extends HookConsumerWidget {
 
   void submit(
     WidgetRef ref,
-    FormState form,
     String firstName,
     String lastName,
     String email,
     String referralCode,
+    GlobalKey<FormState> form,
   ) {
-    if (form.validate()) {
-      if (referralCode.isNotEmpty) {
-        ref.read(payloadBuilderProvider)["referred_by"] = referralCode;
-      }
+    if (!(form.currentState?.validate() ?? false)) return;
 
-      ref.read(payloadBuilderProvider)
-        ..["first_name"] = firstName
-        ..["last_name"] = lastName
-        ..["email"] = email;
+    Map<String, dynamic> payloadBuilder = ref.read(
+      authenticationPayloadProvider,
+    );
 
-      ref.read(appRouterProvider).push(VehicleInformationRoute());
+    if (referralCode.isNotEmpty) {
+      payloadBuilder["referred_by"] = referralCode;
     }
+    payloadBuilder
+      ..["first_name"] = firstName
+      ..["last_name"] = lastName
+      ..["email"] = email;
+
+    ref.read(appRouterProvider).push(VehicleInformationRoute());
   }
 }

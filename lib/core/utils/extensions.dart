@@ -35,7 +35,7 @@ extension AppToastOnRef on Ref {
 
   void showErrorToast(String message) => _toast.showError(message);
 
-  void showExceptionToast(Object? error, [StackTrace? stackTrace]) =>
+  void showExceptionMessage(Object? error, [StackTrace? stackTrace]) =>
       _toast.showExceptionMessage(error, stackTrace);
 
   AppToastController get _toast => read(appToastControllerProvider.notifier);

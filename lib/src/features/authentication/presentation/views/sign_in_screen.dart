@@ -13,18 +13,17 @@ import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
 @RoutePage()
 class SignInScreen extends HookConsumerWidget {
-  SignInScreen({super.key});
-
-  final GlobalKey<FormState> form = GlobalKey<FormState>();
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final formRef = useRef(GlobalKey<FormState>());
     final phoneNumber = useTextEditingController();
 
     return AppScaffold(
       showAppBar: true,
       child: Form(
-        key: form,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,7 +46,7 @@ class SignInScreen extends HookConsumerWidget {
             ),
             Values.v16.verticalSpacing,
             FilledButton(
-              onPressed: () => signin(ref, phoneNumber.text, form),
+              onPressed: () => signin(ref, phoneNumber.text, formRef.value),
               child: Text("Continue"),
             ),
             Spacer(flex: 6),
@@ -57,7 +56,11 @@ class SignInScreen extends HookConsumerWidget {
     );
   }
 
-  void signin(WidgetRef ref, String phoneNumber, GlobalKey<FormState> form) {
+  void signin(
+    WidgetRef ref,
+    String phoneNumber,
+    GlobalKey<FormState> form,
+  ) {
     if (form.currentState!.validate()) {
       ref
           .read(appRouterProvider)

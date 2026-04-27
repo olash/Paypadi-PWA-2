@@ -16,14 +16,14 @@ enum AccountRole {
 }
 
 enum PickedAmount {
-  two(value: 200),
-  four(value: 400),
-  six(value: 600),
-  eight(value: 800),
-  ten(value: 1000);
+  two(value: "200"),
+  four(value: "400"),
+  six(value: "600"),
+  eight(value: "800"),
+  ten(value: "1000");
 
   const PickedAmount({required this.value});
-  final int value;
+  final String value;
 }
 
 enum BeneficiaryType {
@@ -37,3 +37,5 @@ enum BeneficiaryType {
 enum TransactionStatus { success, pending, failure }
 
 enum TransactionType { transfer, deposit, withdrawal, unknown }
+
+enum UploadStatus { idle, uploading, complete, failed }

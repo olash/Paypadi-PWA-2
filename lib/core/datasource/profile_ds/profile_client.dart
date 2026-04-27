@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/src/features/authentication/domain/responses.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -19,18 +22,18 @@ abstract class ProfileClient {
   @PATCH('$_basePath/profile/')
   Future<dynamic> partiallyUpdateUser();
 
-  // @GET('$_basePath/driver/profile/')
-  // Future<DriverModel> getDriverProfile();
+  @GET('$_basePath/driver/profile/')
+  Future<UserModel> getDriverProfile();
 
-  // @PUT('$_basePath/driver/profile/')
-  // Future<DriverModel> updateDriverProfile({
-  //   @Body() required Map<String, dynamic> payload,
-  // });
+  @PUT('$_basePath/driver/profile/')
+  Future<UserModel> createDriverProfile({
+    @Body() required Map<String, dynamic> payload,
+  });
 
-  // @PATCH('$_basePath/driver/profile/')
-  // Future<DriverModel> partiallyUpdateDriverProfile({
-  //   @Body() required Map<String, dynamic> payload,
-  // });
+  @PATCH('$_basePath/driver/profile/')
+  Future<UserModel> updateDriverProfile({
+    @Body() required Map<String, dynamic> payload,
+  });
 
   @POST('$_basePath/me/')
   Future<dynamic> getUserInfo();
@@ -43,5 +46,13 @@ abstract class ProfileClient {
   @POST('$_basePath/password/change/')
   Future<dynamic> changePassword({
     @Body() required Map<String, dynamic> payload,
+  });
+
+  @MultiPart()
+  @PATCH("$_basePath/driver/profile/")
+  Future uploadDocument({
+    @Part() required File file,
+    @Part(name: "name") required String fileName,
+    @SendProgress() ProgressCallback? onSendProgress,
   });
 }

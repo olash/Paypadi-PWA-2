@@ -7,7 +7,7 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
+import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -19,10 +19,11 @@ class LicensingScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final driverLicense = useTextEditingController();
     final expiryDate = useTextEditingController();
-    final GlobalKey<FormState> form = GlobalKey<FormState>();
+    final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
       showAppBar: true,
+      makeScrollable: true,
       appBar: AppBar(
         title: Text(
           "Step 3 out of 5",
@@ -30,9 +31,8 @@ class LicensingScreen extends HookConsumerWidget {
         ),
         centerTitle: true,
       ),
-
       child: Form(
-        key: form,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -58,14 +58,13 @@ class LicensingScreen extends HookConsumerWidget {
               keyboardType: TextInputType.datetime,
               controller: expiryDate,
             ),
-
             Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(
                 ref,
-                form.currentState!,
-                driverLicense.text,
                 expiryDate.text,
+                driverLicense.text,
+                formRef.value,
               ),
               child: Text("Continue"),
             ),
@@ -77,17 +76,15 @@ class LicensingScreen extends HookConsumerWidget {
 
   void submit(
     WidgetRef ref,
-    FormState form,
-    String driverLicense,
     String expiryDate,
+    String driverLicense,
+    GlobalKey<FormState> form,
   ) {
-    // if (form.validate()) {
-    //   ref.read(payloadBuilderProvider)
-    //     ..["driver_license"] = driverLicense
-    //     ..["expiry_date"] = expiryDate;
+    if (!(form.currentState?.validate() ?? false)) return;
 
-    //   ref.read(appRouterProvider).push(DocumentUploadRoute());
-    // }
+    ref.read(profilePayloadProvider)
+      ..["driver_license_number"] = driverLicense
+      ..["driver_license_expiry"] = expiryDate;
 
     ref.read(appRouterProvider).push(DocumentUploadRoute());
   }

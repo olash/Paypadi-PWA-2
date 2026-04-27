@@ -64,12 +64,8 @@ class _BeneficiariesList extends ConsumerWidget {
     final beneficiaryType = ref.watch(beneficiaryTypeControllerProvider);
 
     final beneficiaries = switch (beneficiaryType) {
-      BeneficiaryType.recent => ref.watch(
-        recentBeneficiariesControllerProvider,
-      ),
-      BeneficiaryType.saved => ref.watch(
-        savedBeneficiariesControllerProvider,
-      ),
+      BeneficiaryType.recent => ref.watch(recentBeneficiariesProvider),
+      BeneficiaryType.saved => ref.watch(savedBeneficiariesProvider),
     };
 
     return Column(
@@ -78,7 +74,7 @@ class _BeneficiariesList extends ConsumerWidget {
         Text(
           "Your Beneficiaries",
           style: context.textTheme.labelMedium?.copyWith(
-            letterSpacing: 0,
+            letterSpacing: Values.zero,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -87,25 +83,15 @@ class _BeneficiariesList extends ConsumerWidget {
           children: [
             _BeneficiaryTypeButton(
               beneficiaryType: BeneficiaryType.recent,
-              onTap: () {
-                ref
-                    .read(beneficiaryTypeControllerProvider.notifier)
-                    .switchToRecent();
-                ref
-                    .read(recentBeneficiariesControllerProvider.notifier)
-                    .getRecentBeneficiaries();
-              },
+              onTap: () => ref
+                  .read(beneficiaryTypeControllerProvider.notifier)
+                  .switchToRecent(),
             ),
             _BeneficiaryTypeButton(
               beneficiaryType: BeneficiaryType.saved,
-              onTap: () {
-                ref
-                    .read(beneficiaryTypeControllerProvider.notifier)
-                    .switchToSaved();
-                ref
-                    .read(savedBeneficiariesControllerProvider.notifier)
-                    .getSavedBeneficiaries();
-              },
+              onTap: () => ref
+                  .read(beneficiaryTypeControllerProvider.notifier)
+                  .switchToSaved(),
             ),
           ],
         ),
@@ -121,14 +107,14 @@ class _BeneficiariesList extends ConsumerWidget {
           SizedBox(
             height: context.screenHeight * .6,
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: beneficiaries.isLoading
                   ? kMockBeneficiaries.length
-                  : beneficiaries.value!.length,
+                  : beneficiaries.value?.length,
               itemBuilder: (context, index) {
                 final data = beneficiaries.isLoading
                     ? kMockBeneficiaries
-                    : beneficiaries.value!;
+                    : beneficiaries.value ?? kMockBeneficiaries;
 
                 return _BeneficiaryTile(
                   isLoading: beneficiaries.isLoading,
@@ -162,24 +148,29 @@ class _BeneficiaryTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final beneficiaryType = ref.watch(beneficiaryTypeControllerProvider);
     final color = ref.watch(appPrimaryColorProvider);
 
     return Dismissible(
       key: ValueKey<BeneficiaryModel>(beneficiary),
       direction: DismissDirection.startToEnd,
-      onDismissed: (direction) {
-        ref
+      onDismissed: (direction) async {
+        final beneficiaryType = ref.read(beneficiaryTypeControllerProvider);
+
+        if (beneficiary.id == null) return;
+
+        final result = await ref
             .read(transactionRepositoryProvider)
-            .deleteBeneficiaryById(beneficiary.id);
+            .deleteBeneficiaryById(beneficiary.id!);
+
+        result.fold(
+          (_) => ref.read(recentBeneficiariesProvider.notifier).refresh(),
+          (failure) => ref.showExceptionMessage(failure),
+        );
+
         if (beneficiaryType == BeneficiaryType.recent) {
-          ref
-              .read(recentBeneficiariesControllerProvider.notifier)
-              .getRecentBeneficiaries();
+          ref.read(recentBeneficiariesProvider.notifier).refresh();
         } else {
-          ref
-              .read(savedBeneficiariesControllerProvider.notifier)
-              .getSavedBeneficiaries();
+          ref.read(savedBeneficiariesProvider.notifier).refresh();
         }
       },
       background: Container(
@@ -269,7 +260,8 @@ class _BeneficiaryTypeButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final BeneficiaryType type = ref.watch(beneficiaryTypeControllerProvider);
+    final type = ref.watch(beneficiaryTypeControllerProvider);
+    final primaryColor = ref.watch(appPrimaryColorProvider);
 
     return GestureDetector(
       onTap: onTap,
@@ -279,18 +271,14 @@ class _BeneficiaryTypeButton extends ConsumerWidget {
         decoration: type != beneficiaryType
             ? null
             : BoxDecoration(
-                color: ref.watch(appPrimaryColorProvider).withAlpha(20),
-                border: Border.all(
-                  color: ref.watch(appPrimaryColorProvider),
-                ),
+                color: primaryColor.withAlpha(20),
+                border: Border.all(color: primaryColor),
                 borderRadius: BorderRadius.circular(32),
               ),
         child: Text(
           beneficiaryType.typeName,
           style: context.textTheme.labelMedium?.copyWith(
-            color: type != beneficiaryType
-                ? null
-                : ref.watch(appPrimaryColorProvider),
+            color: type != beneficiaryType ? null : primaryColor,
           ),
         ),
       ),

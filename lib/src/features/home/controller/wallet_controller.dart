@@ -20,7 +20,7 @@ class WalletController extends _$WalletController {
     result.fold(
       (success) => state = AsyncValue.data(success),
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -40,7 +40,7 @@ class WalletController extends _$WalletController {
     result.fold(
       (success) => state = AsyncValue.data(success),
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -67,7 +67,7 @@ class WalletController extends _$WalletController {
     result.fold(
       (success) => state = AsyncValue.data(null),
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -88,7 +88,7 @@ class HistoryController extends _$HistoryController {
     result.fold(
       (success) => state = AsyncData(success.results),
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(<TransactionHistoryModel>[]);
       },
     );
@@ -107,7 +107,7 @@ class HistoryController extends _$HistoryController {
     result.fold(
       (success) => state = AsyncData([...?state.value, ...success.results]),
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(<TransactionHistoryModel>[]);
       },
     );

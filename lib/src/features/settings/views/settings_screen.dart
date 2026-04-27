@@ -130,7 +130,8 @@ class SettingsScreen extends HookConsumerWidget {
               name: "Log out",
               showTrailingIcon: false,
               icon: Iconsax.logout_1_outline,
-              onTap: () => ref.read(authControllerProvider.notifier).logout(),
+              onTap: () =>
+                  ref.read(authenticationControllerProvider.notifier).logout(),
             ),
           ],
         ),

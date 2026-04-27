@@ -19,16 +19,16 @@ class SetupPassengerScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController firstName = useTextEditingController();
-    final TextEditingController lastName = useTextEditingController();
-    final TextEditingController referralCode = useTextEditingController();
-    final GlobalKey<FormState> form = GlobalKey<FormState>();
+    final firstName = useTextEditingController();
+    final lastName = useTextEditingController();
+    final referralCode = useTextEditingController();
+    final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
       showAppBar: true,
       makeScrollable: true,
       child: Form(
-        key: form,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,10 +67,10 @@ class SetupPassengerScreen extends HookConsumerWidget {
             FilledButton(
               onPressed: () => registerRider(
                 ref,
-                form.currentState!,
-                referralCode.text,
                 firstName.text,
                 lastName.text,
+                referralCode.text,
+                formRef.value,
               ),
               child: Text("Submit"),
             ),
@@ -82,20 +82,24 @@ class SetupPassengerScreen extends HookConsumerWidget {
 
   void registerRider(
     WidgetRef ref,
-    FormState form,
-    String referralCode,
     String firstName,
     String lastName,
+    String referralCode,
+    GlobalKey<FormState> form,
   ) {
-    if (form.validate()) {
-      if (referralCode.isNotEmpty) {
-        ref.read(payloadBuilderProvider)["referred_by"] = referralCode;
-      }
+    if (!(form.currentState?.validate() ?? false)) return;
 
-      ref.read(payloadBuilderProvider)
-        ..["first_name"] = firstName
-        ..["last_name"] = lastName;
-      ref.read(appRouterProvider).push(CreatePasswordRoute());
+    Map<String, dynamic> payloadBuilder = ref.read(
+      authenticationPayloadProvider,
+    );
+
+    if (referralCode.isNotEmpty) {
+      payloadBuilder["referred_by"] = referralCode;
     }
+    payloadBuilder
+      ..["first_name"] = firstName
+      ..["last_name"] = lastName;
+
+    ref.read(appRouterProvider).push(CreatePasswordRoute());
   }
 }

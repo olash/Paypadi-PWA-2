@@ -19,7 +19,7 @@ class EnterPasswordScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final passwordController = useTextEditingController();
 
-    ref.listen(authControllerProvider, (previous, current) {
+    ref.listen(authenticationControllerProvider, (previous, current) {
       current.when(
         data: (d) {
           ref.dismissLoading();
@@ -67,6 +67,8 @@ class EnterPasswordScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String password) {
-    ref.read(authControllerProvider.notifier).login(phoneNumber, password);
+    ref
+        .read(authenticationControllerProvider.notifier)
+        .login(phoneNumber, password);
   }
 }

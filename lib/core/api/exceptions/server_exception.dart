@@ -23,7 +23,7 @@ sealed class ServerException extends AppException with _$ServerException {
   const factory ServerException.conflict(String? reason) = _Conflict;
   const factory ServerException.unsupportedMediaType(String? reason) =
       _UnsupportedMediaType;
-      
+
   const factory ServerException.tooManyRequests({
     String? reason,
     Duration? retryAfter,
@@ -55,6 +55,9 @@ sealed class ServerException extends AppException with _$ServerException {
     if (data is Map) {
       final detail = data['detail'];
       if (detail is String) message = detail;
+
+      final fieldErrors = data["non_field_errors"] as List<dynamic>;
+      message = fieldErrors.first;
     }
 
     switch (statusCode) {

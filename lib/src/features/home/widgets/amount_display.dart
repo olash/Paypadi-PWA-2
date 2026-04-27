@@ -8,17 +8,13 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 
 class AmountDisplay extends HookWidget {
-  const AmountDisplay({
-    super.key,
-    required this.amountEntered,
-    required this.onAmountPressed,
-  });
-
-  final String amountEntered;
-  final ValueSetter<int> onAmountPressed;
+  const AmountDisplay({super.key, required this.controller});
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
+    final controllerListenable = useValueListenable(controller);
+
     return Column(
       spacing: Values.v12,
       children: [
@@ -31,7 +27,7 @@ class AmountDisplay extends HookWidget {
           ),
           child: Center(
             child: Text(
-              "₦${formatAmount(amountEntered)}",
+              "₦${formatAmount(controllerListenable.text)}",
               style: context.textTheme.headlineLarge,
             ),
           ),
@@ -41,7 +37,7 @@ class AmountDisplay extends HookWidget {
           children: [
             for (PickedAmount amount in PickedAmount.values)
               GestureDetector(
-                onTap: () => onAmountPressed(amount.value),
+                onTap: () => controller.text = amount.value,
                 child: Container(
                   margin: EdgeInsets.only(right: Values.v10),
                   padding: EdgeInsets.all(Values.v10),

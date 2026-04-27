@@ -38,7 +38,7 @@ class LoginScreen extends HookConsumerWidget {
       },
     );
 
-    ref.listen(authControllerProvider, (previous, current) {
+    ref.listen(authenticationControllerProvider, (previous, current) {
       current.when(
         data: (d) => ref.dismissLoading(),
         error: (e, st) => ref.dismissLoading(),
@@ -68,10 +68,11 @@ class LoginScreen extends HookConsumerWidget {
             keyLength: passwordPinLength,
             controller: passwordController,
             showBiometric: enabledBiometrics.value,
-            onBiometricKeyPressed: () =>
-                ref.read(authControllerProvider.notifier).loginWithBiometrics(),
+            onBiometricKeyPressed: () => ref
+                .read(authenticationControllerProvider.notifier)
+                .loginWithBiometrics(),
             onSubmit: (password) => ref
-                .read(authControllerProvider.notifier)
+                .read(authenticationControllerProvider.notifier)
                 .login(user?.phoneNumber ?? '', password),
           ),
           Spacer(),

@@ -23,7 +23,7 @@ class ReceiptController extends _$ReceiptController {
         state = AsyncValue.data(success);
       },
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );

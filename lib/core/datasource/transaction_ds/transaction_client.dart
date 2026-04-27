@@ -44,7 +44,7 @@ abstract class TransactionClient {
   Future<PaginatedListResponse<BeneficiaryModel>> getSavedBeneficiaries();
 
   @GET('$_basePath/beneficiaries/recent/')
-  Future<PaginatedListResponse<BeneficiaryModel>> getRecentBeneficiaries();
+  Future<ApiListResponse<BeneficiaryModel>> getRecentBeneficiaries();
 
   @GET('$_basePath/transactions/{reference}/')
   Future<TransactionHistoryModel> getTransactionByRefNo({

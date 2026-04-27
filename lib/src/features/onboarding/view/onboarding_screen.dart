@@ -52,8 +52,6 @@ class OnboardingScreen extends HookConsumerWidget {
             child: PageView.builder(
               controller: pageController,
               itemCount: OnboardingController.pageCount,
-              // User swipe keeps the controller in sync but does NOT restart
-              // the timer — the periodic tick continues uninterrupted.
               onPageChanged: ref
                   .read(onboardingControllerProvider.notifier)
                   .onPageChanged,
@@ -83,12 +81,17 @@ class OnboardingScreen extends HookConsumerWidget {
           ),
           Values.v24.verticalSpacing,
           FilledButton(
-            onPressed: () =>
-                ref.read(appRouterProvider).push(CreateAccountRoute()),
+            onPressed: () {
+              ref.read(appRouterProvider).push(CreateAccountRoute());
+              ref.invalidate(onboardingControllerProvider);
+            },
             child: const Text('Create Account'),
           ),
           OutlinedButton(
-            onPressed: () => ref.read(appRouterProvider).push(SignInRoute()),
+            onPressed: () {
+              ref.read(appRouterProvider).push(SignInRoute());
+              ref.invalidate(onboardingControllerProvider);
+            },
             child: const Text('Sign In'),
           ),
         ],

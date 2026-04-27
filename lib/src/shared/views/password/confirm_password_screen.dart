@@ -19,12 +19,14 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmPasswordController = useTextEditingController();
 
-    ref.listen(authControllerProvider, (previous, current) {
+    ref.listen(authenticationControllerProvider, (previous, current) {
       current.when(
         data: (d) {
+          confirmPasswordController.clear();
           ref.dismissLoading();
         },
         error: (e, st) {
+          confirmPasswordController.clear();
           ref.dismissLoading();
           ref.showExceptionMessage(e, st);
         },
@@ -72,8 +74,8 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
     String confirmedPassword,
   ) {
     if (password == confirmedPassword) {
-      ref.read(payloadBuilderProvider)["password"] = confirmedPassword;
-      ref.read(authControllerProvider.notifier).createAccount();
+      ref.read(authenticationPayloadProvider)["password"] = password;
+      ref.read(authenticationControllerProvider.notifier).createAccount();
     }
   }
 }

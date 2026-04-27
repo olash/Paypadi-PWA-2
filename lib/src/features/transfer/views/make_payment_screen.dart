@@ -22,19 +22,18 @@ class MakePaymentScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hasSavedAsBeneficiary = useState<bool>(false);
-
     final commentController = useTextEditingController();
-
-    final receipientDetails = ref.watch(
-      accountLookupControllerProvider(recipientNumber),
-    );
+    final recipientDetails = ref.watch(accountLookupProvider(recipientNumber));
 
     return AppScaffold(
       title: "Transfer",
       child: Column(
         children: [
           Values.v16.verticalSpacing,
-          _BankAccountInformation(receipientNumber: recipientNumber),
+          _BankAccountInformation(
+            isLoading: recipientDetails.isLoading,
+            recipient: recipientDetails.value,
+          ),
           Values.v32.verticalSpacing,
           AppTextformfield(
             title: "Comments",
@@ -60,25 +59,25 @@ class MakePaymentScreen extends HookConsumerWidget {
               ),
               Switch.adaptive(
                 value: hasSavedAsBeneficiary.value,
-                onChanged: receipientDetails.isLoading
+                onChanged: recipientDetails.isLoading
                     ? null
                     : (value) {
                         hasSavedAsBeneficiary.value = true;
                         ref
                             .read(walletControllerProvider.notifier)
-                            .saveBeneficiary(receipientDetails.value!);
+                            .saveBeneficiary(recipientDetails.value!);
                       },
               ),
             ],
           ),
           Values.v48.verticalSpacing,
           FilledButton(
-            onPressed: receipientDetails.value == null
+            onPressed: recipientDetails.value == null
                 ? null
                 : () => continueToPinPage(
                     ref,
                     commentController.text,
-                    receipientDetails.value!,
+                    recipientDetails.value!,
                   ),
             child: Text("Make Payment"),
           ),
@@ -92,28 +91,26 @@ class MakePaymentScreen extends HookConsumerWidget {
     String desc,
     AccountLookupModel recipient,
   ) {
-    Map<String, dynamic> payload = ref
-        .read(transactionControllerProvider.notifier)
-        .payloadBuilder;
-
-    payload["description"] = desc;
-    payload["recipient_account_number"] = recipient.accountNumber;
-    payload["recipient_bank_code"] = recipient.bankCode;
+    ref.read(transactionPayloadProvider)
+      ..["description"] = desc
+      ..["recipient_account_number"] = recipient.accountNumber
+      ..["recipient_bank_code"] = recipient.bankCode;
 
     ref.read(appRouterProvider).push(EnterPinRoute());
   }
 }
 
-class _BankAccountInformation extends ConsumerWidget {
-  const _BankAccountInformation({required this.receipientNumber});
-  final String receipientNumber;
+class _BankAccountInformation extends StatelessWidget {
+  const _BankAccountInformation({
+    required this.isLoading,
+    required this.recipient,
+  });
+
+  final bool isLoading;
+  final AccountLookupModel? recipient;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final receipientDetails = ref.read(
-      accountLookupControllerProvider(receipientNumber),
-    );
-
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: Values.v12,
@@ -127,7 +124,7 @@ class _BankAccountInformation extends ConsumerWidget {
         spacing: Values.v20,
         children: [
           Skeletonizer(
-            enabled: receipientDetails.isLoading,
+            enabled: isLoading,
             child: Container(
               width: Values.v64,
               height: Values.v64,
@@ -135,7 +132,7 @@ class _BankAccountInformation extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(Values.v24),
                 image: DecorationImage(
                   image: NetworkImage(
-                    receipientDetails.value?.profilePicUrl ?? kDemoProfilePic,
+                    recipient?.profilePicUrl ?? kDemoProfilePic,
                   ),
                   fit: BoxFit.fill,
                 ),
@@ -148,17 +145,18 @@ class _BankAccountInformation extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Skeletonizer(
-                  enabled: receipientDetails.isLoading,
+                  enabled: isLoading,
                   child: Text(
-                    "${receipientDetails.value?.firstName ?? "FirstName"} "
-                    "${receipientDetails.value?.lastName ?? "LastName"}",
+                    isLoading
+                        ? "FirstName LastName"
+                        : "${recipient?.firstName} ${recipient?.lastName}",
                     style: context.textTheme.titleLarge,
                   ),
                 ),
                 Skeletonizer(
-                  enabled: receipientDetails.isLoading,
+                  enabled: isLoading,
                   child: Text(
-                    "${receipientDetails.value?.accountNumber ?? "AccountNumber"} ",
+                    isLoading ? "AccountNumber" : "${recipient?.accountNumber}",
                     style: context.textTheme.titleSmall?.copyWith(
                       letterSpacing: kZeroLetterSpacing,
                       color: AppColors.grey600,

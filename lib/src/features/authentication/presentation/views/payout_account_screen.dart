@@ -21,7 +21,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = useRef(GlobalKey<FormState>());
+    final formRef = useRef(GlobalKey<FormState>());
     final selectedBank = useState<BankModel?>(null);
     final bankSearchController = useSearchController();
     final accountName = useTextEditingController();
@@ -30,7 +30,6 @@ class PayoutAccountScreen extends HookConsumerWidget {
     ref.listen(payoutAccountControllerProvider, (previous, current) {
       current.when(
         data: (d) {
-          if (previous == null || !previous.isLoading) return;
           ref.dismissLoading();
           accountName.text = d?.bankName ?? '';
           _navigateNext(ref, context);
@@ -46,7 +45,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
     return AppScaffold(
       showAppBar: true,
       child: Form(
-        key: form.value,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,7 +82,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
                 ref,
                 selectedBank.value,
                 accountNumber.text,
-                form.value,
+                formRef.value,
               ),
               child: const Text('Submit'),
             ),
@@ -116,14 +115,13 @@ class PayoutAccountScreen extends HookConsumerWidget {
 
 class _ListOfBanks extends ConsumerWidget {
   const _ListOfBanks({required this.controller, required this.onBankSelected});
-
   final SearchController controller;
   final ValueSetter<BankModel> onBankSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch once — shared between the empty state check and the list.
-    final banksAsync = ref.watch(banksListProvider);
+    final banksAsync = ref.watch(bankListControllerProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,17 +131,17 @@ class _ListOfBanks extends ConsumerWidget {
           style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
         Values.v6.verticalSpacing,
-        SearchAnchor.bar(
-          isFullScreen: false,
-          barHintText: 'Select Bank',
-          searchController: controller,
-          dividerColor: AppColors.white,
-          textInputAction: TextInputAction.search,
-          barLeading: const SizedBox.shrink(),
-          // banksAsync captured from the enclosing build — no ref.watch inside.
-          suggestionsBuilder: (context, searchController) =>
-              _buildSuggestions(context, banksAsync, searchController),
-        ),
+        // DropdownMenuFormField(dropdownMenuEntries: )
+        // SearchAnchor.bar(
+        //   isFullScreen: false,
+        //   barHintText: 'Select Bank',
+        //   searchController: controller,
+        //   dividerColor: AppColors.white,
+        //   textInputAction: TextInputAction.search,
+        //   barLeading: const SizedBox.shrink(),
+        //   suggestionsBuilder: (context, searchController) =>
+        //       _buildSuggestions(context, banksAsync, searchController),
+        // ),
         Values.v12.verticalSpacing,
       ],
     );

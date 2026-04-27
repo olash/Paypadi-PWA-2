@@ -7,7 +7,7 @@ import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
+import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 
@@ -21,10 +21,11 @@ class VehicleInformationScreen extends HookConsumerWidget {
     final carModel = useTextEditingController();
     final productionYear = useTextEditingController();
     final licensePlate = useTextEditingController();
-    final GlobalKey<FormState> form = GlobalKey<FormState>();
+    final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
       showAppBar: true,
+      makeScrollable: true,
       appBar: AppBar(
         title: Text(
           "Step 2 out of 5",
@@ -32,9 +33,8 @@ class VehicleInformationScreen extends HookConsumerWidget {
         ),
         centerTitle: true,
       ),
-
       child: Form(
-        key: form,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -44,7 +44,6 @@ class VehicleInformationScreen extends HookConsumerWidget {
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
-
             Text(
               "Kindly provide the details below to help give you the best experience.",
               style: context.textTheme.bodyMedium,
@@ -75,11 +74,11 @@ class VehicleInformationScreen extends HookConsumerWidget {
             FilledButton(
               onPressed: () => submit(
                 ref,
-                form.currentState!,
                 carMake.text,
                 carModel.text,
                 productionYear.text,
                 licensePlate.text,
+                formRef.value,
               ),
               child: Text("Continue"),
             ),
@@ -91,24 +90,19 @@ class VehicleInformationScreen extends HookConsumerWidget {
 
   void submit(
     WidgetRef ref,
-    FormState form,
     String carMake,
     String carModel,
     String productionYear,
     String licensePlate,
+    GlobalKey<FormState> form,
   ) {
-    // if (form.validate()) {
-    //   if (productionYear.isNotEmpty) {
-    //     ref.read(payloadBuilderProvider)["year_of_production"] = productionYear;
-    //   }
+    if (!(form.currentState?.validate() ?? false)) return;
 
-    //   ref.read(payloadBuilderProvider)
-    //     ..["car_make"] = carMake
-    //     ..["car_model"] = carModel
-    //     ..["license_plate"] = productionYear;
-
-    //   ref.read(appRouterProvider).push(LicensingRoute());
-    // }
+    ref.read(profilePayloadProvider)
+      ..["vehicle_make"] = carMake
+      ..["vehicle_model"] = carModel
+      ..["vehicle_year"] = productionYear
+      ..["license_plate"] = licensePlate;
 
     ref.read(appRouterProvider).push(LicensingRoute());
   }

@@ -18,8 +18,13 @@
     <color name="unfocusedTextField">#CBD2E0</color>
     <color name="amountDisplayBorderColor">#D1D5D8</color>
     <color name= "bankBorderColor">#E6EBF0</color>
+    <color name= "grey200">#D5D7DA</color>
+    <color name= "grey300">#D5D7DA</color>
+    <color name= "grey400">#A4A7AE</color>
     <color name= "grey500">#717680</color>
     <color name= "grey600">#667085</color>
+    <color name= "grey700">#414651</color>
+    <color name= "boxShadow">#0A0D12</color>
     <color name= "dividerColor">#EDEDED</color>
     <color name= "themeBorderColor">#EDEDED</color>
     <color name= "blueThemeColor">#2C64E3</color>

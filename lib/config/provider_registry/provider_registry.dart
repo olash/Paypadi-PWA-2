@@ -3,6 +3,7 @@ import 'dart:ui' show Color;
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
 import 'package:paypadi/core/services/api_service.dart';
+import 'package:paypadi/core/services/file_picker_service.dart';
 import 'package:paypadi/core/services/receipt_service.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show CacheKeys, availableColors;
@@ -20,7 +21,6 @@ import 'package:paypadi/core/repositories/authentication_repo.dart';
 import 'package:paypadi/core/repositories/jwt_repo.dart';
 import 'package:paypadi/core/repositories/payout_account_repo.dart';
 import 'package:paypadi/core/repositories/profile_repo.dart';
-import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
 import 'package:paypadi/core/datasource/transaction_ds/transaction_client.dart';
@@ -91,6 +91,11 @@ BiometricsService biometrics(Ref ref) {
 @riverpod
 ReceiptService receiptService(Ref ref) {
   return ReceiptService();
+}
+
+@riverpod
+FilePickerService filePickerService(Ref ref) {
+  return FilePickerService();
 }
 
 @riverpod

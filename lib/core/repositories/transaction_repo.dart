@@ -29,11 +29,11 @@ class TransactionRepository {
     return response;
   }
 
-  FutureResultPaginatedListOf<BeneficiaryModel> getRecentBeneficiaries() async {
-    final response =
-        await Result.fromAsync<PaginatedListResponse<BeneficiaryModel>>(
-          () => client.getRecentBeneficiaries(),
-        );
+  FutureResultOf<ApiListResponse<BeneficiaryModel>>
+  getRecentBeneficiaries() async {
+    final response = await Result.fromAsync<ApiListResponse<BeneficiaryModel>>(
+      () => client.getRecentBeneficiaries(),
+    );
     return response;
   }
 

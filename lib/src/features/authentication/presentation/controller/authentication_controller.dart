@@ -12,10 +12,10 @@ import 'package:paypadi/core/utils/extensions.dart';
 part 'authentication_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-Map<String, dynamic> payloadBuilder(Ref ref) => {};
+Map<String, dynamic> authenticationPayload(Ref ref) => <String, dynamic>{};
 
 @riverpod
-class AuthController extends _$AuthController {
+class AuthenticationController extends _$AuthenticationController {
   late final AuthenticationRepository _authRepository;
 
   @override
@@ -25,7 +25,7 @@ class AuthController extends _$AuthController {
 
   Future<void> createAccount() async {
     state = AsyncLoading();
-    final Map<String, dynamic> payload = ref.watch(payloadBuilderProvider);
+    final payload = ref.watch(authenticationPayloadProvider);
 
     final String sessionId = ref
         .read(localCacheProvider)
@@ -41,7 +41,7 @@ class AuthController extends _$AuthController {
         state = AsyncData(null);
       },
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -49,12 +49,8 @@ class AuthController extends _$AuthController {
 
   Future<void> requestForOtp() async {
     state = AsyncLoading();
-
-    final Map<String, dynamic> payloadBuilder = ref.watch(
-      payloadBuilderProvider,
-    );
-
-    final Map<String, dynamic> payload = {
+    final payloadBuilder = ref.watch(authenticationPayloadProvider);
+    final Map<String, dynamic> payload = <String, dynamic>{
       "phone_number": payloadBuilder["phone_number"],
       "purpose": "registration",
     };
@@ -67,7 +63,7 @@ class AuthController extends _$AuthController {
         state = AsyncData(null);
       },
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -75,12 +71,8 @@ class AuthController extends _$AuthController {
 
   Future<void> verifyOtpCode(String code) async {
     state = AsyncLoading();
-
-    final Map<String, dynamic> payloadBuilder = ref.watch(
-      payloadBuilderProvider,
-    );
-
-    final Map<String, dynamic> payload = {
+    final payloadBuilder = ref.watch(authenticationPayloadProvider);
+    final Map<String, dynamic> payload = <String, dynamic>{
       "phone_number": payloadBuilder["phone_number"],
       "purpose": "registration",
       "code": code,
@@ -95,7 +87,7 @@ class AuthController extends _$AuthController {
         state = AsyncData(null);
       },
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -103,13 +95,13 @@ class AuthController extends _$AuthController {
 
   Future<void> login(String phoneNumber, String password) async {
     state = AsyncLoading();
-
-    final Map<String, dynamic> payload = {
+    final payload = <String, dynamic>{
       "phone_number": phoneNumber,
       "password": password,
     };
 
     final result = await _authRepository.login(payload);
+    
     result.fold(
       (success) {
         _saveAuthenticationTokens(success.refreshToken, success.accessToken);
@@ -120,7 +112,7 @@ class AuthController extends _$AuthController {
         state = AsyncData(null);
       },
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
@@ -147,7 +139,7 @@ class AuthController extends _$AuthController {
         await login(user?.phoneNumber ?? '', password ?? '');
       },
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );

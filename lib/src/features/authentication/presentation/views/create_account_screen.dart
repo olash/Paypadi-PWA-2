@@ -20,17 +20,17 @@ class CreateAccountScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = useRef(GlobalKey<FormState>());
+    final formRef = useRef(GlobalKey<FormState>());
+    final signInRecognizer = useMemoized(TapGestureRecognizer.new);
     final phoneNumber = useTextEditingController();
 
-    final signInRecognizer = useMemoized(TapGestureRecognizer.new);
     useEffect(() {
       signInRecognizer.onTap = () =>
           ref.read(appRouterProvider).push(SignInRoute());
       return signInRecognizer.dispose;
     }, const []);
 
-    ref.listen(authControllerProvider, (previous, current) {
+    ref.listen(authenticationControllerProvider, (previous, current) {
       current.when(
         data: (d) {
           ref.dismissLoading();
@@ -48,7 +48,7 @@ class CreateAccountScreen extends HookConsumerWidget {
     return AppScaffold(
       showAppBar: true,
       child: Form(
-        key: form.value,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -66,7 +66,8 @@ class CreateAccountScreen extends HookConsumerWidget {
             _TermsAndPrivacyRichText(),
             Values.v16.verticalSpacing,
             FilledButton(
-              onPressed: () => requestForOtp(ref, form.value, phoneNumber.text),
+              onPressed: () =>
+                  requestForOtp(ref, formRef.value, phoneNumber.text),
               child: Text("Create Account"),
             ),
             Values.v8.verticalSpacing,
@@ -103,8 +104,8 @@ class CreateAccountScreen extends HookConsumerWidget {
   ) async {
     if (!(form.currentState?.validate() ?? false)) return;
 
-    ref.read(payloadBuilderProvider)['phone_number'] = phoneNumber;
-    ref.read(authControllerProvider.notifier).requestForOtp();
+    ref.read(authenticationPayloadProvider)['phone_number'] = phoneNumber;
+    ref.read(authenticationControllerProvider.notifier).requestForOtp();
   }
 }
 

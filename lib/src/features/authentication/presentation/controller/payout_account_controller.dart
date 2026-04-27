@@ -1,4 +1,5 @@
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
+import 'package:paypadi/core/repositories/payout_account_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -7,20 +8,6 @@ import 'package:paypadi/core/repositories/wallet_repo.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
 part 'payout_account_controller.g.dart';
-
-@riverpod
-Future<List<BankModel>> banksList(Ref ref) async {
-  final result = await ref
-      .read(payoutAccountRepositoryProvider)
-      .getListOfBanks();
-
-  return result.fold(
-    (response) => response,
-    (error) {
-      throw error;
-    },
-  );
-}
 
 @riverpod
 class PayoutAccountController extends _$PayoutAccountController {
@@ -42,9 +29,28 @@ class PayoutAccountController extends _$PayoutAccountController {
     result.fold(
       (success) async => state = AsyncData(success),
       (failure) {
-        ref.showExceptionToast(failure);
+        ref.showExceptionMessage(failure);
         state = const AsyncData(null);
       },
     );
+  }
+}
+
+@riverpod
+class BankListController extends _$BankListController {
+  @override
+  FutureOr<List<BankModel>> build() async {
+    final repository = ref.watch(payoutAccountRepositoryProvider);
+    final result = await repository.getListOfBanks();
+
+    return result.fold(
+      (success) => success,
+      (failure) => throw failure,
+    );
+  }
+
+  Future<void> refresh() {
+    ref.invalidateSelf();
+    return future;
   }
 }

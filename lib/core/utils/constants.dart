@@ -115,6 +115,7 @@ final List<BeneficiaryModel> kMockBeneficiaries = List.generate(
       'Chinedu Eze',
       'Temitope Lawal',
     ][index],
+    bankName: ['First Bank', 'GT Bank', 'Opay', 'UBA', 'Zenith'][index],
     bankCode: ['058', '044', '033', '011', '232'][index],
     isVerified: index != 3,
     createdAt: DateTime.now()
@@ -194,3 +195,5 @@ class CacheKeys {
   static final String phoneNumber = "user_phone_number";
   static final String transactionPin = "user_transaction_pin";
 }
+
+

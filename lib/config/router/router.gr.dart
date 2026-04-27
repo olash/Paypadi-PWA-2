@@ -661,46 +661,18 @@ class OnboardingRoute extends _i39.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i25.OtpScreen]
-class OtpRoute extends _i39.PageRouteInfo<OtpRouteArgs> {
-  OtpRoute({_i40.Key? key, List<_i39.PageRouteInfo>? children})
-    : super(
-        OtpRoute.name,
-        args: OtpRouteArgs(key: key),
-        initialChildren: children,
-      );
+class OtpRoute extends _i39.PageRouteInfo<void> {
+  const OtpRoute({List<_i39.PageRouteInfo>? children})
+    : super(OtpRoute.name, initialChildren: children);
 
   static const String name = 'OtpRoute';
 
   static _i39.PageInfo page = _i39.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<OtpRouteArgs>(
-        orElse: () => const OtpRouteArgs(),
-      );
-      return _i25.OtpScreen(key: args.key);
+      return const _i25.OtpScreen();
     },
   );
-}
-
-class OtpRouteArgs {
-  const OtpRouteArgs({this.key});
-
-  final _i40.Key? key;
-
-  @override
-  String toString() {
-    return 'OtpRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! OtpRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -864,46 +836,18 @@ class SetupPassengerRoute extends _i39.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i34.SignInScreen]
-class SignInRoute extends _i39.PageRouteInfo<SignInRouteArgs> {
-  SignInRoute({_i40.Key? key, List<_i39.PageRouteInfo>? children})
-    : super(
-        SignInRoute.name,
-        args: SignInRouteArgs(key: key),
-        initialChildren: children,
-      );
+class SignInRoute extends _i39.PageRouteInfo<void> {
+  const SignInRoute({List<_i39.PageRouteInfo>? children})
+    : super(SignInRoute.name, initialChildren: children);
 
   static const String name = 'SignInRoute';
 
   static _i39.PageInfo page = _i39.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<SignInRouteArgs>(
-        orElse: () => const SignInRouteArgs(),
-      );
-      return _i34.SignInScreen(key: args.key);
+      return const _i34.SignInScreen();
     },
   );
-}
-
-class SignInRouteArgs {
-  const SignInRouteArgs({this.key});
-
-  final _i40.Key? key;
-
-  @override
-  String toString() {
-    return 'SignInRouteArgs{key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! SignInRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for

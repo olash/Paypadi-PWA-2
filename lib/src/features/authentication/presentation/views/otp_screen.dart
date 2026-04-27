@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +16,43 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class OtpScreen extends HookConsumerWidget {
-  OtpScreen({super.key});
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TapGestureRecognizer resendCode = TapGestureRecognizer();
+  const OtpScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final formRef = useRef(GlobalKey<FormState>());
+    final resendRecognizer = useMemoized(TapGestureRecognizer.new);
     final otpCode = useTextEditingController();
-    final phoneNumber = ref.watch(payloadBuilderProvider)["phone_number"];
+    final phoneNumber = ref.watch(
+      authenticationPayloadProvider,
+    )["phone_number"];
 
-    ref.listen(authControllerProvider, (previous, current) {
+    useEffect(() {
+      Timer? resendTimer;
+      bool hasSentCode = false;
+
+      resendRecognizer.onTap = () async {
+        // Guard against multiple taps
+        if (hasSentCode) return;
+
+        hasSentCode = true;
+
+        await ref
+            .read(authenticationControllerProvider.notifier)
+            .requestForOtp();
+
+        resendTimer = Timer(const Duration(seconds: 60), () {
+          hasSentCode = false;
+        });
+      };
+
+      return () {
+        resendTimer?.cancel();
+        resendRecognizer.dispose();
+      };
+    }, const []);
+
+    ref.listen(authenticationControllerProvider, (previous, current) {
       current.when(
         data: (d) {
           ref.dismissLoading();
@@ -42,7 +70,7 @@ class OtpScreen extends HookConsumerWidget {
     return AppScaffold(
       showAppBar: true,
       child: Form(
-        key: formKey,
+        key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -72,11 +100,11 @@ class OtpScreen extends HookConsumerWidget {
                   children: [
                     TextSpan(
                       text: "Send again",
-                      recognizer: resendCode,
+                      recognizer: resendRecognizer,
                       style: context.textTheme.bodySmall?.copyWith(
                         letterSpacing: 0.5,
-                        color: ref.watch(appPrimaryColorProvider),
                         decoration: TextDecoration.underline,
+                        color: ref.watch(appPrimaryColorProvider),
                         decorationColor: ref.watch(appPrimaryColorProvider),
                       ),
                     ),
@@ -86,7 +114,7 @@ class OtpScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => verifyOtp(ref, otpCode.text),
+              onPressed: () => verifyOtp(ref, otpCode.text, formRef.value),
               child: Text("Verify"),
             ),
           ],
@@ -95,9 +123,15 @@ class OtpScreen extends HookConsumerWidget {
     );
   }
 
-  void verifyOtp(WidgetRef ref, String otpCode) async {
-    if (formKey.currentState!.validate()) {
-      await ref.read(authControllerProvider.notifier).verifyOtpCode(otpCode);
-    }
+  void verifyOtp(
+    WidgetRef ref,
+    String otpCode,
+    GlobalKey<FormState> form,
+  ) async {
+    if (!(form.currentState?.validate() ?? false)) return;
+    
+    await ref
+        .read(authenticationControllerProvider.notifier)
+        .verifyOtpCode(otpCode);
   }
 }
