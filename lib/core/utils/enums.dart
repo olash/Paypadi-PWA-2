@@ -39,3 +39,12 @@ enum TransactionStatus { success, pending, failure }
 enum TransactionType { transfer, deposit, withdrawal, unknown }
 
 enum UploadStatus { idle, uploading, complete, failed }
+
+enum DocumentCategory {
+  driverLicenseFront("Driver’s License (Front)"),
+  driverLicenseBack("Driver’s License (Back)"),
+  vehicleLicense("Vehicle License");
+
+  const DocumentCategory(this.title);
+  final String title;
+}

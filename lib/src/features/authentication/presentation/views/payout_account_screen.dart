@@ -2,18 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
 
-import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/validators.dart';
-import 'package:paypadi/src/features/authentication/presentation/controller/payout_account_controller.dart';
+import 'package:paypadi/src/features/authentication/presentation/controller/bank_account_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
 
 @RoutePage()
 class PayoutAccountScreen extends HookConsumerWidget {
@@ -22,17 +21,16 @@ class PayoutAccountScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formRef = useRef(GlobalKey<FormState>());
-    final selectedBank = useState<BankModel?>(null);
-    final bankSearchController = useSearchController();
+    final bankCode = useState<String>('');
+    final bankController = useTextEditingController();
     final accountName = useTextEditingController();
     final accountNumber = useTextEditingController();
 
-    ref.listen(payoutAccountControllerProvider, (previous, current) {
+    ref.listen(verifiedBankAccountProvider, (previous, current) {
       current.when(
         data: (d) {
           ref.dismissLoading();
-          accountName.text = d?.bankName ?? '';
-          _navigateNext(ref, context);
+          accountName.text = d?.accountName ?? '';
         },
         error: (e, st) {
           ref.dismissLoading();
@@ -42,10 +40,41 @@ class PayoutAccountScreen extends HookConsumerWidget {
       );
     });
 
+    ref.listen(bankListControllerProvider, (_, state) {
+      state.when(
+        data: (d) {
+          ref.dismissLoading();
+        },
+        error: (e, st) {
+          ref.dismissLoading();
+          ref.showExceptionMessage(e);
+        },
+        loading: () => ref.showLoading(),
+      );
+    });
+
+    useEffect(() {
+      void listener() {
+        if (accountNumber.text.length == 10 && bankCode.value.isNotEmpty) {
+          _verifyAccountInfo(
+            ref,
+            bankCode.value,
+            accountNumber.text,
+            formRef.value,
+          );
+        }
+      }
+
+      accountNumber.addListener(listener);
+      return () => accountNumber.removeListener(listener);
+    }, [accountNumber]);
+
     return AppScaffold(
       showAppBar: true,
+      makeScrollable: true,
       child: Form(
         key: formRef.value,
+        autovalidateMode: AutovalidateMode.always,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,8 +90,8 @@ class PayoutAccountScreen extends HookConsumerWidget {
             ),
             Values.v32.verticalSpacing,
             _ListOfBanks(
-              controller: bankSearchController,
-              onBankSelected: (bank) => selectedBank.value = bank,
+              controller: bankController,
+              onBankSelected: (bank) => bankCode.value = bank.code,
             ),
             AppTextformfield(
               title: 'Account Number',
@@ -74,16 +103,12 @@ class PayoutAccountScreen extends HookConsumerWidget {
             AppTextformfield(
               isEnabled: false,
               title: 'Account Name',
+              hint: 'Account Name',
               controller: accountName,
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => _verifyAccountInfo(
-                ref,
-                selectedBank.value,
-                accountNumber.text,
-                formRef.value,
-              ),
+              onPressed: () => _navigateNext(ref, context),
               child: const Text('Submit'),
             ),
           ],
@@ -94,34 +119,40 @@ class PayoutAccountScreen extends HookConsumerWidget {
 
   void _verifyAccountInfo(
     WidgetRef ref,
-    BankModel? bank,
+    String bankCode,
     String accountNumber,
     GlobalKey<FormState> form,
   ) {
     final isFormValid = form.currentState?.validate() ?? false;
-    if (!isFormValid || bank == null) return;
+    if (!isFormValid || bankCode.isEmpty) return;
 
-    ref.read(payoutAccountControllerProvider.notifier).verifyBankInformation({
+    ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
       'account_number': accountNumber,
-      'bank_code': bank.code,
+      'bank_code': bankCode,
     });
   }
 
   void _navigateNext(WidgetRef ref, BuildContext context) {
+    final verified = ref.read(verifiedBankAccountProvider);
+    if (!verified.hasValue || verified.value == null) {
+      ref.showErrorToast("Please verify your account details first.");
+      return;
+    }
+
     if (!context.mounted) return;
+
     ref.read(appRouterProvider).push(CreatePasswordRoute());
   }
 }
 
 class _ListOfBanks extends ConsumerWidget {
   const _ListOfBanks({required this.controller, required this.onBankSelected});
-  final SearchController controller;
+  final TextEditingController controller;
   final ValueSetter<BankModel> onBankSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch once — shared between the empty state check and the list.
-    final banksAsync = ref.watch(bankListControllerProvider);
+    final banks = ref.watch(bankListControllerProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,73 +162,30 @@ class _ListOfBanks extends ConsumerWidget {
           style: context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
         Values.v6.verticalSpacing,
-        // DropdownMenuFormField(dropdownMenuEntries: )
-        // SearchAnchor.bar(
-        //   isFullScreen: false,
-        //   barHintText: 'Select Bank',
-        //   searchController: controller,
-        //   dividerColor: AppColors.white,
-        //   textInputAction: TextInputAction.search,
-        //   barLeading: const SizedBox.shrink(),
-        //   suggestionsBuilder: (context, searchController) =>
-        //       _buildSuggestions(context, banksAsync, searchController),
-        // ),
+
+        DropdownMenu<BankModel>(
+          enableFilter: true,
+          requestFocusOnTap: true,
+          hintText: "Select Bank",
+          controller: controller,
+          width: context.screenWidth,
+          menuHeight: context.screenHeight * .4,
+          trailingIcon: Icon(Iconsax.arrow_down_1_outline),
+          selectedTrailingIcon: SizedBox.shrink(),
+          onSelected: (bank) {
+            if (bank == null) return;
+            onBankSelected(bank);
+          },
+          dropdownMenuEntries: [
+            for (BankModel bank in banks.value ?? <BankModel>[])
+              DropdownMenuEntry<BankModel>(
+                value: bank,
+                label: bank.name,
+              ),
+          ],
+        ),
         Values.v12.verticalSpacing,
       ],
-    );
-  }
-
-  List<Widget> _buildSuggestions(
-    BuildContext context,
-    AsyncValue<List<BankModel>> banksAsync,
-    SearchController searchController,
-  ) {
-    return banksAsync.when(
-      loading: () => const [LoadingIndicator()],
-      error: (e, st) => [
-        ListTile(
-          title: Text(
-            'Error loading banks',
-            style: context.textTheme.bodyMedium,
-          ),
-        ),
-      ],
-      data: (banks) {
-        final query = searchController.text.toLowerCase();
-        final filtered = query.isEmpty
-            ? banks
-            : banks.where((b) => b.name.toLowerCase().contains(query)).toList();
-
-        if (filtered.isEmpty) {
-          return [
-            ListTile(
-              title: Text(
-                'No banks found',
-                style: context.textTheme.bodyMedium,
-              ),
-            ),
-          ];
-        }
-
-        return filtered
-            .map(
-              (bank) => ListTile(
-                title: Text(
-                  bank.name,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey500,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  onBankSelected(bank);
-                  controller.text = bank.name;
-                  searchController.closeView(bank.name);
-                },
-              ),
-            )
-            .toList();
-      },
     );
   }
 }

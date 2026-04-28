@@ -13,37 +13,68 @@ part 'file_upload_controller.g.dart';
 @riverpod
 class FilePickerController extends _$FilePickerController {
   @override
-  AsyncValue<File?> build() => const AsyncData(null);
+  AsyncValue<Map<DocumentCategory, File?>> build() => AsyncData(_default);
 
-  Future<void> pickFile() async {
-    state = const AsyncLoading();
+  Future<void> pickFile(DocumentCategory documentCategory) async {
     try {
       final result = await ref
           .read(filePickerServiceProvider)
           .pickFileFromSystem();
+
+      if (!ref.mounted) return;
+
       final path = result.files.first.xFile.path;
-      state = AsyncData(File(path));
+
+      final updated = Map<DocumentCategory, File?>.from(
+        state.value ?? _default,
+      );
+      updated[documentCategory] = File(path);
+
+      state = AsyncData(updated);
     } on ClientException catch (e) {
       if (!ref.mounted) return;
 
       ref.showExceptionMessage(e);
-      state = const AsyncData(null);
+
+      // Only clear the failed category
+      final current = Map<DocumentCategory, File?>.from(
+        state.value ?? _default,
+      );
+      current[documentCategory] = null;
+
+      state = AsyncData(current);
     }
   }
 
-  void clear() => state = const AsyncData(null);
+  void clearFile(DocumentCategory documentCategory) {
+    final current = Map<DocumentCategory, File?>.from(
+      state.value ?? _default,
+    );
+    current[documentCategory] = null;
+    state = AsyncData(current);
+  }
+
+  final Map<DocumentCategory, File?> _default = <DocumentCategory, File?>{
+    DocumentCategory.driverLicenseBack: null,
+    DocumentCategory.driverLicenseFront: null,
+    DocumentCategory.vehicleLicense: null,
+  };
 }
 
 @riverpod
 class FileUploadController extends _$FileUploadController {
   @override
-  UploadState build() => const UploadState();
+  UploadState build(DocumentCategory category) {
+    final pickerState = ref.watch(filePickerControllerProvider);
+    final file = pickerState.value?[category];
+    return UploadState(file: file);
+  }
 
   Future<void> upload() async {
-    final fileState = ref.read(filePickerControllerProvider);
-    if (!fileState.hasValue || fileState.value == null) return;
+    final pickerState = ref.read(filePickerControllerProvider);
+    final file = pickerState.value?[category]; // ✅ Read specific category
 
-    final file = fileState.value!;
+    if (file == null) return;
 
     state = UploadState(
       status: UploadStatus.uploading,
@@ -73,7 +104,7 @@ class FileUploadController extends _$FileUploadController {
   Future<void> retry() => upload();
 
   void reset() {
-    ref.read(filePickerControllerProvider.notifier).clear();
+    ref.read(filePickerControllerProvider.notifier).clearFile(category);
     state = const UploadState();
   }
 }

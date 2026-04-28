@@ -104,7 +104,7 @@ AuthenticationClient authenticationClient(Ref ref) {
   return AuthenticationClient(dio);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 JwtClient jwtClient(Ref ref) {
   final dio = ref.watch(dioProvider);
   return JwtClient(dio);
@@ -140,7 +140,7 @@ AuthenticationRepository authenticationRepository(Ref ref) {
   return AuthenticationRepository(client: client);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 JwtRepository jwtRepository(Ref ref) {
   final JwtClient client = ref.watch(jwtClientProvider);
   return JwtRepository(client: client);

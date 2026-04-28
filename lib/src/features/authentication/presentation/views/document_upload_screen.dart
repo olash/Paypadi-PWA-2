@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
@@ -49,15 +50,15 @@ class DocumentUploadScreen extends HookConsumerWidget {
             ),
             Values.v32.verticalSpacing,
             _DocumentUploadWidget(
-              title: "Driver’s License (Front)",
+              documentCategory: DocumentCategory.driverLicenseFront,
             ),
             Values.v12.verticalSpacing,
             _DocumentUploadWidget(
-              title: "Driver’s License (Back)",
+              documentCategory: DocumentCategory.driverLicenseBack,
             ),
             Values.v12.verticalSpacing,
             _DocumentUploadWidget(
-              title: "Vehicle License",
+              documentCategory: DocumentCategory.vehicleLicense,
             ),
             Values.v24.verticalSpacing,
             FilledButton(
@@ -71,49 +72,65 @@ class DocumentUploadScreen extends HookConsumerWidget {
   }
 
   void submit(WidgetRef ref, GlobalKey<FormState> form) {
-    if (!(form.currentState?.validate() ?? false)) return;
+    final allUploaded = DocumentCategory.values.every(
+      (category) =>
+          ref.read(fileUploadControllerProvider(category)).status ==
+          UploadStatus.complete,
+    );
+
+    if (!allUploaded) {
+      ref.showErrorToast("Please upload all documents before continuing.");
+      return;
+    }
 
     ref.read(appRouterProvider).push(PayoutAccountRoute());
   }
 }
 
-class _DocumentUploadWidget extends HookConsumerWidget {
-  const _DocumentUploadWidget({required this.title});
-  final String title;
+class _DocumentUploadWidget extends ConsumerWidget {
+  const _DocumentUploadWidget({required this.documentCategory});
+  final DocumentCategory documentCategory;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pickedFile = ref.watch(filePickerControllerProvider);
-    final hasPickedFile = useState<bool>(false);
+    final uploadState = ref.watch(
+      fileUploadControllerProvider(documentCategory),
+    );
+    final hasPickedFile = uploadState.file != null;
 
     return Column(
       spacing: Values.v4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          documentCategory.title,
           style: context.textTheme.bodyLarge,
         ),
         AnimatedSwitcher(
           duration: Durations.medium4,
-          child: !hasPickedFile.value
-              ? _FilePickerWidget(
-                  onPressed: () async {
-                    await ref
-                        .read(filePickerControllerProvider.notifier)
-                        .pickFile();
-
-                    if (pickedFile.value == null) return;
-                    
-                    hasPickedFile.value = true;
-                  },
-                )
-              : _UploadFileWidget(
-                  onPressed: () => hasPickedFile.value = false,
-                ),
+          child: !hasPickedFile
+              ? _FilePickerWidget(onPressed: () => pickFile(ref))
+              : _UploadFileWidget(documentCategory: documentCategory),
         ),
       ],
     );
+  }
+
+  void pickFile(WidgetRef ref) async {
+    await ref
+        .read(filePickerControllerProvider.notifier)
+        .pickFile(documentCategory);
+
+    // Fresh read after await
+    final freshFile = ref.read(filePickerControllerProvider);
+    if (!freshFile.hasValue || freshFile.value?[documentCategory] == null) {
+      return;
+    }
+
+    // Trigger upload immediately after picking
+    await ref
+        .read(fileUploadControllerProvider(documentCategory).notifier)
+        .upload();
   }
 }
 
@@ -192,15 +209,14 @@ class _FilePickerWidget extends ConsumerWidget {
 }
 
 class _UploadFileWidget extends HookConsumerWidget {
-  const _UploadFileWidget({required this.onPressed});
-  final VoidCallback onPressed;
+  const _UploadFileWidget({required this.documentCategory});
+  final DocumentCategory documentCategory;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(fileUploadControllerProvider);
+    final state = ref.watch(fileUploadControllerProvider(documentCategory));
     final fileName = state.file?.path.split('/').last ?? '';
     final extension = fileName.split('.').last.toUpperCase();
-    final primaryColor = ref.watch(appPrimaryColorProvider);
     final isFailed = state.status == UploadStatus.failed;
 
     return Stack(
@@ -211,76 +227,24 @@ class _UploadFileWidget extends HookConsumerWidget {
             horizontal: Values.v24,
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.grey200),
+            border: Border.all(
+              color: isFailed ? AppColors.failure : AppColors.grey200,
+            ),
             borderRadius: BorderRadius.circular(Values.v12),
           ),
           child: Row(
             spacing: Values.v12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              switch (extension) {
-                'pdf' => AppAssets.icons.pdfIcon.svg(),
-                'png' => AppAssets.icons.pngIcon.svg(),
-                'jpg' => AppAssets.icons.jpgIcon.svg(),
-                _ => SizedBox.shrink(),
-              },
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    fileName,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.grey700,
-                    ),
-                  ),
-                  if (state.status == UploadStatus.uploading) ...[
-                    Row(
-                      spacing: Values.v4,
-                      children: [
-                        Text(
-                          state.formattedProgress,
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: AppColors.grey600,
-                          ),
-                        ),
-                        Text(
-                          ' | ',
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: AppColors.grey300,
-                          ),
-                        ),
-                        _FileUploadStatusWidget(uploadStatus: state.status),
-                      ],
-                    ),
-                    Values.v4.verticalSpacing,
-                    Row(
-                      spacing: Values.v12,
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: LinearProgressIndicator(
-                              value: state.progress,
-                              minHeight: 6,
-                              backgroundColor: AppColors.grey200,
-                              valueColor: AlwaysStoppedAnimation(
-                                isFailed ? Colors.red : primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '${(state.progress * 100).toInt()}%',
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ],
-                ],
+              SvgPicture.asset(
+                switch (extension) {
+                  'PDF' => AppAssets.icons.pdfIcon.path,
+                  'PNG' => AppAssets.icons.pngIcon.path,
+                  'JPG' => AppAssets.icons.jpgIcon.path,
+                  _ => AppAssets.icons.keypadBackspace.path,
+                },
               ),
+              _FileUploadWidget(documentCategory: documentCategory),
             ],
           ),
         ),
@@ -289,7 +253,9 @@ class _UploadFileWidget extends HookConsumerWidget {
           right: Values.v8,
           child: GestureDetector(
             onTap: () {
-              onPressed();
+              ref
+                  .read(fileUploadControllerProvider(documentCategory).notifier)
+                  .reset();
             },
             child: Icon(
               EvaIcons.trash_2_outline,
@@ -299,6 +265,93 @@ class _UploadFileWidget extends HookConsumerWidget {
         ),
       ],
     );
+  }
+}
+
+class _FileUploadWidget extends HookConsumerWidget {
+  const _FileUploadWidget({required this.documentCategory});
+  final DocumentCategory documentCategory;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(fileUploadControllerProvider(documentCategory));
+    final fileName = state.file?.path.split('/').last ?? '';
+    final primaryColor = ref.watch(appPrimaryColorProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          fileName,
+          overflow: TextOverflow.ellipsis,
+          style: context.textTheme.bodyMedium?.copyWith(
+            color: AppColors.grey700,
+          ),
+        ),
+
+        Row(
+          spacing: Values.v4,
+          children: [
+            Text(
+              state.formattedProgress,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: AppColors.grey600,
+              ),
+            ),
+            Text(
+              ' | ',
+              style: context.textTheme.bodySmall?.copyWith(
+                color: AppColors.grey300,
+              ),
+            ),
+            _FileUploadStatusWidget(uploadStatus: state.status),
+          ],
+        ),
+        if (state.status == UploadStatus.uploading) ...[
+          Values.v4.verticalSpacing,
+          Row(
+            spacing: Values.v12,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: context.screenWidth * .54,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: state.progress,
+                    minHeight: Values.v8,
+                    backgroundColor: AppColors.grey200,
+                    valueColor: AlwaysStoppedAnimation(
+                      primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                '${(state.progress * 100).toInt()}%',
+                style: context.textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ] else if (state.status == UploadStatus.failed) ...[
+          Values.v4.verticalSpacing,
+          GestureDetector(
+            onTap: () => retry(ref),
+            child: Text(
+              "Try again",
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: AppColors.failure,
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  void retry(WidgetRef ref) {
+    ref.read(fileUploadControllerProvider(documentCategory).notifier).retry();
   }
 }
 
@@ -320,7 +373,7 @@ class _FileUploadStatusWidget extends StatelessWidget {
       children: [
         switch (uploadStatus) {
           UploadStatus.uploading => Icon(
-            EvaIcons.loader_outline,
+            EvaIcons.cloud_upload_outline,
             color: AppColors.grey500,
           ),
           UploadStatus.complete => Icon(
@@ -328,7 +381,8 @@ class _FileUploadStatusWidget extends StatelessWidget {
             color: AppColors.success,
           ),
           UploadStatus.failed => Icon(
-            EvaIcons.close_circle,
+            Iconsax.close_circle_outline,
+            size: Values.v16,
             color: AppColors.failure,
           ),
           _ => SizedBox.shrink(),
@@ -336,7 +390,7 @@ class _FileUploadStatusWidget extends StatelessWidget {
         if (statusText.isNotEmpty)
           Text(
             statusText,
-            style: context.textTheme.bodySmall?.copyWith(
+            style: context.textTheme.bodyMedium?.copyWith(
               color: switch (uploadStatus) {
                 UploadStatus.uploading => AppColors.grey500,
                 UploadStatus.complete => AppColors.success,

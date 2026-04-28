@@ -14,3 +14,15 @@ sealed class BankModel with _$BankModel {
   factory BankModel.fromJson(Map<String, dynamic> json) =>
       _$BankModelFromJson(json);
 }
+
+@freezed
+sealed class VerifiedBankAccountModel with _$VerifiedBankAccountModel {
+  const factory VerifiedBankAccountModel({
+    @JsonKey(name: "account_number") required String accountNumber,
+    @JsonKey(name: "account_name") required String accountName,
+    @JsonKey(name: "bank_id") required String bankId,
+  }) = _VerifiedBankAccountModel;
+
+  factory VerifiedBankAccountModel.fromJson(Map<String, dynamic> json) =>
+      _$VerifiedBankAccountModelFromJson(json);
+}

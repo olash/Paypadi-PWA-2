@@ -47,6 +47,7 @@ class AccountRoleScreen extends HookConsumerWidget {
           _RoleWidget(
             role: AccountRole.driver,
             onWidgetTapped: () {
+              
               ref.read(authenticationPayloadProvider)["role"] = "driver";
               ref.read(appRouterProvider).push(SetupDriverRoute());
             },

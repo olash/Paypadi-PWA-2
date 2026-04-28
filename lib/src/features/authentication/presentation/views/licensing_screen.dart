@@ -21,6 +21,21 @@ class LicensingScreen extends HookConsumerWidget {
     final expiryDate = useTextEditingController();
     final formRef = useRef(GlobalKey<FormState>());
 
+    ref.listen(driverProfileProvider, (previous, current) {
+      current.when(
+        data: (d) {
+          ref.dismissLoading();
+          driverLicense.clear();
+          expiryDate.clear();
+        },
+        error: (e, st) {
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
+        },
+        loading: ref.showLoading,
+      );
+    });
+
     return AppScaffold(
       showAppBar: true,
       makeScrollable: true,
@@ -81,6 +96,8 @@ class LicensingScreen extends HookConsumerWidget {
     GlobalKey<FormState> form,
   ) {
     if (!(form.currentState?.validate() ?? false)) return;
+
+    ref.closeKeyboard();
 
     ref.read(profilePayloadProvider)
       ..["driver_license_number"] = driverLicense

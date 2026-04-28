@@ -89,6 +89,7 @@ class SetupPassengerScreen extends HookConsumerWidget {
   ) {
     if (!(form.currentState?.validate() ?? false)) return;
 
+    ref.closeKeyboard();
     Map<String, dynamic> payloadBuilder = ref.read(
       authenticationPayloadProvider,
     );

@@ -8,7 +8,7 @@ class FilePickerService {
 
   Future<FilePickerResult> pickFileFromSystem() async {
     try {
-      final FilePickerResult? result = await FilePicker.pickFiles(
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
         withData: true,
         type: FileType.custom,
         allowedExtensions: _allowedExtensions,

@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/controllers/profile_controller.dart';
@@ -22,6 +22,23 @@ class VehicleInformationScreen extends HookConsumerWidget {
     final productionYear = useTextEditingController();
     final licensePlate = useTextEditingController();
     final formRef = useRef(GlobalKey<FormState>());
+
+    ref.listen(driverProfileProvider, (previous, current) {
+      current.when(
+        data: (d) {
+          ref.dismissLoading();
+          carMake.clear();
+          carModel.clear();
+          productionYear.clear();
+          licensePlate.clear();
+        },
+        error: (e, st) {
+          ref.dismissLoading();
+          ref.showExceptionMessage(e, st);
+        },
+        loading: ref.showLoading,
+      );
+    });
 
     return AppScaffold(
       showAppBar: true,
@@ -96,13 +113,17 @@ class VehicleInformationScreen extends HookConsumerWidget {
     String licensePlate,
     GlobalKey<FormState> form,
   ) {
-    if (!(form.currentState?.validate() ?? false)) return;
+    // if (!(form.currentState?.validate() ?? false)) return;
 
-    ref.read(profilePayloadProvider)
-      ..["vehicle_make"] = carMake
-      ..["vehicle_model"] = carModel
-      ..["vehicle_year"] = productionYear
-      ..["license_plate"] = licensePlate;
+    // ref.closeKeyboard();
+
+    // ref.read(profilePayloadProvider)
+    //   ..["vehicle_make"] = carMake
+    //   ..["vehicle_model"] = carModel
+    //   ..["vehicle_year"] = productionYear
+    //   ..["license_plate"] = licensePlate;
+
+    // ref.read(driverProfileProvider.notifier).createProfile();
 
     ref.read(appRouterProvider).push(LicensingRoute());
   }

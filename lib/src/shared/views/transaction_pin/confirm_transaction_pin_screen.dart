@@ -19,7 +19,7 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final confirmPinController = useTextEditingController();
 
-    ref.listen(riderProfileControllerProvider, (previous, current) {
+    ref.listen(riderProfileProvider, (previous, current) {
       current.when(
         data: (d) {
           confirmPinController.clear();
@@ -70,7 +70,7 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
   void submitPin(WidgetRef ref, String pin, String confirmedPin) {
     if (pin == confirmedPin) {
       ref
-          .read(riderProfileControllerProvider.notifier)
+          .read(riderProfileProvider.notifier)
           .setTransactionPin(pin, confirmedPin);
     }
   }

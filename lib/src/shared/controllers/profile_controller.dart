@@ -12,7 +12,7 @@ part 'profile_controller.g.dart';
 Map<String, dynamic> profilePayload(Ref ref) => <String, dynamic>{};
 
 @riverpod
-class RiderProfileController extends _$RiderProfileController {
+class RiderProfile extends _$RiderProfile {
   late final ProfileRepository _profileRepository;
 
   @override
@@ -45,7 +45,7 @@ class RiderProfileController extends _$RiderProfileController {
 }
 
 @riverpod
-class DriverProfileController extends _$DriverProfileController {
+class DriverProfile extends _$DriverProfile {
   late final ProfileRepository _profileRepository;
 
   @override
@@ -53,7 +53,7 @@ class DriverProfileController extends _$DriverProfileController {
     _profileRepository = ref.watch(profileRepositoryProvider);
   }
 
-  Future<void> createDriverProfile() async {
+  Future<void> createProfile() async {
     state = AsyncLoading();
 
     final payload = ref.read(profilePayloadProvider);
@@ -62,6 +62,7 @@ class DriverProfileController extends _$DriverProfileController {
     result.fold(
       (success) {
         state = AsyncData(null);
+        ref.read(appRouterProvider).push(LicensingRoute());
       },
       (failure) {
         ref.showExceptionMessage(failure);

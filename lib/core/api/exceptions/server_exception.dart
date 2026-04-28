@@ -56,8 +56,7 @@ sealed class ServerException extends AppException with _$ServerException {
       final detail = data['detail'];
       if (detail is String) message = detail;
 
-      final fieldErrors = data["non_field_errors"] as List<dynamic>;
-      message = fieldErrors.first;
+    
     }
 
     switch (statusCode) {

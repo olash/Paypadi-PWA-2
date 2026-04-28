@@ -65,3 +65,11 @@ extension AppLoadingOnWidgetRef on WidgetRef {
   void dismissLoading() =>
       read(appLoadingControllerProvider.notifier).dismiss();
 }
+
+extension FocusManagerOnRef on Ref {
+  void closeKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
+}
+
+extension FocusManagerOnWidgetRef on WidgetRef {
+  void closeKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
+}

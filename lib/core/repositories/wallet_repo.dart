@@ -1,6 +1,7 @@
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
+import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
@@ -36,10 +37,10 @@ class WalletRepository {
     return response;
   }
 
-  FutureResultOf<UserBankAccountModel> verifyBankInformation(
+  FutureResultOf<VerifiedBankAccountModel> verifyBankInformation(
     Map<String, dynamic> payload,
   ) async {
-    final response = await Result.fromAsync<UserBankAccountModel>(
+    final response = await Result.fromAsync<VerifiedBankAccountModel>(
       () async {
         final result = await client.verifyBankInformation(payload: payload);
         return result.data;

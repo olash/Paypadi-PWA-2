@@ -104,6 +104,7 @@ class CreateAccountScreen extends HookConsumerWidget {
   ) async {
     if (!(form.currentState?.validate() ?? false)) return;
 
+    ref.closeKeyboard();
     ref.read(authenticationPayloadProvider)['phone_number'] = phoneNumber;
     ref.read(authenticationControllerProvider.notifier).requestForOtp();
   }

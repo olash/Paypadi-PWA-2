@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
-import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'package:paypadi/core/api/response/api_response.dart';
+import 'package:paypadi/core/models/bank_model/bank_model.dart';
+import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
+import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 
@@ -33,7 +34,7 @@ abstract class WalletClient {
   });
 
   @POST('$_basePath/bank/verify/')
-  Future<ApiResponse<UserBankAccountModel>> verifyBankInformation({
+  Future<ApiResponse<VerifiedBankAccountModel>> verifyBankInformation({
     @Body() required Map<String, dynamic> payload,
   });
 }
