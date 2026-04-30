@@ -63,24 +63,34 @@ class FilePickerController extends _$FilePickerController {
 
 @riverpod
 class FileUploadController extends _$FileUploadController {
+  final Map<DocumentCategory, UploadState> _uploadStates =
+      <DocumentCategory, UploadState>{};
+
   @override
-  UploadState build(DocumentCategory category) {
-    final pickerState = ref.watch(filePickerControllerProvider);
-    final file = pickerState.value?[category];
-    return UploadState(file: file);
+  Map<DocumentCategory, UploadState> build() {
+    final files = ref.watch(filePickerControllerProvider).value ?? {};
+
+    return <DocumentCategory, UploadState>{
+      for (final entry in files.entries)
+        entry.key: _uploadStates.containsKey(entry.key)
+            // Preserve existing upload progress, just sync the latest file.
+            ? _uploadStates[entry.key]!.copyWith(file: entry.value)
+            : UploadState(file: entry.value),
+    };
   }
 
-  Future<void> upload() async {
-    final pickerState = ref.read(filePickerControllerProvider);
-    final file = pickerState.value?[category]; // ✅ Read specific category
-
+  Future<void> upload(DocumentCategory category) async {
+    final file = state[category]?.file;
     if (file == null) return;
 
-    state = UploadState(
-      status: UploadStatus.uploading,
-      file: file,
-      sentBytes: 0,
-      totalBytes: file.lengthSync(),
+    _updateCategory(
+      category,
+      UploadState(
+        status: UploadStatus.uploading,
+        file: file,
+        sentBytes: 0,
+        totalBytes: file.lengthSync(),
+      ),
     );
 
     final result = await ref
@@ -88,23 +98,41 @@ class FileUploadController extends _$FileUploadController {
         .uploadDocument(
           file: file,
           fileName: file.path.split('/').last,
-          onSendProgress: (sent, total) =>
-              state = state.copyWith(sentBytes: sent, totalBytes: total),
+          onSendProgress: (sent, total) => _updateCategory(
+            category,
+            _uploadStates[category]!.copyWith(
+              sentBytes: sent,
+              totalBytes: total,
+            ),
+          ),
         );
 
     result.fold(
-      (success) => state = state.copyWith(status: UploadStatus.complete),
+      (success) => _updateCategory(
+        category,
+        _uploadStates[category]!.copyWith(status: UploadStatus.complete),
+      ),
       (failure) {
         ref.showExceptionMessage(failure);
-        state = state.copyWith(status: UploadStatus.failed);
+        _updateCategory(
+          category,
+          _uploadStates[category]!.copyWith(status: UploadStatus.failed),
+        );
       },
     );
   }
 
-  Future<void> retry() => upload();
+  Future<void> retry(DocumentCategory category) => upload(category);
 
-  void reset() {
+  void reset(DocumentCategory category) {
+    _uploadStates.remove(category);
     ref.read(filePickerControllerProvider.notifier).clearFile(category);
-    state = const UploadState();
+    // Clearing the file triggers a picker rebuild, which drives build() again.
+    // No need to manually update state here.
+  }
+
+  void _updateCategory(DocumentCategory category, UploadState uploadState) {
+    _uploadStates[category] = uploadState;
+    state = Map.from(state)..[category] = uploadState;
   }
 }

@@ -53,10 +53,8 @@ sealed class ServerException extends AppException with _$ServerException {
     String? message;
     final data = response?.data;
     if (data is Map) {
-      final detail = data['detail'];
-      if (detail is String) message = detail;
-
-    
+      final errorMessage = data['message'];
+      if (errorMessage is String) message = errorMessage;
     }
 
     switch (statusCode) {

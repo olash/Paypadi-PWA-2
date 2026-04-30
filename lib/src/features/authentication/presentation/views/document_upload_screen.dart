@@ -74,7 +74,7 @@ class DocumentUploadScreen extends HookConsumerWidget {
   void submit(WidgetRef ref, GlobalKey<FormState> form) {
     final allUploaded = DocumentCategory.values.every(
       (category) =>
-          ref.read(fileUploadControllerProvider(category)).status ==
+          ref.read(fileUploadControllerProvider)[category]?.status ==
           UploadStatus.complete,
     );
 
@@ -93,10 +93,8 @@ class _DocumentUploadWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uploadState = ref.watch(
-      fileUploadControllerProvider(documentCategory),
-    );
-    final hasPickedFile = uploadState.file != null;
+    final uploadState = ref.watch(fileUploadControllerProvider);
+    final hasPickedFile = uploadState[documentCategory]?.file != null;
 
     return Column(
       spacing: Values.v4,
@@ -129,8 +127,8 @@ class _DocumentUploadWidget extends ConsumerWidget {
 
     // Trigger upload immediately after picking
     await ref
-        .read(fileUploadControllerProvider(documentCategory).notifier)
-        .upload();
+        .read(fileUploadControllerProvider.notifier)
+        .upload(documentCategory);
   }
 }
 
@@ -214,10 +212,10 @@ class _UploadFileWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(fileUploadControllerProvider(documentCategory));
-    final fileName = state.file?.path.split('/').last ?? '';
+    final state = ref.watch(fileUploadControllerProvider);
+    final fileName = state[documentCategory]?.file?.path.split('/').last ?? '';
     final extension = fileName.split('.').last.toUpperCase();
-    final isFailed = state.status == UploadStatus.failed;
+    final isFailed = state[documentCategory]?.status == UploadStatus.failed;
 
     return Stack(
       children: [
@@ -254,8 +252,8 @@ class _UploadFileWidget extends HookConsumerWidget {
           child: GestureDetector(
             onTap: () {
               ref
-                  .read(fileUploadControllerProvider(documentCategory).notifier)
-                  .reset();
+                  .read(fileUploadControllerProvider.notifier)
+                  .reset(documentCategory);
             },
             child: Icon(
               EvaIcons.trash_2_outline,
@@ -274,8 +272,8 @@ class _FileUploadWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(fileUploadControllerProvider(documentCategory));
-    final fileName = state.file?.path.split('/').last ?? '';
+    final state = ref.watch(fileUploadControllerProvider);
+    final fileName = state[documentCategory]?.file?.path.split('/').last ?? '';
     final primaryColor = ref.watch(appPrimaryColorProvider);
 
     return Column(
@@ -293,7 +291,7 @@ class _FileUploadWidget extends HookConsumerWidget {
           spacing: Values.v4,
           children: [
             Text(
-              state.formattedProgress,
+              state[documentCategory]?.formattedProgress ?? '0B of 0B',
               style: context.textTheme.bodySmall?.copyWith(
                 color: AppColors.grey600,
               ),
@@ -304,10 +302,12 @@ class _FileUploadWidget extends HookConsumerWidget {
                 color: AppColors.grey300,
               ),
             ),
-            _FileUploadStatusWidget(uploadStatus: state.status),
+            _FileUploadStatusWidget(
+              uploadStatus: state[documentCategory]?.status,
+            ),
           ],
         ),
-        if (state.status == UploadStatus.uploading) ...[
+        if (state[documentCategory]?.status == UploadStatus.uploading) ...[
           Values.v4.verticalSpacing,
           Row(
             spacing: Values.v12,
@@ -319,7 +319,7 @@ class _FileUploadWidget extends HookConsumerWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
-                    value: state.progress,
+                    value: state[documentCategory]?.progress,
                     minHeight: Values.v8,
                     backgroundColor: AppColors.grey200,
                     valueColor: AlwaysStoppedAnimation(
@@ -329,12 +329,12 @@ class _FileUploadWidget extends HookConsumerWidget {
                 ),
               ),
               Text(
-                '${(state.progress * 100).toInt()}%',
+                '${((state[documentCategory]?.progress ?? 0) * 100).toInt()}%',
                 style: context.textTheme.bodySmall,
               ),
             ],
           ),
-        ] else if (state.status == UploadStatus.failed) ...[
+        ] else if (state[documentCategory]?.status == UploadStatus.failed) ...[
           Values.v4.verticalSpacing,
           GestureDetector(
             onTap: () => retry(ref),
@@ -351,13 +351,13 @@ class _FileUploadWidget extends HookConsumerWidget {
   }
 
   void retry(WidgetRef ref) {
-    ref.read(fileUploadControllerProvider(documentCategory).notifier).retry();
+    ref.read(fileUploadControllerProvider.notifier).retry(documentCategory);
   }
 }
 
 class _FileUploadStatusWidget extends StatelessWidget {
   const _FileUploadStatusWidget({required this.uploadStatus});
-  final UploadStatus uploadStatus;
+  final UploadStatus? uploadStatus;
 
   @override
   Widget build(BuildContext context) {

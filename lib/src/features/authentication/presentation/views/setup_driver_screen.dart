@@ -112,6 +112,6 @@ class SetupDriverScreen extends HookConsumerWidget {
       ..["last_name"] = lastName
       ..["email"] = email;
 
-    ref.read(appRouterProvider).push(VehicleInformationRoute());
+    ref.read(appRouterProvider).push(CreatePasswordRoute());
   }
 }

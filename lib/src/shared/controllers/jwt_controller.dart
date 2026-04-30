@@ -118,11 +118,11 @@ class JwtController extends _$JwtController with WidgetsBindingObserver {
         (success) {
           ref
               .read(secureCacheProvider)
-              .write(key: CacheKeys.refreshToken, value: success.refresh);
+              .write(key: CacheKeys.refreshToken, value: success.data.refresh);
 
           ref
               .read(secureCacheProvider)
-              .write(key: CacheKeys.accessToken, value: success.access);
+              .write(key: CacheKeys.accessToken, value: success.data.access);
         },
         (failure) => throw failure,
       );

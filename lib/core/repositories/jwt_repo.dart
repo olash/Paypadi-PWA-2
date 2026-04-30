@@ -1,3 +1,4 @@
+import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/datasource/jwt_ds/jwt_client.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
@@ -7,10 +8,10 @@ class JwtRepository {
   const JwtRepository({required this.client});
   final JwtClient client;
 
-  FutureResultOf<TokenResponse> refreshTokens(String refreshToken) async {
+  FutureApiResultOf<TokenResponse> refreshTokens(String refreshToken) async {
     final payload = <String, dynamic>{"refresh": refreshToken};
 
-    final response = await Result.fromAsync<TokenResponse>(
+    final response = await Result.fromAsync<ApiResponse<TokenResponse>>(
       () => client.refreshJwtToken(payload: payload),
     );
     return response;

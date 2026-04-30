@@ -33,7 +33,7 @@ class SavedBeneficiaries extends _$SavedBeneficiaries {
     final result = await repository.getSavedBeneficiaries();
 
     return result.fold(
-      (success) => success.results,
+      (success) => success.data.results,
       (failure) => throw failure,
     );
   }
@@ -49,13 +49,6 @@ class BeneficiaryTypeController extends _$BeneficiaryTypeController {
   @override
   BeneficiaryType build() => BeneficiaryType.recent;
 
-  void switchToSaved() {
-    state = BeneficiaryType.saved;
-    // ref.read(savedBeneficiariesProvider.notifier).refresh();
-  }
-
-  void switchToRecent() {
-    state = BeneficiaryType.recent;
-    // ref.read(recentBeneficiariesProvider.notifier).refresh();
-  }
+  void switchToSaved() => state = BeneficiaryType.saved;
+  void switchToRecent() => state = BeneficiaryType.recent;
 }

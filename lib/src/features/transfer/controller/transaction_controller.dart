@@ -23,7 +23,7 @@ class AccountLookup extends _$AccountLookup {
     });
 
     return result.fold(
-      (success) => success,
+      (success) => success.data ,
       (failure) {
         ref.showExceptionMessage(failure);
         return null;
@@ -51,7 +51,7 @@ class InitiatePaymentController extends _$InitiatePaymentController {
     };
 
     state = AsyncLoading();
-    
+
     final result = await _repository.initiatePayment(payload);
 
     // Check if provider is still mounted
@@ -83,7 +83,6 @@ class TransactionController extends _$TransactionController {
   void transfer() async {
     state = AsyncLoading();
     final payload = ref.read(transactionPayloadProvider);
-
     final result = await _repository.transfer(payload);
 
     result.fold(

@@ -12,28 +12,28 @@ class WalletRepository {
   const WalletRepository(this.client);
   final WalletClient client;
 
-  FutureResultOf<WalletModel> fetchWalletBalance() async {
-    final response = await Result.fromAsync<WalletModel>(
+  FutureApiResultOf<WalletModel> fetchWalletBalance() async {
+    final response = await Result.fromAsync<ApiResponse<WalletModel>>(
       () => client.getBalance(),
     );
     return response;
   }
 
-  FutureResultOf<UserBankAccountModel> getDepositAccount() async {
-    final response = await Result.fromAsync<UserBankAccountModel>(
+  FutureApiResultOf<UserBankAccountModel> getDepositAccount() async {
+    final response = await Result.fromAsync<ApiResponse<UserBankAccountModel>>(
       () => client.getDepositAccount(),
     );
     return response;
   }
 
-  FutureResultPaginatedListOf<TransactionHistoryModel> getTransactionHistory({
+  FuturePaginatedApiOf<TransactionHistoryModel> getTransactionHistory({
     int page = 1,
     int pageSize = 10,
   }) async {
     final response =
-        await Result.fromAsync<PaginatedListResponse<TransactionHistoryModel>>(
-          () => client.getTransactionHistory(page: page, pageSize: pageSize),
-        );
+        await Result.fromAsync<
+          ApiResponse<PaginatedListResponse<TransactionHistoryModel>>
+        >(() => client.getTransactionHistory(page: page, pageSize: pageSize));
     return response;
   }
 
@@ -49,10 +49,10 @@ class WalletRepository {
     return response;
   }
 
-  FutureResultOf<BeneficiaryModel> saveBeneficiary(
+  FutureApiResultOf<BeneficiaryModel> saveBeneficiary(
     Map<String, dynamic> payload,
   ) async {
-    final response = await Result.fromAsync<BeneficiaryModel>(
+    final response = await Result.fromAsync<ApiResponse<BeneficiaryModel>>(
       () => client.saveBeneficiary(payload: payload),
     );
     return response;

@@ -23,13 +23,8 @@ class ConfirmPaymentScreen extends ConsumerWidget {
 
     ref.listen(transactionControllerProvider, (previous, current) {
       current.when(
-        data: (d) {
-          ref.dismissLoading();
-        },
-        error: (e, st) {
-          ref.dismissLoading();
-          ref.showExceptionMessage(e, st);
-        },
+        data: (d) => ref.dismissLoading(),
+        error: (e, st) => ref.dismissLoading(),
         loading: () => ref.showLoading(),
       );
     });

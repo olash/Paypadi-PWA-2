@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show localCacheProvider, secureCacheProvider;
+import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
 
 import 'router.gr.dart';
@@ -171,7 +174,7 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(
       path: "/home",
-      guards: [AuthenticationGuard(ref)],
+      guards: [AuthenticationGuard(ref), DriverAccountGuard(ref)],
       page: HomeRoute.page,
       children: [
         AutoRoute(
@@ -231,6 +234,37 @@ class LandingPageGuard extends AutoRouteGuard {
     }
 
     // allow navigation
+    resolver.next();
+  }
+}
+
+class DriverAccountGuard extends AutoRouteGuard {
+  const DriverAccountGuard(this.ref);
+  final Ref ref;
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    final UserModel? user = ref
+        .read(localCacheProvider)
+        .getFromCache<UserModel>(
+          CacheKeys.user,
+          (raw) {
+            final Map<String, dynamic> jsonMap = switch (raw) {
+              Map() => Map<String, dynamic>.from(raw),
+              String() => Map<String, dynamic>.from(json.decode(raw) as Map),
+              _ => throw FormatException(
+                'Unexpected cached type: ${raw.runtimeType}',
+              ),
+            };
+            return UserModel.fromJson(jsonMap);
+          },
+        );
+
+    if (user?.isDriver == true && user?.isApproved == false) {
+      router.replace(VehicleInformationRoute());
+      return;
+    }
+
     resolver.next();
   }
 }

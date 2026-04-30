@@ -80,6 +80,7 @@ class DriverProfile extends _$DriverProfile {
     result.fold(
       (success) {
         state = AsyncData(null);
+        ref.read(appRouterProvider).push(DocumentUploadRoute());
       },
       (failure) {
         ref.showExceptionMessage(failure);

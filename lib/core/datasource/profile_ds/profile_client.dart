@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:paypadi/core/models/user_model/user_model.dart';
-import 'package:paypadi/src/features/authentication/domain/responses.dart';
 import 'package:retrofit/retrofit.dart';
+
+import 'package:paypadi/core/api/response/api_response.dart';
+import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
+import 'package:paypadi/src/features/authentication/domain/responses.dart';
 
 part 'profile_client.g.dart';
 
@@ -14,43 +16,43 @@ abstract class ProfileClient {
   factory ProfileClient(Dio dio, {String baseUrl}) = _ProfileClient;
 
   @GET('$_basePath/profile/')
-  Future<dynamic> getUser();
+  Future<ApiResponse> getRider();
 
   @PUT('$_basePath/profile/')
-  Future<dynamic> updateUser();
+  Future<ApiResponse> updateRider();
 
   @PATCH('$_basePath/profile/')
-  Future<dynamic> partiallyUpdateUser();
+  Future<ApiResponse> partiallyUpdateRider();
 
   @GET('$_basePath/driver/profile/')
-  Future<UserModel> getDriverProfile();
+  Future<ApiResponse<DriverProfileModel>> getDriverProfile();
 
   @PUT('$_basePath/driver/profile/')
-  Future<UserModel> createDriverProfile({
+  Future<ApiResponse<DriverProfileModel>> createDriverProfile({
     @Body() required Map<String, dynamic> payload,
   });
 
   @PATCH('$_basePath/driver/profile/')
-  Future<UserModel> updateDriverProfile({
+  Future<ApiResponse<DriverProfileModel>> updateDriverProfile({
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/me/')
-  Future<dynamic> getUserInfo();
+  Future<ApiResponse> getUserInfo();
 
   @POST('$_basePath/pin/set/')
-  Future<SetPinResponse> setTransactionPin({
+  Future<ApiResponse<SetPinResponse>> setTransactionPin({
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/password/change/')
-  Future<dynamic> changePassword({
+  Future<ApiResponse> changePassword({
     @Body() required Map<String, dynamic> payload,
   });
 
   @MultiPart()
   @PATCH("$_basePath/driver/profile/")
-  Future uploadDocument({
+  Future<ApiResponse<DriverProfileModel>> uploadDocument({
     @Part() required File file,
     @Part(name: "name") required String fileName,
     @SendProgress() ProgressCallback? onSendProgress,

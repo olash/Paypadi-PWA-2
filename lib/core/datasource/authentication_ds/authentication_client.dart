@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:paypadi/core/api/response/api_response.dart';
 
 import 'package:paypadi/src/features/authentication/domain/responses.dart';
 import 'package:retrofit/retrofit.dart';
@@ -13,23 +14,23 @@ abstract class AuthenticationClient {
       _AuthenticationClient;
 
   @POST('$_basePath/register/')
-  Future<CreateAccountResponse> createAccount({
+  Future<ApiResponse<CreateAccountResponse>> createAccount({
     @Header("Cookie") required String cookie,
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/login/')
-  Future<LoginResponse> login({
+  Future<ApiResponse<LoginResponse>> login({
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/otp/request/')
-  Future<RequestForOtpResponse> requestForOTP({
+  Future<ApiResponse<RequestForOtpResponse>> requestForOTP({
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/otp/verify/')
-  Future<VerifyOtpResponse> verifyOTP({
+  Future<ApiResponse<VerifyOtpResponse>> verifyOTP({
     @Body() required Map<String, dynamic> payload,
   });
 }

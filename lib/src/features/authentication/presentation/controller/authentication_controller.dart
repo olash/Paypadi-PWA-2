@@ -35,8 +35,8 @@ class AuthenticationController extends _$AuthenticationController {
 
     result.fold(
       (success) {
-        _saveUserToCache(success.user);
-        _saveAuthenticationTokens(success.refreshToken, success.accessToken);
+        _saveUserToCache(success.data.user);
+        _saveAuthenticationTokens(success.data.refreshToken, success.data.accessToken);
         ref.read(appRouterProvider).push(CreateTransactionPinRoute());
         state = AsyncData(null);
       },
@@ -82,7 +82,7 @@ class AuthenticationController extends _$AuthenticationController {
 
     result.fold(
       (success) {
-        _saveSessionId(success.sessionId);
+        _saveSessionId(success.data.sessionId);
         ref.read(appRouterProvider).push(AccountRoleRoute());
         state = AsyncData(null);
       },
@@ -101,12 +101,15 @@ class AuthenticationController extends _$AuthenticationController {
     };
 
     final result = await _authRepository.login(payload);
-    
+
     result.fold(
       (success) {
-        _saveAuthenticationTokens(success.refreshToken, success.accessToken);
+        _saveAuthenticationTokens(
+          success.data.refreshToken,
+          success.data.accessToken,
+        );
         _savePasswordToCache(password);
-        _saveUserToCache(success.user);
+        _saveUserToCache(success.data.user);
 
         ref.read(appRouterProvider).push(DashboardRoute());
         state = AsyncData(null);

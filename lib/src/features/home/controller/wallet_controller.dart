@@ -18,7 +18,7 @@ class WalletController extends _$WalletController {
     final result = await repository.fetchWalletBalance();
 
     result.fold(
-      (success) => state = AsyncValue.data(success),
+      (success) => state = AsyncValue.data(success.data),
       (failure) {
         ref.showExceptionMessage(failure);
         state = const AsyncData(null);
@@ -38,7 +38,7 @@ class WalletController extends _$WalletController {
     if (!ref.mounted) return;
 
     result.fold(
-      (success) => state = AsyncValue.data(success),
+      (success) => state = AsyncValue.data(success.data),
       (failure) {
         ref.showExceptionMessage(failure);
         state = const AsyncData(null);
@@ -79,21 +79,17 @@ class HistoryController extends _$HistoryController {
   @override
   FutureOr<List<TransactionHistoryModel>> build() async {
     final repository = ref.watch(walletRepositoryProvider);
-
-    state = AsyncLoading();
     final result = await repository.getTransactionHistory();
 
     if (!ref.mounted) return List.empty();
 
-    result.fold(
-      (success) => state = AsyncData(success.results),
+    return result.fold(
+      (success) => success.data.results,
       (failure) {
         ref.showExceptionMessage(failure);
-        state = const AsyncData(<TransactionHistoryModel>[]);
+        return <TransactionHistoryModel>[];
       },
     );
-
-    return state.value ?? List.empty();
   }
 
   void fetchMore(int page) async {
@@ -105,7 +101,8 @@ class HistoryController extends _$HistoryController {
     if (!ref.mounted) return;
 
     result.fold(
-      (success) => state = AsyncData([...?state.value, ...success.results]),
+      (success) =>
+          state = AsyncData([...?state.value, ...success.data.results]),
       (failure) {
         ref.showExceptionMessage(failure);
         state = const AsyncData(<TransactionHistoryModel>[]);

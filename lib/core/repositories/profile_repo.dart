@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
+import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
 import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
 import 'package:paypadi/src/features/authentication/domain/responses.dart';
@@ -9,17 +11,17 @@ class ProfileRepository {
   const ProfileRepository({required this.client});
   final ProfileClient client;
 
-  FutureResultOf<SetPinResponse> setTransactionPin(
+  FutureApiResultOf<SetPinResponse> setTransactionPin(
     Map<String, dynamic> payload,
   ) async {
-    final response = await Result.fromAsync<SetPinResponse>(
+    final response = await Result.fromAsync<ApiResponse<SetPinResponse>>(
       () => client.setTransactionPin(payload: payload),
     );
     return response;
   }
 
-  FutureResultOf getUserProfile() async {
-    final response = await Result.fromAsync(
+  FutureResultOf<ApiResponse> getUserProfile() async {
+    final response = await Result.fromAsync<ApiResponse>(
       () => client.getUserInfo(),
     );
     return response;
@@ -32,26 +34,30 @@ class ProfileRepository {
     return response;
   }
 
-  FutureResultOf createDriverProfile(Map<String, dynamic> payload) async {
-    final response = await Result.fromAsync(
+  FutureApiResultOf<DriverProfileModel> createDriverProfile(
+    Map<String, dynamic> payload,
+  ) async {
+    final response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
       () => client.createDriverProfile(payload: payload),
     );
     return response;
   }
 
-  FutureResultOf updateDriverProfile(Map<String, dynamic> payload) async {
-    final response = await Result.fromAsync(
+  FutureApiResultOf<DriverProfileModel> updateDriverProfile(
+    Map<String, dynamic> payload,
+  ) async {
+    final response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
       () => client.updateDriverProfile(payload: payload),
     );
     return response;
   }
 
-  FutureResultOf uploadDocument({
+  FutureResultOf<ApiResponse<DriverProfileModel>> uploadDocument({
     required File file,
     required String fileName,
     required void Function(int, int)? onSendProgress,
   }) async {
-    final response = await Result.fromAsync(
+    final response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
       () => client.uploadDocument(
         file: file,
         fileName: fileName,

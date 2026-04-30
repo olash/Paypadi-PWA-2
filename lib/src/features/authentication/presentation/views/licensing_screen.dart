@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/controllers/profile_controller.dart';
@@ -103,6 +101,6 @@ class LicensingScreen extends HookConsumerWidget {
       ..["driver_license_number"] = driverLicense
       ..["driver_license_expiry"] = expiryDate;
 
-    ref.read(appRouterProvider).push(DocumentUploadRoute());
+    ref.read(driverProfileProvider.notifier).updateDriverProfile();
   }
 }

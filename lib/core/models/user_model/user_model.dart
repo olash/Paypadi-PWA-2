@@ -14,12 +14,12 @@ sealed class UserModel with _$UserModel {
     @JsonKey(name: "last_name") required String lastName,
     @JsonKey(name: "is_active") required bool isActive,
     @JsonKey(name: "verified_phone") required bool phoneVerified,
+    @JsonKey(name: "is_driver") required bool isDriver,
     @JsonKey(name: "date_joined") required String dateJoined,
-    @JsonKey(name: "vehicle_model") String? vehicleModel,
     @JsonKey(name: "driver_id") String? driverId,
     @JsonKey(name: "is_approved") bool? isApproved,
     @JsonKey(name: "license_plate") String? licensePlate,
-    @JsonKey(name: "is_driver") bool? isDriver,
+    @JsonKey(name: "vehicle_model") String? vehicleModel,
     @JsonKey(name: "driver_license_number") String? driverLicenseNumber,
   }) = _UserModel;
 

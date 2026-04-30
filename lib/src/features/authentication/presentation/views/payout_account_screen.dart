@@ -141,7 +141,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
 
     if (!context.mounted) return;
 
-    ref.read(appRouterProvider).push(CreatePasswordRoute());
+    ref.read(appRouterProvider).push(SignInRoute());
   }
 }
 

@@ -26,28 +26,29 @@ abstract class TransactionClient {
   });
 
   @POST('$_basePath/transfer/')
-  Future<TransactionModel> withdraw({
+  Future<ApiResponse<TransactionModel>> withdraw({
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/transfer/')
-  Future<TransactionModel> deposit({
+  Future<ApiResponse<TransactionModel>> deposit({
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST('$_basePath/payments/lookup/')
-  Future<AccountLookupModel> getAccountDetails({
+  Future<ApiResponse<AccountLookupModel>> getAccountDetails({
     @Body() required Map<String, dynamic> payload,
   });
 
   @GET('$_basePath/beneficiaries/')
-  Future<PaginatedListResponse<BeneficiaryModel>> getSavedBeneficiaries();
+  Future<ApiResponse<PaginatedListResponse<BeneficiaryModel>>>
+  getSavedBeneficiaries();
 
   @GET('$_basePath/beneficiaries/recent/')
   Future<ApiListResponse<BeneficiaryModel>> getRecentBeneficiaries();
 
   @GET('$_basePath/transactions/{reference}/')
-  Future<TransactionHistoryModel> getTransactionByRefNo({
+  Future<ApiResponse<TransactionHistoryModel>> getTransactionByRefNo({
     @Path("reference") required String reference,
   });
 

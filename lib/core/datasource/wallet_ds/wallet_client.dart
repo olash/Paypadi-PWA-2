@@ -17,19 +17,20 @@ abstract class WalletClient {
   factory WalletClient(Dio dio, {String baseUrl}) = _WalletClient;
 
   @GET('$_basePath/wallet/')
-  Future<WalletModel> getBalance();
+  Future<ApiResponse<WalletModel>> getBalance();
 
   @GET('$_basePath/transactions/')
-  Future<PaginatedListResponse<TransactionHistoryModel>> getTransactionHistory({
+  Future<ApiResponse<PaginatedListResponse<TransactionHistoryModel>>>
+  getTransactionHistory({
     @Query('page') required int page,
     @Query('page_size') required int pageSize,
   });
 
   @GET('$_basePath/deposit/account/')
-  Future<UserBankAccountModel> getDepositAccount();
+  Future<ApiResponse<UserBankAccountModel>> getDepositAccount();
 
   @POST('$_basePath/beneficiaries/')
-  Future<BeneficiaryModel> saveBeneficiary({
+  Future<ApiResponse<BeneficiaryModel>> saveBeneficiary({
     @Body() required Map<String, dynamic> payload,
   });
 

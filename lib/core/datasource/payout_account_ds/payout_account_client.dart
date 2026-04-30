@@ -19,44 +19,44 @@ abstract class PayoutAccountClient {
   // });
 
   @POST(_basePath)
-  Future<AccountPayoutModel> createAccount({
+  Future<ApiResponse<AccountPayoutModel>> createAccount({
     @Body() required Map<String, dynamic> payload,
   });
 
-  @GET("$_basePath/list_banks/")
+  @GET("/auth/banks/")
   Future<ApiListResponse<BankModel>> getListOfAllBanks();
 
   @GET("$_basePath/{id}/")
-  Future<AccountPayoutModel> getAccountById({
+  Future<ApiResponse<AccountPayoutModel>> getAccountById({
     @Path("id") required String id,
   });
 
   @POST("$_basePath/{id}/set_primary/")
-  Future<AccountPayoutModel> makeAccountWithIdPrimary({
+  Future<ApiResponse<AccountPayoutModel>> makeAccountWithIdPrimary({
     @Path("id") required String id,
     @Body() required Map<String, dynamic> payload,
   });
 
   @POST("$_basePath/{id}/verify/")
-  Future<AccountPayoutModel> verfiyAccountWithId({
+  Future<ApiResponse<AccountPayoutModel>> verfiyAccountWithId({
     @Path("id") required String id,
     @Body() required Map<String, dynamic> payload,
   });
 
   @PUT("$_basePath/{id}/")
-  Future<AccountPayoutModel> updateAccount({
+  Future<ApiResponse<AccountPayoutModel>> updateAccount({
     @Path("id") required String id,
     @Body() required Map<String, dynamic> payload,
   });
 
   @PATCH("$_basePath/{id}/")
-  Future<AccountPayoutModel> partiallyUpdateAccount({
+  Future<ApiResponse<AccountPayoutModel>> partiallyUpdateAccount({
     @Path("id") required String id,
     @Body() required Map<String, dynamic> payload,
   });
 
   @DELETE("$_basePath/{id}/")
-  Future<void> deleteAccount({
+  Future<ApiResponse> deleteAccount({
     @Path("id") required String id,
   });
 }

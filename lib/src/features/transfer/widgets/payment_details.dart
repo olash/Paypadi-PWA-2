@@ -22,11 +22,16 @@ class PaymentDetails extends StatelessWidget {
       padding: EdgeInsets.only(bottom: Values.v14),
       child: Row(
         children: [
-          Text(
-            detail,
-            style: context.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w400,
-              letterSpacing: kZeroLetterSpacing,
+          Expanded(
+            child: Skeletonizer(
+              enabled: isLoading,
+              child: Text(
+                detail,
+                style: context.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: kZeroLetterSpacing,
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -34,6 +39,7 @@ class PaymentDetails extends StatelessWidget {
               enabled: isLoading,
               child: Text(
                 value ?? placeholder,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
                 style: context.textTheme.bodySmall?.copyWith(
                   letterSpacing: kZeroLetterSpacing,

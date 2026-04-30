@@ -37,29 +37,30 @@ class TransactionRepository {
     return response;
   }
 
-  FutureResultPaginatedListOf<BeneficiaryModel> getSavedBeneficiaries() async {
+  FuturePaginatedApiOf<BeneficiaryModel> getSavedBeneficiaries() async {
     final response =
-        await Result.fromAsync<PaginatedListResponse<BeneficiaryModel>>(
-          () => client.getSavedBeneficiaries(),
-        );
+        await Result.fromAsync<
+          ApiResponse<PaginatedListResponse<BeneficiaryModel>>
+        >(() => client.getSavedBeneficiaries());
     return response;
   }
 
-  FutureResultOf<AccountLookupModel> getAccountDetails(
+  FutureApiResultOf<AccountLookupModel> getAccountDetails(
     Map<String, dynamic> payload,
   ) async {
-    final response = await Result.fromAsync<AccountLookupModel>(
+    final response = await Result.fromAsync<ApiResponse<AccountLookupModel>>(
       () => client.getAccountDetails(payload: payload),
     );
     return response;
   }
 
-  FutureResultOf<TransactionHistoryModel> getTransactionDetailsById(
+  FutureApiResultOf<TransactionHistoryModel> getTransactionDetailsById(
     String reference,
   ) async {
-    final response = await Result.fromAsync<TransactionHistoryModel>(
-      () => client.getTransactionByRefNo(reference: reference),
-    );
+    final response =
+        await Result.fromAsync<ApiResponse<TransactionHistoryModel>>(
+          () => client.getTransactionByRefNo(reference: reference),
+        );
     return response;
   }
 
