@@ -4,6 +4,7 @@ import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
 import 'package:paypadi/core/services/api_service.dart';
 import 'package:paypadi/core/services/file_picker_service.dart';
+import 'package:paypadi/core/services/image_picker_service.dart';
 import 'package:paypadi/core/services/receipt_service.dart';
 import 'package:paypadi/core/utils/constants.dart'
     show CacheKeys, availableColors;
@@ -96,6 +97,11 @@ ReceiptService receiptService(Ref ref) {
 @riverpod
 FilePickerService filePickerService(Ref ref) {
   return FilePickerService();
+}
+
+@riverpod
+ImagePickerService imagePickerService(Ref ref) {
+  return ImagePickerService();
 }
 
 @riverpod

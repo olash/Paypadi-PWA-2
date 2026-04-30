@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
-import 'package:paypadi/core/utils/constants.dart'
-    show kDemoProfilePic, Values;
+import 'package:paypadi/core/utils/constants.dart' show kDemoProfilePic, Values;
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart' show AppAvatar;
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
@@ -17,9 +16,9 @@ class ProfileScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController firstName = useTextEditingController();
-    final TextEditingController lastName = useTextEditingController();
-    final TextEditingController email = useTextEditingController();
+    final firstName = useTextEditingController();
+    final lastName = useTextEditingController();
+    final email = useTextEditingController();
 
     final TextStyle? style = context.textTheme.bodySmall?.copyWith(
       fontSize: 13,
@@ -28,6 +27,7 @@ class ProfileScreen extends HookConsumerWidget {
 
     return AppScaffold(
       title: "Profile",
+      makeScrollable: true,
       bottomPadding: Values.v24,
       child: Column(
         children: [
@@ -60,7 +60,7 @@ class ProfileScreen extends HookConsumerWidget {
             titleStyle: style,
             controller: email,
           ),
-          Spacer(),
+  
           FilledButton(
             onPressed: () {},
             child: Text("Save"),

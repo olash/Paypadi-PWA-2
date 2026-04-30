@@ -57,9 +57,7 @@ class WalletController extends _$WalletController {
     state = const AsyncLoading();
     final result = await ref
         .read(walletRepositoryProvider)
-        .saveBeneficiary(
-          payload,
-        );
+        .saveBeneficiary(payload);
 
     // Check if provider is still mounted
     if (!ref.mounted) return;

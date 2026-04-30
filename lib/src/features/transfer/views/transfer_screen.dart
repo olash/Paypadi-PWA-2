@@ -52,9 +52,11 @@ class TransferScreen extends HookConsumerWidget {
   }
 
   void continueAction(WidgetRef ref, String receipientNumber) {
-    ref
-        .read(appRouterProvider)
-        .push(MakePaymentRoute(recipientNumber: receipientNumber));
+    if (receipientNumber.isNotEmpty) {
+      ref
+          .read(appRouterProvider)
+          .push(MakePaymentRoute(recipientNumber: receipientNumber));
+    }
   }
 }
 
@@ -153,26 +155,7 @@ class _BeneficiaryTile extends ConsumerWidget {
     return Dismissible(
       key: ValueKey<BeneficiaryModel>(beneficiary),
       direction: DismissDirection.startToEnd,
-      onDismissed: (direction) async {
-        final beneficiaryType = ref.read(beneficiaryTypeControllerProvider);
-
-        if (beneficiary.id == null) return;
-
-        final result = await ref
-            .read(transactionRepositoryProvider)
-            .deleteBeneficiaryById(beneficiary.id!);
-
-        result.fold(
-          (_) => ref.read(recentBeneficiariesProvider.notifier).refresh(),
-          (failure) => ref.showExceptionMessage(failure),
-        );
-
-        if (beneficiaryType == BeneficiaryType.recent) {
-          ref.read(recentBeneficiariesProvider.notifier).refresh();
-        } else {
-          ref.read(savedBeneficiariesProvider.notifier).refresh();
-        }
-      },
+      onDismissed: (direction) => deleteBeneficiary(ref),
       background: Container(
         padding: EdgeInsets.symmetric(horizontal: Values.v8),
         color: Colors.redAccent,
@@ -245,6 +228,34 @@ class _BeneficiaryTile extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void deleteBeneficiary(WidgetRef ref) async {
+    if (beneficiary.id == null) return;
+
+    final beneficiaryType = ref.read(beneficiaryTypeControllerProvider);
+
+    if (beneficiaryType == BeneficiaryType.recent) {
+      ref.read(recentBeneficiariesProvider.notifier).removeLocally(beneficiary);
+    } else {
+      ref.read(savedBeneficiariesProvider.notifier).removeLocally(beneficiary);
+    }
+
+    final result = await ref
+        .read(transactionRepositoryProvider)
+        .deleteBeneficiaryById(beneficiary.id!);
+
+    result.fold(
+      (_) => null,
+      (failure) async {
+        if (beneficiaryType == BeneficiaryType.recent) {
+          await ref.read(recentBeneficiariesProvider.notifier).refresh();
+        } else {
+          await ref.read(savedBeneficiariesProvider.notifier).refresh();
+        }
+        ref.showExceptionMessage(failure);
+      },
     );
   }
 }

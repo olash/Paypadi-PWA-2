@@ -30,13 +30,12 @@ class LoginScreen extends HookConsumerWidget {
           false,
     );
 
-    final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
-      CacheKeys.user,
-      (data) {
-        final json = jsonDecode(data) as Map<String, dynamic>;
-        return UserModel.fromJson(json);
-      },
-    );
+    final user = ref
+        .watch(localCacheProvider)
+        .getFromCache<UserModel>(
+          CacheKeys.user,
+          (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
+        );
 
     ref.listen(authenticationControllerProvider, (previous, current) {
       current.when(

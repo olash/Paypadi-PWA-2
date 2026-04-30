@@ -53,16 +53,16 @@ class SettingsScreen extends HookConsumerWidget {
     }, [isDarkMode.value]);
 
     return AppScaffold(
-      leftPadding: 0,
-      rightPadding: 0,
       showAppBar: false,
+      leftPadding: Values.zero,
+      rightPadding: Values.zero,
       appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
           "Settings",
           style: context.textTheme.headlineSmall?.copyWith(
-            letterSpacing: (-.43),
+            letterSpacing: Values.zero,
           ),
         ),
       ),
@@ -110,22 +110,22 @@ class SettingsScreen extends HookConsumerWidget {
               switchValue: biometricsIsEnabled.value,
               onChanged: (value) => biometricsIsEnabled.value = value,
             ),
-            SettingTileWithSwitch(
-              name: "Dark Mode",
-              icon: Iconsax.moon_outline,
-              switchValue: isDarkMode.value,
-              onChanged: (value) => isDarkMode.value = value,
-            ),
-            SettingTile(
-              name: "Help & Support",
-              icon: Iconsax.support_outline,
-              onTap: () => ref.read(appRouterProvider).push(SupportRoute()),
-            ),
-            SettingTile(
-              name: "Legal & Policies",
-              icon: Iconsax.judge_outline,
-              onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
-            ),
+            // SettingTileWithSwitch(
+            //   name: "Dark Mode",
+            //   icon: Iconsax.moon_outline,
+            //   switchValue: isDarkMode.value,
+            //   onChanged: (value) => isDarkMode.value = value,
+            // ),
+            // SettingTile(
+            //   name: "Help & Support",
+            //   icon: Iconsax.support_outline,
+            //   onTap: () => ref.read(appRouterProvider).push(SupportRoute()),
+            // ),
+            // SettingTile(
+            //   name: "Legal & Policies",
+            //   icon: Iconsax.judge_outline,
+            //   onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
+            // ),
             SettingTile(
               name: "Log out",
               showTrailingIcon: false,

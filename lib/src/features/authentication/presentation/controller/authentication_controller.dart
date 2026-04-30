@@ -36,7 +36,10 @@ class AuthenticationController extends _$AuthenticationController {
     result.fold(
       (success) {
         _saveUserToCache(success.data.user);
-        _saveAuthenticationTokens(success.data.refreshToken, success.data.accessToken);
+        _saveAuthenticationTokens(
+          success.data.refreshToken,
+          success.data.accessToken,
+        );
         ref.read(appRouterProvider).push(CreateTransactionPinRoute());
         state = AsyncData(null);
       },
@@ -151,12 +154,12 @@ class AuthenticationController extends _$AuthenticationController {
   void logout() async {
     await ref.read(secureCacheProvider).clearStorage();
     await ref.read(localCacheProvider).clearStorage();
-    ref.read(appRouterProvider).popUntilRoot();
-
-    // .pushAndPopUntil(
-    //   OnboardingRoute(),
-    //   predicate: (route) => route.settings.name == "/sign-in",
-    // );
+    ref
+        .read(appRouterProvider)
+        .pushAndPopUntil(
+          OnboardingRoute(),
+          predicate: (route) => route.settings.name == "/sign-in",
+        );
   }
 
   void _saveSessionId(String sessionId) {

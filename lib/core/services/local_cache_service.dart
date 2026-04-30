@@ -98,7 +98,7 @@ class LocalCacheService implements LocalCache {
     : _sharedPreferences = sharedPreferences;
 
   final Talker logger = debugLogger;
-  late final SharedPreferencesWithCache _sharedPreferences;
+  final SharedPreferencesWithCache _sharedPreferences;
 
   @override
   Future<void> enableBiometrics() async {
@@ -145,8 +145,23 @@ class LocalCacheService implements LocalCache {
         final decoded = json.decode(rawJson);
         raw = Map<String, dynamic>.from(decoded as Map);
       } else {
-        raw = _sharedPreferences.get(key);
+        // Complex objects are stored as JSON strings via saveToCache
+        final rawJson = _sharedPreferences.getString(key);
+        if (rawJson == null || rawJson.isEmpty) return null;
+
+        try {
+          raw = json.decode(rawJson); // decode before handing to parser
+        } catch (e, st) {
+          logger.error(
+            '$runtimeType: failed to decode JSON for key "$key"',
+            e,
+            st,
+          );
+          return null;
+        }
       }
+
+      if (raw == null) return null;
 
       if (parser != null) return parser(raw);
       return raw as T?;
@@ -194,7 +209,12 @@ class LocalCacheService implements LocalCache {
 
   @override
   Future<void> removeFromCache(String key) async {
-    await _sharedPreferences.remove(key);
+    try {
+      await _sharedPreferences.remove(key);
+      logger.debug("Removed key '$key' from $runtimeType");
+    } catch (e, st) {
+      logger.error('$runtimeType: removeFromCache error', e, st);
+    }
   }
 
   @override

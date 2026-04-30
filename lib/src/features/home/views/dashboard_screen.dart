@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -25,16 +23,15 @@ class DashboardScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final amountController = useTextEditingController();
+    final amountController = useTextEditingController(text: '0');
     final amountValue = useValueListenable(amountController);
 
-    final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
-      CacheKeys.user,
-      (data) {
-        final json = jsonDecode(data) as Map<String, dynamic>;
-        return UserModel.fromJson(json);
-      },
-    );
+    final user = ref
+        .watch(localCacheProvider)
+        .getFromCache<UserModel>(
+          CacheKeys.user,
+          (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
+        );
 
     return AppScaffold(
       showAppBar: false,
@@ -47,16 +44,16 @@ class DashboardScreen extends HookConsumerWidget {
       makeScrollable: true,
       child: Column(
         children: [
-          Values.v24.verticalSpacing,
-          UserWallet(),
-          Values.v24.verticalSpacing,
-          AmountDisplay(controller: amountController),
           Values.v32.verticalSpacing,
+          UserWallet(),
+          Values.v32.verticalSpacing,
+          AmountDisplay(controller: amountController),
+          Values.v48.verticalSpacing,
           AppKeypad(
             keyLength: 10,
             controller: amountController,
           ),
-          Values.v32.verticalSpacing,
+          Values.v36.verticalSpacing,
           Row(
             spacing: Values.v12,
             children: [

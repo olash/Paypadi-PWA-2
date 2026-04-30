@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
@@ -207,6 +205,7 @@ class AuthenticationGuard extends AutoRouteGuard {
 
     if (accessToken == null) {
       resolver.redirectUntil(SignInRoute());
+      return;
     }
 
     resolver.next();
@@ -223,12 +222,21 @@ class LandingPageGuard extends AutoRouteGuard {
         .read(secureCacheProvider)
         .read(CacheKeys.accessToken);
 
-    final bool? biometricLoginEnabled = ref
-        .read(localCacheProvider)
-        .getFromCache<bool>(CacheKeys.enabledBiometrics);
+    final String? refreshToken = await ref
+        .read(secureCacheProvider)
+        .read(CacheKeys.refreshToken);
 
-    // Check if user is authenticated and has enabled biometric sign-in
-    if (biometricLoginEnabled == true && accessToken != null) {
+    // final bool? biometricLoginEnabled = ref
+    //     .read(localCacheProvider)
+    //     .getFromCache<bool>(CacheKeys.enabledBiometrics);
+
+    // // Check if user is authenticated and has enabled biometric sign-in
+    // if (biometricLoginEnabled == true && accessToken != null) {
+    //   router.replace(LoginRoute());
+    //   return;
+    // }
+
+    if (accessToken != null && refreshToken != null) {
       router.replace(LoginRoute());
       return;
     }
@@ -248,16 +256,7 @@ class DriverAccountGuard extends AutoRouteGuard {
         .read(localCacheProvider)
         .getFromCache<UserModel>(
           CacheKeys.user,
-          (raw) {
-            final Map<String, dynamic> jsonMap = switch (raw) {
-              Map() => Map<String, dynamic>.from(raw),
-              String() => Map<String, dynamic>.from(json.decode(raw) as Map),
-              _ => throw FormatException(
-                'Unexpected cached type: ${raw.runtimeType}',
-              ),
-            };
-            return UserModel.fromJson(jsonMap);
-          },
+          (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
         );
 
     if (user?.isDriver == true && user?.isApproved == false) {

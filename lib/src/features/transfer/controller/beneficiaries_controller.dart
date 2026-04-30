@@ -19,6 +19,14 @@ class RecentBeneficiaries extends _$RecentBeneficiaries {
     );
   }
 
+  void removeLocally(BeneficiaryModel beneficiary) {
+    final current = state.value;
+    if (current == null) return;
+    state = AsyncData(
+      current.where((b) => b.id != beneficiary.id).toList(),
+    );
+  }
+
   Future<void> refresh() {
     ref.invalidateSelf();
     return future;
@@ -35,6 +43,14 @@ class SavedBeneficiaries extends _$SavedBeneficiaries {
     return result.fold(
       (success) => success.data.results,
       (failure) => throw failure,
+    );
+  }
+
+  void removeLocally(BeneficiaryModel beneficiary) {
+    final current = state.value;
+    if (current == null) return;
+    state = AsyncData(
+      current.where((b) => b.id != beneficiary.id).toList(),
     );
   }
 
