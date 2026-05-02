@@ -1,3 +1,6 @@
+import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/models/account_payout_model/account_payout_model.dart';
+import 'package:paypadi/core/repositories/payout_account_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -16,7 +19,10 @@ class BankListController extends _$BankListController {
 
     return result.fold(
       (success) => success,
-      (failure) => throw failure,
+      (failure) {
+        ref.showExceptionMessage(failure);
+        return <BankModel>[];
+      },
     );
   }
 
@@ -48,6 +54,36 @@ class VerifiedBankAccount extends _$VerifiedBankAccount {
       (failure) {
         ref.showExceptionMessage(failure);
         state = const AsyncData(null);
+      },
+    );
+  }
+}
+
+@riverpod
+class PayoutAccount extends _$PayoutAccount {
+  late final PayoutAccountRepository _repository;
+
+  @override
+  FutureOr<AccountPayoutModel?> build() {
+    _repository = ref.watch(payoutAccountRepositoryProvider);
+    return null;
+  }
+
+  void createPayoutAccount(Map<String, dynamic> payload) async {
+    state = const AsyncLoading();
+    final result = await _repository.createAccount(payload);
+
+    // Check if provider is still mounted
+    if (!ref.mounted) return;
+
+    result.fold(
+      (success) async {
+        state = AsyncData(success.data);
+        ref.read(appRouterProvider).push(SignInRoute());
+      },
+      (failure) {
+        state = const AsyncData(null);
+        ref.showExceptionMessage(failure);
       },
     );
   }

@@ -85,8 +85,8 @@ class _TransactionTile extends ConsumerWidget {
   });
 
   final bool isLoading;
-  final TransactionHistoryModel transaction;
   final VoidCallback onTap;
+  final TransactionHistoryModel transaction;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

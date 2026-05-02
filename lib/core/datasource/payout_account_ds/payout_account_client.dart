@@ -19,7 +19,7 @@ abstract class PayoutAccountClient {
   // });
 
   @POST(_basePath)
-  Future<ApiResponse<AccountPayoutModel>> createAccount({
+  Future<ApiResponse<AccountPayoutModel>> createPayoutAccount({
     @Body() required Map<String, dynamic> payload,
   });
 

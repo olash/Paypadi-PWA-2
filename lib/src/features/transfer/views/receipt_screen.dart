@@ -190,7 +190,8 @@ class _PaymentDetailsStatusIcon extends HookWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: switch (status) {
-          TransactionStatus.success => AppColors.success.withValues(alpha: .12),
+          TransactionStatus.success || TransactionStatus.completed =>
+            AppColors.success.withValues(alpha: .12),
           TransactionStatus.failure => AppColors.failure.withValues(alpha: .12),
           TransactionStatus.pending => Colors.amber.withValues(alpha: .12),
           null => AppColors.disabled.withValues(alpha: .12),
@@ -200,7 +201,8 @@ class _PaymentDetailsStatusIcon extends HookWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: switch (status) {
-            TransactionStatus.success => AppColors.success,
+            TransactionStatus.success ||
+            TransactionStatus.completed => AppColors.success,
             TransactionStatus.failure => AppColors.failure,
             TransactionStatus.pending => Colors.amber,
             null => AppColors.disabled,
@@ -208,7 +210,8 @@ class _PaymentDetailsStatusIcon extends HookWidget {
         ),
         child: Icon(
           switch (status) {
-            TransactionStatus.success => Icons.check,
+            TransactionStatus.success ||
+            TransactionStatus.completed => Icons.check,
             TransactionStatus.failure => Icons.close,
             TransactionStatus.pending => Icons.pending,
             null => Icons.question_mark,

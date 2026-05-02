@@ -7,13 +7,12 @@ part 'transaction_model.g.dart';
 @freezed
 sealed class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
-    required String amount,
-    @JsonKey(name: "transaction_reference") required String reference,
-    @JsonKey(name: "recipient_account") required String recipientAccount,
-    @JsonKey(name: "transaction_id") required String id,
+    required int amount,
+    required String reference,
+    required String recipient,
+    @JsonKey(name: "recipient_name") required String recipientAccount,
     @JsonKey(name: "created_at") required String createdAt,
-    @JsonKey(unknownEnumValue: TransactionStatus.failure)
-    required TransactionStatus status,
+    @JsonKey(name: "payment_type") required String paymentType,
     @JsonKey(
       name: "transaction_type",
       unknownEnumValue: TransactionType.unknown,
@@ -57,6 +56,8 @@ sealed class TransactionHistoryMetadata with _$TransactionHistoryMetadata {
     @JsonKey(name: "recipient_bank_code") String? receipientBankCode,
     @JsonKey(name: "gateway_reference") String? gatewayReference,
     @JsonKey(name: "pin_verified") bool? isPinVerified,
+    @JsonKey(name: "recipient_phone") String? recipientPhone,
+    @JsonKey(name: "initiated_by") String? initiatedBy,
   }) = _TransactionHistoryMetadata;
 
   factory TransactionHistoryMetadata.fromJson(Map<String, dynamic> json) =>

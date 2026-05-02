@@ -34,7 +34,7 @@ enum BeneficiaryType {
   final String typeName;
 }
 
-enum TransactionStatus { success, pending, failure }
+enum TransactionStatus { success, pending, completed, failure }
 
 enum TransactionType { transfer, deposit, withdrawal, unknown }
 
