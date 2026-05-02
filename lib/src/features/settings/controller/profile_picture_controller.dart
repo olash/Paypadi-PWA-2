@@ -21,10 +21,9 @@ class ProfilePicture extends _$ProfilePicture {
     final XFile? image = await _service.pickImage();
 
     if (image == null) return;
-
-     final result = await ref
+    // TODO: Complete this function
+    final result = await ref
         .read(walletRepositoryProvider)
         .fetchWalletBalance();
-
   }
 }

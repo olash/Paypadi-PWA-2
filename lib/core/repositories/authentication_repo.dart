@@ -10,14 +10,10 @@ class AuthenticationRepository {
   final AuthenticationClient client;
 
   FutureApiResultOf<CreateAccountResponse> createAccount(
-    String sessionId,
     Map<String, dynamic> payload,
   ) async {
     final response = await Result.fromAsync<ApiResponse<CreateAccountResponse>>(
-      () => client.createAccount(
-        cookie: "sessionid=$sessionId",
-        payload: payload,
-      ),
+      () => client.createAccount(payload: payload),
     );
     return response;
   }

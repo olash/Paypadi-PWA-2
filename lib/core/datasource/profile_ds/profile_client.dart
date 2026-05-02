@@ -5,7 +5,6 @@ import 'package:retrofit/retrofit.dart';
 
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
-import 'package:paypadi/src/features/authentication/domain/responses.dart';
 
 part 'profile_client.g.dart';
 
@@ -41,7 +40,7 @@ abstract class ProfileClient {
   Future<ApiResponse> getUserInfo();
 
   @POST('$_basePath/pin/set/')
-  Future<ApiResponse<SetPinResponse>> setTransactionPin({
+  Future<ApiResponse<void>> setTransactionPin({
     @Body() required Map<String, dynamic> payload,
   });
 

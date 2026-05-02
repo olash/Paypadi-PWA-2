@@ -8,17 +8,14 @@ part 'responses.g.dart';
 @JsonSerializable(createToJson: false)
 class RequestForOtpResponse {
   const RequestForOtpResponse({
-    required this.detail,
     required this.expiresIn,
     required this.otp,
   });
 
+  final String otp;
+
   @JsonKey(name: "expires_in")
   final int expiresIn;
-
-  final String detail;
-
-  final String otp;
 
   factory RequestForOtpResponse.fromJson(Map<String, dynamic> json) =>
       _$RequestForOtpResponseFromJson(json);
@@ -26,15 +23,10 @@ class RequestForOtpResponse {
 
 @JsonSerializable(createToJson: false)
 class VerifyOtpResponse {
-  const VerifyOtpResponse({
-    required this.detail,
-    required this.sessionId,
-  });
-
-  @JsonKey(name: "session_id")
-  final String sessionId;
-
-  final String detail;
+  const VerifyOtpResponse({required this.phoneToken});
+  
+  @JsonKey(name: "phone_token")
+  final String phoneToken;
 
   factory VerifyOtpResponse.fromJson(Map<String, dynamic> json) =>
       _$VerifyOtpResponseFromJson(json);
@@ -46,7 +38,6 @@ class CreateAccountResponse {
     required this.refreshToken,
     required this.accessToken,
     required this.user,
-    required this.detail,
   });
 
   @JsonKey(name: "refresh")
@@ -55,7 +46,6 @@ class CreateAccountResponse {
   @JsonKey(name: "access")
   final String accessToken;
 
-  final String detail;
 
   final UserModel user;
 
@@ -95,13 +85,4 @@ class TokenResponse {
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
       _$TokenResponseFromJson(json);
-}
-
-@JsonSerializable(createToJson: false)
-class SetPinResponse {
-  const SetPinResponse({required this.detail});
-  final String detail;
-
-  factory SetPinResponse.fromJson(Map<String, dynamic> json) =>
-      _$SetPinResponseFromJson(json);
 }

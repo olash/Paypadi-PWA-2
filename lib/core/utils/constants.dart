@@ -186,7 +186,6 @@ class CacheKeys {
   static final String enabledBiometrics = "biometrics";
   static final String colorTheme = "color_theme";
 
-  static final String sessionId = "session_id";
   static final String refreshToken = "refresh_token";
   static final String accessToken = "access_token";
 

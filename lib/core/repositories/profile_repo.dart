@@ -2,19 +2,18 @@ import 'dart:io';
 
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
+import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
 import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
-import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
-import 'package:paypadi/src/features/authentication/domain/responses.dart';
 
 class ProfileRepository {
   const ProfileRepository({required this.client});
   final ProfileClient client;
 
-  FutureApiResultOf<SetPinResponse> setTransactionPin(
+  FutureApiResultOf<void> setTransactionPin(
     Map<String, dynamic> payload,
   ) async {
-    final response = await Result.fromAsync<ApiResponse<SetPinResponse>>(
+    final response = await Result.fromAsync<ApiResponse<void>>(
       () => client.setTransactionPin(payload: payload),
     );
     return response;

@@ -42,45 +42,21 @@ String? otpValidator(String? otp) {
 }
 
 String? phoneNumberValidator(String? phone) {
-  // Validate Nigerian phone numbers only.
-  // Acceptable formats:
+  // Validate Nigerian phone numbers in local format only.
+  // Acceptable format:
   // - Local: 0XXXXXXXXXX (11 digits, e.g. 08031234567)
-  // - International: +234XXXXXXXXXX or 234XXXXXXXXXX (13 digits without +, e.g. +2348031234567)
 
   if (phone == null || phone.trim().isEmpty) {
     return 'Enter a phone number';
   }
 
   // Remove common separators (spaces, dashes, parentheses)
-  var normalized = phone.replaceAll(RegExp(r'[\s\-\(\)]'), '');
+  final normalized = phone.replaceAll(RegExp(r'[\s\-\(\)]'), '');
 
-  // Strip leading + if present
-  if (normalized.startsWith('+')) {
-    normalized = normalized.substring(1);
-  }
+  // Local: starts with 0, exactly 11 digits (e.g. 08031234567)
+  final isValidLocal = RegExp(r'^0?\d{10}$').hasMatch(normalized);
 
-  // Conservatively accept international '00' prefix when it's followed by '234'
-  // (e.g. 002348031234567). This avoids accidentally stripping leading zeros
-  // from local numbers that legitimately start with '00'.
-  if (normalized.startsWith('00') &&
-      normalized.length > 2 &&
-      normalized.substring(2).startsWith('234')) {
-    normalized = normalized.substring(2);
-  }
-
-  // Local: starts with 0 and 11 digits total (e.g. 08031234567)
-  final isAllDigits = RegExp(r'^\d+$').hasMatch(normalized);
-  final localMatch =
-      normalized.startsWith('0') && normalized.length == 11 && isAllDigits;
-  // International without plus/prefix: starts with 234 and then 10 digits (e.g. 2348031234567)
-  final intlMatch =
-      normalized.startsWith('234') && normalized.length == 13 && isAllDigits;
-
-  // For correct matching we expect either:
-  // - normalized == '0' + 10 digits
-  // - normalized == '234' + 10 digits
-  // The regex above uses an explicit end anchor; ensure the string matches exactly.
-  if (!localMatch && !intlMatch) {
+  if (!isValidLocal) {
     return 'Enter a valid number (e.g. 08031234567)';
   }
 
@@ -88,31 +64,26 @@ String? phoneNumberValidator(String? phone) {
 }
 
 String? plateNumberValidator(String? plate) {
-  // Validate common Nigerian vehicle plate formats.
-  // Common formats accepted (spaces or dashes allowed):
-  // - ABC 123 DE (three letters, three digits, two letters)
-  // - AB 123 CD  (two letters, three digits, two letters)
+  // Validate Nigerian vehicle plate numbers.
+  // Standard FRSC format: AAA-000-AA
+  // - 3 letters (state/region code), 3 digits, 2 letters
+  // - Spaces or dashes between groups are allowed (e.g. "ABC-123-DE" or "ABC 123 DE")
 
   if (plate == null || plate.trim().isEmpty) {
     return 'Enter a plate number';
   }
 
-  // Disallow any spaces or non-alphanumeric characters in the input.
-  // We expect a compact plate format like "ABC123DE" or "AB123CD".
-  if (!RegExp(r'^[A-Za-z0-9]+$').hasMatch(plate)) {
-    return 'Enter a valid Nigerian plate without spaces or symbols (e.g. ABC123DE)';
+  // Normalize: uppercase and strip spaces/dashes used as group separators
+  final normalized = plate.toUpperCase().replaceAll(RegExp(r'[\s\-]'), '');
+
+  // Reject anything outside letters and digits after normalization
+  if (!RegExp(r'^[A-Z0-9]+$').hasMatch(normalized)) {
+    return 'Enter a valid plate number (e.g. ABC 123 DE)';
   }
 
-  // Normalize to uppercase for pattern matching
-  final normalized = plate.toUpperCase();
-
-  // Accept either 3 letters + 3 digits + 2 letters (ABC123DE)
-  // or 2 letters + 3 digits + 2 letters (AB123CD)
-  final pattern1 = RegExp(r'^[A-Z]{3}\d{3}[A-Z]{2}$');
-  final pattern2 = RegExp(r'^[A-Z]{2}\d{3}[A-Z]{2}$');
-
-  if (!pattern1.hasMatch(normalized) && !pattern2.hasMatch(normalized)) {
-    return 'Enter a valid Nigerian plate (e.g. ABC123DE)';
+  // Standard format: 3 letters + 3 digits + 2 letters (e.g. ABC123DE)
+  if (!RegExp(r'^[A-Z]{3}\d{3}[A-Z]{2}$').hasMatch(normalized)) {
+    return 'Enter a valid Nigerian plate number (e.g. ABC 123 DE)';
   }
 
   return null;
@@ -124,7 +95,27 @@ String? accountNumberValidator(String? accountNumber) {
   }
   final trimmed = accountNumber.trim();
   if (!RegExp(r'^\d{10}$').hasMatch(trimmed)) {
-    return 'Account number must be exactly 10 digits';
+    return 'Enter a valid account number';
   }
+  return null;
+}
+
+String? dateValidator(String? date) {
+  if (date == null || date.trim().isEmpty) {
+    return 'Enter a date';
+  }
+
+  final trimmed = date.trim();
+  final match = RegExp(r'^(\d{4})-(\d{2})-(\d{2})$').firstMatch(trimmed);
+  if (match == null) return 'Enter a valid date (yyyy-mm-dd)';
+
+  final parsedDate = DateTime.tryParse(trimmed);
+  if (parsedDate == null) return 'Enter a valid date (yyyy-mm-dd)';
+
+  final normalized =
+      '${parsedDate.year.toString().padLeft(4, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')}';
+
+  if (normalized != trimmed) return 'Enter a valid date (yyyy-mm-dd)';
+
   return null;
 }

@@ -21,7 +21,7 @@ class AppRouter extends RootStackRouter {
       path: "/",
       initial: true,
       page: OnboardingRoute.page,
-      guards: [LandingPageGuard(ref)],
+      // guards: [LandingPageGuard(ref)],
     ),
     AutoRoute(
       path: "/account",

@@ -15,7 +15,6 @@ abstract class AuthenticationClient {
 
   @POST('$_basePath/register/')
   Future<ApiResponse<CreateAccountResponse>> createAccount({
-    @Header("Cookie") required String cookie,
     @Body() required Map<String, dynamic> payload,
   });
 

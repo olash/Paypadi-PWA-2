@@ -2,9 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 
 import 'package:paypadi/core/utils/constants.dart' show Values;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/utils/helpers.dart';
+import 'package:paypadi/core/utils/validators.dart';
 import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
@@ -16,7 +20,7 @@ class LicensingScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final driverLicense = useTextEditingController();
-    final expiryDate = useTextEditingController();
+    final expiryDate = useState<String>("");
     final formRef = useRef(GlobalKey<FormState>());
 
     ref.listen(driverProfileProvider, (previous, current) {
@@ -24,7 +28,7 @@ class LicensingScreen extends HookConsumerWidget {
         data: (d) {
           ref.dismissLoading();
           driverLicense.clear();
-          expiryDate.clear();
+          expiryDate.value = '';
         },
         error: (e, st) {
           ref.dismissLoading();
@@ -65,17 +69,12 @@ class LicensingScreen extends HookConsumerWidget {
               hint: "Enter your driver's license number",
               controller: driverLicense,
             ),
-            AppTextformfield(
-              title: "Expiry Date",
-              hint: "dd/mm/yyyy",
-              keyboardType: TextInputType.datetime,
-              controller: expiryDate,
-            ),
+            _ExpiryDateWidget(date: (date) => expiryDate.value = date),
             Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(
                 ref,
-                expiryDate.text,
+                expiryDate.value,
                 driverLicense.text,
                 formRef.value,
               ),
@@ -102,5 +101,71 @@ class LicensingScreen extends HookConsumerWidget {
       ..["driver_license_expiry"] = expiryDate;
 
     ref.read(driverProfileProvider.notifier).updateDriverProfile();
+  }
+}
+
+class _ExpiryDateWidget extends HookConsumerWidget {
+  const _ExpiryDateWidget({required this.date});
+  final ValueSetter<String> date;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDate = useState<DateTime>(DateTime.now());
+    final hasFocus = useState<bool>(false);
+    final primaryColor = ref.watch(appPrimaryColorProvider);
+
+    return GestureDetector(
+      onTap: () async {
+        hasFocus.value = true;
+        final pickedDate = await showDatePicker(
+          context: context,
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2040),
+        );
+
+        if (pickedDate == null) return;
+        selectedDate.value = pickedDate;
+        date(formatDate(pickedDate));
+        hasFocus.value = false;
+      },
+      child: FormField<String>(
+        initialValue: formatDate(selectedDate.value),
+        validator: (value) => dateValidator(value),
+        builder: (field) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Expiry Date ',
+                style: context.textTheme.bodyLarge?.copyWith(
+                  letterSpacing: Values.zero,
+                ),
+              ),
+              Values.v6.verticalSpacing,
+              Container(
+                width: context.screenWidth,
+                padding: EdgeInsets.symmetric(
+                  horizontal: Values.v16,
+                  vertical: Values.v14,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Values.v12),
+                  border: Border.all(
+                    color: hasFocus.value
+                        ? primaryColor
+                        : AppColors.unfocusedTextField,
+                  ),
+                ),
+                child: Text(
+                  formatDate(selectedDate.value),
+                  style: context.textTheme.bodyMedium,
+                ),
+              ),
+              Values.v12.verticalSpacing,
+            ],
+          );
+        },
+      ),
+    );
   }
 }

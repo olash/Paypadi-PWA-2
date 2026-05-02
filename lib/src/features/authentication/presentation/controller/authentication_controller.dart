@@ -26,12 +26,7 @@ class AuthenticationController extends _$AuthenticationController {
   Future<void> createAccount() async {
     state = AsyncLoading();
     final payload = ref.watch(authenticationPayloadProvider);
-
-    final String sessionId = ref
-        .read(localCacheProvider)
-        .getFromCache(CacheKeys.sessionId);
-
-    final result = await _authRepository.createAccount(sessionId, payload);
+    final result = await _authRepository.createAccount(payload);
 
     result.fold(
       (success) {
@@ -85,7 +80,8 @@ class AuthenticationController extends _$AuthenticationController {
 
     result.fold(
       (success) {
-        _saveSessionId(success.data.sessionId);
+        final payload = ref.watch(authenticationPayloadProvider);
+        payload["phone_token"] = success.data.phoneToken;
         ref.read(appRouterProvider).push(AccountRoleRoute());
         state = AsyncData(null);
       },
@@ -160,12 +156,6 @@ class AuthenticationController extends _$AuthenticationController {
           OnboardingRoute(),
           predicate: (route) => route.settings.name == "/sign-in",
         );
-  }
-
-  void _saveSessionId(String sessionId) {
-    ref
-        .read(localCacheProvider)
-        .saveToCache(key: CacheKeys.sessionId, value: sessionId);
   }
 
   void _saveUserToCache(UserModel user) {

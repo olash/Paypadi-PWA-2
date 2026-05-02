@@ -22,6 +22,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formRef = useRef(GlobalKey<FormState>());
     final bankCode = useState<String>('');
+    final showSubmit = useState<bool>(false);
     final bankController = useTextEditingController();
     final accountName = useTextEditingController();
     final accountNumber = useTextEditingController();
@@ -42,9 +43,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
 
     ref.listen(bankListControllerProvider, (_, state) {
       state.when(
-        data: (d) {
-          ref.dismissLoading();
-        },
+        data: (d) => ref.dismissLoading(),
         error: (e, st) {
           ref.dismissLoading();
           ref.showExceptionMessage(e);
@@ -53,28 +52,11 @@ class PayoutAccountScreen extends HookConsumerWidget {
       );
     });
 
-    useEffect(() {
-      void listener() {
-        if (accountNumber.text.length == 10 && bankCode.value.isNotEmpty) {
-          _verifyAccountInfo(
-            ref,
-            bankCode.value,
-            accountNumber.text,
-            formRef.value,
-          );
-        }
-      }
-
-      accountNumber.addListener(listener);
-      return () => accountNumber.removeListener(listener);
-    }, [accountNumber]);
-
     return AppScaffold(
       showAppBar: true,
       makeScrollable: true,
       child: Form(
         key: formRef.value,
-        autovalidateMode: AutovalidateMode.always,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -97,8 +79,8 @@ class PayoutAccountScreen extends HookConsumerWidget {
               title: 'Account Number',
               hint: 'Enter account number',
               controller: accountNumber,
-              validator: accountNumberValidator,
               keyboardType: TextInputType.number,
+              validator: (value) => accountNumberValidator(value),
             ),
             AppTextformfield(
               isEnabled: false,
@@ -108,8 +90,21 @@ class PayoutAccountScreen extends HookConsumerWidget {
             ),
             Values.v24.verticalSpacing,
             FilledButton(
-              onPressed: () => _navigateNext(ref, context),
-              child: const Text('Submit'),
+              onPressed: !showSubmit.value
+                  ? () {
+                      _verifyAccountInfo(
+                        ref,
+                        bankCode.value,
+                        accountNumber.text,
+                        formRef.value,
+                      );
+                      showSubmit.value = true;
+                    }
+                  : () {
+                      showSubmit.value = false;
+                      _navigateNext(ref, context);
+                    },
+              child: Text(!showSubmit.value ? 'Confirm' : 'Submit'),
             ),
           ],
         ),

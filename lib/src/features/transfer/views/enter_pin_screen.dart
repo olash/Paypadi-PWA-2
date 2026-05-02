@@ -62,6 +62,17 @@ class EnterPinScreen extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: Values.v24),
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
+              
+              final String? pin = await ref
+                  .read(secureCacheProvider)
+                  .read(CacheKeys.transactionPin);
+
+              if (pin == null) return;
+
+              ref.read(transactionPayloadProvider)["pin"] = pin;
+              ref
+                  .read(initiatePaymentControllerProvider.notifier)
+                  .initiatePayment();
             },
 
             onSubmit: (value) {
