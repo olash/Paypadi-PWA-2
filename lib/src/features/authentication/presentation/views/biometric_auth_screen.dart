@@ -51,7 +51,7 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
               Flexible(
                 child: OutlinedButton(
                   onPressed: () {
-                    ref.read(appRouterProvider).replaceAll([LoginRoute()]);
+                    ref.read(appRouterProvider).replaceAll([SignInRoute()]);
                   },
                   child: Text("Maybe Later"),
                 ),
@@ -65,7 +65,7 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
                           key: CacheKeys.enabledBiometrics,
                           value: true,
                         );
-                    ref.read(appRouterProvider).replaceAll([LoginRoute()]);
+                    ref.read(appRouterProvider).replaceAll([SignInRoute()]);
                   },
                   child: Text("Enable"),
                 ),

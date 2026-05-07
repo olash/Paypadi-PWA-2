@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart' show kDemoProfilePic, Values;
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart' show AppAvatar;
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart'
@@ -20,8 +21,19 @@ class ProfileScreen extends HookConsumerWidget {
     final lastName = useTextEditingController();
     final email = useTextEditingController();
 
-    final TextStyle? style = context.textTheme.bodySmall?.copyWith(
-      fontSize: 13,
+    ref.listen(userProfileProvider, (previous, current) {
+      current.when(
+        data: (d) {
+          ref.dismissLoading();
+          firstName.text = d?.firstName ?? '';
+          lastName.text = d?.lastName ?? '';
+          email.text = d?.email ?? '';
+        },
+        error: (e, st) => ref.dismissLoading(),
+        loading: ref.showLoading,
+      );
+    });
+    final style = context.textTheme.bodySmall?.copyWith(
       fontWeight: FontWeight.w400,
     );
 
@@ -60,7 +72,7 @@ class ProfileScreen extends HookConsumerWidget {
             titleStyle: style,
             controller: email,
           ),
-  
+
           FilledButton(
             onPressed: () {},
             child: Text("Save"),

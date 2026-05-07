@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -10,6 +11,8 @@ import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/authentication/presentation/controller/authentication_controller.dart';
 import 'package:paypadi/src/features/settings/widgets/setting_tile.dart';
+import 'package:paypadi/src/shared/controllers/app_version_controller.dart';
+import 'package:paypadi/src/shared/controllers/profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
@@ -18,13 +21,14 @@ class SettingsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appVersion = ref.watch(appVersionControllerProvider);
     final localCache = ref.read(localCacheProvider);
     final biometricsIsEnabled = useState<bool>(
       localCache.getFromCache(CacheKeys.enabledBiometrics) ?? false,
     );
-    final isDarkMode = useState<bool>(
-      localCache.getFromCache(CacheKeys.isDarkMode) ?? false,
-    );
+    // final isDarkMode = useState<bool>(
+    //   localCache.getFromCache(CacheKeys.isDarkMode) ?? false,
+    // );
 
     useEffect(() {
       // Save biometricsIsEnabled.value to cache whenever it changes
@@ -39,18 +43,18 @@ class SettingsScreen extends HookConsumerWidget {
       return null;
     }, [biometricsIsEnabled.value]);
 
-    useEffect(() {
-      // Save isDarkMode.value to cache whenever it changes
-      Future<void> saveDarkModeSetting() async {
-        await localCache.saveToCache(
-          key: CacheKeys.isDarkMode,
-          value: isDarkMode.value,
-        );
-      }
+    // useEffect(() {
+    //   // Save isDarkMode.value to cache whenever it changes
+    //   Future<void> saveDarkModeSetting() async {
+    //     await localCache.saveToCache(
+    //       key: CacheKeys.isDarkMode,
+    //       value: isDarkMode.value,
+    //     );
+    //   }
 
-      saveDarkModeSetting();
-      return null;
-    }, [isDarkMode.value]);
+    //   saveDarkModeSetting();
+    //   return null;
+    // }, [isDarkMode.value]);
 
     return AppScaffold(
       showAppBar: false,
@@ -66,75 +70,83 @@ class SettingsScreen extends HookConsumerWidget {
           ),
         ),
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SettingTile(
-              name: "Profile",
-              icon: Iconsax.profile_circle_outline,
-              onTap: () => ref.read(appRouterProvider).push(ProfileRoute()),
+      child: Column(
+        children: [
+          SettingTile(
+            name: "Profile",
+            icon: Iconsax.profile_circle_outline,
+            onTap: () {
+              ref.read(userProfileProvider);
+              ref.read(appRouterProvider).push(ProfileRoute());
+            },
+          ),
+          SettingTile(
+            name: "Notification Preferences",
+            icon: Iconsax.notification_outline,
+            onTap: () => ref.read(appRouterProvider).push(NotificationsRoute()),
+          ),
+          SettingTile(
+            name: "Change Password",
+            showTrailingIcon: false,
+            icon: Iconsax.lock_1_outline,
+            onTap: () =>
+                ref.read(appRouterProvider).push(ChangePasswordRoute()),
+          ),
+          SettingTile(
+            name: "Change Pin",
+            showTrailingIcon: false,
+            icon: Iconsax.password_check_outline,
+            onTap: () => ref.read(appRouterProvider).push(ChangePinRoute()),
+          ),
+          SettingTile(
+            name: "Referral",
+            showTrailingIcon: false,
+            icon: Iconsax.alarm_outline,
+            onTap: () => ref.read(appRouterProvider).push(ReferralRoute()),
+          ),
+          SettingTile(
+            name: "Theme",
+            icon: Iconsax.colorfilter_outline,
+            onTap: () => ref.read(appRouterProvider).push(ChangeThemeRoute()),
+          ),
+          SettingTileWithSwitch(
+            name: "Enable Biometrics",
+            icon: IonIcons.finger_print,
+            switchValue: biometricsIsEnabled.value,
+            onChanged: (value) => biometricsIsEnabled.value = value,
+          ),
+          // SettingTileWithSwitch(
+          //   name: "Dark Mode",
+          //   icon: Iconsax.moon_outline,
+          //   switchValue: isDarkMode.value,
+          //   onChanged: (value) => isDarkMode.value = value,
+          // ),
+          // SettingTile(
+          //   name: "Help & Support",
+          //   icon: Iconsax.support_outline,
+          //   onTap: () => ref.read(appRouterProvider).push(SupportRoute()),
+          // ),
+          // SettingTile(
+          //   name: "Legal & Policies",
+          //   icon: Iconsax.judge_outline,
+          //   onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
+          // ),
+          SettingTile(
+            name: "Log out",
+            showTrailingIcon: false,
+            icon: Iconsax.logout_1_outline,
+            onTap: () =>
+                ref.read(authenticationControllerProvider.notifier).logout(),
+          ),
+          Spacer(),
+          Text(
+            "App Version: ${appVersion.value?.version}",
+            style: context.textTheme.bodySmall?.copyWith(
+              color: AppColors.grey400,
             ),
-            SettingTile(
-              name: "Notification Preferences",
-              icon: Iconsax.notification_outline,
-              onTap: () =>
-                  ref.read(appRouterProvider).push(NotificationsRoute()),
-            ),
-            SettingTile(
-              name: "Change Password",
-              showTrailingIcon: false,
-              icon: Iconsax.lock_1_outline,
-              onTap: () =>
-                  ref.read(appRouterProvider).push(ChangePasswordRoute()),
-            ),
-            SettingTile(
-              name: "Change Pin",
-              showTrailingIcon: false,
-              icon: Iconsax.password_check_outline,
-              onTap: () => ref.read(appRouterProvider).push(ChangePinRoute()),
-            ),
-            SettingTile(
-              name: "Referral",
-              showTrailingIcon: false,
-              icon: Iconsax.alarm_outline,
-              onTap: () => ref.read(appRouterProvider).push(ReferralRoute()),
-            ),
-            SettingTile(
-              name: "Theme",
-              icon: Iconsax.colorfilter_outline,
-              onTap: () => ref.read(appRouterProvider).push(ChangeThemeRoute()),
-            ),
-            SettingTileWithSwitch(
-              name: "Enable Biometrics",
-              icon: IonIcons.finger_print,
-              switchValue: biometricsIsEnabled.value,
-              onChanged: (value) => biometricsIsEnabled.value = value,
-            ),
-            // SettingTileWithSwitch(
-            //   name: "Dark Mode",
-            //   icon: Iconsax.moon_outline,
-            //   switchValue: isDarkMode.value,
-            //   onChanged: (value) => isDarkMode.value = value,
-            // ),
-            // SettingTile(
-            //   name: "Help & Support",
-            //   icon: Iconsax.support_outline,
-            //   onTap: () => ref.read(appRouterProvider).push(SupportRoute()),
-            // ),
-            // SettingTile(
-            //   name: "Legal & Policies",
-            //   icon: Iconsax.judge_outline,
-            //   onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
-            // ),
-            SettingTile(
-              name: "Log out",
-              showTrailingIcon: false,
-              icon: Iconsax.logout_1_outline,
-              onTap: () =>
-                  ref.read(authenticationControllerProvider.notifier).logout(),
-            ),
-          ],
-        ),
+          ),
+          Values.v24.verticalSpacing,
+        ],
       ),
     );
   }

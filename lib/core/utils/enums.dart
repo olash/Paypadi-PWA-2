@@ -15,6 +15,8 @@ enum AccountRole {
   final String description;
 }
 
+enum AccountType { rider, driver, unknown }
+
 enum PickedAmount {
   two(value: "200"),
   four(value: "400"),

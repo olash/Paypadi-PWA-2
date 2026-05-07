@@ -4,6 +4,7 @@ import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
 import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
+import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
 
 class ProfileRepository {
@@ -19,9 +20,9 @@ class ProfileRepository {
     return response;
   }
 
-  FutureResultOf<ApiResponse> getUserProfile() async {
-    final response = await Result.fromAsync<ApiResponse>(
-      () => client.getUserInfo(),
+  FutureResultOf<ApiResponse<UserProfileModel>> getAccountProfile() async {
+    final response = await Result.fromAsync<ApiResponse<UserProfileModel>>(
+      () => client.getAccountInfo(),
     );
     return response;
   }

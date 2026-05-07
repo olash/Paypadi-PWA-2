@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'package:paypadi/core/api/response/api_response.dart';
@@ -36,8 +37,8 @@ abstract class ProfileClient {
     @Body() required Map<String, dynamic> payload,
   });
 
-  @POST('$_basePath/me/')
-  Future<ApiResponse> getUserInfo();
+  @GET('$_basePath/me/')
+  Future<ApiResponse<UserProfileModel>> getAccountInfo();
 
   @POST('$_basePath/pin/set/')
   Future<ApiResponse<void>> setTransactionPin({

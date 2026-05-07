@@ -3,6 +3,7 @@ import 'dart:ui' show Color;
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
 import 'package:paypadi/core/services/api_service.dart';
+import 'package:paypadi/core/services/app_version_service.dart';
 import 'package:paypadi/core/services/file_picker_service.dart';
 import 'package:paypadi/core/services/image_picker_service.dart';
 import 'package:paypadi/core/services/receipt_service.dart';
@@ -102,6 +103,11 @@ FilePickerService filePickerService(Ref ref) {
 @riverpod
 ImagePickerService imagePickerService(Ref ref) {
   return ImagePickerService();
+}
+
+@riverpod
+AppVersionService versionService(Ref ref) {
+  return AppVersionService();
 }
 
 @riverpod

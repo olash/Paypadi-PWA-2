@@ -37,7 +37,7 @@ class _LoadingBarrier extends ConsumerWidget {
 
     return AbsorbPointer(
       child: ColoredBox(
-        color: AppColors.black.withValues(alpha: .2),
+        color: AppColors.black.withValues(alpha: .3),
         child: Center(
           child: LoadingAnimationWidget.threeArchedCircle(
             color: primaryColor,
