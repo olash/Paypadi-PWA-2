@@ -1,10 +1,10 @@
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
-import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
+import 'package:paypadi/core/clients/wallet_ds/wallet_client.dart';
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
-import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
+import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
 
@@ -14,14 +14,14 @@ class WalletRepository {
 
   FutureApiResultOf<WalletModel> fetchWalletBalance() async {
     final response = await Result.fromAsync<ApiResponse<WalletModel>>(
-      () => client.getBalance(),
+      client.getBalance,
     );
     return response;
   }
 
   FutureApiResultOf<UserBankAccountModel> getDepositAccount() async {
     final response = await Result.fromAsync<ApiResponse<UserBankAccountModel>>(
-      () => client.getDepositAccount(),
+      client.getDepositAccount,
     );
     return response;
   }

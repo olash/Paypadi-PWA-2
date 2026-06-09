@@ -12,7 +12,7 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class ConfirmPasswordScreen extends HookConsumerWidget {
-  const ConfirmPasswordScreen({super.key, required this.password});
+  const ConfirmPasswordScreen({required this.password, super.key});
   final String password;
 
   @override
@@ -40,12 +40,12 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
         children: [
           Values.v32.verticalSpacing,
           Text(
-            "Confirm your Password",
+            'Confirm your Password',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Set a secure password for your account",
+            'Set a secure password for your account',
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -55,14 +55,14 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             controller: confirmPasswordController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
             controller: confirmPasswordController,
             onSubmit: (confirmedPassword) =>
                 createAccount(ref, password, confirmedPassword),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );
@@ -74,7 +74,7 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
     String confirmedPassword,
   ) {
     if (password == confirmedPassword) {
-      ref.read(authenticationPayloadProvider)["password"] = password;
+      ref.read(authenticationPayloadProvider)['password'] = password;
       ref.read(authenticationControllerProvider.notifier).createAccount();
     }
   }

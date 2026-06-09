@@ -39,27 +39,25 @@ class EnterPinScreen extends HookConsumerWidget {
         children: [
           Values.v24.verticalSpacing,
           Text(
-            "Enter PIN",
+            'Enter PIN',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Enter transaction 4-digit PIN-code or use your biometrics to perform action.",
+            'Enter transaction 4-digit PIN-code or use your biometrics to perform action.',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
           Values.v64.verticalSpacing,
           AppPinIndicator(
-            pinLength: transactionPinLength,
             controller: pinController,
           ),
-          Spacer(flex: 2),
+          const Spacer(flex: 2),
           AppKeypad(
             showBiometric: true,
-            keyLength: transactionPinLength,
             controller: pinController,
-            padding: EdgeInsets.symmetric(horizontal: Values.v24),
+            padding: const EdgeInsets.symmetric(horizontal: Values.v24),
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
               
@@ -69,21 +67,21 @@ class EnterPinScreen extends HookConsumerWidget {
 
               if (pin == null) return;
 
-              ref.read(transactionPayloadProvider)["pin"] = pin;
+              ref.read(transactionPayloadProvider)['pin'] = pin;
               ref
                   .read(initiatePaymentControllerProvider.notifier)
                   .initiatePayment();
             },
 
             onSubmit: (value) {
-              ref.read(transactionPayloadProvider)["pin"] = value;
+              ref.read(transactionPayloadProvider)['pin'] = value;
 
               ref
                   .read(initiatePaymentControllerProvider.notifier)
                   .initiatePayment();
             },
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

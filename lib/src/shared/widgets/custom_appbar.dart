@@ -17,13 +17,13 @@ class CustomAppbarWithTitle extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: kToolbarHeight),
+      padding: const EdgeInsets.only(top: kToolbarHeight),
       child: Row(
         spacing: Values.v20,
         children: [
           IconButton(
             onPressed: () => context.pop(),
-            icon: Icon(CupertinoIcons.chevron_back),
+            icon: const Icon(CupertinoIcons.chevron_back),
           ),
           if (title != null)
             Text(
@@ -38,9 +38,8 @@ class CustomAppbarWithTitle extends StatelessWidget
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({
-    super.key,
+    required this.name, super.key,
     this.profilePic,
-    required this.name,
   });
 
   final String? name;
@@ -56,11 +55,11 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         AppAvatar(radius: Values.v48, imageUrl: profilePic),
         Values.v10.horizontalSpacing,
         Text(
-          "Hi, $name",
+          'Hi, $name',
           style: context.textTheme.bodyLarge,
         ),
-        Spacer(),
-        Icon(Iconsax.notification_outline),
+        const Spacer(),
+        const Icon(Iconsax.notification_outline),
       ],
     );
   }

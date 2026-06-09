@@ -20,18 +20,17 @@ class AccountRoleScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-      showAppBar: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Values.v32.verticalSpacing,
           Text(
-            "Choose Your Role",
+            'Choose Your Role',
             style: context.textTheme.headlineMedium,
           ),
           Values.v10.verticalSpacing,
           Text(
-            "Choose your role to get a personalized experience.",
+            'Choose your role to get a personalized experience.',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -40,16 +39,16 @@ class AccountRoleScreen extends HookConsumerWidget {
           _RoleWidget(
             role: AccountRole.passenger,
             onWidgetTapped: () {
-              ref.read(authenticationPayloadProvider)["role"] = "rider";
-              ref.read(appRouterProvider).push(SetupPassengerRoute());
+              ref.read(authenticationPayloadProvider)['role'] = 'rider';
+              ref.read(appRouterProvider).push(const SetupPassengerRoute());
             },
           ),
           _RoleWidget(
             role: AccountRole.driver,
             onWidgetTapped: () {
               
-              ref.read(authenticationPayloadProvider)["role"] = "driver";
-              ref.read(appRouterProvider).push(SetupDriverRoute());
+              ref.read(authenticationPayloadProvider)['role'] = 'driver';
+              ref.read(appRouterProvider).push(const SetupDriverRoute());
             },
           ),
         ],
@@ -69,18 +68,18 @@ class _RoleWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onWidgetTapped,
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: Values.v24,
           horizontal: Values.v16,
         ),
-        margin: EdgeInsets.only(bottom: Values.v16),
+        margin: const EdgeInsets.only(bottom: Values.v16),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(Values.v12.r),
           boxShadow: [
             BoxShadow(
               blurRadius: Values.v4,
-              offset: Offset(Values.zero, Values.v1),
+              offset: const Offset(Values.zero, Values.v1),
               color: AppColors.black.withValues(alpha: .25),
             ),
           ],

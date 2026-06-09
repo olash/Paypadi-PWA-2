@@ -1,8 +1,7 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:paypadi/core/repositories/transaction_repo.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'receipt_controller.g.dart';
 

@@ -11,13 +11,12 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class AppKeypad extends ConsumerWidget {
   const AppKeypad({
-    super.key,
+    required this.controller, super.key,
     this.padding,
     this.onSubmit,
     this.keyLength = 4,
     this.showBiometric = false,
     this.onBiometricKeyPressed,
-    required this.controller,
   });
 
   final TextEditingController controller;
@@ -32,7 +31,7 @@ class AppKeypad extends ConsumerWidget {
     return GridView.builder(
       shrinkWrap: true,
       itemCount: kAppKeyPadKeys.length,
-      padding: padding ?? EdgeInsets.symmetric(horizontal: Values.v24),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: Values.v24),
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -82,7 +81,7 @@ class AppKeypad extends ConsumerWidget {
           'x' => AppAssets.icons.keypadBackspace.svg(),
           '.' =>
             showBiometric
-                ? Icon(IonIcons.finger_print, size: Values.v48)
+                ? const Icon(IonIcons.finger_print, size: Values.v48)
                 : const SizedBox.shrink(),
           _ => Text(
             key,

@@ -25,7 +25,6 @@ class SetupPassengerScreen extends HookConsumerWidget {
     final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
-      showAppBar: true,
       makeScrollable: true,
       child: Form(
         key: formRef.value,
@@ -34,12 +33,12 @@ class SetupPassengerScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Set up your account",
+              'Set up your account',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly provide the details below to help give you the best experience.",
+              'Kindly provide the details below to help give you the best experience.',
               style: context.textTheme.bodyLarge?.copyWith(
                 color: AppColors.grey600,
                 fontWeight: FontWeight.w400,
@@ -47,20 +46,20 @@ class SetupPassengerScreen extends HookConsumerWidget {
             ),
             Values.v32.verticalSpacing,
             AppTextformfield(
-              title: "First Name",
-              hint: "Enter first name",
+              title: 'First Name',
+              hint: 'Enter first name',
               controller: firstName,
-              validator: (firstname) => nameValidator(firstname),
+              validator: nameValidator,
             ),
             AppTextformfield(
-              title: "Surname",
-              hint: "Enter surname",
+              title: 'Surname',
+              hint: 'Enter surname',
               controller: lastName,
-              validator: (surname) => nameValidator(surname),
+              validator: nameValidator,
             ),
             AppTextformfield(
-              title: "Referral Code (Optional)",
-              hint: "Enter referral code",
+              title: 'Referral Code (Optional)',
+              hint: 'Enter referral code',
               controller: referralCode,
             ),
             Values.v24.verticalSpacing,
@@ -72,7 +71,7 @@ class SetupPassengerScreen extends HookConsumerWidget {
                 referralCode.text,
                 formRef.value,
               ),
-              child: Text("Submit"),
+              child: const Text('Submit'),
             ),
           ],
         ),
@@ -95,12 +94,12 @@ class SetupPassengerScreen extends HookConsumerWidget {
     );
 
     if (referralCode.isNotEmpty) {
-      payloadBuilder["referred_by"] = referralCode;
+      payloadBuilder['referred_by'] = referralCode;
     }
     payloadBuilder
-      ..["first_name"] = firstName
-      ..["last_name"] = lastName;
+      ..['first_name'] = firstName
+      ..['last_name'] = lastName;
 
-    ref.read(appRouterProvider).push(CreatePasswordRoute());
+    ref.read(appRouterProvider).push(const CreatePasswordRoute());
   }
 }

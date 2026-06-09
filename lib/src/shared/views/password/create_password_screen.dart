@@ -24,12 +24,12 @@ class CreatePasswordScreen extends HookConsumerWidget {
         children: [
           Values.v32.verticalSpacing,
           Text(
-            "Create your Password",
+            'Create your Password',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Set a secure password for your account",
+            'Set a secure password for your account',
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -39,13 +39,13 @@ class CreatePasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             controller: passwordController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
             controller: passwordController,
             onSubmit: (value) => onSubmit(ref, value),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

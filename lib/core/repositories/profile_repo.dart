@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
-import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
+import 'package:paypadi/core/clients/profile_ds/profile_client.dart';
 import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
 import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
+import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
 
 class ProfileRepository {
@@ -22,14 +23,14 @@ class ProfileRepository {
 
   FutureResultOf<ApiResponse<UserProfileModel>> getAccountProfile() async {
     final response = await Result.fromAsync<ApiResponse<UserProfileModel>>(
-      () => client.getAccountInfo(),
+      client.getAccountInfo,
     );
     return response;
   }
 
   FutureResultOf getDriverProfile() async {
     final response = await Result.fromAsync(
-      () => client.getDriverProfile(),
+      client.getDriverProfile,
     );
     return response;
   }
@@ -55,15 +56,43 @@ class ProfileRepository {
   FutureResultOf<ApiResponse<DriverProfileModel>> uploadDocument({
     required File file,
     required String fileName,
+    required DocumentCategory category,
     required void Function(int, int)? onSendProgress,
   }) async {
-    final response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
-      () => client.uploadDocument(
-        file: file,
-        fileName: fileName,
-        onSendProgress: onSendProgress,
-      ),
-    );
+    Result<ApiResponse<DriverProfileModel>, Exception> response;
+
+    switch (category) {
+      case DocumentCategory.driverLicenseFront:
+        response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
+          () => client.uploadDocument(
+            licenseFront: file,
+            fileName: fileName,
+            onSendProgress: onSendProgress,
+          ),
+        );
+        break;
+
+      case DocumentCategory.driverLicenseBack:
+        response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
+          () => client.uploadDocument(
+            licenseBack: file,
+            fileName: fileName,
+            onSendProgress: onSendProgress,
+          ),
+        );
+        break;
+
+      case DocumentCategory.vehicleLicense:
+        response = await Result.fromAsync<ApiResponse<DriverProfileModel>>(
+          () => client.uploadDocument(
+            vehicleReg: file,
+            fileName: fileName,
+            onSendProgress: onSendProgress,
+          ),
+        );
+        break;
+    }
+    
     return response;
   }
 }

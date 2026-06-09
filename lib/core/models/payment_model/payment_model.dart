@@ -8,12 +8,12 @@ part 'payment_model.g.dart';
 sealed class PaymentModel with _$PaymentModel {
   const factory PaymentModel({
     required String amount,
-    @JsonKey(name: "transaction_reference") required String reference,
-    @JsonKey(name: "authorization_url") required String authorizationUrl,
-    @JsonKey(name: "transaction_id") required String transactionId,
-    @JsonKey(name: "created_at") required String createdAt,
+    @JsonKey(name: 'transaction_reference') required String reference,
+    @JsonKey(name: 'authorization_url') required String authorizationUrl,
+    @JsonKey(name: 'transaction_id') required String transactionId,
+    @JsonKey(name: 'created_at') required String createdAt,
     @JsonKey(
-      name: "payment_type",
+      name: 'payment_type',
       unknownEnumValue: TransactionType.unknown,
     )
     required TransactionType paymentType,

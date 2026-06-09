@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -12,6 +10,7 @@ import 'package:paypadi/src/features/transfer/widgets/dotted_line.dart';
 import 'package:paypadi/src/features/transfer/widgets/payment_details.dart';
 import 'package:paypadi/src/features/transfer/widgets/receipt_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class ConfirmPaymentScreen extends ConsumerWidget {
@@ -30,7 +29,7 @@ class ConfirmPaymentScreen extends ConsumerWidget {
     });
 
     return AppScaffold(
-      title: "Withdrawal",
+      title: 'Withdrawal',
       bgColor: AppColors.scaffoldBackground,
       child: Column(
         children: [
@@ -39,7 +38,7 @@ class ConfirmPaymentScreen extends ConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  "Payment Summary!",
+                  'Payment Summary!',
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,
                     letterSpacing: kZeroLetterSpacing,
@@ -51,7 +50,7 @@ class ConfirmPaymentScreen extends ConsumerWidget {
                   child: Text(
                     paymentSummary.isLoading
                         ? placeholder
-                        : "₦ ${formatAmount(paymentSummary.value?.amount)}",
+                        : '₦ ${formatAmount(paymentSummary.value?.amount)}',
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                       letterSpacing: kZeroLetterSpacing,
@@ -59,26 +58,26 @@ class ConfirmPaymentScreen extends ConsumerWidget {
                   ),
                 ),
                 Values.v32.verticalSpacing,
-                Divider(
+                const Divider(
                   indent: Values.v8,
                   endIndent: Values.v8,
                   color: AppColors.dividerColor,
                 ),
                 Values.v32.verticalSpacing,
                 PaymentDetails(
-                  detail: "Ref Number",
+                  detail: 'Ref Number',
                   isLoading: paymentSummary.isLoading,
                   value: paymentSummary.value?.reference,
                 ),
                 PaymentDetails(
-                  detail: "Payment time",
+                  detail: 'Payment time',
                   isLoading: paymentSummary.isLoading,
                   value: paymentSummary.isLoading
                       ? placeholderShort
                       : getTransactionDate(paymentSummary.value?.createdAt),
                 ),
                 PaymentDetails(
-                  detail: "Payment",
+                  detail: 'Payment',
                   isLoading: paymentSummary.isLoading,
                   value: paymentSummary.isLoading
                       ? placeholder
@@ -86,20 +85,20 @@ class ConfirmPaymentScreen extends ConsumerWidget {
                           paymentSummary.value?.paymentType.name,
                         ),
                 ),
-                DottedDivider(topPadding: Values.v2),
+                const DottedDivider(topPadding: Values.v2),
                 PaymentDetails(
-                  detail: "Amount",
+                  detail: 'Amount',
                   isLoading: paymentSummary.isLoading,
                   value: paymentSummary.isLoading
                       ? placeholder
-                      : "₦ ${formatAmount(paymentSummary.value?.amount)}",
+                      : '₦ ${formatAmount(paymentSummary.value?.amount)}',
                 ),
                 PaymentDetails(
-                  detail: "Transaction Fee",
+                  detail: 'Transaction Fee',
                   isLoading: paymentSummary.isLoading,
                   value: paymentSummary.isLoading
                       ? placeholder
-                      : "₦ ${formatAmount(paymentSummary.value?.amount)}",
+                      : '₦ ${formatAmount(paymentSummary.value?.amount)}',
                 ),
               ],
             ),
@@ -115,9 +114,9 @@ class ConfirmPaymentScreen extends ConsumerWidget {
             ),
             onPressed: () =>
                 ref.read(transactionControllerProvider.notifier).transfer(),
-            child: Text("Make Payment"),
+            child: const Text('Make Payment'),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

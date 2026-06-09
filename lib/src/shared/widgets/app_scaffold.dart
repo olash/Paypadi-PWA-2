@@ -3,7 +3,7 @@ import 'package:paypadi/src/shared/widgets/custom_appbar.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
-    super.key,
+    required this.child, super.key,
     this.title,
     this.appBar,
     this.bgColor,
@@ -15,7 +15,6 @@ class AppScaffold extends StatelessWidget {
     this.makeScrollable = false,
     this.bottomNavigationBar,
     this.onRefresh,
-    required this.child,
   });
 
   final Widget child;
@@ -47,7 +46,7 @@ class AppScaffold extends StatelessWidget {
         child: makeScrollable
             ? SingleChildScrollView(
                 padding: padding,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: child,
               )
             : Padding(padding: padding, child: child),

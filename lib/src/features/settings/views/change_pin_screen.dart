@@ -17,33 +17,31 @@ class ChangePinScreen extends HookConsumerWidget {
     final pinController = useTextEditingController();
 
     return AppScaffold(
-      title: "",
+      title: '',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Verify Payment PIN",
+            'Verify Payment PIN',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Please enter your Password",
+            'Please enter your Password',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            pinLength: transactionPinLength,
             controller: pinController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
-            keyLength: transactionPinLength,
             controller: pinController,
             onSubmit: (currentPin) {},
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

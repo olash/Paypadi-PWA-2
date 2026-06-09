@@ -6,9 +6,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class PaymentDetails extends StatelessWidget {
   const PaymentDetails({
-    super.key,
-    required this.detail,
-    required this.value,
+    required this.detail, required this.value, super.key,
     this.isLoading = false,
   });
 
@@ -19,7 +17,7 @@ class PaymentDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: Values.v14),
+      padding: const EdgeInsets.only(bottom: Values.v14),
       child: Row(
         children: [
           Expanded(

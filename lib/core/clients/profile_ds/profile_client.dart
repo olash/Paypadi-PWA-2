@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:paypadi/core/api/response/api_response.dart';
+import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
 import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
 import 'package:retrofit/retrofit.dart';
 
-import 'package:paypadi/core/api/response/api_response.dart';
-import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
-
 part 'profile_client.g.dart';
 
-const String _basePath = "/auth";
+const String _basePath = '/auth';
 
 @RestApi()
 abstract class ProfileClient {
@@ -51,10 +50,11 @@ abstract class ProfileClient {
   });
 
   @MultiPart()
-  @PATCH("$_basePath/driver/profile/")
+  @PATCH('$_basePath/driver/profile/')
   Future<ApiResponse<DriverProfileModel>> uploadDocument({
-    @Part() required File file,
-    @Part(name: "name") required String fileName,
+    @Part(name: 'file_name') required String fileName, @Part(name: 'license_front') File? licenseFront,
+    @Part(name: 'license_back') File? licenseBack,
+    @Part(name: 'vehicle_registration') File? vehicleReg,
     @SendProgress() ProgressCallback? onSendProgress,
   });
 }

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
-import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -33,20 +33,20 @@ class ChangeThemeScreen extends HookConsumerWidget {
     }, [currentColor.value]);
 
     return AppScaffold(
-      title: "Theme",
+      title: 'Theme',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Values.v24.verticalSpacing,
           Text(
-            "Customize to your preferred theme colour",
+            'Customize to your preferred theme colour',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
           Values.v16.verticalSpacing,
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.scaffoldBackground,
               borderRadius: BorderRadius.circular(Values.v12),
@@ -72,9 +72,7 @@ class ChangeThemeScreen extends HookConsumerWidget {
 
 class _ThemeColorWidget extends StatelessWidget {
   const _ThemeColorWidget({
-    this.onTap,
-    required this.color,
-    required this.isCurrent,
+    required this.color, required this.isCurrent, this.onTap,
   });
 
   final Color color;
@@ -89,12 +87,12 @@ class _ThemeColorWidget extends StatelessWidget {
         duration: Durations.medium4,
         width: Values.v48,
         height: Values.v48,
-        margin: EdgeInsets.only(right: Values.v12),
+        margin: const EdgeInsets.only(right: Values.v12),
         decoration: ShapeDecoration(
           color: color,
           shape: CircleBorder(
             side: isCurrent
-                ? BorderSide(color: AppColors.black, width: Values.v2)
+                ? const BorderSide(width: Values.v2)
                 : BorderSide.none,
           ),
         ),

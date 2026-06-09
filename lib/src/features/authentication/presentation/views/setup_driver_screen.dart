@@ -25,11 +25,10 @@ class SetupDriverScreen extends HookConsumerWidget {
     final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
-      showAppBar: true,
       makeScrollable: true,
       appBar: AppBar(
         title: Text(
-          "Step 1 out of 5",
+          'Step 1 out of 5',
           style: context.textTheme.titleSmall,
         ),
         centerTitle: true,
@@ -41,35 +40,35 @@ class SetupDriverScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Set up your account",
+              'Set up your account',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly provide the details below to help give you the best experience.",
+              'Kindly provide the details below to help give you the best experience.',
               style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
             AppTextformfield(
-              title: "First Name",
-              hint: "Enter first name",
+              title: 'First Name',
+              hint: 'Enter first name',
               controller: firstName,
-              validator: (firstName) => nameValidator(firstName),
+              validator: nameValidator,
             ),
             AppTextformfield(
-              title: "Surname",
-              hint: "Enter surname",
+              title: 'Surname',
+              hint: 'Enter surname',
               controller: surname,
-              validator: (firstName) => nameValidator(firstName),
+              validator: nameValidator,
             ),
             AppTextformfield(
-              title: "Email (Optional)",
-              hint: "Enter your email",
+              title: 'Email (Optional)',
+              hint: 'Enter your email',
               controller: email,
             ),
             AppTextformfield(
-              title: "Referral Code (Optional)",
-              hint: "Enter referral code",
+              title: 'Referral Code (Optional)',
+              hint: 'Enter referral code',
               controller: referralCode,
             ),
             Values.v24.verticalSpacing,
@@ -82,7 +81,7 @@ class SetupDriverScreen extends HookConsumerWidget {
                 referralCode.text,
                 formRef.value,
               ),
-              child: Text("Continue"),
+              child: const Text('Continue'),
             ),
           ],
         ),
@@ -105,13 +104,13 @@ class SetupDriverScreen extends HookConsumerWidget {
     );
 
     if (referralCode.isNotEmpty) {
-      payloadBuilder["referred_by"] = referralCode;
+      payloadBuilder['referred_by'] = referralCode;
     }
     payloadBuilder
-      ..["first_name"] = firstName
-      ..["last_name"] = lastName
-      ..["email"] = email;
+      ..['first_name'] = firstName
+      ..['last_name'] = lastName
+      ..['email'] = email;
 
-    ref.read(appRouterProvider).push(CreatePasswordRoute());
+    ref.read(appRouterProvider).push(const CreatePasswordRoute());
   }
 }

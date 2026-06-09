@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:retrofit/retrofit.dart';
-
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'wallet_client.g.dart';
 
-const String _basePath = "/wallets";
+const String _basePath = '/wallets';
 
 @RestApi()
 abstract class WalletClient {

@@ -1,8 +1,7 @@
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
+import 'package:paypadi/core/clients/authentication_ds/authentication_client.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
-import 'package:paypadi/core/datasource/authentication_ds/authentication_client.dart';
-
 import 'package:paypadi/src/features/authentication/domain/responses.dart';
 
 class AuthenticationRepository {

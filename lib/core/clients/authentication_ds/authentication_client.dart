@@ -6,7 +6,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'authentication_client.g.dart';
 
-const String _basePath = "/auth";
+const String _basePath = '/auth';
 
 @RestApi()
 abstract class AuthenticationClient {

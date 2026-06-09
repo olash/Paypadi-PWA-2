@@ -15,10 +15,10 @@ class LegalScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AppScaffold(
-      title: "Legal & Policies",
+    return const AppScaffold(
+      title: 'Legal & Policies',
       child: SettingTile(
-        name: "Privacy Policy & Terms of Use",
+        name: 'Privacy Policy & Terms of Use',
         icon: Iconsax.information_outline,
       ),
     );

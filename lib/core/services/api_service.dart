@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:talker_dio_logger/talker_dio_logger.dart';
-
 import 'package:paypadi/config/env.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/services/secure_cache_service.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys, debugLogger;
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 part 'api_service.g.dart';
 
@@ -17,9 +16,9 @@ Dio dio(Ref ref) {
       Dio(
           BaseOptions(
             baseUrl: Env.baseUrl,
-            connectTimeout: Duration(seconds: 30),
-            receiveTimeout: Duration(seconds: 30),
-            sendTimeout: Duration(seconds: 30),
+            connectTimeout: const Duration(seconds: 30),
+            receiveTimeout: const Duration(seconds: 30),
+            sendTimeout: const Duration(seconds: 30),
           ),
         )
         ..interceptors.addAll(
@@ -31,7 +30,6 @@ Dio dio(Ref ref) {
                 settings: const TalkerDioLoggerSettings(
                   printRequestHeaders: true,
                   printResponseHeaders: true,
-                  printResponseMessage: true,
                 ),
               ),
           ],
@@ -45,7 +43,7 @@ class AuthenticationCredentialsInterceptor extends Interceptor {
   final SecureCacheService cacheService;
 
   @override
-  void onRequest(
+  Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {

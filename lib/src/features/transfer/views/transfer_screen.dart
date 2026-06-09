@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -16,6 +14,7 @@ import 'package:paypadi/src/features/transfer/controller/beneficiaries_controlle
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart';
 import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class TransferScreen extends HookConsumerWidget {
@@ -26,14 +25,14 @@ class TransferScreen extends HookConsumerWidget {
     final receipientAccountNumber = useTextEditingController();
 
     return AppScaffold(
-      title: "Transfer",
+      title: 'Transfer',
       child: SingleChildScrollView(
         child: Column(
           children: [
             Values.v32.verticalSpacing,
             AppTextformfield(
-              title: "Account Number",
-              hint: "Enter 10-digit Account number or Phone Number",
+              title: 'Account Number',
+              hint: 'Enter 10-digit Account number or Phone Number',
               controller: receipientAccountNumber,
               keyboardType: TextInputType.number,
             ),
@@ -41,7 +40,7 @@ class TransferScreen extends HookConsumerWidget {
             FilledButton(
               onPressed: () =>
                   continueAction(ref, receipientAccountNumber.text),
-              child: Text("Continue"),
+              child: const Text('Continue'),
             ),
             Values.v32.verticalSpacing,
             _BeneficiariesList(),
@@ -74,7 +73,7 @@ class _BeneficiariesList extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Your Beneficiaries",
+          'Your Beneficiaries',
           style: context.textTheme.labelMedium?.copyWith(
             letterSpacing: Values.zero,
             fontWeight: FontWeight.w400,
@@ -157,16 +156,16 @@ class _BeneficiaryTile extends ConsumerWidget {
       direction: DismissDirection.startToEnd,
       onDismissed: (direction) => deleteBeneficiary(ref),
       background: Container(
-        padding: EdgeInsets.symmetric(horizontal: Values.v8),
+        padding: const EdgeInsets.symmetric(horizontal: Values.v8),
         color: Colors.redAccent,
         child: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.delete_outline,
               color: AppColors.white,
             ),
             Text(
-              "Delete",
+              'Delete',
               style: context.textTheme.bodyMedium?.copyWith(
                 color: AppColors.white,
               ),
@@ -177,7 +176,7 @@ class _BeneficiaryTile extends ConsumerWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(Values.v10),
+          padding: const EdgeInsets.all(Values.v10),
           child: Row(
             children: [
               Skeletonizer(
@@ -231,7 +230,7 @@ class _BeneficiaryTile extends ConsumerWidget {
     );
   }
 
-  void deleteBeneficiary(WidgetRef ref) async {
+  Future<void> deleteBeneficiary(WidgetRef ref) async {
     if (beneficiary.id == null) return;
 
     final beneficiaryType = ref.read(beneficiaryTypeControllerProvider);
@@ -278,7 +277,7 @@ class _BeneficiaryTypeButton extends ConsumerWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: Durations.long4,
-        padding: EdgeInsets.all(Values.v10),
+        padding: const EdgeInsets.all(Values.v10),
         decoration: type != beneficiaryType
             ? null
             : BoxDecoration(

@@ -2,190 +2,190 @@ import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show localCacheProvider, secureCacheProvider;
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
 
-import 'router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
-  final Ref ref;
   AppRouter({required this.ref});
+  final Ref ref;
 
   @override
-  RouteType get defaultRouteType => RouteType.adaptive();
+  RouteType get defaultRouteType => const RouteType.adaptive();
 
   @override
   List<AutoRoute> get routes => [
     AutoRoute(
-      path: "/",
+      path: '/',
       initial: true,
       page: OnboardingRoute.page,
       // guards: [LandingPageGuard(ref)],
     ),
     AutoRoute(
-      path: "/account",
+      path: '/account',
       page: CreateAccountRoute.page,
     ),
     AutoRoute(
-      path: "/login",
+      path: '/login',
       page: LoginRoute.page,
     ),
     AutoRoute(
-      path: "/account-role",
+      path: '/account-role',
       page: AccountRoleRoute.page,
     ),
     AutoRoute(
-      path: "/setup-passenger",
+      path: '/setup-passenger',
       page: SetupPassengerRoute.page,
     ),
     AutoRoute(
-      path: "/setup-driver",
+      path: '/setup-driver',
       page: SetupDriverRoute.page,
     ),
     AutoRoute(
-      path: "/vehicle-information",
+      path: '/vehicle-information',
       page: VehicleInformationRoute.page,
     ),
     AutoRoute(
-      path: "/license",
+      path: '/license',
       page: LicensingRoute.page,
     ),
     AutoRoute(
-      path: "/document-upload",
+      path: '/document-upload',
       page: DocumentUploadRoute.page,
     ),
     AutoRoute(
-      path: "/payout-account",
+      path: '/payout-account',
       page: PayoutAccountRoute.page,
     ),
     AutoRoute(
-      path: "/otp",
+      path: '/otp',
       page: OtpRoute.page,
     ),
     AutoRoute(
-      path: "/password",
+      path: '/password',
       page: CreatePasswordRoute.page,
     ),
     AutoRoute(
-      path: "/enter-password",
+      path: '/enter-password',
       page: EnterPasswordRoute.page,
     ),
     AutoRoute(
-      path: "/sign-in",
+      path: '/sign-in',
       page: SignInRoute.page,
     ),
     AutoRoute(
-      path: "/confirm-password",
+      path: '/confirm-password',
       page: ConfirmPasswordRoute.page,
     ),
     AutoRoute(
-      path: "/transaction-pin",
+      path: '/transaction-pin',
       page: CreateTransactionPinRoute.page,
     ),
     AutoRoute(
-      path: "/confirm-transaction-pin",
+      path: '/confirm-transaction-pin',
       page: ConfirmTransactionPinRoute.page,
     ),
     AutoRoute(
-      path: "/biometric-authentication",
+      path: '/biometric-authentication',
       page: BiometricAuthenticationRoute.page,
     ),
     AutoRoute(
-      path: "/qr-code",
+      path: '/qr-code',
       page: QrCodeRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/transfer",
+      path: '/transfer',
       page: TransferRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/make-payment",
+      path: '/make-payment',
       page: MakePaymentRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/enter-transaction-pin",
+      path: '/enter-transaction-pin',
       page: EnterPinRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/confirm-payment",
+      path: '/confirm-payment',
       page: ConfirmPaymentRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/receipt",
+      path: '/receipt',
       page: ReceiptRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/change-theme",
+      path: '/change-theme',
       page: ChangeThemeRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/forgot-password",
+      path: '/forgot-password',
       page: ForgotPasswordRoute.page,
     ),
     AutoRoute(
-      path: "/change-password",
+      path: '/change-password',
       page: ChangePasswordRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/change-pin",
+      path: '/change-pin',
       page: ChangePinRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/notifications",
+      path: '/notifications',
       page: NotificationsRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/profile",
+      path: '/profile',
       page: ProfileRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/referral",
+      path: '/referral',
       page: ReferralRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/support",
+      path: '/support',
       page: SupportRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/legal",
+      path: '/legal',
       page: LegalRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/add-money",
+      path: '/add-money',
       page: DepositMoneyRoute.page,
       guards: [AuthenticationGuard(ref)],
     ),
     AutoRoute(
-      path: "/home",
+      path: '/home',
       guards: [AuthenticationGuard(ref), DriverAccountGuard(ref)],
       page: HomeRoute.page,
       children: [
         AutoRoute(
-          path: "dashboard",
+          path: 'dashboard',
           initial: true,
           page: DashboardRoute.page,
         ),
         AutoRoute(
-          path: "transaction-history",
+          path: 'transaction-history',
           page: TransactionHistoryRoute.page,
         ),
         AutoRoute(
-          path: "settings",
+          path: 'settings',
           page: SettingsRoute.page,
         ),
       ],
@@ -194,17 +194,17 @@ class AppRouter extends RootStackRouter {
 }
 
 class AuthenticationGuard extends AutoRouteGuard {
-  final Ref ref;
   const AuthenticationGuard(this.ref);
+  final Ref ref;
 
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
     final String? accessToken = await ref
         .read(secureCacheProvider)
         .read(CacheKeys.accessToken);
 
     if (accessToken == null) {
-      resolver.redirectUntil(SignInRoute());
+      resolver.redirectUntil(const SignInRoute());
       return;
     }
 
@@ -213,11 +213,11 @@ class AuthenticationGuard extends AutoRouteGuard {
 }
 
 class LandingPageGuard extends AutoRouteGuard {
-  final Ref ref;
   const LandingPageGuard(this.ref);
+  final Ref ref;
 
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
     final String? accessToken = await ref
         .read(secureCacheProvider)
         .read(CacheKeys.accessToken);
@@ -237,7 +237,7 @@ class LandingPageGuard extends AutoRouteGuard {
     // }
 
     if (accessToken != null && refreshToken != null) {
-      router.replace(LoginRoute());
+      router.replace(const LoginRoute());
       return;
     }
 
@@ -251,7 +251,7 @@ class DriverAccountGuard extends AutoRouteGuard {
   final Ref ref;
 
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
     final UserModel? user = ref
         .read(localCacheProvider)
         .getFromCache<UserModel>(
@@ -260,7 +260,7 @@ class DriverAccountGuard extends AutoRouteGuard {
         );
 
     if (user?.isDriver == true && user?.isApproved == false) {
-      router.replace(VehicleInformationRoute());
+      router.replace(const VehicleInformationRoute());
       return;
     }
 

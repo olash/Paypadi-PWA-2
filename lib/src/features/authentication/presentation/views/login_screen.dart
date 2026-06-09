@@ -49,7 +49,7 @@ class LoginScreen extends HookConsumerWidget {
       bottomPadding: Values.v24,
       child: Column(
         children: [
-          AppAvatar(radius: Values.v84, imageUrl: kDemoProfilePic),
+          const AppAvatar(radius: Values.v84, imageUrl: kDemoProfilePic),
           Values.v16.verticalSpacing,
           Text(
             "Good ${getDayTime()}, ${user?.firstName ?? ""}",
@@ -60,7 +60,7 @@ class LoginScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             controller: passwordController,
           ),
-          Spacer(flex: 2),
+          const Spacer(flex: 2),
           AppKeypad(
             keyLength: passwordPinLength,
             controller: passwordController,
@@ -72,14 +72,14 @@ class LoginScreen extends HookConsumerWidget {
                 .read(authenticationControllerProvider.notifier)
                 .login(user?.phoneNumber ?? '', password),
           ),
-          Spacer(),
+          const Spacer(),
           Center(
             child: GestureDetector(
               onTap: () => ref
                   .read(appRouterProvider)
                   .push(ForgotPasswordRoute(email: user?.email ?? '')),
               child: Text(
-                "Forgot Password?",
+                'Forgot Password?',
                 style: context.textTheme.bodyMedium?.copyWith(
                   letterSpacing: -Values.v1,
                 ),

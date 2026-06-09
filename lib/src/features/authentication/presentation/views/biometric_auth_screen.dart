@@ -4,10 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
-import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appRouterProvider, localCacheProvider;
+import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -32,28 +32,28 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
           ),
           Values.v24.verticalSpacing,
           Text(
-            Platform.isIOS ? "Enable Face ID" : "Enable Fingerprint",
+            Platform.isIOS ? 'Enable Face ID' : 'Enable Fingerprint',
             style: context.textTheme.headlineMedium,
           ),
           Values.v16.verticalSpacing,
           Text(
             Platform.isIOS
-                ? "Use face recognition for a faster and more secure access."
-                : "Use fingerprint for a faster and more secure access.",
+                ? 'Use face recognition for a faster and more secure access.'
+                : 'Use fingerprint for a faster and more secure access.',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Row(
             spacing: Values.v8,
             children: [
               Flexible(
                 child: OutlinedButton(
                   onPressed: () {
-                    ref.read(appRouterProvider).replaceAll([SignInRoute()]);
+                    ref.read(appRouterProvider).replaceAll([const SignInRoute()]);
                   },
-                  child: Text("Maybe Later"),
+                  child: const Text('Maybe Later'),
                 ),
               ),
               Flexible(
@@ -65,9 +65,9 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
                           key: CacheKeys.enabledBiometrics,
                           value: true,
                         );
-                    ref.read(appRouterProvider).replaceAll([SignInRoute()]);
+                    ref.read(appRouterProvider).replaceAll([const SignInRoute()]);
                   },
-                  child: Text("Enable"),
+                  child: const Text('Enable'),
                 ),
               ),
             ],

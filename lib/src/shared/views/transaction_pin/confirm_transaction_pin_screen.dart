@@ -12,7 +12,7 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class ConfirmTransactionPinScreen extends HookConsumerWidget {
-  const ConfirmTransactionPinScreen({super.key, required this.pin});
+  const ConfirmTransactionPinScreen({required this.pin, super.key});
   final String pin;
 
   @override
@@ -40,28 +40,26 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
         children: [
           Values.v32.verticalSpacing,
           Text(
-            "Confirm Transaction Pin",
+            'Confirm Transaction Pin',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Set a secure password for your account",
+            'Set a secure password for your account',
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            pinLength: transactionPinLength,
             controller: confirmPinController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
-            keyLength: transactionPinLength,
             controller: confirmPinController,
             onSubmit: (confirmedPin) => submitPin(ref, pin, confirmedPin),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

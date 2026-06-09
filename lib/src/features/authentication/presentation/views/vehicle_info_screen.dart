@@ -39,11 +39,10 @@ class VehicleInformationScreen extends HookConsumerWidget {
     });
 
     return AppScaffold(
-      showAppBar: true,
       makeScrollable: true,
       appBar: AppBar(
         title: Text(
-          "Step 2 out of 5",
+          'Step 2 out of 5',
           style: context.textTheme.titleSmall,
         ),
         centerTitle: true,
@@ -55,34 +54,34 @@ class VehicleInformationScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Vehicle Information",
+              'Vehicle Information',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly provide the details below to help give you the best experience.",
+              'Kindly provide the details below to help give you the best experience.',
               style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
             AppTextformfield(
-              title: "Car Make",
-              hint: "Enter your car make",
+              title: 'Car Make',
+              hint: 'Enter your car make',
               controller: carMake,
             ),
             AppTextformfield(
-              title: "Car Model",
-              hint: "Enter your car model",
+              title: 'Car Model',
+              hint: 'Enter your car model',
               controller: carModel,
             ),
             AppTextformfield(
-              title: "Year of Production",
+              title: 'Year of Production',
               hint: "Enter your car's year of production",
               keyboardType: TextInputType.number,
               controller: productionYear,
             ),
             AppTextformfield(
-              title: "License Plate",
-              hint: "Enter your license plate",
+              title: 'License Plate',
+              hint: 'Enter your license plate',
               controller: licensePlate,
             ),
             Values.v24.verticalSpacing,
@@ -95,7 +94,7 @@ class VehicleInformationScreen extends HookConsumerWidget {
                 licensePlate.text,
                 formRef.value,
               ),
-              child: Text("Continue"),
+              child: const Text('Continue'),
             ),
           ],
         ),
@@ -116,10 +115,10 @@ class VehicleInformationScreen extends HookConsumerWidget {
     ref.closeKeyboard();
 
     ref.read(profilePayloadProvider)
-      ..["vehicle_make"] = carMake
-      ..["vehicle_model"] = carModel
-      ..["vehicle_year"] = productionYear
-      ..["license_plate"] = licensePlate;
+      ..['vehicle_make'] = carMake
+      ..['vehicle_model'] = carModel
+      ..['vehicle_year'] = productionYear
+      ..['license_plate'] = licensePlate;
 
     ref.read(driverProfileProvider.notifier).createProfile();
   }

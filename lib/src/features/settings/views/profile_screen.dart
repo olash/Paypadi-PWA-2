@@ -38,18 +38,18 @@ class ProfileScreen extends HookConsumerWidget {
     );
 
     return AppScaffold(
-      title: "Profile",
+      title: 'Profile',
       makeScrollable: true,
       bottomPadding: Values.v24,
       child: Column(
         children: [
           Values.v24.verticalSpacing,
-          AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
+          const AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
           Values.v8.verticalSpacing,
           GestureDetector(
             onTap: () {},
             child: Text(
-              "Edit photo",
+              'Edit photo',
               style: context.textTheme.bodyMedium?.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w400,
@@ -58,24 +58,24 @@ class ProfileScreen extends HookConsumerWidget {
           ),
           Values.v20.verticalSpacing,
           AppTextformfield(
-            title: "First Name",
+            title: 'First Name',
             titleStyle: style,
             controller: firstName,
           ),
           AppTextformfield(
-            title: "Last Name",
+            title: 'Last Name',
             titleStyle: style,
             controller: lastName,
           ),
           AppTextformfield(
-            title: "Email",
+            title: 'Email',
             titleStyle: style,
             controller: email,
           ),
 
           FilledButton(
             onPressed: () {},
-            child: Text("Save"),
+            child: const Text('Save'),
           ),
         ],
       ),

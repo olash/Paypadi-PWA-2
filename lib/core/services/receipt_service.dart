@@ -14,7 +14,7 @@ class ReceiptService {
   ) async {
     final Directory directory = await getApplicationDocumentsDirectory();
     final String fileName =
-        "paypadi_receipt_${_getDateAndTime(DateTime.now())}.png";
+        'paypadi_receipt_${_getDateAndTime(DateTime.now())}.png';
     final String? savedReceiptPath = await controller.captureAndSave(
       directory.path,
       fileName: fileName,
@@ -25,7 +25,7 @@ class ReceiptService {
       return;
     }
 
-    final XFile shareableFile = XFile("${directory.path}/$fileName");
+    final XFile shareableFile = XFile('${directory.path}/$fileName');
 
     final Uint8List imageToSave = await shareableFile.readAsBytes();
     final result = await ImageGallerySaverPlus.saveImage(imageToSave);

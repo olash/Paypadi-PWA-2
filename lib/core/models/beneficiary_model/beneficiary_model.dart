@@ -6,17 +6,14 @@ part 'beneficiary_model.g.dart';
 @freezed
 sealed class BeneficiaryModel with _$BeneficiaryModel {
   const factory BeneficiaryModel({
-    String? id,
-    @JsonKey(name: "beneficiary_type") required String type,
-    @JsonKey(name: "account_number") required String accountNumber,
-    @JsonKey(name: "account_name") required String accountName,
-    @JsonKey(name: "bank_name")  String? bankName,
-    @JsonKey(name: "bank_code") String? bankCode,
-    @JsonKey(name: "is_saved") bool? isSaved,
-    @JsonKey(name: "is_verified") bool? isVerified,
-    @JsonKey(name: "created_at") String? createdAt,
-    @JsonKey(name: "updated_at") String? updatedAt,
-    @JsonKey(name: "last_transaction_at") String? lastTransaction,
+    @JsonKey(name: 'beneficiary_type') required String type, @JsonKey(name: 'account_number') required String accountNumber, @JsonKey(name: 'account_name') required String accountName, String? id,
+    @JsonKey(name: 'bank_name')  String? bankName,
+    @JsonKey(name: 'bank_code') String? bankCode,
+    @JsonKey(name: 'is_saved') bool? isSaved,
+    @JsonKey(name: 'is_verified') bool? isVerified,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'last_transaction_at') String? lastTransaction,
   }) = _BeneficiaryModel;
 
   factory BeneficiaryModel.fromJson(Map<String, dynamic> json) =>

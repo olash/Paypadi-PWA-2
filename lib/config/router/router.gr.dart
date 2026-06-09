@@ -169,12 +169,12 @@ class ChangeThemeRoute extends _i39.PageRouteInfo<void> {
 class ConfirmPasswordRoute
     extends _i39.PageRouteInfo<ConfirmPasswordRouteArgs> {
   ConfirmPasswordRoute({
-    _i40.Key? key,
     required String password,
+    _i40.Key? key,
     List<_i39.PageRouteInfo>? children,
   }) : super(
          ConfirmPasswordRoute.name,
-         args: ConfirmPasswordRouteArgs(key: key, password: password),
+         args: ConfirmPasswordRouteArgs(password: password, key: key),
          initialChildren: children,
        );
 
@@ -184,32 +184,32 @@ class ConfirmPasswordRoute
     name,
     builder: (data) {
       final args = data.argsAs<ConfirmPasswordRouteArgs>();
-      return _i6.ConfirmPasswordScreen(key: args.key, password: args.password);
+      return _i6.ConfirmPasswordScreen(password: args.password, key: args.key);
     },
   );
 }
 
 class ConfirmPasswordRouteArgs {
-  const ConfirmPasswordRouteArgs({this.key, required this.password});
-
-  final _i40.Key? key;
+  const ConfirmPasswordRouteArgs({required this.password, this.key});
 
   final String password;
 
+  final _i40.Key? key;
+
   @override
   String toString() {
-    return 'ConfirmPasswordRouteArgs{key: $key, password: $password}';
+    return 'ConfirmPasswordRouteArgs{password: $password, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ConfirmPasswordRouteArgs) return false;
-    return key == other.key && password == other.password;
+    return password == other.password && key == other.key;
   }
 
   @override
-  int get hashCode => key.hashCode ^ password.hashCode;
+  int get hashCode => password.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -233,12 +233,12 @@ class ConfirmPaymentRoute extends _i39.PageRouteInfo<void> {
 class ConfirmTransactionPinRoute
     extends _i39.PageRouteInfo<ConfirmTransactionPinRouteArgs> {
   ConfirmTransactionPinRoute({
-    _i40.Key? key,
     required String pin,
+    _i40.Key? key,
     List<_i39.PageRouteInfo>? children,
   }) : super(
          ConfirmTransactionPinRoute.name,
-         args: ConfirmTransactionPinRouteArgs(key: key, pin: pin),
+         args: ConfirmTransactionPinRouteArgs(pin: pin, key: key),
          initialChildren: children,
        );
 
@@ -248,32 +248,32 @@ class ConfirmTransactionPinRoute
     name,
     builder: (data) {
       final args = data.argsAs<ConfirmTransactionPinRouteArgs>();
-      return _i8.ConfirmTransactionPinScreen(key: args.key, pin: args.pin);
+      return _i8.ConfirmTransactionPinScreen(pin: args.pin, key: args.key);
     },
   );
 }
 
 class ConfirmTransactionPinRouteArgs {
-  const ConfirmTransactionPinRouteArgs({this.key, required this.pin});
-
-  final _i40.Key? key;
+  const ConfirmTransactionPinRouteArgs({required this.pin, this.key});
 
   final String pin;
 
+  final _i40.Key? key;
+
   @override
   String toString() {
-    return 'ConfirmTransactionPinRouteArgs{key: $key, pin: $pin}';
+    return 'ConfirmTransactionPinRouteArgs{pin: $pin, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ConfirmTransactionPinRouteArgs) return false;
-    return key == other.key && pin == other.pin;
+    return pin == other.pin && key == other.key;
   }
 
   @override
-  int get hashCode => key.hashCode ^ pin.hashCode;
+  int get hashCode => pin.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -376,12 +376,12 @@ class DocumentUploadRoute extends _i39.PageRouteInfo<void> {
 /// [_i15.EnterPasswordScreen]
 class EnterPasswordRoute extends _i39.PageRouteInfo<EnterPasswordRouteArgs> {
   EnterPasswordRoute({
-    _i40.Key? key,
     required String phoneNumber,
+    _i40.Key? key,
     List<_i39.PageRouteInfo>? children,
   }) : super(
          EnterPasswordRoute.name,
-         args: EnterPasswordRouteArgs(key: key, phoneNumber: phoneNumber),
+         args: EnterPasswordRouteArgs(phoneNumber: phoneNumber, key: key),
          initialChildren: children,
        );
 
@@ -392,34 +392,34 @@ class EnterPasswordRoute extends _i39.PageRouteInfo<EnterPasswordRouteArgs> {
     builder: (data) {
       final args = data.argsAs<EnterPasswordRouteArgs>();
       return _i15.EnterPasswordScreen(
-        key: args.key,
         phoneNumber: args.phoneNumber,
+        key: args.key,
       );
     },
   );
 }
 
 class EnterPasswordRouteArgs {
-  const EnterPasswordRouteArgs({this.key, required this.phoneNumber});
-
-  final _i40.Key? key;
+  const EnterPasswordRouteArgs({required this.phoneNumber, this.key});
 
   final String phoneNumber;
 
+  final _i40.Key? key;
+
   @override
   String toString() {
-    return 'EnterPasswordRouteArgs{key: $key, phoneNumber: $phoneNumber}';
+    return 'EnterPasswordRouteArgs{phoneNumber: $phoneNumber, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! EnterPasswordRouteArgs) return false;
-    return key == other.key && phoneNumber == other.phoneNumber;
+    return phoneNumber == other.phoneNumber && key == other.key;
   }
 
   @override
-  int get hashCode => key.hashCode ^ phoneNumber.hashCode;
+  int get hashCode => phoneNumber.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -442,12 +442,12 @@ class EnterPinRoute extends _i39.PageRouteInfo<void> {
 /// [_i17.ForgotPasswordScreen]
 class ForgotPasswordRoute extends _i39.PageRouteInfo<ForgotPasswordRouteArgs> {
   ForgotPasswordRoute({
-    _i40.Key? key,
     required String email,
+    _i40.Key? key,
     List<_i39.PageRouteInfo>? children,
   }) : super(
          ForgotPasswordRoute.name,
-         args: ForgotPasswordRouteArgs(key: key, email: email),
+         args: ForgotPasswordRouteArgs(email: email, key: key),
          initialChildren: children,
        );
 
@@ -457,32 +457,32 @@ class ForgotPasswordRoute extends _i39.PageRouteInfo<ForgotPasswordRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ForgotPasswordRouteArgs>();
-      return _i17.ForgotPasswordScreen(key: args.key, email: args.email);
+      return _i17.ForgotPasswordScreen(email: args.email, key: args.key);
     },
   );
 }
 
 class ForgotPasswordRouteArgs {
-  const ForgotPasswordRouteArgs({this.key, required this.email});
-
-  final _i40.Key? key;
+  const ForgotPasswordRouteArgs({required this.email, this.key});
 
   final String email;
 
+  final _i40.Key? key;
+
   @override
   String toString() {
-    return 'ForgotPasswordRouteArgs{key: $key, email: $email}';
+    return 'ForgotPasswordRouteArgs{email: $email, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ForgotPasswordRouteArgs) return false;
-    return key == other.key && email == other.email;
+    return email == other.email && key == other.key;
   }
 
   @override
-  int get hashCode => key.hashCode ^ email.hashCode;
+  int get hashCode => email.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -581,12 +581,12 @@ class LoginRoute extends _i39.PageRouteInfo<void> {
 /// [_i22.MakePaymentScreen]
 class MakePaymentRoute extends _i39.PageRouteInfo<MakePaymentRouteArgs> {
   MakePaymentRoute({
-    _i40.Key? key,
     required String recipientNumber,
+    _i40.Key? key,
     List<_i39.PageRouteInfo>? children,
   }) : super(
          MakePaymentRoute.name,
-         args: MakePaymentRouteArgs(key: key, recipientNumber: recipientNumber),
+         args: MakePaymentRouteArgs(recipientNumber: recipientNumber, key: key),
          initialChildren: children,
        );
 
@@ -597,34 +597,34 @@ class MakePaymentRoute extends _i39.PageRouteInfo<MakePaymentRouteArgs> {
     builder: (data) {
       final args = data.argsAs<MakePaymentRouteArgs>();
       return _i22.MakePaymentScreen(
-        key: args.key,
         recipientNumber: args.recipientNumber,
+        key: args.key,
       );
     },
   );
 }
 
 class MakePaymentRouteArgs {
-  const MakePaymentRouteArgs({this.key, required this.recipientNumber});
-
-  final _i40.Key? key;
+  const MakePaymentRouteArgs({required this.recipientNumber, this.key});
 
   final String recipientNumber;
 
+  final _i40.Key? key;
+
   @override
   String toString() {
-    return 'MakePaymentRouteArgs{key: $key, recipientNumber: $recipientNumber}';
+    return 'MakePaymentRouteArgs{recipientNumber: $recipientNumber, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! MakePaymentRouteArgs) return false;
-    return key == other.key && recipientNumber == other.recipientNumber;
+    return recipientNumber == other.recipientNumber && key == other.key;
   }
 
   @override
-  int get hashCode => key.hashCode ^ recipientNumber.hashCode;
+  int get hashCode => recipientNumber.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -727,12 +727,12 @@ class QrCodeRoute extends _i39.PageRouteInfo<void> {
 /// [_i29.ReceiptScreen]
 class ReceiptRoute extends _i39.PageRouteInfo<ReceiptRouteArgs> {
   ReceiptRoute({
-    _i40.Key? key,
     required String referenceId,
+    _i40.Key? key,
     List<_i39.PageRouteInfo>? children,
   }) : super(
          ReceiptRoute.name,
-         args: ReceiptRouteArgs(key: key, referenceId: referenceId),
+         args: ReceiptRouteArgs(referenceId: referenceId, key: key),
          initialChildren: children,
        );
 
@@ -742,32 +742,32 @@ class ReceiptRoute extends _i39.PageRouteInfo<ReceiptRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ReceiptRouteArgs>();
-      return _i29.ReceiptScreen(key: args.key, referenceId: args.referenceId);
+      return _i29.ReceiptScreen(referenceId: args.referenceId, key: args.key);
     },
   );
 }
 
 class ReceiptRouteArgs {
-  const ReceiptRouteArgs({this.key, required this.referenceId});
-
-  final _i40.Key? key;
+  const ReceiptRouteArgs({required this.referenceId, this.key});
 
   final String referenceId;
 
+  final _i40.Key? key;
+
   @override
   String toString() {
-    return 'ReceiptRouteArgs{key: $key, referenceId: $referenceId}';
+    return 'ReceiptRouteArgs{referenceId: $referenceId, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ReceiptRouteArgs) return false;
-    return key == other.key && referenceId == other.referenceId;
+    return referenceId == other.referenceId && key == other.key;
   }
 
   @override
-  int get hashCode => key.hashCode ^ referenceId.hashCode;
+  int get hashCode => referenceId.hashCode ^ key.hashCode;
 }
 
 /// generated route for

@@ -1,4 +1,5 @@
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
+import 'package:paypadi/core/utils/enums.dart';
 
 base class ClientException extends AppException {
   const ClientException({
@@ -7,12 +8,27 @@ base class ClientException extends AppException {
     this.stackTrace,
   });
 
+  final Object? cause;
+  final StackTrace? stackTrace;
+
+  @override
   final String message;
 
-  /// The original exception that was wrapped, preserved for logging/crash reporters.
-  final Object? cause;
+  @override
+  SeverityLevel get monitoringSeverity => switch (cause) {
+    TypeError() => SeverityLevel.error,
+    NoSuchMethodError() => SeverityLevel.error,
+    _ => SeverityLevel.warning,
+  };
 
-  final StackTrace? stackTrace;
+  @override
+  String get monitoringContext => 'Client';
+
+  @override
+  Map<String, dynamic> get monitoringExtras => {
+    if (cause != null) 'cause': cause.toString(),
+    if (message.isNotEmpty) 'message': message,
+  };
 
   @override
   String toString() => message;

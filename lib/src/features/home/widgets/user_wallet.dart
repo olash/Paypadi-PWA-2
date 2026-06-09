@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -12,6 +10,7 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart' show formatAmount;
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class UserWallet extends HookConsumerWidget {
   const UserWallet({super.key});
@@ -32,7 +31,7 @@ class UserWallet extends HookConsumerWidget {
                 spacing: Values.v8,
                 children: [
                   Text(
-                    "Available Balance",
+                    'Available Balance',
                     style: context.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w400,
                       color: AppColors.walletCardTextColor,
@@ -41,7 +40,7 @@ class UserWallet extends HookConsumerWidget {
                   InkWell(
                     onTap: () => hideBalance.value = !hideBalance.value,
                     child: Padding(
-                      padding: EdgeInsets.all(Values.v4),
+                      padding: const EdgeInsets.all(Values.v4),
                       child: Icon(
                         hideBalance.value
                             ? Iconsax.eye_slash_outline
@@ -92,18 +91,18 @@ class UserWallet extends HookConsumerWidget {
 
           FilledButton.icon(
             onPressed: () =>
-                ref.read(appRouterProvider).push(DepositMoneyRoute()),
-            label: Text("Add Money"),
-            icon: Icon(Iconsax.add_outline, size: 24),
+                ref.read(appRouterProvider).push(const DepositMoneyRoute()),
+            label: const Text('Add Money'),
+            icon: const Icon(Iconsax.add_outline, size: 24),
             style: context.filledButtonTheme.style?.copyWith(
-              fixedSize: WidgetStatePropertyAll(kButtonSmallSize),
+              fixedSize: const WidgetStatePropertyAll(kButtonSmallSize),
               foregroundColor: WidgetStatePropertyAll(
                 ref.watch(appPrimaryColorProvider),
               ),
               backgroundColor: WidgetStatePropertyAll(
                 ref.watch(appPrimaryColorProvider).withAlpha(20),
               ),
-              padding: WidgetStatePropertyAll(
+              padding: const WidgetStatePropertyAll(
                 EdgeInsets.symmetric(horizontal: 12),
               ),
               shape: WidgetStatePropertyAll(

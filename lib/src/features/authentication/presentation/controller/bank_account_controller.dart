@@ -1,12 +1,11 @@
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/account_payout_model/account_payout_model.dart';
-import 'package:paypadi/core/repositories/payout_account_repo.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
+import 'package:paypadi/core/repositories/payout_account_repo.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'bank_account_controller.g.dart';
 
@@ -42,7 +41,7 @@ class VerifiedBankAccount extends _$VerifiedBankAccount {
     return null;
   }
 
-  void verifyBankInformation(Map<String, dynamic> payload) async {
+  Future<void> verifyBankInformation(Map<String, dynamic> payload) async {
     state = const AsyncLoading();
     final result = await _repository.verifyBankInformation(payload);
 
@@ -69,7 +68,7 @@ class PayoutAccount extends _$PayoutAccount {
     return null;
   }
 
-  void createPayoutAccount(Map<String, dynamic> payload) async {
+  Future<void> createPayoutAccount(Map<String, dynamic> payload) async {
     state = const AsyncLoading();
     final result = await _repository.createAccount(payload);
 
@@ -79,7 +78,7 @@ class PayoutAccount extends _$PayoutAccount {
     result.fold(
       (success) async {
         state = AsyncData(success.data);
-        ref.read(appRouterProvider).push(SignInRoute());
+        ref.read(appRouterProvider).push(const SignInRoute());
       },
       (failure) {
         state = const AsyncData(null);

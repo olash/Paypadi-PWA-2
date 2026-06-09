@@ -1,14 +1,13 @@
 import 'dart:io';
 
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/api/exceptions/client_exception.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-
-part 'upload_state.dart';
 part 'file_upload_controller.g.dart';
+part 'upload_state.dart';
 
 @riverpod
 class FilePickerController extends _$FilePickerController {
@@ -88,7 +87,6 @@ class FileUploadController extends _$FileUploadController {
       UploadState(
         status: UploadStatus.uploading,
         file: file,
-        sentBytes: 0,
         totalBytes: file.lengthSync(),
       ),
     );
@@ -97,6 +95,7 @@ class FileUploadController extends _$FileUploadController {
         .read(profileRepositoryProvider)
         .uploadDocument(
           file: file,
+          category: category,
           fileName: file.path.split('/').last,
           onSendProgress: (sent, total) => _updateCategory(
             category,

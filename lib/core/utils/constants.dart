@@ -1,76 +1,73 @@
-import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
+import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
 import 'package:paypadi/core/utils/enums.dart';
-
 import 'package:talker_flutter/talker_flutter.dart';
 
-import 'package:paypadi/config/gen/colors.gen.dart';
-
 class Values {
-  static final double zero = 0.0;
-  static final double v1 = 1.0;
-  static final double v2 = 2.0;
-  static final double v4 = 4.0;
-  static final double v6 = 6.0;
-  static final double v8 = 8.0;
-  static final double v10 = 10.0;
-  static final double v12 = 12.0;
-  static final double v14 = 14.0;
-  static final double v16 = 16.0;
-  static final double v18 = 18.0;
-  static final double v20 = 20.0;
-  static final double v24 = 24.0;
-  static final double v28 = 28.0;
-  static final double v32 = 32.0;
-  static final double v36 = 36.0;
-  static final double v48 = 48.0;
-  static final double v64 = 64.0;
-  static final double v72 = 72.0;
-  static final double v84 = 84.0;
-  static final double v92 = 92.0;
-  static final double v96 = 96.0;
-  static final double v108 = 108.0;
-  static final double v120 = 120.0;
-  static final double v136 = 136.0;
-  static final double v150 = 150.0;
+  static const double zero = 0.0;
+  static const double v1 = 1.0;
+  static const double v2 = 2.0;
+  static const double v4 = 4.0;
+  static const double v6 = 6.0;
+  static const double v8 = 8.0;
+  static const double v10 = 10.0;
+  static const double v12 = 12.0;
+  static const double v14 = 14.0;
+  static const double v16 = 16.0;
+  static const double v18 = 18.0;
+  static const double v20 = 20.0;
+  static const double v24 = 24.0;
+  static const double v28 = 28.0;
+  static const double v32 = 32.0;
+  static const double v36 = 36.0;
+  static const double v48 = 48.0;
+  static const double v64 = 64.0;
+  static const double v72 = 72.0;
+  static const double v84 = 84.0;
+  static const double v92 = 92.0;
+  static const double v96 = 96.0;
+  static const double v108 = 108.0;
+  static const double v120 = 120.0;
+  static const double v136 = 136.0;
+  static const double v150 = 150.0;
 }
 
-final int transactionPinLength = 4;
+const int transactionPinLength = 4;
 
-final int passwordPinLength = 6;
+const int passwordPinLength = 6;
 
-final double kZeroLetterSpacing = 0.0;
+const double kZeroLetterSpacing = 0.0;
 
-final double kVeryTightLetterSpacing = -0.43;
+const double kVeryTightLetterSpacing = -0.43;
 
-final double kTopPadding = 40.0;
+const double kTopPadding = 40.0;
 
-final double kBottomPadding = 40.0;
+const double kBottomPadding = 40.0;
 
-final Size appDesignSize = Size(393, 852);
+const Size appDesignSize = Size(393, 852);
 
 final Size kButtonSize = Size(362.w, 48.h);
 
-final Size kButtonMediumSize = Size(158, 48);
+const Size kButtonMediumSize = Size(158, 48);
 
-final Size kButtonSmallSize = Size(125, 32);
+const Size kButtonSmallSize = Size(125, 32);
 
-final Size kAppBarSize = Size(double.infinity, 56);
+const Size kAppBarSize = Size(double.infinity, 56);
 
-final Duration animatedFooDuration = Durations.medium4;
+const Duration animatedFooDuration = Durations.medium4;
 
-final String kDemoProfilePic =
-    "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww";
+const String kDemoProfilePic =
+    'https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww';
 
-final String placeholder = "Placeholder";
+const String placeholder = 'Placeholder';
 
-final String placeholderShort = "Placeholder Short";
+const String placeholderShort = 'Placeholder Short';
 
-final String placeholderLong = "Placeholder Text Long";
+const String placeholderLong = 'Placeholder Text Long';
 
 final List<Color> availableColors = [
   AppColors.primary,
@@ -81,10 +78,10 @@ final List<Color> availableColors = [
 ];
 
 final Map<String, String> onboardingStoryAndAsset = {
-  "Pay Seamlessly with your wallet—No More Change Wahala!":
+  'Pay Seamlessly with your wallet—No More Change Wahala!':
       AppAssets.images.storyOne.path,
-  "Exact Payments, No More Change Drama!": AppAssets.images.storyTwo.path,
-  "Your ‘Last Card’ Just Got Smarter": AppAssets.images.storyThree.path,
+  'Exact Payments, No More Change Drama!': AppAssets.images.storyTwo.path,
+  'Your ‘Last Card’ Just Got Smarter': AppAssets.images.storyThree.path,
 };
 
 final List<String> kAppKeyPadKeys = [
@@ -156,8 +153,6 @@ final List<TransactionHistoryModel> kMockTransactionHistory = List.generate(
 
 final Talker debugLogger = TalkerFlutter.init(
   settings: TalkerSettings(
-    enabled: !kReleaseMode,
-    useConsoleLogs: !kReleaseMode,
     colors: {
       TalkerKey.route: AnsiPen()..cyan(),
       TalkerKey.error: AnsiPen()..magenta(),
@@ -166,13 +161,13 @@ final Talker debugLogger = TalkerFlutter.init(
       TalkerKey.riverpodAdd: AnsiPen()
         ..rgb(r: 129 / 255, g: 212 / 255, b: 250 / 255),
       TalkerKey.riverpodUpdate: AnsiPen()
-        ..rgb(r: 255 / 255, g: 214 / 255, b: 165 / 255),
+        ..rgb(g: 214 / 255, b: 165 / 255),
       TalkerKey.riverpodFail: AnsiPen()
         ..rgb(r: 171 / 255, g: 235 / 255, b: 198 / 255),
       TalkerKey.riverpodDispose: AnsiPen()
-        ..rgb(r: 255 / 255, g: 171 / 255, b: 145 / 255),
+        ..rgb(g: 171 / 255, b: 145 / 255),
       TalkerKey.httpRequest: AnsiPen()
-        ..rgb(r: 255 / 255, g: 235 / 255, b: 59 / 255),
+        ..rgb(g: 235 / 255, b: 59 / 255),
       TalkerKey.httpResponse: AnsiPen()
         ..rgb(r: 0 / 255, g: 188 / 255, b: 212 / 255),
       TalkerKey.httpError: AnsiPen()
@@ -182,17 +177,17 @@ final Talker debugLogger = TalkerFlutter.init(
 );
 
 class CacheKeys {
-  static final String isDarkMode = "dark_mode";
-  static final String enabledBiometrics = "biometrics";
-  static final String colorTheme = "color_theme";
+  static const String isDarkMode = 'dark_mode';
+  static const String enabledBiometrics = 'biometrics';
+  static const String colorTheme = 'color_theme';
 
-  static final String refreshToken = "refresh_token";
-  static final String accessToken = "access_token";
+  static const String refreshToken = 'refresh_token';
+  static const String accessToken = 'access_token';
 
-  static final String user = "user";
-  static final String password = "user_password";
-  static final String phoneNumber = "user_phone_number";
-  static final String transactionPin = "user_transaction_pin";
+  static const String user = 'user';
+  static const String password = 'user_password';
+  static const String phoneNumber = 'user_phone_number';
+  static const String transactionPin = 'user_transaction_pin';
 }
 
 

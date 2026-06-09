@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:paypadi/core/services/local_cache_service.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart'
-    show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
-import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferences;
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
+import 'package:talker_flutter/talker_flutter.dart';
 
 void main() {
   late SharedPreferencesWithCache prefs;
@@ -19,7 +19,7 @@ void main() {
     // prepare in-memory shared preferences for tests
     SharedPreferences.setMockInitialValues(<String, Object>{});
     prefs = await SharedPreferencesWithCache.create(
-      cacheOptions: SharedPreferencesWithCacheOptions(
+      cacheOptions: const SharedPreferencesWithCacheOptions(
         allowList: {
           CacheKeys.colorTheme,
           CacheKeys.enabledBiometrics,

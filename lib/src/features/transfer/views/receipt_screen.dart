@@ -2,28 +2,27 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_to_pdf/flutter_to_pdf.dart'
-    show ExportDelegate, ExportFrame, PageFormatOptions, ExportOptions;
+    show ExportDelegate, ExportFrame;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/utils/enums.dart';
-import 'package:paypadi/src/features/transfer/controller/receipt_controller.dart';
-
-import 'package:screenshot/screenshot.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
+import 'package:paypadi/src/features/transfer/controller/receipt_controller.dart';
 import 'package:paypadi/src/features/transfer/widgets/dotted_line.dart';
 import 'package:paypadi/src/features/transfer/widgets/payment_details.dart';
 import 'package:paypadi/src/features/transfer/widgets/receipt_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class ReceiptScreen extends ConsumerStatefulWidget {
-  const ReceiptScreen({super.key, required this.referenceId});
+  const ReceiptScreen({required this.referenceId, super.key});
   final String referenceId;
 
   @override
@@ -34,8 +33,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
   final ScreenshotController _screenshotController = ScreenshotController();
 
   final ExportDelegate exportDelegate = ExportDelegate(
-    options: ExportOptions(pageFormatOptions: PageFormatOptions.a4()),
-    ttfFonts: {"Poppins": "fonts/Poppins-Regular.ttf"},
+    ttfFonts: {'Poppins': 'fonts/Poppins-Regular.ttf'},
   );
 
   @override
@@ -60,7 +58,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                 onPressed: () async => ref
                     .read(receiptServiceProvider)
                     .shareReceipt(pixelRatio, _screenshotController),
-                icon: Icon(OctIcons.share),
+                icon: const Icon(OctIcons.share),
               ),
             ],
           ),
@@ -68,7 +66,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
           Screenshot(
             controller: _screenshotController,
             child: ExportFrame(
-              frameId: "receipt",
+              frameId: 'receipt',
               exportDelegate: exportDelegate,
               child: ReceiptCard(
                 child: Column(
@@ -80,7 +78,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                       child: Text(
                         receipt.isLoading
                             ? placeholder
-                            : "Payment ${capitalizeFirstChar(receipt.value?.status.name)}",
+                            : 'Payment ${capitalizeFirstChar(receipt.value?.status.name)}',
                         style: context.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w400,
                           letterSpacing: kZeroLetterSpacing,
@@ -93,7 +91,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                       child: Text(
                         receipt.isLoading
                             ? placeholder
-                            : "₦ ${formatAmount(receipt.value?.amount)}",
+                            : '₦ ${formatAmount(receipt.value?.amount)}',
                         style: context.textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.w600,
                           letterSpacing: kZeroLetterSpacing,
@@ -101,76 +99,76 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                       ),
                     ),
                     Values.v32.verticalSpacing,
-                    Divider(
+                    const Divider(
                       indent: Values.v8,
                       endIndent: Values.v8,
                       color: AppColors.dividerColor,
                     ),
                     Values.v32.verticalSpacing,
                     PaymentDetails(
-                      detail: "Ref Number",
+                      detail: 'Ref Number',
                       isLoading: receipt.isLoading,
                       value: receipt.value?.reference,
                     ),
                     PaymentDetails(
-                      detail: "Payment Time",
+                      detail: 'Payment Time',
                       isLoading: receipt.isLoading,
                       value: receipt.isLoading
                           ? placeholderShort
                           : getTransactionDate(receipt.value?.createdAt),
                     ),
                     PaymentDetails(
-                      detail: "Payment Method",
+                      detail: 'Payment Method',
                       isLoading: receipt.isLoading,
                       value: receipt.isLoading
                           ? placeholderShort
                           : capitalizeFirstChar(receipt.value?.type.name),
                     ),
                     PaymentDetails(
-                      detail: "Sender Name",
+                      detail: 'Sender Name',
                       isLoading: receipt.isLoading,
                       value: receipt.value?.senderName,
                     ),
                     PaymentDetails(
-                      detail: "Receiver Name",
+                      detail: 'Receiver Name',
                       isLoading: receipt.isLoading,
                       value: receipt.value?.recipientName,
                     ),
-                    DottedDivider(topPadding: Values.v2),
+                    const DottedDivider(topPadding: Values.v2),
                     PaymentDetails(
-                      detail: "Amount",
+                      detail: 'Amount',
                       isLoading: receipt.isLoading,
                       value: receipt.isLoading
                           ? placeholderShort
-                          : "₦ ${formatAmount(receipt.value?.amount)}",
+                          : '₦ ${formatAmount(receipt.value?.amount)}',
                     ),
                     PaymentDetails(
-                      detail: "Transaction Fee",
+                      detail: 'Transaction Fee',
                       isLoading: receipt.isLoading,
                       value: receipt.isLoading
                           ? placeholderShort
-                          : "₦ ${formatAmount(receipt.value?.transactionFee)}",
+                          : '₦ ${formatAmount(receipt.value?.transactionFee)}',
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           OutlinedButton.icon(
             onPressed: () async =>
-                await ref.read(receiptServiceProvider).generateReceiptInPdf(),
-            label: Text("Get PDF Receipt"),
-            icon: Icon(OctIcons.download),
+                ref.read(receiptServiceProvider).generateReceiptInPdf(),
+            label: const Text('Get PDF Receipt'),
+            icon: const Icon(OctIcons.download),
           ),
           Values.v12.verticalSpacing,
           FilledButton(
             onPressed: () => ref
                 .read(appRouterProvider)
                 .popUntilRouteWithName(HomeRoute.name),
-            child: Text("Back to Home"),
+            child: const Text('Back to Home'),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );
@@ -186,7 +184,7 @@ class _PaymentDetailsStatusIcon extends HookWidget {
     return Container(
       width: Values.v72,
       height: Values.v72,
-      padding: EdgeInsets.all(Values.v24),
+      padding: const EdgeInsets.all(Values.v24),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: switch (status) {

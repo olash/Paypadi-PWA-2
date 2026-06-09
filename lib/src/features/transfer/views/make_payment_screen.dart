@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/features/transfer/controller/transaction_controller.dart';
@@ -16,7 +16,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class MakePaymentScreen extends HookConsumerWidget {
-  const MakePaymentScreen({super.key, required this.recipientNumber});
+  const MakePaymentScreen({required this.recipientNumber, super.key});
   final String recipientNumber;
 
   @override
@@ -26,7 +26,7 @@ class MakePaymentScreen extends HookConsumerWidget {
     final recipientDetails = ref.watch(accountLookupProvider(recipientNumber));
 
     return AppScaffold(
-      title: "Transfer",
+      title: 'Transfer',
       child: Column(
         children: [
           Values.v16.verticalSpacing,
@@ -36,8 +36,8 @@ class MakePaymentScreen extends HookConsumerWidget {
           ),
           Values.v32.verticalSpacing,
           AppTextformfield(
-            title: "Comments",
-            hint: "Enter a narration",
+            title: 'Comments',
+            hint: 'Enter a narration',
             controller: commentController,
             titleStyle: context.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w400,
@@ -49,9 +49,9 @@ class MakePaymentScreen extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: Values.v14),
+                padding: const EdgeInsets.symmetric(vertical: Values.v14),
                 child: Text(
-                  "Save as Beneficiary",
+                  'Save as Beneficiary',
                   style: context.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w400,
                   ),
@@ -79,7 +79,7 @@ class MakePaymentScreen extends HookConsumerWidget {
                     commentController.text,
                     recipientDetails.value!,
                   ),
-            child: Text("Make Payment"),
+            child: const Text('Make Payment'),
           ),
         ],
       ),
@@ -92,11 +92,11 @@ class MakePaymentScreen extends HookConsumerWidget {
     AccountLookupModel recipient,
   ) {
     ref.read(transactionPayloadProvider)
-      ..["description"] = desc
-      ..["recipient_account_number"] = recipient.accountNumber
-      ..["recipient_bank_code"] = recipient.bankCode;
+      ..['description'] = desc
+      ..['recipient_account_number'] = recipient.accountNumber
+      ..['recipient_bank_code'] = recipient.bankCode;
 
-    ref.read(appRouterProvider).push(EnterPinRoute());
+    ref.read(appRouterProvider).push(const EnterPinRoute());
   }
 }
 
@@ -112,7 +112,7 @@ class _BankAccountInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: Values.v12,
         vertical: Values.v10,
       ),
@@ -148,15 +148,15 @@ class _BankAccountInformation extends StatelessWidget {
                   enabled: isLoading,
                   child: Text(
                     isLoading
-                        ? "FirstName LastName"
-                        : "${recipient?.firstName} ${recipient?.lastName}",
+                        ? 'FirstName LastName'
+                        : '${recipient?.firstName} ${recipient?.lastName}',
                     style: context.textTheme.titleLarge,
                   ),
                 ),
                 Skeletonizer(
                   enabled: isLoading,
                   child: Text(
-                    isLoading ? "AccountNumber" : "${recipient?.accountNumber}",
+                    isLoading ? 'AccountNumber' : '${recipient?.accountNumber}',
                     style: context.textTheme.titleSmall?.copyWith(
                       letterSpacing: kZeroLetterSpacing,
                       color: AppColors.grey600,

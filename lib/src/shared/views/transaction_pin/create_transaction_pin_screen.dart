@@ -25,28 +25,26 @@ class CreateTransactionPinScreen extends HookConsumerWidget {
         children: [
           Values.v32.verticalSpacing,
           Text(
-            "Create a Transaction PIN",
+            'Create a Transaction PIN',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Set a secure password for your account",
+            'Set a secure password for your account',
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
           Values.v32.verticalSpacing,
           AppPinIndicator(
-            pinLength: transactionPinLength,
             controller: pinController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
             controller: pinController,
-            keyLength: transactionPinLength,
             onSubmit: (pin) => onSubmit(ref, pin),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

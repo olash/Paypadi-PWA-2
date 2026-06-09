@@ -54,7 +54,6 @@ class PayoutAccountScreen extends HookConsumerWidget {
     });
 
     return AppScaffold(
-      showAppBar: true,
       makeScrollable: true,
       child: Form(
         key: formRef.value,
@@ -85,7 +84,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
               hint: 'Enter account number',
               controller: accountNumber,
               keyboardType: TextInputType.number,
-              validator: (value) => accountNumberValidator(value),
+              validator: accountNumberValidator,
             ),
             AppTextformfield(
               isEnabled: false,
@@ -131,7 +130,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
     final isFormValid = form.currentState?.validate() ?? false;
 
     if (!isFormValid || bankCode.isEmpty) {
-      if (bankCode.isEmpty) ref.showErrorToast("Please select a bank.");
+      if (bankCode.isEmpty) ref.showErrorToast('Please select a bank.');
       return;
     }
     ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
@@ -150,17 +149,17 @@ class PayoutAccountScreen extends HookConsumerWidget {
   ) {
     final verified = ref.read(verifiedBankAccountProvider);
     if (!verified.hasValue || verified.value == null) {
-      ref.showErrorToast("Please verify your account details first.");
+      ref.showErrorToast('Please verify your account details first.');
       return;
     }
 
     final payload = <String, dynamic>{
-      "account_type": "bank_account",
-      "account_name": accountName,
-      "account_number": accountNumber,
-      "bank_name": bankName,
-      "bank_code": bankCode,
-      "is_primary": true,
+      'account_type': 'bank_account',
+      'account_name': accountName,
+      'account_number': accountNumber,
+      'bank_name': bankName,
+      'bank_code': bankCode,
+      'is_primary': true,
     };
     ref.read(payoutAccountProvider.notifier).createPayoutAccount(payload);
   }
@@ -187,12 +186,12 @@ class _ListOfBanks extends ConsumerWidget {
         DropdownMenu<BankModel>(
           enableFilter: true,
           requestFocusOnTap: true,
-          hintText: "Select Bank",
+          hintText: 'Select Bank',
           controller: controller,
           width: context.screenWidth,
           menuHeight: context.screenHeight * .4,
-          trailingIcon: Icon(Iconsax.arrow_down_1_outline),
-          selectedTrailingIcon: SizedBox.shrink(),
+          trailingIcon: const Icon(Iconsax.arrow_down_1_outline),
+          selectedTrailingIcon: const SizedBox.shrink(),
           onSelected: (bank) {
             if (bank == null) return;
             onBankSelected(bank);

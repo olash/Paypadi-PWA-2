@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
+import 'package:paypadi/core/utils/enums.dart';
 
 part 'server_exception.freezed.dart';
 
@@ -20,9 +21,13 @@ sealed class ServerException extends AppException with _$ServerException {
   const factory ServerException.methodNotAllowed(String? reason) =
       _MethodNotAllowed;
   const factory ServerException.notAcceptable(String? reason) = _NotAcceptable;
-  const factory ServerException.conflict(String? reason) = _Conflict;
   const factory ServerException.unsupportedMediaType(String? reason) =
       _UnsupportedMediaType;
+
+  const factory ServerException.conflict(
+    String? reason,
+    String? conflictingAssetId,
+  ) = _Conflict;
 
   const factory ServerException.tooManyRequests({
     String? reason,
@@ -49,12 +54,13 @@ sealed class ServerException extends AppException with _$ServerException {
       );
     }
 
-    // avoids double null-check and bad cast if detail is not a String.
     String? message;
+    String? conflictingAssetId;
     final data = response?.data;
+
     if (data is Map) {
-      final errorMessage = data['error'];
-      if (errorMessage is String) message = errorMessage;
+      message = data['message'] as String?;
+      conflictingAssetId = (data['data'] as Map?)?['document_id'] as String?;
     }
 
     switch (statusCode) {
@@ -73,7 +79,7 @@ sealed class ServerException extends AppException with _$ServerException {
       case 408:
         return const ServerException.requestTimeout();
       case 409:
-        return ServerException.conflict(message);
+        return ServerException.conflict(message, conflictingAssetId);
       case 415:
         return ServerException.unsupportedMediaType(message);
       case 422:
@@ -100,4 +106,64 @@ sealed class ServerException extends AppException with _$ServerException {
         );
     }
   }
+
+  @override
+  String get monitoringContext => 'Server';
+
+  @override
+  SeverityLevel get monitoringSeverity => map(
+    requestCancelled: (_) => SeverityLevel.info,
+    requestTimeout: (_) => SeverityLevel.warning,
+    sendTimeout: (_) => SeverityLevel.warning,
+    receiveTimeout: (_) => SeverityLevel.warning,
+    noInternetConnection: (_) => SeverityLevel.info,
+    unauthorizedRequest: (_) => SeverityLevel.warning,
+    tooManyRequests: (_) => SeverityLevel.warning,
+    forbiddenRequest: (_) => SeverityLevel.warning,
+    badRequest: (_) => SeverityLevel.warning,
+    notFound: (_) => SeverityLevel.warning,
+    conflict: (_) => SeverityLevel.warning,
+    methodNotAllowed: (_) => SeverityLevel.warning,
+    notAcceptable: (_) => SeverityLevel.warning,
+    unsupportedMediaType: (_) => SeverityLevel.warning,
+    unprocessableEntity: (_) => SeverityLevel.warning,
+    notImplemented: (_) => SeverityLevel.warning,
+    badGateway: (_) => SeverityLevel.error,
+    internalServerError: (_) => SeverityLevel.error,
+    serviceUnavailable: (_) => SeverityLevel.error,
+    defaultError: (_) => SeverityLevel.error,
+  );
+
+  @override
+  Map<String, dynamic> get monitoringExtras => map(
+    tooManyRequests: (e) => {
+      if (e.retryAfter != null) 'retryAfter': e.retryAfter!.inSeconds,
+    },
+    conflict: (e) => {
+      if (e.reason != null) 'reason': e.reason,
+      if (e.conflictingAssetId != null)
+        'conflictingAssetId': e.conflictingAssetId,
+    },
+    badRequest: (e) => {'reason': e.reason},
+    unprocessableEntity: (e) => {'reason': e.reason},
+    unauthorizedRequest: (e) => {'reason': e.reason},
+    forbiddenRequest: (e) => {'reason': e.reason},
+    notFound: (e) => {'reason': e.reason},
+    defaultError: (e) => {'error': e.error},
+    requestCancelled: (_) => {},
+    requestTimeout: (_) => {},
+    sendTimeout: (_) => {},
+    receiveTimeout: (_) => {},
+    noInternetConnection: (_) => {},
+    methodNotAllowed: (_) => {},
+    notAcceptable: (_) => {},
+    unsupportedMediaType: (_) => {},
+    notImplemented: (_) => {},
+    badGateway: (_) => {},
+    internalServerError: (_) => {},
+    serviceUnavailable: (_) => {},
+  );
+
+  @override
+  String get message => AppException.getExceptionMessage(this);
 }

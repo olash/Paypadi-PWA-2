@@ -7,7 +7,7 @@ import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/src/shared/controllers/app_loading_controller.dart';
 
 class AppLoadingOverlay extends ConsumerWidget {
-  const AppLoadingOverlay({super.key, required this.child});
+  const AppLoadingOverlay({required this.child, super.key});
   final Widget child;
 
   @override
@@ -20,7 +20,7 @@ class AppLoadingOverlay extends ConsumerWidget {
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
           child: isLoading
-              ? _LoadingBarrier(key: const ValueKey('loading'))
+              ? const _LoadingBarrier(key: ValueKey('loading'))
               : const SizedBox.shrink(key: ValueKey('idle')),
         ),
       ],

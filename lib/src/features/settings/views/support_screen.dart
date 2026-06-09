@@ -11,9 +11,9 @@ class SupportScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AppScaffold(
-      title: "Help & Support",
-      child: SettingTile(name: "FAQs", icon: Iconsax.support_outline),
+    return const AppScaffold(
+      title: 'Help & Support',
+      child: SettingTile(name: 'FAQs', icon: Iconsax.support_outline),
     );
   }
 }

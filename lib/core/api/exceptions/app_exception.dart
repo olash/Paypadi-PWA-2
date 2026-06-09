@@ -1,24 +1,34 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:paypadi/core/api/exceptions/client_exception.dart';
-import 'package:paypadi/core/utils/typedefs.dart';
+import 'package:paypadi/core/api/exceptions/server_exception.dart';
+import 'package:paypadi/core/utils/enums.dart';
 
-import 'server_exception.dart';
-
-bool _isResponseParsingError(Object error) =>
-    error is TypeError || error is NoSuchMethodError;
+typedef ExceptionLogger =
+    Future<void> Function(
+      // for severity/context/extras metadata
+      AppException converted,
+      // the real exception e.g. DioException, SocketException, etc.
+      Object? original,
+      StackTrace stackTrace,
+    );
 
 abstract class AppException implements Exception {
-  const AppException();
-  static ExceptionLogger? logger;
+  factory AppException.handleException(
+    dynamic exception, [
+    StackTrace? stackTrace,
+  ]) {
+    late final AppException appException;
 
-  factory AppException.handleException(dynamic exception) {
     try {
-      return switch (exception) {
-        DioException e => switch (e.type) {
+      appException = switch (exception) {
+        final AppException e => e,
+
+        // --- HTTP / DIO EXCEPTIONS ---
+        final DioException e => switch (e.type) {
           DioExceptionType.cancel => const ServerException.requestCancelled(),
           DioExceptionType.connectionTimeout =>
             const ServerException.requestTimeout(),
@@ -37,48 +47,76 @@ abstract class AppException implements Exception {
             const ServerException.serviceUnavailable(),
         },
         TimeoutException _ => const ServerException.requestTimeout(),
-        HttpException he => ClientException(message: he.message),
+        final HttpException he => ClientException(message: he.message),
         HandshakeException _ => const ServerException.internalServerError(),
-        WebSocketException we => ClientException(message: we.message),
-        TypeError te => ClientException(
+        final WebSocketException we => ClientException(message: we.message),
+
+        // --- DART TYPE / FORMAT ERRORS ---
+        final TypeError te => ClientException(
           message: 'Invalid response format from server.',
           cause: te,
         ),
-        NoSuchMethodError ne => ClientException(
+        final NoSuchMethodError ne => ClientException(
           message: 'Invalid response shape from server.',
           cause: ne,
         ),
-        // Rethrow Dart Errors so programming errors surface in tests/runtime.
-        Error e => throw e,
-        PlatformException pe => ClientException(
+        final FormatException fe => ClientException(message: fe.message),
+
+        // --- NATIVE / SYSTEM ERRORS ---
+        final Error e => throw e,
+        final PlatformException pe => ClientException(
           message: '${pe.code}: ${pe.message ?? pe.details?.toString() ?? ''}',
         ),
-        FormatException fe => ClientException(message: fe.message),
-        SocketException se => ClientException(message: se.message),
-        Exception ex => ClientException(message: ex.toString(), cause: ex),
+        final SocketException se => ClientException(message: se.message),
+
+        // --- FALLBACKS ---
+        final Exception ex => ClientException(
+          message: ex.toString(),
+          cause: ex,
+        ),
         Object() => ClientException(message: '$exception'),
         null => const ClientException(message: 'Null exception'),
       };
-    } on Error catch (e, st) {
-      logger?.call(e, st);
-      if (_isResponseParsingError(e)) {
-        return ClientException(
-          message:
-              'Failed to parse server response. Please update the app or try again later.',
-          cause: e,
-          stackTrace: st,
-        );
-      }
-      rethrow;
     } on Exception catch (ex, st) {
-      logger?.call(ex, st);
-      return ClientException(message: ex.toString(), cause: ex, stackTrace: st);
+      appException = ClientException(
+        message: ex.toString(),
+        cause: ex,
+        stackTrace: st,
+      );
     }
+
+    if (appException.isReportable) {
+      unawaited(
+        logger?.call(appException, exception, stackTrace ?? StackTrace.current),
+      );
+    }
+
+    return appException;
   }
 
-  static String getExceptionMessage(AppException exception) {
+  const AppException();
+
+  static ExceptionLogger? logger;
+
+  SeverityLevel get monitoringSeverity;
+
+  String get monitoringContext;
+
+  Map<String, dynamic> get monitoringExtras;
+
+  /// Forces all domain exceptions to expose a base message.
+  /// This ensures custom hardware exceptions can pass their message to the UI.
+  String get message;
+
+  ///  A getter to explicitly tell the logger if this should go to Sentry.
+  /// (e.g., Return false for network timeouts or user cancellations).
+  bool get isReportable =>
+      monitoringSeverity == SeverityLevel.error ||
+      monitoringSeverity == SeverityLevel.fatal;
+
+  static String getExceptionMessage(Exception exception) {
     return switch (exception) {
-      ServerException serverEx => serverEx.map(
+      final ServerException serverEx => serverEx.map(
         requestCancelled: (_) =>
             'Your request was cancelled. Please try again.',
         requestTimeout: (_) =>
@@ -122,7 +160,12 @@ abstract class AppException implements Exception {
         defaultError: (e) =>
             e.error ?? 'An unexpected error occurred. Please try again.',
       ),
-      ClientException clientEx => _getClientExceptionMessage(clientEx),
+
+      final ClientException clientEx => _getClientExceptionMessage(clientEx),
+      //  If it's a custom AppException (like ObdConnectionDroppedException),
+      // we extract its native message instead of defaulting to a generic error!
+      final AppException appEx => appEx.message,
+
       _ => 'Something went wrong. Please try again later.',
     };
   }

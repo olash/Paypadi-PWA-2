@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/toasts.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:toastification/toastification.dart';
 
 part 'app_toast_controller.g.dart';

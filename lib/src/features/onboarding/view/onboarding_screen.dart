@@ -69,7 +69,7 @@ class OnboardingScreen extends HookConsumerWidget {
                 height: Values.v6,
                 duration: animatedFooDuration,
                 width: currentPage == index ? Values.v36 : Values.v6,
-                margin: EdgeInsets.only(right: Values.v4),
+                margin: const EdgeInsets.only(right: Values.v4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Values.v24.r),
                   color: currentPage == index
@@ -82,14 +82,14 @@ class OnboardingScreen extends HookConsumerWidget {
           Values.v24.verticalSpacing,
           FilledButton(
             onPressed: () {
-              ref.read(appRouterProvider).push(CreateAccountRoute());
+              ref.read(appRouterProvider).push(const CreateAccountRoute());
               ref.invalidate(onboardingControllerProvider);
             },
             child: const Text('Create Account'),
           ),
           OutlinedButton(
             onPressed: () {
-              ref.read(appRouterProvider).push(SignInRoute());
+              ref.read(appRouterProvider).push(const SignInRoute());
               ref.invalidate(onboardingControllerProvider);
             },
             child: const Text('Sign In'),

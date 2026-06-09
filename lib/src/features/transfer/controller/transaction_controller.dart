@@ -1,12 +1,11 @@
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/models/payment_model/payment_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/repositories/transaction_repo.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'transaction_controller.g.dart';
 
@@ -19,7 +18,7 @@ class AccountLookup extends _$AccountLookup {
   FutureOr<AccountLookupModel?> build(String recipientNumber) async {
     final repository = ref.watch(transactionRepositoryProvider);
     final result = await repository.getAccountDetails({
-      "phone_number": recipientNumber,
+      'phone_number': recipientNumber,
     });
 
     return result.fold(
@@ -42,15 +41,15 @@ class InitiatePaymentController extends _$InitiatePaymentController {
     return null;
   }
 
-  void initiatePayment() async {
+  Future<void> initiatePayment() async {
     final payloadBuilder = ref.read(transactionPayloadProvider);
     final Map<String, dynamic> payload = <String, dynamic>{
-      "amount": payloadBuilder["amount"],
-      "transaction_type": "transfer",
-      "description": payloadBuilder["description"],
+      'amount': payloadBuilder['amount'],
+      'transaction_type': 'transfer',
+      'description': payloadBuilder['description'],
     };
 
-    state = AsyncLoading();
+    state = const AsyncLoading();
 
     final result = await _repository.initiatePayment(payload);
 
@@ -60,7 +59,7 @@ class InitiatePaymentController extends _$InitiatePaymentController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        ref.read(appRouterProvider).push(ConfirmPaymentRoute());
+        ref.read(appRouterProvider).push(const ConfirmPaymentRoute());
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -80,8 +79,8 @@ class TransactionController extends _$TransactionController {
     return null;
   }
 
-  void transfer() async {
-    state = AsyncLoading();
+  Future<void> transfer() async {
+    state = const AsyncLoading();
     final payload = ref.read(transactionPayloadProvider);
     final result = await _repository.transfer(payload);
 

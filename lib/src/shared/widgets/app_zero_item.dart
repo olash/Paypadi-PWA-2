@@ -5,9 +5,8 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class AppZeroItem extends StatelessWidget {
   const AppZeroItem({
-    super.key,
+    required this.message, super.key,
     this.icon,
-    required this.message,
     this.topPaddingScaleFactor = .5,
   });
 

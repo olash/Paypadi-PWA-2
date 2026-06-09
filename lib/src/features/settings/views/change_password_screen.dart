@@ -17,17 +17,17 @@ class ChangePasswordScreen extends HookConsumerWidget {
     final passwordController = useTextEditingController();
 
     return AppScaffold(
-      title: "",
+      title: '',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Verify Password",
+            'Verify Password',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Please enter your Password",
+            'Please enter your Password',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -37,13 +37,13 @@ class ChangePasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             controller: passwordController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
             controller: passwordController,
             onSubmit: (password) {},
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

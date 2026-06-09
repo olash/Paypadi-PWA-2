@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:paypadi/core/api/response/api_response.dart';
-import 'package:retrofit/retrofit.dart';
-
 import 'package:paypadi/src/features/authentication/domain/responses.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'jwt_client.g.dart';
 
-const String _basePath = "/auth";
+const String _basePath = '/auth';
 
 @RestApi()
 abstract class JwtClient {

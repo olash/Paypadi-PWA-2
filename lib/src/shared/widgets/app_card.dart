@@ -5,10 +5,9 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class AppCard extends StatelessWidget {
   const AppCard({
-    super.key,
+    required this.child, super.key,
     this.padding,
     this.cardColor,
-    required this.child,
   });
 
   final Widget child;
@@ -19,15 +18,15 @@ class AppCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: context.screenWidth,
-      margin: EdgeInsets.symmetric(horizontal: 2),
-      padding: padding ?? EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 2),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         color: cardColor ?? AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             blurRadius: 2,
-            offset: Offset(0, 0.05),
+            offset: const Offset(0, 0.05),
             color: AppColors.black.withValues(alpha: .25),
           ),
         ],

@@ -24,10 +24,9 @@ class DocumentUploadScreen extends HookConsumerWidget {
     final formRef = useRef(GlobalKey<FormState>());
 
     return AppScaffold(
-      showAppBar: true,
       appBar: AppBar(
         title: Text(
-          "Step 4 out of 5",
+          'Step 4 out of 5',
           style: context.textTheme.titleSmall,
         ),
         centerTitle: true,
@@ -40,30 +39,30 @@ class DocumentUploadScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Document Upload",
+              'Document Upload',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly upload the documents needed to help give you the best experience.",
+              'Kindly upload the documents needed to help give you the best experience.',
               style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
-            _DocumentUploadWidget(
+            const _DocumentUploadWidget(
               documentCategory: DocumentCategory.driverLicenseFront,
             ),
             Values.v12.verticalSpacing,
-            _DocumentUploadWidget(
+            const _DocumentUploadWidget(
               documentCategory: DocumentCategory.driverLicenseBack,
             ),
             Values.v12.verticalSpacing,
-            _DocumentUploadWidget(
+            const _DocumentUploadWidget(
               documentCategory: DocumentCategory.vehicleLicense,
             ),
             Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => submit(ref, formRef.value),
-              child: Text("Continue"),
+              child: const Text('Continue'),
             ),
           ],
         ),
@@ -79,11 +78,11 @@ class DocumentUploadScreen extends HookConsumerWidget {
     );
 
     if (!allUploaded) {
-      ref.showErrorToast("Please upload all documents before continuing.");
+      ref.showErrorToast('Please upload all documents before continuing.');
       return;
     }
 
-    ref.read(appRouterProvider).push(PayoutAccountRoute());
+    ref.read(appRouterProvider).push(const PayoutAccountRoute());
   }
 }
 
@@ -114,7 +113,7 @@ class _DocumentUploadWidget extends ConsumerWidget {
     );
   }
 
-  void pickFile(WidgetRef ref) async {
+  Future<void> pickFile(WidgetRef ref) async {
     await ref
         .read(filePickerControllerProvider.notifier)
         .pickFile(documentCategory);
@@ -142,7 +141,7 @@ class _FilePickerWidget extends ConsumerWidget {
       onTap: onPressed,
       child: Container(
         width: context.screenWidth,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: Values.v16,
           horizontal: Values.v24,
         ),
@@ -153,7 +152,7 @@ class _FilePickerWidget extends ConsumerWidget {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(Values.v10),
+              padding: const EdgeInsets.all(Values.v10),
               decoration: BoxDecoration(
                 color: AppColors.white,
                 border: Border.all(color: AppColors.grey300),
@@ -161,28 +160,28 @@ class _FilePickerWidget extends ConsumerWidget {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: Values.v2,
-                    offset: Offset(Values.zero, Values.v1),
+                    offset: const Offset(Values.zero, Values.v1),
                     color: AppColors.boxShadow.withValues(alpha: .05),
                   ),
                   BoxShadow(
-                    offset: Offset(Values.zero, Values.v2),
+                    offset: const Offset(Values.zero, Values.v2),
                     color: AppColors.boxShadow.withValues(alpha: .05),
                   ),
                 ],
               ),
-              child: Icon(EvaIcons.cloud_upload_outline),
+              child: const Icon(EvaIcons.cloud_upload_outline),
             ),
             Values.v4.verticalSpacing,
             RichText(
               text: TextSpan(
-                text: "Click to upload ",
+                text: 'Click to upload ',
                 style: context.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w400,
                   color: ref.watch(appPrimaryColorProvider),
                 ),
                 children: [
                   TextSpan(
-                    text: "or drag and drop",
+                    text: 'or drag and drop',
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: AppColors.grey600,
                       fontWeight: FontWeight.w400,
@@ -193,7 +192,7 @@ class _FilePickerWidget extends ConsumerWidget {
             ),
             Values.v4.verticalSpacing,
             Text(
-              "PDF, PNG, or JPG (max. 800x400px)",
+              'PDF, PNG, or JPG (max. 800x400px)',
               style: context.textTheme.bodyMedium?.copyWith(
                 color: AppColors.grey600,
                 fontWeight: FontWeight.w400,
@@ -220,7 +219,7 @@ class _UploadFileWidget extends HookConsumerWidget {
     return Stack(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: Values.v16,
             horizontal: Values.v24,
           ),
@@ -255,7 +254,7 @@ class _UploadFileWidget extends HookConsumerWidget {
                   .read(fileUploadControllerProvider.notifier)
                   .reset(documentCategory);
             },
-            child: Icon(
+            child: const Icon(
               EvaIcons.trash_2_outline,
               color: AppColors.grey400,
             ),
@@ -339,7 +338,7 @@ class _FileUploadWidget extends HookConsumerWidget {
           GestureDetector(
             onTap: () => retry(ref),
             child: Text(
-              "Try again",
+              'Try again',
               style: context.textTheme.bodyMedium?.copyWith(
                 color: AppColors.failure,
               ),
@@ -372,20 +371,20 @@ class _FileUploadStatusWidget extends StatelessWidget {
       spacing: Values.v4,
       children: [
         switch (uploadStatus) {
-          UploadStatus.uploading => Icon(
+          UploadStatus.uploading => const Icon(
             EvaIcons.cloud_upload_outline,
             color: AppColors.grey500,
           ),
-          UploadStatus.complete => Icon(
+          UploadStatus.complete => const Icon(
             EvaIcons.checkmark_circle,
             color: AppColors.success,
           ),
-          UploadStatus.failed => Icon(
+          UploadStatus.failed => const Icon(
             Iconsax.close_circle_outline,
             size: Values.v16,
             color: AppColors.failure,
           ),
-          _ => SizedBox.shrink(),
+          _ => const SizedBox.shrink(),
         },
         if (statusText.isNotEmpty)
           Text(

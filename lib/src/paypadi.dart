@@ -2,13 +2,12 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
-import 'package:talker_flutter/talker_flutter.dart';
-
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/src/shared/widgets/loading_indicator.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:toastification/toastification.dart';
 
 class PayPadi extends ConsumerWidget {

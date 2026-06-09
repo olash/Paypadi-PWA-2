@@ -23,16 +23,16 @@ class QrCodeScreen extends HookConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CloseButton(),
+              const CloseButton(),
               IconButton(
                 onPressed: () async {
                   await scanController.toggleTorch();
                 },
-                icon: Icon(Icons.flash_on),
+                icon: const Icon(Icons.flash_on),
               ),
             ],
           ),
-          Spacer(flex: 1),
+          const Spacer(),
           AnimatedSwitcher(
             duration: Durations.medium2,
             child: isScanning.value
@@ -40,16 +40,16 @@ class QrCodeScreen extends HookConsumerWidget {
                 : _GenerateQrCode(),
           ),
 
-          Spacer(),
+          const Spacer(),
           OverflowBar(
             children: [
               TextButton(
                 onPressed: () {},
-                child: Text("Scan"),
+                child: const Text('Scan'),
               ),
               TextButton(
                 onPressed: () {},
-                child: Text("My Code"),
+                child: const Text('My Code'),
               ),
             ],
           ),
@@ -81,18 +81,16 @@ class _ScanQrCode extends StatelessWidget {
               overlayBuilder: (context, constraints) {
                 return Container();
               },
-              onDetect: (barcodes) {
-                debugLogger.debug(barcodes);
-              },
+              onDetect: debugLogger.debug,
             ),
           ),
         ),
         Text(
-          "Scan QR code",
+          'Scan QR code',
           style: context.textTheme.bodyMedium,
         ),
         Text(
-          "Scan QR Code",
+          'Scan QR Code',
           style: context.textTheme.bodyMedium,
         ),
       ],
@@ -110,7 +108,7 @@ class _GenerateQrCode extends HookWidget {
           style: context.textTheme.bodyMedium,
         ),
         Text(
-          "Scan to pay",
+          'Scan to pay',
           style: context.textTheme.bodyMedium,
         ),
       ],

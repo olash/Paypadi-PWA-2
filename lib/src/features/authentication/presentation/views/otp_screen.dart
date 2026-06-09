@@ -25,7 +25,7 @@ class OtpScreen extends HookConsumerWidget {
     final otpCode = useTextEditingController();
     final phoneNumber = ref.watch(
       authenticationPayloadProvider,
-    )["phone_number"];
+    )['phone_number'];
 
     useEffect(() {
       Timer? resendTimer;
@@ -68,7 +68,6 @@ class OtpScreen extends HookConsumerWidget {
     });
 
     return AppScaffold(
-      showAppBar: true,
       child: Form(
         key: formRef.value,
         child: Column(
@@ -76,13 +75,13 @@ class OtpScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "OTP\nverification",
+              'OTP\nverification',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly provide the verification code "
-              "sent to your ${obfuscatePhoneNumber(phoneNumber)}",
+              'Kindly provide the verification code '
+              'sent to your ${obfuscatePhoneNumber(phoneNumber as String)}',
               style: context.textTheme.bodyLarge,
             ),
             Values.v24.verticalSpacing,
@@ -93,13 +92,13 @@ class OtpScreen extends HookConsumerWidget {
             Center(
               child: RichText(
                 text: TextSpan(
-                  text: "Didn’t get a code? ",
+                  text: 'Didn’t get a code? ',
                   style: context.textTheme.bodySmall?.copyWith(
                     letterSpacing: 0.5,
                   ),
                   children: [
                     TextSpan(
-                      text: "Send again",
+                      text: 'Send again',
                       recognizer: resendRecognizer,
                       style: context.textTheme.bodySmall?.copyWith(
                         letterSpacing: 0.5,
@@ -115,7 +114,7 @@ class OtpScreen extends HookConsumerWidget {
             Values.v24.verticalSpacing,
             FilledButton(
               onPressed: () => verifyOtp(ref, otpCode.text, formRef.value),
-              child: Text("Verify"),
+              child: const Text('Verify'),
             ),
           ],
         ),
@@ -123,7 +122,7 @@ class OtpScreen extends HookConsumerWidget {
     );
   }
 
-  void verifyOtp(
+  Future<void> verifyOtp(
     WidgetRef ref,
     String otpCode,
     GlobalKey<FormState> form,

@@ -1,13 +1,15 @@
+enum SeverityLevel { debug, info, warning, error, fatal }
+
 enum AccountRole {
   passenger(
-    title: "I’m a Passenger",
+    title: 'I’m a Passenger',
     description:
-        "For individuals who want to book and pay for rides effortlessly.",
+        'For individuals who want to book and pay for rides effortlessly.',
   ),
   driver(
-    title: "I’m a Driver",
+    title: 'I’m a Driver',
     description:
-        "For drivers who want to manage ride requests, track earnings, and optimize their trips.",
+        'For drivers who want to manage ride requests, track earnings, and optimize their trips.',
   );
 
   const AccountRole({required this.title, required this.description});
@@ -18,19 +20,19 @@ enum AccountRole {
 enum AccountType { rider, driver, unknown }
 
 enum PickedAmount {
-  two(value: "200"),
-  four(value: "400"),
-  six(value: "600"),
-  eight(value: "800"),
-  ten(value: "1000");
+  two(value: '200'),
+  four(value: '400'),
+  six(value: '600'),
+  eight(value: '800'),
+  ten(value: '1000');
 
   const PickedAmount({required this.value});
   final String value;
 }
 
 enum BeneficiaryType {
-  recent(typeName: "Recent"),
-  saved(typeName: "Saved");
+  recent(typeName: 'Recent'),
+  saved(typeName: 'Saved');
 
   const BeneficiaryType({required this.typeName});
   final String typeName;
@@ -43,9 +45,9 @@ enum TransactionType { transfer, deposit, withdrawal, unknown }
 enum UploadStatus { idle, uploading, complete, failed }
 
 enum DocumentCategory {
-  driverLicenseFront("Driver’s License (Front)"),
-  driverLicenseBack("Driver’s License (Back)"),
-  vehicleLicense("Vehicle License");
+  driverLicenseFront('Driver’s License (Front)'),
+  driverLicenseBack('Driver’s License (Back)'),
+  vehicleLicense('Vehicle License');
 
   const DocumentCategory(this.title);
   final String title;

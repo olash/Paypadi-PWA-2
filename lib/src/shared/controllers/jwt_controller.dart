@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/repositories/jwt_repo.dart';
 import 'package:paypadi/core/utils/constants.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'jwt_controller.g.dart';
 
@@ -98,7 +97,7 @@ class JwtController extends _$JwtController with WidgetsBindingObserver {
     debugLogger.info('Token refresh timer started');
   }
 
-  void _handleTokenRefresh() async {
+  Future<void> _handleTokenRefresh() async {
     try {
       refreshToken();
     } catch (e) {
@@ -107,7 +106,7 @@ class JwtController extends _$JwtController with WidgetsBindingObserver {
     }
   }
 
-  void refreshToken() async {
+  Future<void> refreshToken() async {
     final String? refreshToken = await ref
         .read(secureCacheProvider)
         .read(CacheKeys.refreshToken);

@@ -42,9 +42,7 @@ class SecureCacheService implements SecureCache {
     : _storage =
           storage ??
           const FlutterSecureStorage(
-            aOptions: AndroidOptions(),
             iOptions: IOSOptions(
-              synchronizable: false,
               accessibility: KeychainAccessibility.first_unlock_this_device,
             ),
           );

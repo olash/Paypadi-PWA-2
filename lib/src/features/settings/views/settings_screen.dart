@@ -64,7 +64,7 @@ class SettingsScreen extends HookConsumerWidget {
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
-          "Settings",
+          'Settings',
           style: context.textTheme.headlineSmall?.copyWith(
             letterSpacing: Values.zero,
           ),
@@ -73,44 +73,44 @@ class SettingsScreen extends HookConsumerWidget {
       child: Column(
         children: [
           SettingTile(
-            name: "Profile",
+            name: 'Profile',
             icon: Iconsax.profile_circle_outline,
             onTap: () {
               ref.read(userProfileProvider);
-              ref.read(appRouterProvider).push(ProfileRoute());
+              ref.read(appRouterProvider).push(const ProfileRoute());
             },
           ),
           SettingTile(
-            name: "Notification Preferences",
+            name: 'Notification Preferences',
             icon: Iconsax.notification_outline,
-            onTap: () => ref.read(appRouterProvider).push(NotificationsRoute()),
+            onTap: () => ref.read(appRouterProvider).push(const NotificationsRoute()),
           ),
           SettingTile(
-            name: "Change Password",
+            name: 'Change Password',
             showTrailingIcon: false,
             icon: Iconsax.lock_1_outline,
             onTap: () =>
-                ref.read(appRouterProvider).push(ChangePasswordRoute()),
+                ref.read(appRouterProvider).push(const ChangePasswordRoute()),
           ),
           SettingTile(
-            name: "Change Pin",
+            name: 'Change Pin',
             showTrailingIcon: false,
             icon: Iconsax.password_check_outline,
-            onTap: () => ref.read(appRouterProvider).push(ChangePinRoute()),
+            onTap: () => ref.read(appRouterProvider).push(const ChangePinRoute()),
           ),
           SettingTile(
-            name: "Referral",
+            name: 'Referral',
             showTrailingIcon: false,
             icon: Iconsax.alarm_outline,
-            onTap: () => ref.read(appRouterProvider).push(ReferralRoute()),
+            onTap: () => ref.read(appRouterProvider).push(const ReferralRoute()),
           ),
           SettingTile(
-            name: "Theme",
+            name: 'Theme',
             icon: Iconsax.colorfilter_outline,
-            onTap: () => ref.read(appRouterProvider).push(ChangeThemeRoute()),
+            onTap: () => ref.read(appRouterProvider).push(const ChangeThemeRoute()),
           ),
           SettingTileWithSwitch(
-            name: "Enable Biometrics",
+            name: 'Enable Biometrics',
             icon: IonIcons.finger_print,
             switchValue: biometricsIsEnabled.value,
             onChanged: (value) => biometricsIsEnabled.value = value,
@@ -132,15 +132,15 @@ class SettingsScreen extends HookConsumerWidget {
           //   onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
           // ),
           SettingTile(
-            name: "Log out",
+            name: 'Log out',
             showTrailingIcon: false,
             icon: Iconsax.logout_1_outline,
             onTap: () =>
                 ref.read(authenticationControllerProvider.notifier).logout(),
           ),
-          Spacer(),
+          const Spacer(),
           Text(
-            "App Version: ${appVersion.value?.version}",
+            'App Version: ${appVersion.value?.version}',
             style: context.textTheme.bodySmall?.copyWith(
               color: AppColors.grey400,
             ),

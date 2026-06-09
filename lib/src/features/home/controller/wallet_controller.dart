@@ -1,10 +1,9 @@
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'wallet_controller.g.dart';
 
@@ -28,7 +27,7 @@ class WalletController extends _$WalletController {
     return state.value;
   }
 
-  void getWalletInfo() async {
+  Future<void> getWalletInfo() async {
     state = const AsyncLoading();
     final result = await ref
         .read(walletRepositoryProvider)
@@ -46,12 +45,12 @@ class WalletController extends _$WalletController {
     );
   }
 
-  void saveBeneficiary(AccountLookupModel beneficiary) async {
+  Future<void> saveBeneficiary(AccountLookupModel beneficiary) async {
     final Map<String, dynamic> payload = {
-      "beneficiary_type": "user",
-      "account_number": beneficiary.accountNumber,
-      "account_name": "${beneficiary.firstName} ${beneficiary.lastName}",
-      "bank_code": beneficiary.bankCode,
+      'beneficiary_type': 'user',
+      'account_number': beneficiary.accountNumber,
+      'account_name': '${beneficiary.firstName} ${beneficiary.lastName}',
+      'bank_code': beneficiary.bankCode,
     };
 
     state = const AsyncLoading();
@@ -63,7 +62,7 @@ class WalletController extends _$WalletController {
     if (!ref.mounted) return;
 
     result.fold(
-      (success) => state = AsyncValue.data(null),
+      (success) => state = const AsyncValue.data(null),
       (failure) {
         ref.showExceptionMessage(failure);
         state = const AsyncData(null);
@@ -90,8 +89,8 @@ class HistoryController extends _$HistoryController {
     );
   }
 
-  void fetchMore(int page) async {
-    state = AsyncLoading();
+  Future<void> fetchMore(int page) async {
+    state = const AsyncLoading();
     final result = await ref
         .read(walletRepositoryProvider)
         .getTransactionHistory(page: page);

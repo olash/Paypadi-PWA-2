@@ -2,9 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
@@ -13,6 +10,8 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/features/home/controller/bank_account_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class DepositMoneyScreen extends HookConsumerWidget {
@@ -23,17 +22,17 @@ class DepositMoneyScreen extends HookConsumerWidget {
     final depositAccount = ref.watch(bankAccountControllerProvider);
 
     return AppScaffold(
-      title: "Add money",
+      title: 'Add money',
       child: Padding(
-        padding: EdgeInsets.only(top: Values.v32),
+        padding: const EdgeInsets.only(top: Values.v32),
         child: AppCard(
-          padding: EdgeInsets.all(Values.v16),
+          padding: const EdgeInsets.all(Values.v16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Bank",
+                'Bank',
                 style: context.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w400,
                   letterSpacing: kZeroLetterSpacing,
@@ -43,7 +42,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
               Skeletonizer(
                 enabled: depositAccount.isLoading,
                 child: Text(
-                  depositAccount.value?.bankName ?? "John Doe",
+                  depositAccount.value?.bankName ?? 'John Doe',
                   style: context.textTheme.bodyLarge?.copyWith(
                     letterSpacing: kZeroLetterSpacing,
                   ),
@@ -52,7 +51,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
 
               Values.v16.verticalSpacing,
               Text(
-                "Account Number",
+                'Account Number',
                 style: context.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w400,
                   letterSpacing: kZeroLetterSpacing,
@@ -62,7 +61,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
               Skeletonizer(
                 enabled: depositAccount.isLoading,
                 child: Text(
-                  depositAccount.value?.number ?? "123456789",
+                  depositAccount.value?.number ?? '123456789',
                   style: context.textTheme.bodyLarge?.copyWith(
                     letterSpacing: kZeroLetterSpacing,
                   ),
@@ -80,7 +79,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
                             depositAccount.value!,
                           ),
                     style: context.filledButtonTheme.style?.copyWith(
-                      fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
+                      fixedSize: const WidgetStatePropertyAll(kButtonMediumSize),
                       foregroundColor: WidgetStatePropertyAll(
                         ref.watch(appPrimaryColorProvider),
                       ),
@@ -104,7 +103,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    child: Text("Copy"),
+                    child: const Text('Copy'),
                   ),
                   Flexible(
                     child: FilledButton(
@@ -113,9 +112,9 @@ class DepositMoneyScreen extends HookConsumerWidget {
                           : () =>
                                 shareAccountInformation(depositAccount.value!),
                       style: context.filledButtonTheme.style?.copyWith(
-                        fixedSize: WidgetStatePropertyAll(kButtonMediumSize),
+                        fixedSize: const WidgetStatePropertyAll(kButtonMediumSize),
                       ),
-                      child: Text("Share"),
+                      child: const Text('Share'),
                     ),
                   ),
                 ],
@@ -127,23 +126,23 @@ class DepositMoneyScreen extends HookConsumerWidget {
     );
   }
 
-  void copyAccountToClipBoard(
+  Future<void> copyAccountToClipBoard(
     WidgetRef ref,
     UserBankAccountModel account,
   ) async {
     final String depositAccountInfo =
-        "Bank: ${account.name} \n"
-        "Account Number: ${account.number}";
+        'Bank: ${account.name} \n'
+        'Account Number: ${account.number}';
 
     await Clipboard.setData(
       ClipboardData(text: depositAccountInfo),
-    ).then((value) => ref.showSuccessToast("Successfully copied information"));
+    ).then((value) => ref.showSuccessToast('Successfully copied information'));
   }
 
-  void shareAccountInformation(UserBankAccountModel account) async {
+  Future<void> shareAccountInformation(UserBankAccountModel account) async {
     final String depositAccountInfo =
-        "Bank: ${account.name} \n"
-        "Account Number: ${account.number}";
+        'Bank: ${account.name} \n'
+        'Account Number: ${account.number}';
 
     await SharePlus.instance.share(
       ShareParams(text: depositAccountInfo),

@@ -2,16 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appPrimaryColorProvider;
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class ForgotPasswordScreen extends ConsumerWidget {
-  ForgotPasswordScreen({super.key, required this.email});
+  ForgotPasswordScreen({required this.email, super.key});
 
   final String email;
   final TapGestureRecognizer resendMail = TapGestureRecognizer();
@@ -19,19 +19,19 @@ class ForgotPasswordScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppScaffold(
-      title: "",
+      title: '',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Values.v24.verticalSpacing,
           Text(
-            "Please check your email",
+            'Please check your email',
             style: context.textTheme.headlineSmall,
           ),
           Values.v16.verticalSpacing,
           Text(
             "We've sent a password reset link to ${obfuscateEmail(email)}. "
-            "Click the link in the email to reset your password.",
+            'Click the link in the email to reset your password.',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -46,7 +46,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Send mail again",
+                  text: 'Send mail again',
                   recognizer: resendMail..onTap = () {},
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,

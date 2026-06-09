@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/repositories/authentication_repo.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_controller.g.dart';
 
@@ -24,7 +23,7 @@ class AuthenticationController extends _$AuthenticationController {
   }
 
   Future<void> createAccount() async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     final payload = ref.watch(authenticationPayloadProvider);
     final result = await _authRepository.createAccount(payload);
 
@@ -35,8 +34,8 @@ class AuthenticationController extends _$AuthenticationController {
           success.data.refreshToken,
           success.data.accessToken,
         );
-        ref.read(appRouterProvider).push(CreateTransactionPinRoute());
-        state = AsyncData(null);
+        ref.read(appRouterProvider).push(const CreateTransactionPinRoute());
+        state = const AsyncData(null);
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -46,19 +45,19 @@ class AuthenticationController extends _$AuthenticationController {
   }
 
   Future<void> requestForOtp() async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     final payloadBuilder = ref.watch(authenticationPayloadProvider);
     final Map<String, dynamic> payload = <String, dynamic>{
-      "phone_number": payloadBuilder["phone_number"],
-      "purpose": "registration",
+      'phone_number': payloadBuilder['phone_number'],
+      'purpose': 'registration',
     };
 
     final result = await _authRepository.requestForOtpCode(payload);
 
     result.fold(
       (success) {
-        ref.read(appRouterProvider).push(OtpRoute());
-        state = AsyncData(null);
+        ref.read(appRouterProvider).push(const OtpRoute());
+        state = const AsyncData(null);
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -68,12 +67,12 @@ class AuthenticationController extends _$AuthenticationController {
   }
 
   Future<void> verifyOtpCode(String code) async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     final payloadBuilder = ref.watch(authenticationPayloadProvider);
     final Map<String, dynamic> payload = <String, dynamic>{
-      "phone_number": payloadBuilder["phone_number"],
-      "purpose": "registration",
-      "code": code,
+      'phone_number': payloadBuilder['phone_number'],
+      'purpose': 'registration',
+      'code': code,
     };
 
     final result = await _authRepository.verifyOtpCode(payload);
@@ -81,9 +80,9 @@ class AuthenticationController extends _$AuthenticationController {
     result.fold(
       (success) {
         final payload = ref.watch(authenticationPayloadProvider);
-        payload["phone_token"] = success.data.phoneToken;
-        ref.read(appRouterProvider).push(AccountRoleRoute());
-        state = AsyncData(null);
+        payload['phone_token'] = success.data.phoneToken;
+        ref.read(appRouterProvider).push(const AccountRoleRoute());
+        state = const AsyncData(null);
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -93,10 +92,10 @@ class AuthenticationController extends _$AuthenticationController {
   }
 
   Future<void> login(String phoneNumber, String password) async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     final payload = <String, dynamic>{
-      "phone_number": phoneNumber,
-      "password": password,
+      'phone_number': phoneNumber,
+      'password': password,
     };
 
     final result = await _authRepository.login(payload);
@@ -110,8 +109,8 @@ class AuthenticationController extends _$AuthenticationController {
         _savePasswordToCache(password);
         _saveUserToCache(success.data.user);
 
-        ref.read(appRouterProvider).push(DashboardRoute());
-        state = AsyncData(null);
+        ref.read(appRouterProvider).push(const DashboardRoute());
+        state = const AsyncData(null);
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -120,17 +119,17 @@ class AuthenticationController extends _$AuthenticationController {
     );
   }
 
-  Future<void> loginWithBiometrics() async {
-    final biometricService = ref.watch(biometricsProvider);
-    final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
-      CacheKeys.user,
-      (data) {
-        final json = jsonDecode(data) as Map<String, dynamic>;
-        return UserModel.fromJson(json);
-      },
-    );
+   Future<void> loginWithBiometrics() async {
+     final biometricService = ref.watch(biometricsProvider);
+     final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
+       CacheKeys.user,
+       (data) {
+         final json = jsonDecode(data as String) as Map<String, dynamic>;
+         return UserModel.fromJson(json);
+       },
+     );
 
-    final result = await biometricService.authenticate();
+     final result = await biometricService.authenticate();
 
     result.fold(
       (success) async {
@@ -147,14 +146,14 @@ class AuthenticationController extends _$AuthenticationController {
     );
   }
 
-  void logout() async {
+  Future<void> logout() async {
     await ref.read(secureCacheProvider).clearStorage();
     await ref.read(localCacheProvider).clearStorage();
     ref
         .read(appRouterProvider)
         .pushAndPopUntil(
-          OnboardingRoute(),
-          predicate: (route) => route.settings.name == "/sign-in",
+          const OnboardingRoute(),
+          predicate: (route) => route.settings.name == '/sign-in',
         );
   }
 

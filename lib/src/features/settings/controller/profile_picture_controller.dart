@@ -1,7 +1,6 @@
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:paypadi/core/services/image_picker_service.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:share_plus/share_plus.dart';
 
 part 'profile_picture_controller.g.dart';
@@ -17,7 +16,7 @@ class ProfilePicture extends _$ProfilePicture {
   }
 
   Future<void> uploadPicture() async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     final XFile? image = await _service.pickImage();
 
     if (image == null) return;

@@ -1,9 +1,9 @@
 import 'dart:convert' show json;
 
+import 'package:paypadi/core/utils/constants.dart' show CacheKeys, debugLogger;
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache;
 import 'package:talker_flutter/talker_flutter.dart' show Talker;
-import 'package:paypadi/core/utils/constants.dart' show CacheKeys, debugLogger;
 
 abstract class LocalCache {
   /// Enable biometric authentication in the cache.

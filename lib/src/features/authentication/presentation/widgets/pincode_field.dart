@@ -10,7 +10,7 @@ import 'package:pin_code_text_field/pin_code_text_field.dart'
     show PinCodeTextField;
 
 class PinCodeField extends ConsumerWidget {
-  const PinCodeField({super.key, required this.controller});
+  const PinCodeField({required this.controller, super.key});
   final TextEditingController controller;
 
   @override
@@ -29,7 +29,7 @@ class PinCodeField extends ConsumerWidget {
               pinBoxHeight: Values.v48,
               pinBoxRadius: Values.v12,
               pinBoxBorderWidth: Values.v1,
-              pinBoxOuterPadding: EdgeInsets.only(right: Values.v4),
+              pinBoxOuterPadding: const EdgeInsets.only(right: Values.v4),
               hasTextBorderColor: ref.watch(appPrimaryColorProvider),
               defaultBorderColor: field.hasError
                   ? AppColors.failure

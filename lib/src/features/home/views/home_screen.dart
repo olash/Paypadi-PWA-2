@@ -20,33 +20,33 @@ class HomeScreen extends HookWidget {
           navTracker.value = value;
           switch (value) {
             case 0:
-              context.router.push(DashboardRoute());
+              context.router.push(const DashboardRoute());
               break;
             case 1:
-              context.router.push(TransactionHistoryRoute());
+              context.router.push(const TransactionHistoryRoute());
               break;
             case 2:
-              context.router.push(SettingsRoute());
+              context.router.push(const SettingsRoute());
               break;
             default:
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            label: "Transfer",
+            label: 'Transfer',
             icon: Icon(Icons.arrow_downward_rounded),
           ),
           BottomNavigationBarItem(
-            label: "History",
+            label: 'History',
             icon: Icon(Icons.history),
           ),
           BottomNavigationBarItem(
-            label: "Settings",
+            label: 'Settings',
             icon: Icon(Icons.settings),
           ),
         ],
       ),
-      child: AutoRouter(),
+      child: const AutoRouter(),
     );
   }
 }

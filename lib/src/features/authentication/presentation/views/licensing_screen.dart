@@ -20,7 +20,7 @@ class LicensingScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final driverLicense = useTextEditingController();
-    final expiryDate = useState<String>("");
+    final expiryDate = useState<String>('');
     final formRef = useRef(GlobalKey<FormState>());
 
     ref.listen(driverProfileProvider, (previous, current) {
@@ -39,11 +39,10 @@ class LicensingScreen extends HookConsumerWidget {
     });
 
     return AppScaffold(
-      showAppBar: true,
       makeScrollable: true,
       appBar: AppBar(
         title: Text(
-          "Step 3 out of 5",
+          'Step 3 out of 5',
           style: context.textTheme.titleSmall,
         ),
         centerTitle: true,
@@ -55,12 +54,12 @@ class LicensingScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Licensing",
+              'Licensing',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Kindly provide the details below to help give you the best experience.",
+              'Kindly provide the details below to help give you the best experience.',
               style: context.textTheme.bodyMedium,
             ),
             Values.v32.verticalSpacing,
@@ -78,7 +77,7 @@ class LicensingScreen extends HookConsumerWidget {
                 driverLicense.text,
                 formRef.value,
               ),
-              child: Text("Continue"),
+              child: const Text('Continue'),
             ),
           ],
         ),
@@ -97,8 +96,8 @@ class LicensingScreen extends HookConsumerWidget {
     ref.closeKeyboard();
 
     ref.read(profilePayloadProvider)
-      ..["driver_license_number"] = driverLicense
-      ..["driver_license_expiry"] = expiryDate;
+      ..['driver_license_number'] = driverLicense
+      ..['driver_license_expiry'] = expiryDate;
 
     ref.read(driverProfileProvider.notifier).updateDriverProfile();
   }
@@ -130,7 +129,7 @@ class _ExpiryDateWidget extends HookConsumerWidget {
       },
       child: FormField<String>(
         initialValue: formatDate(selectedDate.value),
-        validator: (value) => dateValidator(value),
+        validator: dateValidator,
         builder: (field) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +143,7 @@ class _ExpiryDateWidget extends HookConsumerWidget {
               Values.v6.verticalSpacing,
               Container(
                 width: context.screenWidth,
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: Values.v16,
                   vertical: Values.v14,
                 ),

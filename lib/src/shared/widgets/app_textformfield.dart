@@ -4,20 +4,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart'
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/gen/fonts.gen.dart';
-import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
+import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 
 class AppTextformfield extends StatelessWidget {
   const AppTextformfield({
-    super.key,
+    required this.title, required this.controller, super.key,
     this.hint,
     this.isEnabled,
     this.titleStyle,
     this.keyboardType = TextInputType.text,
     this.validator,
-    required this.title,
-    required this.controller,
   });
 
   final String title;
@@ -55,9 +53,8 @@ class AppTextformfield extends StatelessWidget {
 
 class PhoneTextField extends ConsumerWidget {
   const PhoneTextField({
-    super.key,
+    required this.controller, super.key,
     this.validator,
-    required this.controller,
   });
 
   final TextEditingController controller;
@@ -71,7 +68,7 @@ class PhoneTextField extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Phone Number",
+          'Phone Number',
           style: context.textTheme.titleMedium?.copyWith(
             letterSpacing: Values.zero,
             fontFamily: FontFamily.manrope,
@@ -83,7 +80,7 @@ class PhoneTextField extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: Values.v16,
                 vertical: Values.v14,
               ),
@@ -96,7 +93,7 @@ class PhoneTextField extends ConsumerWidget {
                 children: [
                   AppAssets.icons.ngFlag.svg(),
                   Text(
-                    "+234",
+                    '+234',
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: AppColors.hintText,
                     ),
@@ -110,8 +107,8 @@ class PhoneTextField extends ConsumerWidget {
                 validator: validator,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  hintText: "Enter phone number",
-                  contentPadding: EdgeInsets.symmetric(
+                  hintText: 'Enter phone number',
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: Values.v16,
                     vertical: Values.v8,
                   ),

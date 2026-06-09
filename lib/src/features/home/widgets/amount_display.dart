@@ -8,7 +8,7 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 
 class AmountDisplay extends HookWidget {
-  const AmountDisplay({super.key, required this.controller});
+  const AmountDisplay({required this.controller, super.key});
   final TextEditingController controller;
 
   @override
@@ -19,7 +19,7 @@ class AmountDisplay extends HookWidget {
       spacing: Values.v12,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(vertical: Values.v12),
+          padding: const EdgeInsets.symmetric(vertical: Values.v12),
           decoration: BoxDecoration(
             color: AppColors.white,
             border: Border.all(color: AppColors.amountDisplayBorderColor),
@@ -27,7 +27,7 @@ class AmountDisplay extends HookWidget {
           ),
           child: Center(
             child: Text(
-              "₦${formatAmount(controllerListenable.text)}",
+              '₦${formatAmount(controllerListenable.text)}',
               style: context.textTheme.headlineLarge,
             ),
           ),
@@ -39,8 +39,8 @@ class AmountDisplay extends HookWidget {
               GestureDetector(
                 onTap: () => controller.text = amount.value,
                 child: Container(
-                  margin: EdgeInsets.only(right: Values.v10),
-                  padding: EdgeInsets.all(Values.v10),
+                  margin: const EdgeInsets.only(right: Values.v10),
+                  padding: const EdgeInsets.all(Values.v10),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     border: Border.all(
@@ -49,7 +49,7 @@ class AmountDisplay extends HookWidget {
                     borderRadius: BorderRadius.circular(Values.v12.r),
                   ),
                   child: Text(
-                    "₦${amount.value}",
+                    '₦${amount.value}',
                     style: context.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),

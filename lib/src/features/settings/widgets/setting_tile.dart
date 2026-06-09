@@ -5,10 +5,8 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class SettingTile extends StatelessWidget {
   const SettingTile({
-    super.key,
+    required this.name, required this.icon, super.key,
     this.onTap,
-    required this.name,
-    required this.icon,
     this.showTrailingIcon = true,
   });
 
@@ -22,7 +20,7 @@ class SettingTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Row(
           children: [
             Icon(icon, size: 24),
@@ -36,7 +34,7 @@ class SettingTile extends StatelessWidget {
                 ),
               ),
             ),
-            if (showTrailingIcon) Icon(Iconsax.arrow_right_3_outline),
+            if (showTrailingIcon) const Icon(Iconsax.arrow_right_3_outline),
           ],
         ),
       ),
@@ -46,11 +44,7 @@ class SettingTile extends StatelessWidget {
 
 class SettingTileWithSwitch extends StatelessWidget {
   const SettingTileWithSwitch({
-    super.key,
-    required this.name,
-    required this.icon,
-    required this.switchValue,
-    required this.onChanged,
+    required this.name, required this.icon, required this.switchValue, required this.onChanged, super.key,
   });
 
   final String name;
@@ -61,7 +55,7 @@ class SettingTileWithSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: Row(
         children: [
           Icon(icon, size: 24),

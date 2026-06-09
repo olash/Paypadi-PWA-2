@@ -1,10 +1,9 @@
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/core/utils/enums.dart';
 
-import 'package:paypadi/config/gen/assets.gen.dart';
-
 String obfuscateEmail(String email) {
-  final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
+  final emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$');
   if (!emailRegex.hasMatch(email)) return email;
 
   final parts = email.split('@');
@@ -133,8 +132,8 @@ String getInitials(String fullName) {
 
 String getTransactionDirectionLabel(TransactionType type) {
   return switch (type) {
-    TransactionType.deposit => "From",
-    TransactionType.transfer || TransactionType.withdrawal => "To",
+    TransactionType.deposit => 'From',
+    TransactionType.transfer || TransactionType.withdrawal => 'To',
     TransactionType.unknown => '?',
   };
 }

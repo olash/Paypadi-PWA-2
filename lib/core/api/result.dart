@@ -213,7 +213,7 @@ sealed class Result<S, F> {
     } on Error catch (e) {
       if (_isResponseParsingError(e)) {
         return failure(
-          ClientException(
+          const ClientException(
             message:
                 'Failed to parse server response. Please update the app or try again later.',
           ),
@@ -241,7 +241,7 @@ sealed class Result<S, F> {
     } on Error catch (e) {
       if (_isResponseParsingError(e)) {
         return failure(
-          ClientException(
+          const ClientException(
             message:
                 'Failed to parse server response. Please update the app or try again later.',
           ),

@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -14,6 +12,7 @@ import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/features/home/controller/wallet_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_zero_item.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class TransactionHistoryScreen extends ConsumerWidget {
@@ -35,22 +34,22 @@ class TransactionHistoryScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Transactions",
+            'Transactions',
             style: context.textTheme.titleMedium,
           ),
           if (transactionHistory.value != null &&
               transactionHistory.value!.isEmpty)
-            AppZeroItem(
+            const AppZeroItem(
               topPaddingScaleFactor: .4,
               icon: Icons.receipt_long_outlined,
-              message: "No Recent Transaction",
+              message: 'No Recent Transaction',
             )
           else
             SizedBox(
               height: context.screenHeight * .9,
               child: ListView.builder(
-                padding: EdgeInsets.only(top: Values.v16),
-                physics: NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(top: Values.v16),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: transactionHistory.isLoading
                     ? kMockTransactionHistory.length
                     : transactionHistory.value!.length,
@@ -95,7 +94,7 @@ class _TransactionTile extends ConsumerWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: Values.v8),
+        padding: const EdgeInsets.symmetric(vertical: Values.v8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -130,7 +129,7 @@ class _TransactionTile extends ConsumerWidget {
                   Skeletonizer(
                     enabled: isLoading,
                     child: Text(
-                      "Transfer ${getTransactionDirectionLabel(transaction.type)} ${name(transaction.type)}",
+                      'Transfer ${getTransactionDirectionLabel(transaction.type)} ${name(transaction.type)}',
                       overflow: TextOverflow.ellipsis,
                       style: context.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w400,
@@ -154,7 +153,7 @@ class _TransactionTile extends ConsumerWidget {
             Skeletonizer(
               enabled: isLoading,
               child: Text(
-                "${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}",
+                '${amountSign(transaction.type)}₦ ${formatAmount(transaction.amount)}',
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: transactionColor(transaction.type),
                 ),
@@ -177,8 +176,8 @@ class _TransactionTile extends ConsumerWidget {
 
   String amountSign(TransactionType type) {
     return switch (type) {
-      TransactionType.deposit => "+",
-      TransactionType.transfer || TransactionType.withdrawal => "-",
+      TransactionType.deposit => '+',
+      TransactionType.transfer || TransactionType.withdrawal => '-',
       TransactionType.unknown => '?',
     };
   }

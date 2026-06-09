@@ -16,17 +16,17 @@ class NotificationsScreen extends HookConsumerWidget {
     final enableEmailNotifications = useState<bool>(false);
 
     return AppScaffold(
-      title: "Notifications",
+      title: 'Notifications',
       child: Column(
         children: [
           SettingTileWithSwitch(
-            name: "Push Notifications",
+            name: 'Push Notifications',
             icon: Iconsax.notification_1_outline,
             switchValue: enablePushNotifications.value,
             onChanged: (value) => enablePushNotifications.value = value,
           ),
           SettingTileWithSwitch(
-            name: "Email Notifications",
+            name: 'Email Notifications',
             icon: Iconsax.sms_notification_outline,
             switchValue: enableEmailNotifications.value,
             onChanged: (value) => enableEmailNotifications.value = value,

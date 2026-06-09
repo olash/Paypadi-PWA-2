@@ -20,24 +20,24 @@ class ReferralScreen extends HookConsumerWidget {
     final profile = ref.watch(userProfileProvider);
 
     return AppScaffold(
-      title: "Referrals",
+      title: 'Referrals',
       topPadding: Values.v24,
       child: AppCard(
         cardColor: AppColors.referralCardColor,
-        padding: EdgeInsets.all(Values.v16),
+        padding: const EdgeInsets.all(Values.v16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Refer a Friend",
+              'Refer a Friend',
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 letterSpacing: kZeroLetterSpacing,
               ),
             ),
             Text(
-              "Share your referral code with others to get one month of Paypadi free!",
+              'Share your referral code with others to get one month of Paypadi free!',
               style: context.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w400,
                 letterSpacing: kZeroLetterSpacing,
@@ -45,7 +45,7 @@ class ReferralScreen extends HookConsumerWidget {
             ),
             Values.v8.verticalSpacing,
             Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: Values.v8,
                 horizontal: Values.v10,
               ),
@@ -70,7 +70,7 @@ class ReferralScreen extends HookConsumerWidget {
                       profile.value?.referralCode ?? '',
                     ),
                     child: Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: Values.v4,
                         horizontal: Values.v8,
                       ),
@@ -79,7 +79,7 @@ class ReferralScreen extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(Values.v10),
                       ),
                       child: Text(
-                        "Copy",
+                        'Copy',
                         style: context.textTheme.labelSmall?.copyWith(
                           color: AppColors.white,
                           letterSpacing: kZeroLetterSpacing,
@@ -93,7 +93,7 @@ class ReferralScreen extends HookConsumerWidget {
             Values.v10.verticalSpacing,
             Container(
               width: context.screenWidth,
-              padding: EdgeInsets.all(Values.v10),
+              padding: const EdgeInsets.all(Values.v10),
               decoration: BoxDecoration(
                 color: ref.read(appPrimaryColorProvider),
                 borderRadius: BorderRadius.circular(Values.v10),
@@ -101,7 +101,7 @@ class ReferralScreen extends HookConsumerWidget {
               child: Column(
                 children: [
                   Text(
-                    "Signed up",
+                    'Signed up',
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: AppColors.white,
                       fontWeight: FontWeight.w600,
@@ -125,10 +125,10 @@ class ReferralScreen extends HookConsumerWidget {
     );
   }
 
-  void copyCodeToClipBoard(WidgetRef ref, String code) async {
-    final String referCode = "Use my referral code: $code";
+  Future<void> copyCodeToClipBoard(WidgetRef ref, String code) async {
+    final String referCode = 'Use my referral code: $code';
     await Clipboard.setData(ClipboardData(text: referCode)).then(
-      (value) => ref.showSuccessToast("Successfully copied information"),
+      (value) => ref.showSuccessToast('Successfully copied information'),
     );
   }
 }

@@ -8,9 +8,8 @@ import 'package:paypadi/core/utils/constants.dart';
 
 class AppPinIndicator extends HookConsumerWidget {
   const AppPinIndicator({
-    super.key,
+    required this.controller, super.key,
     this.pinLength = 4,
-    required this.controller,
   });
 
   final int pinLength;

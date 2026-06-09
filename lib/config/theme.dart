@@ -14,7 +14,7 @@ class AppTheme {
     fontFamily: FontFamily.manrope,
     colorScheme: ColorScheme.light(primary: primary),
     scaffoldBackgroundColor: AppColors.white,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       elevation: Values.zero,
       scrolledUnderElevation: Values.zero,
     ),
@@ -27,7 +27,7 @@ class AppTheme {
           ),
         ),
         fixedSize: WidgetStatePropertyAll(kButtonSize),
-        foregroundColor: WidgetStatePropertyAll(AppColors.white),
+        foregroundColor: const WidgetStatePropertyAll(AppColors.white),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Values.v12.r),
@@ -62,7 +62,7 @@ class AppTheme {
       filled: true,
       fillColor: AppColors.white,
       constraints: BoxConstraints(maxWidth: 362.w),
-      contentPadding: EdgeInsets.symmetric(
+      contentPadding: const EdgeInsets.symmetric(
         horizontal: Values.v16,
         vertical: Values.v8,
       ),
@@ -93,10 +93,10 @@ class AppTheme {
       ),
     ),
     searchBarTheme: SearchBarThemeData(
-      elevation: WidgetStatePropertyAll(Values.zero),
+      elevation: const WidgetStatePropertyAll(Values.zero),
       shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(
-          side: BorderSide(color: AppColors.unfocusedTextField),
+          side: const BorderSide(color: AppColors.unfocusedTextField),
           borderRadius: BorderRadius.circular(Values.v12.r),
         ),
       ),
@@ -104,11 +104,11 @@ class AppTheme {
     searchViewTheme: SearchViewThemeData(
       // elevation: Values.zero,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: AppColors.unfocusedTextField),
+        side: const BorderSide(color: AppColors.unfocusedTextField),
         borderRadius: BorderRadius.circular(Values.v12.r),
       ),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       displaySmall: _appTextStyle,
       headlineLarge: _appTextStyle,
       headlineMedium: _appTextStyle,
@@ -126,7 +126,7 @@ class AppTheme {
   );
 }
 
-final TextStyle _appTextStyle = TextStyle(
+const TextStyle _appTextStyle = TextStyle(
   letterSpacing: 0.5,
   color: AppColors.black,
   fontWeight: FontWeight.w500,

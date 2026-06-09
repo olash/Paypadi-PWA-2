@@ -21,20 +21,19 @@ class SignInScreen extends HookConsumerWidget {
     final phoneNumber = useTextEditingController();
 
     return AppScaffold(
-      showAppBar: true,
       child: Form(
         key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Spacer(),
+            const Spacer(),
             Text(
-              "Welcome back",
+              'Welcome back',
               style: context.textTheme.headlineMedium,
             ),
             Values.v16.verticalSpacing,
             Text(
-              "Enter the Phone Number associated with your Paypadi account",
+              'Enter the Phone Number associated with your Paypadi account',
               style: context.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w400,
               ),
@@ -42,14 +41,14 @@ class SignInScreen extends HookConsumerWidget {
             Values.v16.verticalSpacing,
             PhoneTextField(
               controller: phoneNumber,
-              validator: (number) => phoneNumberValidator(number),
+              validator: phoneNumberValidator,
             ),
             Values.v16.verticalSpacing,
             FilledButton(
               onPressed: () => signin(ref, phoneNumber.text, formRef.value),
-              child: Text("Continue"),
+              child: const Text('Continue'),
             ),
-            Spacer(flex: 6),
+            const Spacer(flex: 6),
           ],
         ),
       ),

@@ -14,7 +14,7 @@ class RequestForOtpResponse {
 
   final String otp;
 
-  @JsonKey(name: "expires_in")
+  @JsonKey(name: 'expires_in')
   final int expiresIn;
 
   factory RequestForOtpResponse.fromJson(Map<String, dynamic> json) =>
@@ -25,7 +25,7 @@ class RequestForOtpResponse {
 class VerifyOtpResponse {
   const VerifyOtpResponse({required this.phoneToken});
   
-  @JsonKey(name: "phone_token")
+  @JsonKey(name: 'phone_token')
   final String phoneToken;
 
   factory VerifyOtpResponse.fromJson(Map<String, dynamic> json) =>
@@ -40,10 +40,10 @@ class CreateAccountResponse {
     required this.user,
   });
 
-  @JsonKey(name: "refresh")
+  @JsonKey(name: 'refresh')
   final String refreshToken;
 
-  @JsonKey(name: "access")
+  @JsonKey(name: 'access')
   final String accessToken;
 
 
@@ -61,10 +61,10 @@ class LoginResponse {
     required this.user,
   });
 
-  @JsonKey(name: "refresh")
+  @JsonKey(name: 'refresh')
   final String refreshToken;
 
-  @JsonKey(name: "access")
+  @JsonKey(name: 'access')
   final String accessToken;
 
   final UserModel user;

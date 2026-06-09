@@ -2,31 +2,31 @@ import 'dart:ui' show Color;
 
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
-import 'package:paypadi/core/services/api_service.dart';
-import 'package:paypadi/core/services/app_version_service.dart';
-import 'package:paypadi/core/services/file_picker_service.dart';
-import 'package:paypadi/core/services/image_picker_service.dart';
-import 'package:paypadi/core/services/receipt_service.dart';
-import 'package:paypadi/core/utils/constants.dart'
-    show CacheKeys, availableColors;
-import 'package:paypadi/core/services/biometrics_service.dart'
-    show BiometricsService;
-import 'package:paypadi/core/services/local_cache_service.dart'
-    show LocalCacheService;
-import 'package:paypadi/core/services/secure_cache_service.dart'
-    show SecureCacheService;
-import 'package:paypadi/core/datasource/authentication_ds/authentication_client.dart';
-import 'package:paypadi/core/datasource/jwt_ds/jwt_client.dart';
-import 'package:paypadi/core/datasource/payout_account_ds/payout_account_client.dart';
-import 'package:paypadi/core/datasource/profile_ds/profile_client.dart';
+import 'package:paypadi/core/clients/authentication_ds/authentication_client.dart';
+import 'package:paypadi/core/clients/jwt_ds/jwt_client.dart';
+import 'package:paypadi/core/clients/payout_account_ds/payout_account_client.dart';
+import 'package:paypadi/core/clients/profile_ds/profile_client.dart';
+import 'package:paypadi/core/clients/transaction_ds/transaction_client.dart';
+import 'package:paypadi/core/clients/wallet_ds/wallet_client.dart';
 import 'package:paypadi/core/repositories/authentication_repo.dart';
 import 'package:paypadi/core/repositories/jwt_repo.dart';
 import 'package:paypadi/core/repositories/payout_account_repo.dart';
 import 'package:paypadi/core/repositories/profile_repo.dart';
-import 'package:paypadi/core/datasource/wallet_ds/wallet_client.dart';
-import 'package:paypadi/core/repositories/wallet_repo.dart';
-import 'package:paypadi/core/datasource/transaction_ds/transaction_client.dart';
 import 'package:paypadi/core/repositories/transaction_repo.dart';
+import 'package:paypadi/core/repositories/wallet_repo.dart';
+import 'package:paypadi/core/services/api_service.dart';
+import 'package:paypadi/core/services/app_version_service.dart';
+import 'package:paypadi/core/services/biometrics_service.dart'
+    show BiometricsService;
+import 'package:paypadi/core/services/file_picker_service.dart';
+import 'package:paypadi/core/services/image_picker_service.dart';
+import 'package:paypadi/core/services/local_cache_service.dart'
+    show LocalCacheService;
+import 'package:paypadi/core/services/receipt_service.dart';
+import 'package:paypadi/core/services/secure_cache_service.dart'
+    show SecureCacheService;
+import 'package:paypadi/core/utils/constants.dart'
+    show CacheKeys, availableColors;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
@@ -40,11 +40,11 @@ class ColorIndexNotifier extends _$ColorIndexNotifier {
     final localCache = ref.watch(localCacheProvider);
     final int colorIndex = localCache.getFromCache(CacheKeys.colorTheme) ?? 0;
     final bool isValidIndex =
-        (colorIndex >= 0 && colorIndex < availableColors.length);
+        colorIndex >= 0 && colorIndex < availableColors.length;
     return isValidIndex ? colorIndex : 0;
   }
 
-  void setColorIndex(int index) async {
+  Future<void> setColorIndex(int index) async {
     if (index >= 0 && index < availableColors.length) {
       state = index;
       final localCache = ref.read(localCacheProvider);
@@ -71,7 +71,7 @@ AppTheme appTheme(Ref ref) {
 @Riverpod(keepAlive: true)
 Future<SharedPreferencesWithCache> sharedPreferencesFuture(Ref ref) {
   return SharedPreferencesWithCache.create(
-    cacheOptions: SharedPreferencesWithCacheOptions(),
+    cacheOptions: const SharedPreferencesWithCacheOptions(),
   );
 }
 

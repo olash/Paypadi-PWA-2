@@ -1,11 +1,12 @@
-import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'dart:async';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
+import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
 import 'package:paypadi/core/repositories/profile_repo.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_controller.g.dart';
 
@@ -38,11 +39,11 @@ class RiderProfile extends _$RiderProfile {
     _profileRepository = ref.watch(profileRepositoryProvider);
   }
 
-  void setTransactionPin(String newPin, String confirmedPin) async {
-    state = AsyncLoading();
+  Future<void> setTransactionPin(String newPin, String confirmedPin) async {
+    state = const AsyncLoading();
     final Map<String, dynamic> payload = {
-      "new_pin": newPin,
-      "confirm_pin": confirmedPin,
+      'new_pin': newPin,
+      'confirm_pin': confirmedPin,
     };
 
     final result = await _profileRepository.setTransactionPin(payload);
@@ -51,8 +52,8 @@ class RiderProfile extends _$RiderProfile {
         ref
             .read(secureCacheProvider)
             .write(key: CacheKeys.transactionPin, value: confirmedPin);
-        ref.read(appRouterProvider).push(BiometricAuthenticationRoute());
-        state = AsyncData(null);
+        ref.read(appRouterProvider).push(const BiometricAuthenticationRoute());
+        state = const AsyncData(null);
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -72,15 +73,15 @@ class DriverProfile extends _$DriverProfile {
   }
 
   Future<void> createProfile() async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
 
     final payload = ref.read(profilePayloadProvider);
     final result = await _profileRepository.createDriverProfile(payload);
 
     result.fold(
       (success) {
-        state = AsyncData(null);
-        ref.read(appRouterProvider).push(LicensingRoute());
+        state = const AsyncData(null);
+        unawaited(ref.read(appRouterProvider).push(const LicensingRoute()));
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -90,15 +91,15 @@ class DriverProfile extends _$DriverProfile {
   }
 
   Future<void> updateDriverProfile() async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
 
     final payload = ref.read(profilePayloadProvider);
     final result = await _profileRepository.updateDriverProfile(payload);
 
     result.fold(
       (success) {
-        state = AsyncData(null);
-        ref.read(appRouterProvider).push(DocumentUploadRoute());
+        state = const AsyncData(null);
+        unawaited(ref.read(appRouterProvider).push(const DocumentUploadRoute()));
       },
       (failure) {
         ref.showExceptionMessage(failure);

@@ -12,7 +12,7 @@ import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class EnterPasswordScreen extends HookConsumerWidget {
-  const EnterPasswordScreen({super.key, required this.phoneNumber});
+  const EnterPasswordScreen({required this.phoneNumber, super.key});
   final String phoneNumber;
 
   @override
@@ -39,12 +39,12 @@ class EnterPasswordScreen extends HookConsumerWidget {
         children: [
           Values.v32.verticalSpacing,
           Text(
-            "Enter Password",
+            'Enter Password',
             style: context.textTheme.headlineMedium,
           ),
           Values.v12.verticalSpacing,
           Text(
-            "Enter the password associated with your account",
+            'Enter the password associated with your account',
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
@@ -54,13 +54,13 @@ class EnterPasswordScreen extends HookConsumerWidget {
             pinLength: passwordPinLength,
             controller: passwordController,
           ),
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           AppKeypad(
             keyLength: passwordPinLength,
             controller: passwordController,
             onSubmit: (value) => onSubmit(ref, value),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

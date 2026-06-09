@@ -26,7 +26,7 @@ class CreateAccountScreen extends HookConsumerWidget {
 
     useEffect(() {
       signInRecognizer.onTap = () =>
-          ref.read(appRouterProvider).push(SignInRoute());
+          ref.read(appRouterProvider).push(const SignInRoute());
       return signInRecognizer.dispose;
     }, const []);
 
@@ -46,7 +46,6 @@ class CreateAccountScreen extends HookConsumerWidget {
     });
 
     return AppScaffold(
-      showAppBar: true,
       child: Form(
         key: formRef.value,
         child: Column(
@@ -54,33 +53,33 @@ class CreateAccountScreen extends HookConsumerWidget {
           children: [
             Values.v32.verticalSpacing,
             Text(
-              "Let’s get\nyou started",
+              'Let’s get\nyou started',
               style: context.textTheme.headlineMedium,
             ),
             Values.v32.verticalSpacing,
             PhoneTextField(
               controller: phoneNumber,
-              validator: (number) => phoneNumberValidator(number),
+              validator: phoneNumberValidator,
             ),
             Values.v16.verticalSpacing,
-            _TermsAndPrivacyRichText(),
+            const _TermsAndPrivacyRichText(),
             Values.v16.verticalSpacing,
             FilledButton(
               onPressed: () =>
                   requestForOtp(ref, formRef.value, phoneNumber.text),
-              child: Text("Create Account"),
+              child: const Text('Create Account'),
             ),
             Values.v8.verticalSpacing,
             Center(
               child: RichText(
                 text: TextSpan(
-                  text: "Already have an account? ",
+                  text: 'Already have an account? ',
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontFamily: FontFamily.manrope,
                   ),
                   children: [
                     TextSpan(
-                      text: "Sign in",
+                      text: 'Sign in',
                       recognizer: signInRecognizer,
                       style: context.textTheme.bodyMedium?.copyWith(
                         fontFamily: FontFamily.manrope,
@@ -97,7 +96,7 @@ class CreateAccountScreen extends HookConsumerWidget {
     );
   }
 
-  void requestForOtp(
+  Future<void> requestForOtp(
     WidgetRef ref,
     GlobalKey<FormState> form,
     String phoneNumber,

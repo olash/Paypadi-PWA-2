@@ -7,15 +7,15 @@ part 'account_payout_model.g.dart';
 sealed class AccountPayoutModel with _$AccountPayoutModel {
   const factory AccountPayoutModel({
     required int id,
-    @JsonKey(name: "account_type") required String accountType,
-    @JsonKey(name: "account_name") required String accountName,
-    @JsonKey(name: "account_number") required String accountNumber,
-    @JsonKey(name: "bank_name") required String bankName,
-    @JsonKey(name: "bank_code") required String bankCode,
-    @JsonKey(name: "is_primary") required bool isPrimary,
-    @JsonKey(name: "is_verfied") required bool isVerified,
-    @JsonKey(name: "created_at") required String createdAt,
-    @JsonKey(name: "updated_at") required String updatedAt,
+    @JsonKey(name: 'account_type') required String accountType,
+    @JsonKey(name: 'account_name') required String accountName,
+    @JsonKey(name: 'account_number') required String accountNumber,
+    @JsonKey(name: 'bank_name') required String bankName,
+    @JsonKey(name: 'bank_code') required String bankCode,
+    @JsonKey(name: 'is_primary') required bool isPrimary,
+    @JsonKey(name: 'is_verified') required bool isVerified,
+    @JsonKey(name: 'created_at') required String createdAt,
+    @JsonKey(name: 'updated_at') required String updatedAt,
   }) = _AccountPayoutModel;
 
   factory AccountPayoutModel.fromJson(Map<String, dynamic> json) =>

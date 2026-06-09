@@ -1,9 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paypadi/core/api/result.dart';
-import 'package:paypadi/core/api/exceptions/server_exception.dart';
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/api/exceptions/client_exception.dart';
-import 'package:dio/dio.dart';
+import 'package:paypadi/core/api/exceptions/server_exception.dart';
+import 'package:paypadi/core/api/result.dart';
 
 void main() {
   test('map transforms success value', () {
@@ -52,7 +52,7 @@ void main() {
 
   test('fromAsync converts non-Dio Exception to failure', () async {
     final r = await Result.fromAsync<int>(
-      () async => throw FormatException('bad'),
+      () async => throw const FormatException('bad'),
     );
     expect(r.isFailure, true);
     expect(r.failureValue, isA<FormatException>());
@@ -112,7 +112,6 @@ void main() {
     final dioException = DioException(
       requestOptions: requestOptions,
       message: 'something',
-      type: DioExceptionType.unknown,
     );
 
     final r = await Result.fromAsync<int>(() async => throw dioException);

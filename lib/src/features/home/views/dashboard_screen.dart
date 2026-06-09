@@ -45,7 +45,7 @@ class DashboardScreen extends HookConsumerWidget {
       child: Column(
         children: [
           Values.v32.verticalSpacing,
-          UserWallet(),
+          const UserWallet(),
           Values.v32.verticalSpacing,
           AmountDisplay(controller: amountController),
           Values.v48.verticalSpacing,
@@ -62,9 +62,9 @@ class DashboardScreen extends HookConsumerWidget {
                   onPressed: canTransfer(amountValue.text)
                       ? () => initializeTransferProcess(ref, amountValue.text)
                       : null,
-                  label: Text("Send Cash"),
+                  label: const Text('Send Cash'),
                   iconAlignment: IconAlignment.end,
-                  icon: Icon(Icons.arrow_forward, size: 24),
+                  icon: const Icon(Icons.arrow_forward, size: 24),
                   style: context.filledButtonTheme.style?.copyWith(
                     textStyle: WidgetStatePropertyAll(
                       context.textTheme.bodyLarge?.copyWith(
@@ -76,7 +76,7 @@ class DashboardScreen extends HookConsumerWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => ref.read(appRouterProvider).push(QrCodeRoute()),
+                onTap: () => ref.read(appRouterProvider).push(const QrCodeRoute()),
                 child: AppAssets.icons.qrCode.svg(),
               ),
             ],
@@ -87,8 +87,8 @@ class DashboardScreen extends HookConsumerWidget {
   }
 
   void initializeTransferProcess(WidgetRef ref, String amount) {
-    ref.read(transactionPayloadProvider)["amount"] = amount;
-    ref.read(appRouterProvider).push(TransferRoute());
+    ref.read(transactionPayloadProvider)['amount'] = amount;
+    ref.read(appRouterProvider).push(const TransferRoute());
   }
 
   bool canTransfer(String value) {

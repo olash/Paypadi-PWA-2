@@ -4,7 +4,7 @@ import 'package:paypadi/core/api/exceptions/client_exception.dart';
 
 class FilePickerService {
   static const int _maxFileSizeBytes = 5 * 1024 * 1024;
-  static const List<String> _allowedExtensions = ['jpg', 'pdf', 'png'];
+  static const List<String> _allowedExtensions = ['jpg', 'pdf', 'png', 'jpeg'];
 
   Future<FilePickerResult> pickFileFromSystem() async {
     try {
@@ -15,12 +15,12 @@ class FilePickerService {
       );
 
       if (result == null || result.files.isEmpty) {
-        throw ClientException(message: "Cancelled file upload");
+        throw const ClientException(message: 'Cancelled file upload');
       }
 
       final file = result.files.first;
       if (file.size > _maxFileSizeBytes) {
-        throw ClientException(message: "File exceeds 5MB limit");
+        throw const ClientException(message: 'File exceeds 5MB limit');
       }
 
       return result;

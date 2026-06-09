@@ -1,8 +1,7 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/models/user_bank_account_model/user_bank_account_model.dart';
 import 'package:paypadi/core/repositories/wallet_repo.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'bank_account_controller.g.dart';
 

@@ -18,7 +18,7 @@ class DottedDivider extends StatelessWidget {
         width: double.infinity,
         child: CustomPaint(
           painter: _DottedLinePainter(),
-          size: Size(double.infinity, 1),
+          size: const Size(double.infinity, 1),
         ),
       ),
     );
