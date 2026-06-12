@@ -131,19 +131,20 @@ class AuthenticationController extends _$AuthenticationController {
 
     final result = await biometricService.authenticate();
 
-    result.fold(
-      (success) async {
-        final String? password = await ref
-            .read(secureCacheProvider)
-            .read(CacheKeys.password);
 
-        await login(user?.phoneNumber ?? '', password ?? '');
-      },
-      (failure) {
-        ref.showExceptionMessage(failure);
-        state = const AsyncData(null);
-      },
-    );
+    // result.fold(
+    //   (success) async {
+    //     final String? password = await ref
+    //         .read(secureCacheProvider)
+    //         .read(CacheKeys.password);
+
+    //     await login(user?.phoneNumber ?? '', password ?? '');
+    //   },
+    //   (failure) {
+    //     ref.showExceptionMessage(failure);
+    //     state = const AsyncData(null);
+    //   },
+    // );
   }
 
   Future<void> logout() async {

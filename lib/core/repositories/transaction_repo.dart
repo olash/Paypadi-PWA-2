@@ -1,6 +1,6 @@
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
-import 'package:paypadi/core/clients/transaction_ds/transaction_client.dart';
+import 'package:paypadi/core/clients/transaction/transaction_client.dart';
 import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/models/beneficiary_model/beneficiary_model.dart';
 import 'package:paypadi/core/models/payment_model/payment_model.dart';

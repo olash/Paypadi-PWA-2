@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
@@ -242,7 +244,7 @@ class LandingPageGuard extends AutoRouteGuard {
     // }
 
     if (accessToken != null && refreshToken != null) {
-      router.replace(const LoginRoute());
+      unawaited(router.replace(const LoginRoute()));
       return;
     }
 
@@ -268,7 +270,7 @@ class DriverAccountGuard extends AutoRouteGuard {
         );
 
     if (user?.isDriver == true && user?.isApproved == false) {
-      router.replace(const VehicleInformationRoute());
+      unawaited(router.replace(const VehicleInformationRoute()));
       return;
     }
 

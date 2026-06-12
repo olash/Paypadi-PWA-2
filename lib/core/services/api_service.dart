@@ -9,34 +9,37 @@ import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 part 'api_service.g.dart';
 
-@Riverpod(keepAlive: true)
-Dio dio(Ref ref) {
-  final cache = ref.watch(secureCacheProvider);
-  final Dio dio =
-      Dio(
-          BaseOptions(
-            baseUrl: Env.baseUrl,
-            connectTimeout: const Duration(seconds: 30),
-            receiveTimeout: const Duration(seconds: 30),
-            sendTimeout: const Duration(seconds: 30),
-          ),
-        )
-        ..interceptors.addAll(
-          [
-            AuthenticationCredentialsInterceptor(cacheService: cache),
-            if (kDebugMode)
-              TalkerDioLogger(
-                talker: debugLogger,
-                settings: const TalkerDioLoggerSettings(
-                  printRequestHeaders: true,
-                  printResponseHeaders: true,
-                ),
-              ),
-          ],
-        );
+class ApiService {
+  ApiService({required this.cacheService});
 
-  return dio;
+  final SecureCacheService cacheService;
+
+  Dio createDio() {
+    return Dio(
+      BaseOptions(
+        baseUrl: Env.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+    )
+      ..interceptors.addAll(
+        [
+          AuthenticationCredentialsInterceptor(cacheService: cacheService),
+          if (kDebugMode)
+            TalkerDioLogger(
+              talker: debugLogger,
+              settings: const TalkerDioLoggerSettings(
+                printRequestHeaders: true,
+                printResponseHeaders: true,
+              ),
+            ),
+        ],
+      );
+  }
 }
+
+
 
 class AuthenticationCredentialsInterceptor extends Interceptor {
   AuthenticationCredentialsInterceptor({required this.cacheService});

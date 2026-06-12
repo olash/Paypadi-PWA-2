@@ -12,7 +12,7 @@ abstract class JwtClient {
   factory JwtClient(Dio dio, {String baseUrl}) = _JwtClient;
 
   @POST('$_basePath/jwt/token/')
-  Future<ApiResponse> getJwtToken({
+  Future<ApiResponse<void>> getJwtToken({
     @Body() required Map<String, dynamic> payload,
   });
 

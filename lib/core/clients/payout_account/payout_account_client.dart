@@ -55,7 +55,7 @@ abstract class PayoutAccountClient {
   });
 
   @DELETE('$_basePath/{id}/')
-  Future<ApiResponse> deleteAccount({
+  Future<ApiResponse<void>> deleteAccount({
     @Path('id') required String id,
   });
 }

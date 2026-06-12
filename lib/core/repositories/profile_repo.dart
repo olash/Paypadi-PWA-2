@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
-import 'package:paypadi/core/clients/profile_ds/profile_client.dart';
+import 'package:paypadi/core/clients/profile/profile_client.dart';
 import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
 import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
 import 'package:paypadi/core/utils/enums.dart';
@@ -28,7 +28,7 @@ class ProfileRepository {
     return response;
   }
 
-  FutureResultOf getDriverProfile() async {
+  FutureResultOf<dynamic> getDriverProfile() async {
     final response = await Result.fromAsync(
       client.getDriverProfile,
     );

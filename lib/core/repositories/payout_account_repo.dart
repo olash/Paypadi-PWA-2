@@ -1,6 +1,6 @@
 import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
-import 'package:paypadi/core/clients/payout_account_ds/payout_account_client.dart';
+import 'package:paypadi/core/clients/payout_account/payout_account_client.dart';
 import 'package:paypadi/core/models/account_payout_model/account_payout_model.dart';
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/utils/typedefs.dart';

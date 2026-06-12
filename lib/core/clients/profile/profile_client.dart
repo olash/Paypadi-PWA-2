@@ -15,13 +15,13 @@ abstract class ProfileClient {
   factory ProfileClient(Dio dio, {String baseUrl}) = _ProfileClient;
 
   @GET('$_basePath/profile/')
-  Future<ApiResponse> getRider();
+  Future<ApiResponse<dynamic>> getRider();
 
   @PUT('$_basePath/profile/')
-  Future<ApiResponse> updateRider();
+  Future<ApiResponse<dynamic>> updateRider();
 
   @PATCH('$_basePath/profile/')
-  Future<ApiResponse> partiallyUpdateRider();
+  Future<ApiResponse<dynamic>> partiallyUpdateRider();
 
   @GET('$_basePath/driver/profile/')
   Future<ApiResponse<DriverProfileModel>> getDriverProfile();
@@ -45,7 +45,7 @@ abstract class ProfileClient {
   });
 
   @POST('$_basePath/password/change/')
-  Future<ApiResponse> changePassword({
+  Future<ApiResponse<dynamic>> changePassword({
     @Body() required Map<String, dynamic> payload,
   });
 
