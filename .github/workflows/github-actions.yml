@@ -3,18 +3,18 @@ name: Paypadi CI/CD
 # ─── Triggers ────────────────────────────────────────────────────────────────
 #
 #  PR to develop  → validate + build dev (analyze + test + dev build + deploy)
-#  PR to main     → validate + build prod (analyze + test + prod build + deploy)
+#  PR to master     → validate + build prod (analyze + test + prod build + deploy)
 #  develop push   → validate + build dev (Android AAB + iOS IPA) + deploy
-#  main push      → validate + build prod (Android AAB + iOS IPA) + deploy
+#  master push      → validate + build prod (Android AAB + iOS IPA) + deploy
 #  tag release    → validate + build prod + create release
 #  workflow_dispatch → manual override for any environment / platform combo
 #
 on:
   push:
-    branches: [main, develop]
+    branches: [master, develop]
     tags: ['v*']
   pull_request:
-    branches: [main, develop]
+    branches: [master, develop]
   workflow_dispatch:
     inputs:
       environment:
@@ -174,15 +174,15 @@ jobs:
           PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
 
   # ───────────────────────────────────────────────────────────────────────────
-  # ANDROID PROD — main branch push, PR to main, tag release, or manual prod dispatch
+  # ANDROID PROD — master branch push, PR to master, tag release, or manual prod dispatch
   # ───────────────────────────────────────────────────────────────────────────
   android-prod:
     name: Android — Prod
     needs: validate
     runs-on: ubuntu-latest
     if: >-
-      ((github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))) ||
-       (github.event_name == 'pull_request' && github.base_ref == 'main') ||
+      ((github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))) ||
+       (github.event_name == 'pull_request' && github.base_ref == 'master') ||
        (github.event_name == 'workflow_dispatch' &&
         github.event.inputs.environment == 'prod' &&
         (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')))
@@ -337,15 +337,15 @@ jobs:
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
 
   # ───────────────────────────────────────────────────────────────────────────
-  # iOS PROD — main branch push, PR to main, tag release, or manual prod dispatch
+  # iOS PROD — master branch push, PR to master, tag release, or manual prod dispatch
   # ───────────────────────────────────────────────────────────────────────────
   ios-prod:
     name: iOS — Prod
     needs: validate
     runs-on: macos-15
     if: >-
-      ((github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))) ||
-       (github.event_name == 'pull_request' && github.base_ref == 'main') ||
+      ((github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))) ||
+       (github.event_name == 'pull_request' && github.base_ref == 'master') ||
        (github.event_name == 'workflow_dispatch' &&
         github.event.inputs.environment == 'prod' &&
         (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')))
