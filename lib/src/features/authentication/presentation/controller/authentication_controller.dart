@@ -119,17 +119,17 @@ class AuthenticationController extends _$AuthenticationController {
     );
   }
 
-   Future<void> loginWithBiometrics() async {
-     final biometricService = ref.watch(biometricsProvider);
-     final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
-       CacheKeys.user,
-       (data) {
-         final json = jsonDecode(data as String) as Map<String, dynamic>;
-         return UserModel.fromJson(json);
-       },
-     );
+  Future<void> loginWithBiometrics() async {
+    final biometricService = ref.watch(biometricsProvider);
+    final user = ref.watch(localCacheProvider).getFromCache<UserModel>(
+      CacheKeys.user,
+      (data) {
+        final json = jsonDecode(data as String) as Map<String, dynamic>;
+        return UserModel.fromJson(json);
+      },
+    );
 
-     final result = await biometricService.authenticate();
+    final result = await biometricService.authenticate();
 
     result.fold(
       (success) async {

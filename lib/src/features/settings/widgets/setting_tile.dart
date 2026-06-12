@@ -5,7 +5,9 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class SettingTile extends StatelessWidget {
   const SettingTile({
-    required this.name, required this.icon, super.key,
+    required this.name,
+    required this.icon,
+    super.key,
     this.onTap,
     this.showTrailingIcon = true,
   });
@@ -44,7 +46,11 @@ class SettingTile extends StatelessWidget {
 
 class SettingTileWithSwitch extends StatelessWidget {
   const SettingTileWithSwitch({
-    required this.name, required this.icon, required this.switchValue, required this.onChanged, super.key,
+    required this.name,
+    required this.icon,
+    required this.switchValue,
+    required this.onChanged,
+    super.key,
   });
 
   final String name;

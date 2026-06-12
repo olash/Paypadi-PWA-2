@@ -83,7 +83,8 @@ class SettingsScreen extends HookConsumerWidget {
           SettingTile(
             name: 'Notification Preferences',
             icon: Iconsax.notification_outline,
-            onTap: () => ref.read(appRouterProvider).push(const NotificationsRoute()),
+            onTap: () =>
+                ref.read(appRouterProvider).push(const NotificationsRoute()),
           ),
           SettingTile(
             name: 'Change Password',
@@ -96,18 +97,21 @@ class SettingsScreen extends HookConsumerWidget {
             name: 'Change Pin',
             showTrailingIcon: false,
             icon: Iconsax.password_check_outline,
-            onTap: () => ref.read(appRouterProvider).push(const ChangePinRoute()),
+            onTap: () =>
+                ref.read(appRouterProvider).push(const ChangePinRoute()),
           ),
           SettingTile(
             name: 'Referral',
             showTrailingIcon: false,
             icon: Iconsax.alarm_outline,
-            onTap: () => ref.read(appRouterProvider).push(const ReferralRoute()),
+            onTap: () =>
+                ref.read(appRouterProvider).push(const ReferralRoute()),
           ),
           SettingTile(
             name: 'Theme',
             icon: Iconsax.colorfilter_outline,
-            onTap: () => ref.read(appRouterProvider).push(const ChangeThemeRoute()),
+            onTap: () =>
+                ref.read(appRouterProvider).push(const ChangeThemeRoute()),
           ),
           SettingTileWithSwitch(
             name: 'Enable Biometrics',

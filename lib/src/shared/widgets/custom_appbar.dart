@@ -38,7 +38,8 @@ class CustomAppbarWithTitle extends StatelessWidget
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({
-    required this.name, super.key,
+    required this.name,
+    super.key,
     this.profilePic,
   });
 

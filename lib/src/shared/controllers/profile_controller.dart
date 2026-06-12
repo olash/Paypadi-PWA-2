@@ -99,7 +99,9 @@ class DriverProfile extends _$DriverProfile {
     result.fold(
       (success) {
         state = const AsyncData(null);
-        unawaited(ref.read(appRouterProvider).push(const DocumentUploadRoute()));
+        unawaited(
+          ref.read(appRouterProvider).push(const DocumentUploadRoute()),
+        );
       },
       (failure) {
         ref.showExceptionMessage(failure);

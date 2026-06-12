@@ -11,7 +11,8 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class AppKeypad extends ConsumerWidget {
   const AppKeypad({
-    required this.controller, super.key,
+    required this.controller,
+    super.key,
     this.padding,
     this.onSubmit,
     this.keyLength = 4,

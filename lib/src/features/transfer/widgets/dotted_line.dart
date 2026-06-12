@@ -28,10 +28,9 @@ class DottedDivider extends StatelessWidget {
 class _DottedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = AppColors.dividerColor
-          ..strokeWidth = 1;
+    final paint = Paint()
+      ..color = AppColors.dividerColor
+      ..strokeWidth = 1;
 
     const double dashWidth = 6;
     const double dashSpace = 4;

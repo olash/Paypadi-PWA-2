@@ -1,0 +1,448 @@
+name: Paypadi CI/CD
+
+# ─── Triggers ────────────────────────────────────────────────────────────────
+#
+#  PR to develop  → validate + build dev (analyze + test + dev build + deploy)
+#  PR to main     → validate + build prod (analyze + test + prod build + deploy)
+#  develop push   → validate + build dev (Android AAB + iOS IPA) + deploy
+#  main push      → validate + build prod (Android AAB + iOS IPA) + deploy
+#  tag release    → validate + build prod + create release
+#  workflow_dispatch → manual override for any environment / platform combo
+#
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        type: choice
+        required: true
+        default: dev
+        options: [dev, prod]
+      platform:
+        description: 'Target platform'
+        type: choice
+        required: true
+        default: all
+        options: [all, android, ios]
+
+# Cancel any in-flight run on the same branch when a new commit arrives.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# ─── Shared environment ───────────────────────────────────────────────────────
+env:
+  # Pin Flutter to a specific stable version for reproducible builds.
+  # Run `flutter --version` locally and paste the result here.
+  FLUTTER_VERSION: '3.32.2'
+  JAVA_VERSION: '17'
+
+# ─── Jobs ─────────────────────────────────────────────────────────────────────
+jobs:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # VALIDATE — runs on every PR and every branch push
+  # ───────────────────────────────────────────────────────────────────────────
+  validate:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Cache pub packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.PUB_CACHE }}
+            .dart_tool
+          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
+          restore-keys: pub-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze --no-pub --fatal-infos
+
+      - name: Run tests
+        run: flutter test --coverage --reporter github
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage/lcov.info
+          fail_ci_if_error: false
+        continue-on-error: true
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # ANDROID DEV — develop branch push, PR to develop, or manual dev dispatch
+  # Builds a signed AAB for the 'dev' flavor and pushes it to the
+  # Play Store internal testing track.
+  # ───────────────────────────────────────────────────────────────────────────
+  android-dev:
+    name: Android — Dev
+    needs: validate
+    runs-on: ubuntu-latest
+    if: >-
+      ((github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
+       (github.event_name == 'pull_request' && github.base_ref == 'develop') ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.environment == 'dev' &&
+        (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')))
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Setup Ruby + Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Decode upload keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" \
+            | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << 'EOF'
+          storeFile=upload-keystore.jks
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Build App Bundle — dev
+        run: |
+          flutter build appbundle \
+            --flavor dev \
+            --target lib/main_dev.dart \
+            --dart-define=API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
+            --build-number=${{ github.run_number }} \
+            --release
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paypadi-dev-r${{ github.run_number }}.aab
+          path: build/app/outputs/bundle/devRelease/app-dev-release.aab
+          retention-days: 14
+
+      - name: Deploy to Play Store — internal track
+        run: bundle exec fastlane android deploy_dev
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # ANDROID PROD — main branch push, PR to main, tag release, or manual prod dispatch
+  # ───────────────────────────────────────────────────────────────────────────
+  android-prod:
+    name: Android — Prod
+    needs: validate
+    runs-on: ubuntu-latest
+    if: >-
+      ((github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))) ||
+       (github.event_name == 'pull_request' && github.base_ref == 'main') ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.environment == 'prod' &&
+        (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')))
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Setup Ruby + Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Decode upload keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" \
+            | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << 'EOF'
+          storeFile=upload-keystore.jks
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Build App Bundle — prod
+        run: |
+          flutter build appbundle \
+            --flavor prod \
+            --target lib/main_prod.dart \
+            --dart-define=API_BASE_URL=${{ secrets.PROD_API_BASE_URL }} \
+            --dart-define=SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
+            --build-number=${{ github.run_number }} \
+            --release
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paypadi-prod-r${{ github.run_number }}.aab
+          path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          retention-days: 30
+
+      - name: Deploy to Play Store — internal track
+        run: bundle exec fastlane android deploy_prod
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # iOS DEV — develop branch push, PR to develop, or manual dev dispatch
+  # Syncs dev certificates via Fastlane Match, builds an IPA for the
+  # 'dev' flavor, and uploads to TestFlight.
+  # ───────────────────────────────────────────────────────────────────────────
+  ios-dev:
+    name: iOS — Dev
+    needs: validate
+    runs-on: macos-15
+    if: >-
+      ((github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
+       (github.event_name == 'pull_request' && github.base_ref == 'develop') ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.environment == 'dev' &&
+        (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')))
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Setup Ruby + Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: pods-
+
+      - name: Install CocoaPods
+        run: pod install --repo-update
+        working-directory: ios
+
+      - name: Sync dev certificates via Match
+        run: bundle exec fastlane ios sync_dev_certs
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
+      - name: Build IPA — dev
+        run: |
+          flutter build ipa \
+            --flavor dev \
+            --target lib/main_dev.dart \
+            --dart-define=API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
+            --build-number=${{ github.run_number }} \
+            --release \
+            --export-options-plist=ios/ExportOptionsDev.plist
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paypadi-dev-r${{ github.run_number }}.ipa
+          path: build/ios/ipa/*.ipa
+          retention-days: 14
+
+      - name: Upload to TestFlight — dev
+        run: bundle exec fastlane ios deploy_dev
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # iOS PROD — main branch push, PR to main, tag release, or manual prod dispatch
+  # ───────────────────────────────────────────────────────────────────────────
+  ios-prod:
+    name: iOS — Prod
+    needs: validate
+    runs-on: macos-15
+    if: >-
+      ((github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))) ||
+       (github.event_name == 'pull_request' && github.base_ref == 'main') ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.environment == 'prod' &&
+        (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')))
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Setup Ruby + Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: pods-
+
+      - name: Install CocoaPods
+        run: pod install --repo-update
+        working-directory: ios
+
+      - name: Sync prod certificates via Match
+        run: bundle exec fastlane ios sync_prod_certs
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
+      - name: Build IPA — prod
+        run: |
+          flutter build ipa \
+            --flavor prod \
+            --target lib/main_prod.dart \
+            --dart-define=API_BASE_URL=${{ secrets.PROD_API_BASE_URL }} \
+            --dart-define=SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
+            --build-number=${{ github.run_number }} \
+            --release \
+            --export-options-plist=ios/ExportOptionsProd.plist
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paypadi-prod-r${{ github.run_number }}.ipa
+          path: build/ios/ipa/*.ipa
+          retention-days: 30
+
+      - name: Upload to TestFlight — prod
+        run: bundle exec fastlane ios deploy_prod
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # RELEASE — tag push (v* pattern)
+  # Creates a GitHub release with build artifacts from prod build
+  # ───────────────────────────────────────────────────────────────────────────
+  release:
+    name: Create Release
+    needs: [android-prod, ios-prod]
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./artifacts/**/*
+          generate_release_notes: true
+          prerelease: false

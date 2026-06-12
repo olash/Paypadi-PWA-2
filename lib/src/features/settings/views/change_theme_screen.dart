@@ -72,7 +72,9 @@ class ChangeThemeScreen extends HookConsumerWidget {
 
 class _ThemeColorWidget extends StatelessWidget {
   const _ThemeColorWidget({
-    required this.color, required this.isCurrent, this.onTap,
+    required this.color,
+    required this.isCurrent,
+    this.onTap,
   });
 
   final Color color;

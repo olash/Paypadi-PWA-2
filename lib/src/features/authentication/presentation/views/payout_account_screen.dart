@@ -136,7 +136,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
     ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
       'account_number': accountNumber,
       'bank_code': bankCode,
-        // 'bank_code': "001",
+      // 'bank_code': "001",
     });
   }
 

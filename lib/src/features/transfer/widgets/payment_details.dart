@@ -6,7 +6,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class PaymentDetails extends StatelessWidget {
   const PaymentDetails({
-    required this.detail, required this.value, super.key,
+    required this.detail,
+    required this.value,
+    super.key,
     this.isLoading = false,
   });
 

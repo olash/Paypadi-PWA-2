@@ -92,7 +92,7 @@ class ProfileRepository {
         );
         break;
     }
-    
+
     return response;
   }
 }

@@ -22,7 +22,7 @@ class AccountLookup extends _$AccountLookup {
     });
 
     return result.fold(
-      (success) => success.data ,
+      (success) => success.data,
       (failure) {
         ref.showExceptionMessage(failure);
         return null;

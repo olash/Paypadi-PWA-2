@@ -10,7 +10,9 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class AppTextformfield extends StatelessWidget {
   const AppTextformfield({
-    required this.title, required this.controller, super.key,
+    required this.title,
+    required this.controller,
+    super.key,
     this.hint,
     this.isEnabled,
     this.titleStyle,
@@ -53,7 +55,8 @@ class AppTextformfield extends StatelessWidget {
 
 class PhoneTextField extends ConsumerWidget {
   const PhoneTextField({
-    required this.controller, super.key,
+    required this.controller,
+    super.key,
     this.validator,
   });
 

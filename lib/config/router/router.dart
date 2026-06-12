@@ -6,7 +6,6 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
 
-
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   AppRouter({required this.ref});
@@ -198,7 +197,10 @@ class AuthenticationGuard extends AutoRouteGuard {
   final Ref ref;
 
   @override
-  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(
+    NavigationResolver resolver,
+    StackRouter router,
+  ) async {
     final String? accessToken = await ref
         .read(secureCacheProvider)
         .read(CacheKeys.accessToken);
@@ -217,7 +219,10 @@ class LandingPageGuard extends AutoRouteGuard {
   final Ref ref;
 
   @override
-  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(
+    NavigationResolver resolver,
+    StackRouter router,
+  ) async {
     final String? accessToken = await ref
         .read(secureCacheProvider)
         .read(CacheKeys.accessToken);
@@ -251,7 +256,10 @@ class DriverAccountGuard extends AutoRouteGuard {
   final Ref ref;
 
   @override
-  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(
+    NavigationResolver resolver,
+    StackRouter router,
+  ) async {
     final UserModel? user = ref
         .read(localCacheProvider)
         .getFromCache<UserModel>(

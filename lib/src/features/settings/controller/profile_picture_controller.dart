@@ -21,8 +21,6 @@ class ProfilePicture extends _$ProfilePicture {
 
     if (image == null) return;
     // TODO: Complete this function
-    final _ = await ref
-        .read(walletRepositoryProvider)
-        .fetchWalletBalance();
+    final _ = await ref.read(walletRepositoryProvider).fetchWalletBalance();
   }
 }

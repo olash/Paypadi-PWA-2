@@ -27,9 +27,10 @@ Future<void> initializeApp() async {
     ],
   );
 
-  AppException.logger = (AppException converted, Object? original, StackTrace stackTrace) async {
-    debugLogger.error('[Error]', converted, stackTrace);
-  };
+  AppException.logger =
+      (AppException converted, Object? original, StackTrace stackTrace) async {
+        debugLogger.error('[Error]', converted, stackTrace);
+      };
   // Initializes SharedPreferencesWithCache and JwtRefreshController
   try {
     await providerContainer.read(sharedPreferencesFutureProvider.future);

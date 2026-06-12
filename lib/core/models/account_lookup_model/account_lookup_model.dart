@@ -11,7 +11,7 @@ sealed class AccountLookupModel with _$AccountLookupModel {
     @JsonKey(name: 'last_name') required String lastName,
     @JsonKey(name: 'phone_number') required String phoneNumber,
     @JsonKey(name: 'account_number') required String accountNumber,
-    @JsonKey(name: 'bank_code')  String? bankCode,
+    @JsonKey(name: 'bank_code') String? bankCode,
     @JsonKey(name: 'profile_picture') String? profilePicUrl,
   }) = _AccountLookupModel;
 

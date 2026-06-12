@@ -5,7 +5,6 @@ import 'package:paypadi/core/services/secure_cache_service.dart';
 // /// A tiny in-memory fake that implements the subset of
 // /// `FlutterSecureStorage` API we use in the service.
 class _FakeSecureStorage extends FlutterSecureStorage {
-
   _FakeSecureStorage();
   final Map<String, String> _store = {};
 

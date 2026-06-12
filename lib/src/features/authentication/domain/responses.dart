@@ -24,7 +24,7 @@ class RequestForOtpResponse {
 @JsonSerializable(createToJson: false)
 class VerifyOtpResponse {
   const VerifyOtpResponse({required this.phoneToken});
-  
+
   @JsonKey(name: 'phone_token')
   final String phoneToken;
 
@@ -45,7 +45,6 @@ class CreateAccountResponse {
 
   @JsonKey(name: 'access')
   final String accessToken;
-
 
   final UserModel user;
 

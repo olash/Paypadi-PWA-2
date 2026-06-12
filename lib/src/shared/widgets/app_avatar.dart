@@ -15,13 +15,12 @@ class AppAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         color: imageUrl != null ? Colors.transparent : AppColors.disabled,
         shape: BoxShape.circle,
-        image:
-            imageUrl == null
-                ? null
-                : DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(imageUrl!),
-                ),
+        image: imageUrl == null
+            ? null
+            : DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(imageUrl!),
+              ),
       ),
     );
   }

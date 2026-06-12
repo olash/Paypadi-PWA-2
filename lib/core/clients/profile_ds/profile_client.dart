@@ -52,7 +52,8 @@ abstract class ProfileClient {
   @MultiPart()
   @PATCH('$_basePath/driver/profile/')
   Future<ApiResponse<DriverProfileModel>> uploadDocument({
-    @Part(name: 'file_name') required String fileName, @Part(name: 'license_front') File? licenseFront,
+    @Part(name: 'file_name') required String fileName,
+    @Part(name: 'license_front') File? licenseFront,
     @Part(name: 'license_back') File? licenseBack,
     @Part(name: 'vehicle_registration') File? vehicleReg,
     @SendProgress() ProgressCallback? onSendProgress,

@@ -3,7 +3,8 @@ import 'package:paypadi/src/shared/widgets/custom_appbar.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.title,
     this.appBar,
     this.bgColor,

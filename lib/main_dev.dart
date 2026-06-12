@@ -1,5 +1,5 @@
 import 'package:paypadi/main.dart';
 
-void main() async  {
+void main() async {
   await initializeApp();
 }

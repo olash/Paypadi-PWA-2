@@ -5,7 +5,8 @@ import 'package:paypadi/core/utils/extensions.dart';
 
 class AppZeroItem extends StatelessWidget {
   const AppZeroItem({
-    required this.message, super.key,
+    required this.message,
+    super.key,
     this.icon,
     this.topPaddingScaleFactor = .5,
   });
@@ -24,12 +25,12 @@ class AppZeroItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              icon ,
+              icon,
               size: Values.v32,
               color: AppColors.grey600,
             ),
             Text(
-            message,
+              message,
               style: context.textTheme.titleLarge?.copyWith(
                 color: AppColors.grey600,
               ),

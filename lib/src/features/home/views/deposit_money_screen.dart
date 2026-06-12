@@ -79,7 +79,9 @@ class DepositMoneyScreen extends HookConsumerWidget {
                             depositAccount.value!,
                           ),
                     style: context.filledButtonTheme.style?.copyWith(
-                      fixedSize: const WidgetStatePropertyAll(kButtonMediumSize),
+                      fixedSize: const WidgetStatePropertyAll(
+                        kButtonMediumSize,
+                      ),
                       foregroundColor: WidgetStatePropertyAll(
                         ref.watch(appPrimaryColorProvider),
                       ),
@@ -112,7 +114,9 @@ class DepositMoneyScreen extends HookConsumerWidget {
                           : () =>
                                 shareAccountInformation(depositAccount.value!),
                       style: context.filledButtonTheme.style?.copyWith(
-                        fixedSize: const WidgetStatePropertyAll(kButtonMediumSize),
+                        fixedSize: const WidgetStatePropertyAll(
+                          kButtonMediumSize,
+                        ),
                       ),
                       child: const Text('Share'),
                     ),

@@ -160,14 +160,11 @@ final Talker debugLogger = TalkerFlutter.init(
       TalkerKey.info: AnsiPen()..rgb(r: 100 / 255, g: 181 / 255, b: 246 / 255),
       TalkerKey.riverpodAdd: AnsiPen()
         ..rgb(r: 129 / 255, g: 212 / 255, b: 250 / 255),
-      TalkerKey.riverpodUpdate: AnsiPen()
-        ..rgb(g: 214 / 255, b: 165 / 255),
+      TalkerKey.riverpodUpdate: AnsiPen()..rgb(g: 214 / 255, b: 165 / 255),
       TalkerKey.riverpodFail: AnsiPen()
         ..rgb(r: 171 / 255, g: 235 / 255, b: 198 / 255),
-      TalkerKey.riverpodDispose: AnsiPen()
-        ..rgb(g: 171 / 255, b: 145 / 255),
-      TalkerKey.httpRequest: AnsiPen()
-        ..rgb(g: 235 / 255, b: 59 / 255),
+      TalkerKey.riverpodDispose: AnsiPen()..rgb(g: 171 / 255, b: 145 / 255),
+      TalkerKey.httpRequest: AnsiPen()..rgb(g: 235 / 255, b: 59 / 255),
       TalkerKey.httpResponse: AnsiPen()
         ..rgb(r: 0 / 255, g: 188 / 255, b: 212 / 255),
       TalkerKey.httpError: AnsiPen()
@@ -189,5 +186,3 @@ class CacheKeys {
   static const String phoneNumber = 'user_phone_number';
   static const String transactionPin = 'user_transaction_pin';
 }
-
-

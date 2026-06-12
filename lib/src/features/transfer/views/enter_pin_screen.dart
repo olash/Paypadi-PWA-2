@@ -60,7 +60,7 @@ class EnterPinScreen extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: Values.v24),
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
-              
+
               final String? pin = await ref
                   .read(secureCacheProvider)
                   .read(CacheKeys.transactionPin);

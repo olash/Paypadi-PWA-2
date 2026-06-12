@@ -128,7 +128,7 @@ class OtpScreen extends HookConsumerWidget {
     GlobalKey<FormState> form,
   ) async {
     if (!(form.currentState?.validate() ?? false)) return;
-    
+
     await ref
         .read(authenticationControllerProvider.notifier)
         .verifyOtpCode(otpCode);
