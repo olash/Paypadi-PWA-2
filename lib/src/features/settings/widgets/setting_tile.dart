@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -26,7 +27,7 @@ class SettingTile extends StatelessWidget {
         child: Row(
           children: [
             Icon(icon, size: 24),
-            Values.v16.horizontalSpacing,
+            Values.v16.horizontalSpace,
             Expanded(
               child: Text(
                 name,
@@ -65,7 +66,7 @@ class SettingTileWithSwitch extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 24),
-          Values.v16.horizontalSpacing,
+          Values.v16.horizontalSpace,
           Expanded(
             child: Text(
               name,

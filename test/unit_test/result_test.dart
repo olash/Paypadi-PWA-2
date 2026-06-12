@@ -50,13 +50,16 @@ void main() {
     );
   });
 
-  test('fromAsync converts non-Dio Exception to ClientException wrapper', () async {
-    final r = await Result.fromAsync<int>(
-      () async => throw const FormatException('bad'),
-    );
-    expect(r.isFailure, true);
-    expect(r.failureValue, isA<ClientException>());
-  });
+  test(
+    'fromAsync converts non-Dio Exception to ClientException wrapper',
+    () async {
+      final r = await Result.fromAsync<int>(
+        () async => throw const FormatException('bad'),
+      );
+      expect(r.isFailure, true);
+      expect(r.failureValue, isA<ClientException>());
+    },
+  );
 
   test('fromAsync maps Dio badResponse to ServerException', () async {
     final requestOptions = RequestOptions(path: '/');
@@ -79,17 +82,20 @@ void main() {
     ); // ServerException wraps server-side errors
   });
 
-  test('fromAsync maps Dio connectionError to ServerException.noInternetConnection', () async {
-    final requestOptions = RequestOptions(path: '/');
-    final dioException = DioException(
-      requestOptions: requestOptions,
-      type: DioExceptionType.connectionError,
-    );
+  test(
+    'fromAsync maps Dio connectionError to ServerException.noInternetConnection',
+    () async {
+      final requestOptions = RequestOptions(path: '/');
+      final dioException = DioException(
+        requestOptions: requestOptions,
+        type: DioExceptionType.connectionError,
+      );
 
-    final r = await Result.fromAsync<int>(() async => throw dioException);
-    expect(r.isFailure, true);
-    expect(r.failureValue, isA<ServerException>());
-  });
+      final r = await Result.fromAsync<int>(() async => throw dioException);
+      expect(r.isFailure, true);
+      expect(r.failureValue, isA<ServerException>());
+    },
+  );
 
   test(
     'fromAsync maps Dio cancel to ServerException.requestCancelled',
@@ -107,17 +113,20 @@ void main() {
     },
   );
 
-  test('fromAsync maps Dio unknown to ServerException.serviceUnavailable', () async {
-    final requestOptions = RequestOptions(path: '/');
-    final dioException = DioException(
-      requestOptions: requestOptions,
-      message: 'something',
-    );
+  test(
+    'fromAsync maps Dio unknown to ServerException.serviceUnavailable',
+    () async {
+      final requestOptions = RequestOptions(path: '/');
+      final dioException = DioException(
+        requestOptions: requestOptions,
+        message: 'something',
+      );
 
-    final r = await Result.fromAsync<int>(() async => throw dioException);
-    expect(r.isFailure, true);
-    expect(r.failureValue, isA<ServerException>());
-  });
+      final r = await Result.fromAsync<int>(() async => throw dioException);
+      expect(r.isFailure, true);
+      expect(r.failureValue, isA<ServerException>());
+    },
+  );
 
   test(
     'AppException maps Dio receiveTimeout to ServerException.receiveTimeout',

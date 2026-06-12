@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/gen/assets.gen.dart';
@@ -23,37 +24,41 @@ class DashboardScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = useState<UserModel?>(null);
+
     final amountController = useTextEditingController(text: '0');
     final amountValue = useValueListenable(amountController);
 
-    final user = ref
-        .watch(localCacheProvider)
-        .getFromCache<UserModel>(
-          CacheKeys.user,
-          (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
-        );
+    // useEffect(() {
+    //   final localCache = await ref.read(localCacheProvider.future);
+    //   user.value = await localCache.get(
+    //     CacheKeys.user,
+    //     (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
+    //   );
+    //   return null;
+    // }, const []);
 
     return AppScaffold(
       showAppBar: false,
       leftPadding: Values.zero,
       rightPadding: Values.zero,
-      appBar: CustomAppbar(name: user?.firstName),
+      appBar: CustomAppbar(name: user.value?.firstName),
       onRefresh: () => Future(
         () => ref.invalidate(walletControllerProvider),
       ),
       makeScrollable: true,
       child: Column(
         children: [
-          Values.v32.verticalSpacing,
+          Values.v32.verticalSpace,
           const UserWallet(),
-          Values.v32.verticalSpacing,
+          Values.v32.verticalSpace,
           AmountDisplay(controller: amountController),
-          Values.v48.verticalSpacing,
+          Values.v48.verticalSpace,
           AppKeypad(
             keyLength: 10,
             controller: amountController,
           ),
-          Values.v36.verticalSpacing,
+          Values.v36.verticalSpace,
           Row(
             spacing: Values.v12,
             children: [

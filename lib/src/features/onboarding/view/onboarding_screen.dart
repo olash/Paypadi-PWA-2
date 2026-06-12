@@ -79,7 +79,7 @@ class OnboardingScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           FilledButton(
             onPressed: () {
               ref.read(appRouterProvider).push(const CreateAccountRoute());
@@ -113,7 +113,7 @@ class _OnboardingStory extends StatelessWidget {
           imagePath,
           height: context.screenHeight * .5,
         ),
-        Values.v12.verticalSpacing,
+        Values.v12.verticalSpace,
         Text(
           text,
           textAlign: TextAlign.center,

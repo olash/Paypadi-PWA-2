@@ -1,5 +1,3 @@
-enum SeverityLevel { debug, info, warning, error, fatal }
-
 enum AccountRole {
   passenger(
     title: 'I’m a Passenger',

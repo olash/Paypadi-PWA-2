@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
     show appPrimaryColorProvider;
@@ -23,12 +24,12 @@ class ForgotPasswordScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           Text(
             'Please check your email',
             style: context.textTheme.headlineSmall,
           ),
-          Values.v16.verticalSpacing,
+          Values.v16.verticalSpace,
           Text(
             "We've sent a password reset link to ${obfuscateEmail(email)}. "
             'Click the link in the email to reset your password.',
@@ -36,7 +37,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           RichText(
             text: TextSpan(
               text:

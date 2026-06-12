@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -25,14 +26,14 @@ class ChangePasswordScreen extends HookConsumerWidget {
             'Verify Password',
             style: context.textTheme.headlineMedium,
           ),
-          Values.v12.verticalSpacing,
+          Values.v12.verticalSpace,
           Text(
             'Please enter your Password',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          Values.v32.verticalSpacing,
+          Values.v32.verticalSpace,
           AppPinIndicator(
             pinLength: passwordPinLength,
             controller: passwordController,

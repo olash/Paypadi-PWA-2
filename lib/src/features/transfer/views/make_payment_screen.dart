@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -29,12 +30,12 @@ class MakePaymentScreen extends HookConsumerWidget {
       title: 'Transfer',
       child: Column(
         children: [
-          Values.v16.verticalSpacing,
+          Values.v16.verticalSpace,
           _BankAccountInformation(
             isLoading: recipientDetails.isLoading,
             recipient: recipientDetails.value,
           ),
-          Values.v32.verticalSpacing,
+          Values.v32.verticalSpace,
           AppTextformfield(
             title: 'Comments',
             hint: 'Enter a narration',
@@ -70,7 +71,7 @@ class MakePaymentScreen extends HookConsumerWidget {
               ),
             ],
           ),
-          Values.v48.verticalSpacing,
+          Values.v48.verticalSpace,
           FilledButton(
             onPressed: recipientDetails.value == null
                 ? null

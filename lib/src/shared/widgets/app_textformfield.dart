@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart'
     show ConsumerWidget, WidgetRef;
 import 'package:paypadi/config/gen/assets.gen.dart';
@@ -39,7 +40,7 @@ class AppTextformfield extends StatelessWidget {
               titleStyle ??
               context.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
         ),
-        Values.v6.verticalSpacing,
+        Values.v6.verticalSpace,
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
@@ -47,7 +48,7 @@ class AppTextformfield extends StatelessWidget {
           enabled: isEnabled,
           decoration: InputDecoration(hintText: hint),
         ),
-        Values.v12.verticalSpacing,
+        Values.v12.verticalSpace,
       ],
     );
   }
@@ -77,7 +78,7 @@ class PhoneTextField extends ConsumerWidget {
             fontFamily: FontFamily.manrope,
           ),
         ),
-        Values.v6.verticalSpacing,
+        Values.v6.verticalSpace,
         Row(
           spacing: Values.v6,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +139,7 @@ class PhoneTextField extends ConsumerWidget {
             ),
           ],
         ),
-        Values.v12.verticalSpacing,
+        Values.v12.verticalSpace,
       ],
     );
   }

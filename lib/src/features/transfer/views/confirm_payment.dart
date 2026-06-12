@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
@@ -33,7 +34,7 @@ class ConfirmPaymentScreen extends ConsumerWidget {
       bgColor: AppColors.scaffoldBackground,
       child: Column(
         children: [
-          Values.v16.verticalSpacing,
+          Values.v16.verticalSpace,
           ReceiptCard(
             child: Column(
               children: [
@@ -44,7 +45,7 @@ class ConfirmPaymentScreen extends ConsumerWidget {
                     letterSpacing: kZeroLetterSpacing,
                   ),
                 ),
-                Values.v8.verticalSpacing,
+                Values.v8.verticalSpace,
                 Skeletonizer(
                   enabled: paymentSummary.isLoading,
                   child: Text(
@@ -57,13 +58,13 @@ class ConfirmPaymentScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Values.v32.verticalSpacing,
+                Values.v32.verticalSpace,
                 const Divider(
                   indent: Values.v8,
                   endIndent: Values.v8,
                   color: AppColors.dividerColor,
                 ),
-                Values.v32.verticalSpacing,
+                Values.v32.verticalSpace,
                 PaymentDetails(
                   detail: 'Ref Number',
                   isLoading: paymentSummary.isLoading,

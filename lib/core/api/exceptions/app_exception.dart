@@ -5,7 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:paypadi/core/api/exceptions/client_exception.dart';
 import 'package:paypadi/core/api/exceptions/server_exception.dart';
-import 'package:paypadi/core/utils/enums.dart';
+
+enum SeverityLevel { debug, info, warning, error, fatal }
 
 typedef ExceptionLogger =
     Future<void> Function(

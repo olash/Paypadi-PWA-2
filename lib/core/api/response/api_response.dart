@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:paypadi/core/models/user_model/user_model.dart';
 
 part 'api_response.freezed.dart';
 part 'api_response.g.dart';
@@ -44,4 +45,60 @@ sealed class PaginatedListResponse<T> with _$PaginatedListResponse<T> {
     Map<String, Object?> json,
     T Function(Object? json) fromJsonT,
   ) => _$PaginatedListResponseFromJson(json, fromJsonT);
+}
+
+@freezed
+sealed class RegisterResponse with _$RegisterResponse {
+  const factory RegisterResponse({
+    @JsonKey(name: 'access') required String accessToken,
+    @JsonKey(name: 'refresh') required String refreshToken,
+    required UserModel user,
+  }) = _RegisterResponse;
+
+  factory RegisterResponse.fromJson(Map<String, Object?> json) =>
+      _$RegisterResponseFromJson(json);
+}
+
+@freezed
+sealed class LoginResponse with _$LoginResponse {
+  const factory LoginResponse({
+    @JsonKey(name: 'access') required String accessToken,
+    @JsonKey(name: 'refresh') required String refreshToken,
+    required UserModel user,
+  }) = _LoginResponse;
+
+  factory LoginResponse.fromJson(Map<String, Object?> json) =>
+      _$LoginResponseFromJson(json);
+}
+
+@freezed
+sealed class SessionResponse with _$SessionResponse {
+  const factory SessionResponse({
+    @JsonKey(name: 'access') required String accessToken,
+    @JsonKey(name: 'refresh') required String refreshToken,
+  }) = _SessionResponse;
+
+  factory SessionResponse.fromJson(Map<String, Object?> json) =>
+      _$SessionResponseFromJson(json);
+}
+
+@freezed
+sealed class RequestOtpResponse with _$RequestOtpResponse {
+  const factory RequestOtpResponse({
+    required String otp,
+    @JsonKey(name: 'expires_in') required int expiresIn,
+  }) = _RequestOtpResponse;
+
+  factory RequestOtpResponse.fromJson(Map<String, Object?> json) =>
+      _$RequestOtpResponseFromJson(json);
+}
+
+@freezed
+sealed class VerifyOtpResponse with _$VerifyOtpResponse {
+  const factory VerifyOtpResponse({
+    @JsonKey(name: 'phone_token') required String token,
+  }) = _VerifyOtpResponse;
+
+  factory VerifyOtpResponse.fromJson(Map<String, Object?> json) =>
+      _$VerifyOtpResponseFromJson(json);
 }

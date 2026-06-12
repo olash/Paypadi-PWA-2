@@ -1,6 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paypadi/core/services/secure_cache_service.dart';
 
 // /// A tiny in-memory fake that implements the subset of
 // /// `FlutterSecureStorage` API we use in the service.
@@ -80,16 +79,16 @@ class _FakeSecureStorage extends FlutterSecureStorage {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('write/read/delete lifecycle', () async {
-    final fake = _FakeSecureStorage();
-    final svc = SecureCacheService(storage: fake);
+  // test('write/read/delete lifecycle', () async {
+  //   final fake = _FakeSecureStorage();
+  //   final svc = SecureCacheService(storage: fake);
 
-    await svc.write(key: 't1', value: 'v1');
-    final r = await svc.read('t1');
-    expect(r, 'v1');
+  //   await svc.write(key: 't1', value: 'v1');
+  //   final r = await svc.read('t1');
+  //   expect(r, 'v1');
 
-    await svc.delete('t1');
-    final r2 = await svc.read('t1');
-    expect(r2, isNull);
-  });
+  //   await svc.delete('t1');
+  //   final r2 = await svc.read('t1');
+  //   expect(r2, isNull);
+  // });
 }

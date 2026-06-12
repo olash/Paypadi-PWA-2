@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_to_pdf/flutter_to_pdf.dart'
     show ExportDelegate, ExportFrame;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,7 +39,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double pixelRatio = context.devicePixelRatio;
+    final pixelRatio = context.devicePixelRatio;
     final receipt = ref.watch(receiptControllerProvider(widget.referenceId));
 
     return AppScaffold(
@@ -62,7 +63,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
               ),
             ],
           ),
-          Values.v16.verticalSpacing,
+          Values.v16.verticalSpace,
           Screenshot(
             controller: _screenshotController,
             child: ExportFrame(
@@ -72,7 +73,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                 child: Column(
                   children: [
                     _PaymentDetailsStatusIcon(status: receipt.value?.status),
-                    Values.v16.verticalSpacing,
+                    Values.v16.verticalSpace,
                     Skeletonizer(
                       enabled: receipt.isLoading,
                       child: Text(
@@ -85,7 +86,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                         ),
                       ),
                     ),
-                    Values.v8.verticalSpacing,
+                    Values.v8.verticalSpace,
                     Skeletonizer(
                       enabled: receipt.isLoading,
                       child: Text(
@@ -98,13 +99,13 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                         ),
                       ),
                     ),
-                    Values.v32.verticalSpacing,
+                    Values.v32.verticalSpace,
                     const Divider(
                       indent: Values.v8,
                       endIndent: Values.v8,
                       color: AppColors.dividerColor,
                     ),
-                    Values.v32.verticalSpacing,
+                    Values.v32.verticalSpace,
                     PaymentDetails(
                       detail: 'Ref Number',
                       isLoading: receipt.isLoading,
@@ -161,7 +162,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
             label: const Text('Get PDF Receipt'),
             icon: const Icon(OctIcons.download),
           ),
-          Values.v12.verticalSpacing,
+          Values.v12.verticalSpace,
           FilledButton(
             onPressed: () => ref
                 .read(appRouterProvider)

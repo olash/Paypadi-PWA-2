@@ -1,62 +1,71 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:paypadi/config/env.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
-import 'package:paypadi/core/services/secure_cache_service.dart';
+import 'package:paypadi/core/services/storage/cache_service.dart';
 import 'package:paypadi/core/utils/constants.dart' show CacheKeys, debugLogger;
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
-part 'api_service.g.dart';
-
 class ApiService {
-  ApiService({required this.cacheService});
-
-  final SecureCacheService cacheService;
-
-  Dio createDio() {
-    return Dio(
-      BaseOptions(
-        baseUrl: Env.baseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
-      ),
-    )
-      ..interceptors.addAll(
-        [
-          AuthenticationCredentialsInterceptor(cacheService: cacheService),
-          if (kDebugMode)
-            TalkerDioLogger(
-              talker: debugLogger,
-              settings: const TalkerDioLoggerSettings(
-                printRequestHeaders: true,
-                printResponseHeaders: true,
-              ),
+  ApiService({
+    required CacheService cacheService,
+    required String baseUrl,
+  }) {
+    dio =
+        Dio(
+            BaseOptions(
+              baseUrl: baseUrl,
+              connectTimeout: const Duration(seconds: 30),
+              receiveTimeout: const Duration(seconds: 30),
+              sendTimeout: const Duration(seconds: 30),
             ),
-        ],
-      );
+          )
+          ..interceptors.addAll(
+            [
+              AuthenticationInterceptor(secureCache: cacheService),
+              if (kDebugMode)
+                TalkerDioLogger(
+                  talker: debugLogger,
+                  settings: const TalkerDioLoggerSettings(
+                    printRequestHeaders: true,
+                    printResponseHeaders: true,
+                  ),
+                ),
+            ],
+          );
   }
+
+  late final Dio dio;
 }
 
+class AuthenticationInterceptor extends Interceptor {
+  AuthenticationInterceptor({required CacheService secureCache})
+    : _cache = secureCache;
+  final CacheService _cache;
 
-
-class AuthenticationCredentialsInterceptor extends Interceptor {
-  AuthenticationCredentialsInterceptor({required this.cacheService});
-  final SecureCacheService cacheService;
+  static const Set<String> _publicPaths = {
+    '/auth/login',
+    '/auth/register',
+    '/auth/otp/request/',
+    '/auth/otp/verify/',
+  };
 
   @override
   Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    if (!pathDoesNotRequireCredential(options.path)) {
-      final String? token = await cacheService.read(CacheKeys.accessToken);
-      if (token != null && token.isNotEmpty) {
-        options.headers['Authorization'] = 'Bearer $token';
+    try {
+      if (!_publicPaths.contains(options.path)) {
+        final String? token = await _cache.get<String>(CacheKeys.accessToken);
+
+        if (token != null && token.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
       }
+    } catch (e, st) {
+      debugLogger.error('AuthInterceptor: failed to attach token', e, st);
+    } finally {
+      handler.next(options);
     }
-    super.onRequest(options, handler);
   }
 
   bool pathDoesNotRequireCredential(String path) {

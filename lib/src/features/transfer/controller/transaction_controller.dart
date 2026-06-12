@@ -3,7 +3,7 @@ import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/models/payment_model/payment_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
-import 'package:paypadi/core/repositories/transaction_repo.dart';
+import 'package:paypadi/core/repositories/transaction/i_transaction_repository.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -33,7 +33,7 @@ class AccountLookup extends _$AccountLookup {
 
 @riverpod
 class InitiatePaymentController extends _$InitiatePaymentController {
-  late final TransactionRepository _repository;
+  late final ITransactionRepository _repository;
 
   @override
   FutureOr<PaymentModel?> build() async {
@@ -71,7 +71,7 @@ class InitiatePaymentController extends _$InitiatePaymentController {
 
 @riverpod
 class TransactionController extends _$TransactionController {
-  late final TransactionRepository _repository;
+  late final ITransactionRepository _repository;
 
   @override
   FutureOr<TransactionModel?> build() async {

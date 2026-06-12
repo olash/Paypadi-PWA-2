@@ -6,7 +6,7 @@ import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/paypadi.dart';
-import 'package:paypadi/src/shared/controllers/jwt_controller.dart';
+import 'package:paypadi/src/shared/controllers/session/session_controller.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
 
@@ -34,7 +34,7 @@ Future<void> initializeApp() async {
   // Initializes SharedPreferencesWithCache and JwtRefreshController
   try {
     await providerContainer.read(sharedPreferencesFutureProvider.future);
-    await providerContainer.read(jwtControllerProvider.future);
+    await providerContainer.read(sessionControllerProvider.future);
   } catch (e, stack) {
     debugLogger.error(
       'Failed to initialize SharedPreferencesWithCache',

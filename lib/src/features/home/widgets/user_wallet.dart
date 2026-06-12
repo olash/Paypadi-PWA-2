@@ -143,7 +143,7 @@ class UserWallet extends HookConsumerWidget {
           //       ),
           //     ),
           //   ),
-          // 10.0.verticalSpacing,
+          // 10.0.verticalSpace,
           //   Expanded(
           //     child: FilledButton.icon(
           //       onPressed: () {},

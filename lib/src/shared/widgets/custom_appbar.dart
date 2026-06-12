@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -54,7 +55,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     return Row(
       children: [
         AppAvatar(radius: Values.v48, imageUrl: profilePic),
-        Values.v10.horizontalSpacing,
+        Values.v10.horizontalSpace,
         Text(
           'Hi, $name',
           style: context.textTheme.bodyLarge,
