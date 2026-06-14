@@ -15,9 +15,7 @@ class NotificationsScreen extends HookConsumerWidget {
 
     return const AppScaffold(
       title: 'Notifications',
-      child: Column(
-        
-      ),
+      child: Column(),
     );
   }
 }
