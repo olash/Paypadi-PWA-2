@@ -22,12 +22,13 @@ class SignInScreen extends HookConsumerWidget {
     final phoneNumber = useTextEditingController();
 
     return AppScaffold(
+      showAppBar: false,
       child: Form(
         key: formRef.value,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Spacer(),
+            Values.v24.verticalSpace,
             Text(
               'Welcome back',
               style: context.textTheme.headlineMedium,
@@ -39,7 +40,7 @@ class SignInScreen extends HookConsumerWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            Values.v16.verticalSpace,
+            const Spacer(),
             PhoneTextField(
               controller: phoneNumber,
               validator: phoneNumberValidator,
@@ -56,15 +57,15 @@ class SignInScreen extends HookConsumerWidget {
     );
   }
 
-  void signin(
+  Future<void> signin(
     WidgetRef ref,
     String phoneNumber,
     GlobalKey<FormState> form,
-  ) {
-    if (form.currentState!.validate()) {
-      ref
-          .read(appRouterProvider)
-          .push(EnterPasswordRoute(phoneNumber: phoneNumber));
-    }
+  ) async {
+    if (!(form.currentState?.validate() ?? false)) return;
+
+    await ref
+        .read(appRouterProvider)
+        .push(EnterPasswordRoute(phoneNumber: phoneNumber));
   }
 }

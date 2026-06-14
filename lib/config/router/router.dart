@@ -21,7 +21,6 @@ class AppRouter extends RootStackRouter {
       path: '/',
       initial: true,
       page: OnboardingRoute.page,
-      // guards: [LandingPageGuard(ref)],
     ),
     AutoRoute(
       path: '/account',
@@ -202,11 +201,15 @@ class AuthenticationGuard extends AutoRouteGuard {
     NavigationResolver resolver,
     StackRouter router,
   ) async {
-    final String? accessToken = await ref
+    final accessToken = await ref
         .read(secureCacheProvider)
         .get<String?>(CacheKeys.accessToken);
 
-    if (accessToken == null) {
+    final refreshToken = await ref
+        .read(secureCacheProvider)
+        .get<String?>(CacheKeys.refreshToken);
+
+    if (accessToken != null && refreshToken != null) {
       resolver.redirectUntil(const SignInRoute());
       return;
     }
@@ -215,42 +218,42 @@ class AuthenticationGuard extends AutoRouteGuard {
   }
 }
 
-class LandingPageGuard extends AutoRouteGuard {
-  const LandingPageGuard(this.ref);
-  final Ref ref;
+// class LandingPageGuard extends AutoRouteGuard {
+//   const LandingPageGuard(this.ref);
+//   final Ref ref;
 
-  @override
-  Future<void> onNavigation(
-    NavigationResolver resolver,
-    StackRouter router,
-  ) async {
-    final accessToken = await ref
-        .read(secureCacheProvider)
-        .get<String?>(CacheKeys.accessToken);
+//   @override
+//   Future<void> onNavigation(
+//     NavigationResolver resolver,
+//     StackRouter router,
+//   ) async {
+//     final accessToken = await ref
+//         .read(secureCacheProvider)
+//         .get<String?>(CacheKeys.accessToken);
 
-    final String? refreshToken = await ref
-        .read(secureCacheProvider)
-        .get<String?>(CacheKeys.refreshToken);
+//     final String? refreshToken = await ref
+//         .read(secureCacheProvider)
+//         .get<String?>(CacheKeys.refreshToken);
 
-    // final bool? biometricLoginEnabled = ref
-    //     .read(localCacheProvider)
-    //     .getFromCache<bool>(CacheKeys.enabledBiometrics);
+//     // final bool? biometricLoginEnabled = ref
+//     //     .read(localCacheProvider)
+//     //     .getFromCache<bool>(CacheKeys.enabledBiometrics);
 
-    // // Check if user is authenticated and has enabled biometric sign-in
-    // if (biometricLoginEnabled == true && accessToken != null) {
-    //   router.replace(LoginRoute());
-    //   return;
-    // }
+//     // // Check if user is authenticated and has enabled biometric sign-in
+//     // if (biometricLoginEnabled == true && accessToken != null) {
+//     //   router.replace(LoginRoute());
+//     //   return;
+//     // }
 
-    if (accessToken != null && refreshToken != null) {
-      unawaited(router.replace(const LoginRoute()));
-      return;
-    }
+//     // if (accessToken != null && refreshToken != null) {
+//     //   unawaited(router.replace(const LoginRoute()));
+//     //   return;
+//     // }
 
-    // allow navigation
-    resolver.next();
-  }
-}
+//     // // allow navigation
+//     // resolver.next();
+//   }
+// }
 
 class DriverAccountGuard extends AutoRouteGuard {
   const DriverAccountGuard(this.ref);

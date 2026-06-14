@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/env.dart';
@@ -12,12 +16,46 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
 
-Future<void> initializeApp() async {
+Future<void> initializeApp({
+  required bool enableMonitoring,
+  required FirebaseOptions firebaseConfig,
+}) async {
   SentryWidgetsFlutterBinding.ensureInitialized();
 
-  await preCacheSVGs();
+  await Future.wait([
+    preCacheSVGs(),
+    Firebase.initializeApp(options: firebaseConfig),
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
+    ),
+  ]);
 
-  final ProviderContainer providerContainer = ProviderContainer(
+  if (enableMonitoring) {
+    await SentryFlutter.init(
+      (options) {
+        options.debug = kDebugMode;
+        options.dsn = AppEnvironment.sentryDsn;
+        options.environment = AppEnvironment.flavor;
+        options.sendDefaultPii = true;
+        // options.enableLogs = true;
+        options.tracesSampleRate = 1.0;
+        // The sampling rate for profiling is relative to tracesSampleRate
+        // Setting to 1.0 will profile 100% of sampled transactions:
+        // options.profilesSampleRate = 1.0;
+        // Configure Session Replay
+        // options.replay.sessionSampleRate = 0.1;
+        // options.replay.onErrorSampleRate = 1.0;
+      },
+      appRunner: () => _runApp(isMonitored: true),
+    );
+  } else {
+    await _runApp(isMonitored: false);
+  }
+}
+
+Future<void> _runApp({required bool isMonitored}) async {
+  final providerContainer = ProviderContainer(
     observers: [
       if (kDebugMode)
         TalkerRiverpodObserver(
@@ -28,11 +66,7 @@ Future<void> initializeApp() async {
         ),
     ],
   );
-
-  AppException.logger =
-      (AppException converted, Object? original, StackTrace stackTrace) async {
-        debugLogger.error('[Error]', converted, stackTrace);
-      };
+  
   // Initializes SharedPreferencesWithCache and JwtRefreshController
   try {
     await providerContainer.read(sharedPreferencesFutureProvider.future);
@@ -46,33 +80,54 @@ Future<void> initializeApp() async {
     // Optionally, handle the error further or rethrow
   }
 
-  await SentryFlutter.init(
-    (options) {
-      options.dsn = AppEnvironment.sentryDsn;
-      // Adds request headers and IP for users, for more info visit:
-      // https://docs.sentry.io/platforms/dart/guides/flutter/data-management/data-collected/
-      options.sendDefaultPii = true;
-      // options.enableLogs = true;
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
-      // We recommend adjusting this value in production.
-      options.tracesSampleRate = 1.0;
-      // The sampling rate for profiling is relative to tracesSampleRate
-      // Setting to 1.0 will profile 100% of sampled transactions:
-      // options.profilesSampleRate = 1.0;
-      // Configure Session Replay
-      // options.replay.sessionSampleRate = 0.1;
-      // options.replay.onErrorSampleRate = 1.0;
-    },
-    appRunner: () {
+  if (isMonitored) {
+    final monitoring = providerContainer.read(monitoringProvider);
 
-      runApp(
-        SentryWidget(
-          child: UncontrolledProviderScope(
+    AppException.logger = (appException, original, stackTrace) async {
+      await monitoring.captureException(
+        original ?? appException,
+        stackTrace: stackTrace,
+        level: appException.monitoringSeverity,
+        context: appException.monitoringContext,
+        extras: appException.monitoringExtras,
+      );
+    };
+
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      unawaited(
+        monitoring.captureException(
+          details.exception,
+          stackTrace: details.stack,
+          context: 'FlutterError',
+          level: SeverityLevel.fatal,
+        ),
+      );
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      unawaited(
+        monitoring.captureException(
+          error,
+          stackTrace: stack,
+          context: 'PlatformDispatcher',
+        ),
+      );
+      return true;
+    };
+  }
+
+  runApp(
+    isMonitored
+        ? SentryWidget(
+            child: UncontrolledProviderScope(
+              container: providerContainer,
+              child: const PayPadi(),
+            ),
+          )
+        : UncontrolledProviderScope(
             container: providerContainer,
             child: const PayPadi(),
           ),
-        ),
-      );
-    },
   );
 }

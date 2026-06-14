@@ -83,7 +83,7 @@ class DashboardScreen extends HookConsumerWidget {
               GestureDetector(
                 onTap: () =>
                     ref.read(appRouterProvider).push(const QrCodeRoute()),
-                child: AppAssets.icons.qrCode.svg(),
+                child: AppAssets.icons.icQrCode.svg(),
               ),
             ],
           ),

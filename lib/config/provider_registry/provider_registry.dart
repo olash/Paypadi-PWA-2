@@ -69,11 +69,12 @@ SecureCacheService secureCache(Ref ref) {
 
 @Riverpod(keepAlive: true)
 Future<LocalCacheService> localCache(Ref ref) async {
+  final monitoring = ref.watch(monitoringProvider);
   final prefs = await ref.watch(sharedPreferencesFutureProvider.future);
 
   return LocalCacheService(
     sharedPreferences: prefs,
-    monitoring: ref.watch(monitoringProvider),
+    monitoring: monitoring,
   );
 }
 

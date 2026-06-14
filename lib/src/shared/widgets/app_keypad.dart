@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/gen/assets.gen.dart';
@@ -46,7 +47,7 @@ class AppKeypad extends ConsumerWidget {
   }
 
   void _onTap(String key) {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     if (showBiometric && key == '.') {
       onBiometricKeyPressed?.call();
@@ -79,10 +80,10 @@ class AppKeypad extends ConsumerWidget {
       splashColor: ref.watch(appPrimaryColorProvider).withValues(alpha: .1),
       child: Center(
         child: switch (key) {
-          'x' => AppAssets.icons.keypadBackspace.svg(),
+          'x' => AppAssets.icons.icBackspace.svg(),
           '.' =>
             showBiometric
-                ? const FaIcon(FontAwesomeIcons.fingerprint, size: Values.v48)
+                ? AppAssets.icons.icFingerprint.svg()
                 : const SizedBox.shrink(),
           _ => Text(
             key,

@@ -95,7 +95,7 @@ class PhoneTextField extends ConsumerWidget {
               child: Row(
                 spacing: Values.v8,
                 children: [
-                  AppAssets.icons.ngFlag.svg(),
+                  AppAssets.icons.icNgFlag.svg(),
                   Text(
                     '+234',
                     style: context.textTheme.bodyMedium?.copyWith(

@@ -9,6 +9,7 @@ import 'package:talker_flutter/talker_flutter.dart' show Talker;
 /// [CacheService] backed by [SharedPreferencesWithCache].
 ///
 /// Supports all primitive Dart types plus JSON-encodable objects/maps.
+
 class LocalCacheService implements CacheService {
   LocalCacheService({
     required SharedPreferencesWithCache sharedPreferences,
@@ -36,14 +37,16 @@ class LocalCacheService implements CacheService {
       } else if (T == List<String>) {
         raw = _prefs.getStringList(key);
       } else {
-        // Map<String, dynamic> and arbitrary objects are JSON-encoded strings.
+        // Map<String, dynamic> and arbitrary objects are stored as JSON strings.
         final encoded = _prefs.getString(key);
         if (encoded == null || encoded.isEmpty) return null;
 
         try {
           raw = json.decode(encoded);
+          // json.decode already returns Map<String, dynamic> for JSON objects;
+          // Map.from() is redundant and allocates an unnecessary copy.
           if (T == Map<String, dynamic>) {
-            raw = Map<String, dynamic>.from(raw as Map);
+            raw = raw as Map<String, dynamic>;
           }
         } catch (e, st) {
           _logger.error(
@@ -60,7 +63,6 @@ class LocalCacheService implements CacheService {
     } catch (e, st) {
       _logger.error('$runtimeType: get error for key "$key"', e, st);
       await _monitoring.addBreadcrumb(
-        // breadcrumb not captureException
         message: 'Cache read failed for key "$key"',
         category: 'cache',
         data: {'error': e.toString(), 'type': T.toString()},
@@ -85,8 +87,15 @@ class LocalCacheService implements CacheService {
       } else if (value is Map<String, dynamic>) {
         await _prefs.setString(key, json.encode(value));
       } else {
+        // Unsupported type: log and add a breadcrumb so this surfaces in
+        // monitoring the same way all other error paths do.
         _logger.error(
           '$runtimeType: unsupported type for key "$key": ${value.runtimeType}',
+        );
+        await _monitoring.addBreadcrumb(
+          message: 'Cache write skipped: unsupported type for key "$key"',
+          category: 'cache',
+          data: {'valueType': value.runtimeType.toString()},
         );
       }
     } catch (e, st) {

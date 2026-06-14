@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,19 +22,22 @@ class EnterPasswordScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final passwordController = useTextEditingController();
 
-    ref.listen(authenticationControllerProvider, (previous, current) {
-      current.when(
-        data: (d) {
-          ref.dismissLoading();
-          passwordController.clear();
-        },
-        error: (e, st) {
-          ref.dismissLoading();
-          passwordController.clear();
-        },
-        loading: () => ref.showLoading(),
-      );
-    });
+    ref.listen(
+      authenticationControllerProvider,
+      (previous, current) {
+        current.when(
+          data: (d) {
+            ref.dismissLoading();
+            passwordController.clear();
+          },
+          error: (e, st) {
+            ref.dismissLoading();
+            passwordController.clear();
+          },
+          loading: () => ref.showLoading(),
+        );
+      },
+    );
 
     return AppScaffold(
       child: Column(
@@ -50,7 +55,7 @@ class EnterPasswordScreen extends HookConsumerWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          Values.v32.verticalSpace,
+          Values.v64.verticalSpace,
           AppPinIndicator(
             pinLength: passwordPinLength,
             controller: passwordController,
@@ -68,8 +73,10 @@ class EnterPasswordScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String password) {
-    ref
-        .read(authenticationControllerProvider.notifier)
-        .login(phoneNumber, password);
+    unawaited(
+      ref
+          .read(authenticationControllerProvider.notifier)
+          .login(phoneNumber, password),
+    );
   }
 }

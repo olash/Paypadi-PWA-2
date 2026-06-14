@@ -28,8 +28,8 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
             width: Values.v84,
             height: Values.v84,
             child: Platform.isIOS
-                ? AppAssets.icons.faceId.svg()
-                : AppAssets.icons.fingerprint.svg(),
+                ? AppAssets.icons.icFaceId.svg()
+                : AppAssets.icons.icFingerprint.svg(),
           ),
           Values.v24.verticalSpace,
           Text(

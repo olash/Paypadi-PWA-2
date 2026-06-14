@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FLUTTER_VERSION: '3.44.0'
+  FLUTTER_VERSION: '3.24.0' # Update this to your exact Flutter stable version
   JAVA_VERSION: '17'
 
 jobs:
@@ -40,24 +40,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
-          cache: true
-
-      - name: Cache pub packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
-          restore-keys: pub-${{ runner.os }}-
+          cache: true # Automatically caches ~/.pub-cache
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Cache build_runner
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/build
+          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
+          restore-keys: build-runner-${{ runner.os }}-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -72,7 +72,7 @@ jobs:
         run: flutter test --coverage --reporter github
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v4
         with:
           files: coverage/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -94,7 +94,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Java ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
@@ -115,15 +115,15 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Cache pub packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
-          restore-keys: pub-${{ runner.os }}-
-
       - name: Install Flutter dependencies
         run: flutter pub get
+
+      - name: Cache build_runner
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/build
+          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
+          restore-keys: build-runner-${{ runner.os }}-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -178,7 +178,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Java ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
@@ -199,15 +199,15 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Cache pub packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
-          restore-keys: pub-${{ runner.os }}-
-
       - name: Install Flutter dependencies
         run: flutter pub get
+
+      - name: Cache build_runner
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/build
+          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
+          restore-keys: build-runner-${{ runner.os }}-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -264,7 +264,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
         uses: subosito/flutter-action@v2
@@ -279,15 +279,15 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Cache pub packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
-          restore-keys: pub-${{ runner.os }}-
-
       - name: Install Flutter dependencies
         run: flutter pub get
+
+      - name: Cache build_runner
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/build
+          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
+          restore-keys: build-runner-${{ runner.os }}-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -350,7 +350,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
         uses: subosito/flutter-action@v2
@@ -365,15 +365,15 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Cache pub packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
-          restore-keys: pub-${{ runner.os }}-
-
       - name: Install Flutter dependencies
         run: flutter pub get
+
+      - name: Cache build_runner
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/build
+          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
+          restore-keys: build-runner-${{ runner.os }}-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -437,7 +437,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -445,7 +445,7 @@ jobs:
           path: ./artifacts
 
       - name: Create Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v2
         with:
           files: ./artifacts/**/*
           generate_release_notes: true

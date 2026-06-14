@@ -235,10 +235,10 @@ class _UploadFileWidget extends HookConsumerWidget {
             children: [
               SvgPicture.asset(
                 switch (extension) {
-                  'PDF' => AppAssets.icons.pdfIcon.path,
-                  'PNG' => AppAssets.icons.pngIcon.path,
-                  'JPG' => AppAssets.icons.jpgIcon.path,
-                  _ => AppAssets.icons.keypadBackspace.path,
+                  'PDF' => AppAssets.icons.icPdfFile.path,
+                  'PNG' => AppAssets.icons.icPngFile.path,
+                  'JPG' => AppAssets.icons.icJpgFile.path,
+                  _ => AppAssets.icons.icBackspace.path,
                 },
               ),
               _FileUploadWidget(documentCategory: documentCategory),
