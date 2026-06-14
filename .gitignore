@@ -58,3 +58,10 @@ lib/config/gen
 
 # Sentry Key
 sentry.properties
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/app_download_*
+firebase-credentials.json

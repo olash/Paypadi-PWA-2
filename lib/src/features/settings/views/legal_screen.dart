@@ -2,9 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/src/features/settings/widgets/setting_tile.dart'
-    show SettingTile;
-import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class LegalScreen extends HookConsumerWidget {

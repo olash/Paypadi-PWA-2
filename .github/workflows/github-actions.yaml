@@ -4,19 +4,19 @@ name: Paypadi CI/CD
 on:
   push:
     branches: [master, develop]
-    tags: ['v*']
+    tags: ["v*"]
   pull_request:
     branches: [master, develop]
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deployment environment'
+        description: "Deployment environment"
         type: choice
         required: true
         default: dev
         options: [dev, prod]
       platform:
-        description: 'Target platform'
+        description: "Target platform"
         type: choice
         required: true
         default: all
@@ -27,11 +27,10 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FLUTTER_VERSION: '3.24.0' # Update this to your exact Flutter stable version
-  JAVA_VERSION: '17'
+  FLUTTER_VERSION: "any" # Consider changing to 'any' for always-latest stable
+  JAVA_VERSION: "17"
 
 jobs:
-
   # ───────────────────────────────────────────────────────────────────────────
   # VALIDATE — Runs on all PRs and branch pushes
   # ───────────────────────────────────────────────────────────────────────────
@@ -42,22 +41,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
-        uses: subosito/flutter-action@v2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true # Automatically caches ~/.pub-cache
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Cache build_runner
-        uses: actions/cache@v4
-        with:
-          path: .dart_tool/build
-          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
-          restore-keys: build-runner-${{ runner.os }}-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -86,6 +73,9 @@ jobs:
     name: Android — Dev
     needs: validate
     runs-on: ubuntu-latest
+
+    environment: dev
+
     if: >-
       ((github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
        (github.event_name == 'workflow_dispatch' &&
@@ -96,34 +86,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
-        uses: subosito/flutter-action@v2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Setup Ruby + Bundler
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-
-      - name: Install Flutter dependencies
-        run: flutter pub get
-
-      - name: Cache build_runner
-        uses: actions/cache@v4
-        with:
-          path: .dart_tool/build
-          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
-          restore-keys: build-runner-${{ runner.os }}-
+          java-version: ${{ env.JAVA_VERSION }}
+          setup-java: "true"
+          setup-ruby: "true"
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -147,7 +116,7 @@ jobs:
           flutter build appbundle \
             --flavor dev \
             --target lib/main_dev.dart \
-            --dart-define=API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
             --build-number=${{ github.run_number }} \
             --release
 
@@ -158,10 +127,14 @@ jobs:
           path: build/app/outputs/bundle/devRelease/app-dev-release.aab
           retention-days: 14
 
+      - name: Setup Firebase Credentials
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > firebase-credentials.json
+
       - name: Deploy to Firebase App Distribution
         run: bundle exec fastlane android deploy_firebase
         env:
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: firebase-credentials.json
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_ANDROID_APP_ID }}
 
   # ───────────────────────────────────────────────────────────────────────────
   # ANDROID PROD — Builds on master push, deploys to Play Store ONLY on tags
@@ -170,6 +143,9 @@ jobs:
     name: Android — Prod
     needs: validate
     runs-on: ubuntu-latest
+
+    environment: prod
+
     if: >-
       ((github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))) ||
        (github.event_name == 'workflow_dispatch' &&
@@ -180,34 +156,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
-        uses: subosito/flutter-action@v2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Setup Ruby + Bundler
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-
-      - name: Install Flutter dependencies
-        run: flutter pub get
-
-      - name: Cache build_runner
-        uses: actions/cache@v4
-        with:
-          path: .dart_tool/build
-          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
-          restore-keys: build-runner-${{ runner.os }}-
+          java-version: ${{ env.JAVA_VERSION }}
+          setup-java: "true"
+          setup-ruby: "true"
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -231,7 +186,7 @@ jobs:
           flutter build appbundle \
             --flavor prod \
             --target lib/main_prod.dart \
-            --dart-define=API_BASE_URL=${{ secrets.PROD_API_BASE_URL }} \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
             --dart-define=SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
             --build-number=${{ github.run_number }} \
             --release
@@ -256,6 +211,9 @@ jobs:
     name: iOS — Dev
     needs: validate
     runs-on: macos-15
+
+    environment: dev
+
     if: >-
       ((github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
        (github.event_name == 'workflow_dispatch' &&
@@ -266,42 +224,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
-        uses: subosito/flutter-action@v2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Setup Ruby + Bundler
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-
-      - name: Install Flutter dependencies
-        run: flutter pub get
-
-      - name: Cache build_runner
-        uses: actions/cache@v4
-        with:
-          path: .dart_tool/build
-          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
-          restore-keys: build-runner-${{ runner.os }}-
+          setup-ruby: "true"
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Cache CocoaPods
-        uses: actions/cache@v4
-        with:
-          path: ios/Pods
-          key: pods-${{ hashFiles('ios/Podfile.lock') }}
-          restore-keys: pods-
-
-      - name: Install CocoaPods
-        run: pod install
-        working-directory: ios
 
       - name: Sync dev certificates via Match
         run: bundle exec fastlane ios sync_dev_certs
@@ -318,7 +248,7 @@ jobs:
           flutter build ipa \
             --flavor dev \
             --target lib/main_dev.dart \
-            --dart-define=API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
             --build-number=${{ github.run_number }} \
             --release \
             --export-options-plist=ios/ExportOptionsDev.plist
@@ -330,10 +260,14 @@ jobs:
           path: build/ios/ipa/*.ipa
           retention-days: 14
 
+      - name: Setup Firebase Credentials
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > firebase-credentials.json
+
       - name: Deploy to Firebase App Distribution
-        run: bundle exec fastlane ios deploy_firebase
+        run: bundle exec fastlane android deploy_firebase
         env:
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: firebase-credentials.json
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_IOS_APP_ID }}
 
   # ───────────────────────────────────────────────────────────────────────────
   # iOS PROD — Builds on master push, deploys to App Store ONLY on tags
@@ -342,6 +276,9 @@ jobs:
     name: iOS — Prod
     needs: validate
     runs-on: macos-15
+
+    environment: prod
+
     if: >-
       ((github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))) ||
        (github.event_name == 'workflow_dispatch' &&
@@ -352,42 +289,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
-        uses: subosito/flutter-action@v2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Setup Ruby + Bundler
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-
-      - name: Install Flutter dependencies
-        run: flutter pub get
-
-      - name: Cache build_runner
-        uses: actions/cache@v4
-        with:
-          path: .dart_tool/build
-          key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
-          restore-keys: build-runner-${{ runner.os }}-
+          setup-ruby: "true"
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Cache CocoaPods
-        uses: actions/cache@v4
-        with:
-          path: ios/Pods
-          key: pods-${{ hashFiles('ios/Podfile.lock') }}
-          restore-keys: pods-
-
-      - name: Install CocoaPods
-        run: pod install
-        working-directory: ios
 
       - name: Sync prod certificates via Match
         run: bundle exec fastlane ios sync_prod_certs
@@ -404,7 +313,7 @@ jobs:
           flutter build ipa \
             --flavor prod \
             --target lib/main_prod.dart \
-            --dart-define=API_BASE_URL=${{ secrets.PROD_API_BASE_URL }} \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
             --dart-define=SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
             --build-number=${{ github.run_number }} \
             --release \

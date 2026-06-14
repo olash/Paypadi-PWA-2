@@ -1,0 +1,75 @@
+default_platform(:android)
+
+# ───────────────────────────────────────────────────────────────────────────
+# ANDROID LANES
+# ───────────────────────────────────────────────────────────────────────────
+platform :android do
+  desc "Deploy Dev Build to Firebase App Distribution"
+  lane :deploy_firebase do
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      release_notes: "Automated Dev Build via GitHub Actions",
+      groups: "dev-testers",
+      android_artifact_type: "AAB",
+      android_artifact_path: "build/app/outputs/bundle/devRelease/app-dev-release.aab"
+    )
+  end
+
+  desc "Deploy Production Build to Google Play Store Internal Track"
+  lane :deploy_prod do
+    upload_to_play_store(
+      track: 'internal',
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      aab: "build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+    )
+  end
+end
+
+# ───────────────────────────────────────────────────────────────────────────
+# iOS LANES
+# ───────────────────────────────────────────────────────────────────────────
+platform :ios do
+  desc "Sync Development Certificates and Profiles"
+  lane :sync_dev_certs do
+    setup_ci_api_key # Authenticates via App Store Connect API keys passed from CI
+    match(type: "development", readonly: is_ci)
+  end
+
+  desc "Sync Production App Store Certificates"
+  lane :sync_prod_certs do
+    setup_ci_api_key
+    match(type: "appstore", readonly: is_ci)
+  end
+
+  desc "Deploy Dev Build to Firebase App Distribution"
+  lane :deploy_firebase do
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      release_notes: "Automated Dev Build via GitHub Actions",
+      groups: "dev-testers",
+      ipa_path: "build/ios/ipa/paypadi-dev-*.ipa"
+    )
+  end
+
+  desc "Upload Production Build to TestFlight"
+  lane :deploy_prod do
+    setup_ci_api_key
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      skip_submission: true,
+      ipa: "build/ios/ipa/paypadi-prod-*.ipa"
+    )
+  end
+end
+
+# Helper macro to build App Store Connect API context from environment variables
+def setup_ci_api_key
+  app_store_connect_api_key(
+    key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+    issuer_id: ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+    key_content: ENV["APP_STORE_CONNECT_API_KEY_BASE64"],
+    is_key_content_base64: true
+  )
+end

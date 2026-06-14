@@ -69,8 +69,7 @@ class _ThemeColorWidget extends StatelessWidget {
   const _ThemeColorWidget({
     required this.color,
     required this.isCurrent,
-    this.onTap,
-  });
+  }) : onTap = null;
 
   final Color color;
   final bool isCurrent;

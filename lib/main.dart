@@ -66,7 +66,7 @@ Future<void> _runApp({required bool isMonitored}) async {
         ),
     ],
   );
-  
+
   // Initializes SharedPreferencesWithCache and JwtRefreshController
   try {
     await providerContainer.read(sharedPreferencesFutureProvider.future);
