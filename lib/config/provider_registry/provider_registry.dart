@@ -111,7 +111,7 @@ AppRouter appRouter(Ref ref) {
 ApiService apiService(Ref ref) {
   return ApiService(
     cacheService: ref.watch(secureCacheProvider),
-    baseUrl: Env.baseUrl,
+    baseUrl: AppEnvironment.backendApiBaseUrl,
   );
 }
 

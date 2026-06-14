@@ -3,8 +3,7 @@ import 'dart:convert' show json;
 import 'package:paypadi/core/services/monitoring/monitoring_service.dart';
 import 'package:paypadi/core/services/storage/cache_service.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart'
-    show SharedPreferencesWithCache;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart' show Talker;
 
 /// [CacheService] backed by [SharedPreferencesWithCache].

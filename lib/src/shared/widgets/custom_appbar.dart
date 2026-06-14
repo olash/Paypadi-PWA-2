@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart';
@@ -61,7 +60,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           style: context.textTheme.bodyLarge,
         ),
         const Spacer(),
-        const Icon(Iconsax.notification_outline),
+        // const Icon(Iconsax.notification_outline),
       ],
     );
   }

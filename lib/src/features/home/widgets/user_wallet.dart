@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -37,18 +36,18 @@ class UserWallet extends HookConsumerWidget {
                       color: AppColors.walletCardTextColor,
                     ),
                   ),
-                  InkWell(
-                    onTap: () => hideBalance.value = !hideBalance.value,
-                    child: Padding(
-                      padding: const EdgeInsets.all(Values.v4),
-                      child: Icon(
-                        hideBalance.value
-                            ? Iconsax.eye_slash_outline
-                            : Iconsax.eye_outline,
-                        color: AppColors.walletCardIconColor,
-                      ),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () => hideBalance.value = !hideBalance.value,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(Values.v4),
+                  //     child: Icon(
+                  //       hideBalance.value
+                  //           ? Iconsax.eye_slash_outline
+                  //           : Iconsax.eye_outline,
+                  //       color: AppColors.walletCardIconColor,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               Skeletonizer(
@@ -93,7 +92,7 @@ class UserWallet extends HookConsumerWidget {
             onPressed: () =>
                 ref.read(appRouterProvider).push(const DepositMoneyRoute()),
             label: const Text('Add Money'),
-            icon: const Icon(Iconsax.add_outline, size: 24),
+            // icon: const Icon(Iconsax.add_outline, size: 24),
             style: context.filledButtonTheme.style?.copyWith(
               fixedSize: const WidgetStatePropertyAll(kButtonSmallSize),
               foregroundColor: WidgetStatePropertyAll(

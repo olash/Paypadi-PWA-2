@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -72,47 +71,47 @@ class SettingsScreen extends HookConsumerWidget {
       ),
       child: Column(
         children: [
-          SettingTile(
-            name: 'Profile',
-            icon: Iconsax.profile_circle_outline,
-            onTap: () {
-              ref.read(userProfileProvider);
-              ref.read(appRouterProvider).push(const ProfileRoute());
-            },
-          ),
-          SettingTile(
-            name: 'Notification Preferences',
-            icon: Iconsax.notification_outline,
-            onTap: () =>
-                ref.read(appRouterProvider).push(const NotificationsRoute()),
-          ),
-          SettingTile(
-            name: 'Change Password',
-            showTrailingIcon: false,
-            icon: Iconsax.lock_1_outline,
-            onTap: () =>
-                ref.read(appRouterProvider).push(const ChangePasswordRoute()),
-          ),
-          SettingTile(
-            name: 'Change Pin',
-            showTrailingIcon: false,
-            icon: Iconsax.password_check_outline,
-            onTap: () =>
-                ref.read(appRouterProvider).push(const ChangePinRoute()),
-          ),
-          SettingTile(
-            name: 'Referral',
-            showTrailingIcon: false,
-            icon: Iconsax.alarm_outline,
-            onTap: () =>
-                ref.read(appRouterProvider).push(const ReferralRoute()),
-          ),
-          SettingTile(
-            name: 'Theme',
-            icon: Iconsax.colorfilter_outline,
-            onTap: () =>
-                ref.read(appRouterProvider).push(const ChangeThemeRoute()),
-          ),
+          // SettingTile(
+          //   name: 'Profile',
+          //   icon: Iconsax.profile_circle_outline,
+          //   onTap: () {
+          //     ref.read(userProfileProvider);
+          //     ref.read(appRouterProvider).push(const ProfileRoute());
+          //   },
+          // ),
+          // SettingTile(
+          //   name: 'Notification Preferences',
+          //   icon: Iconsax.notification_outline,
+          //   onTap: () =>
+          //       ref.read(appRouterProvider).push(const NotificationsRoute()),
+          // ),
+          // SettingTile(
+          //   name: 'Change Password',
+          //   showTrailingIcon: false,
+          //   icon: Iconsax.lock_1_outline,
+          //   onTap: () =>
+          //       ref.read(appRouterProvider).push(const ChangePasswordRoute()),
+          // ),
+          // SettingTile(
+          //   name: 'Change Pin',
+          //   showTrailingIcon: false,
+          //   icon: Iconsax.password_check_outline,
+          //   onTap: () =>
+          //       ref.read(appRouterProvider).push(const ChangePinRoute()),
+          // ),
+          // SettingTile(
+          //   name: 'Referral',
+          //   showTrailingIcon: false,
+          //   icon: Iconsax.alarm_outline,
+          //   onTap: () =>
+          //       ref.read(appRouterProvider).push(const ReferralRoute()),
+          // ),
+          // SettingTile(
+          //   name: 'Theme',
+          //   icon: Iconsax.colorfilter_outline,
+          //   onTap: () =>
+          //       ref.read(appRouterProvider).push(const ChangeThemeRoute()),
+          // ),
           // SettingTileWithSwitch(
           //   name: 'Enable Biometrics',
           //   icon: IonIcons.finger_print,
@@ -135,13 +134,13 @@ class SettingsScreen extends HookConsumerWidget {
           //   icon: Iconsax.judge_outline,
           //   onTap: () => ref.read(appRouterProvider).push(LegalRoute()),
           // ),
-          SettingTile(
-            name: 'Log out',
-            showTrailingIcon: false,
-            icon: Iconsax.logout_1_outline,
-            onTap: () =>
-                ref.read(authenticationControllerProvider.notifier).logout(),
-          ),
+          // SettingTile(
+          //   name: 'Log out',
+          //   showTrailingIcon: false,
+          //   icon: Iconsax.logout_1_outline,
+          //   onTap: () =>
+          //       ref.read(authenticationControllerProvider.notifier).logout(),
+          // ),
           const Spacer(),
           Text(
             'App Version: ${appVersion.value?.version}',

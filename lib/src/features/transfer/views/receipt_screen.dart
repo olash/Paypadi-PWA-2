@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_to_pdf/flutter_to_pdf.dart'
     show ExportDelegate, ExportFrame;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -55,12 +54,12 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                     .read(appRouterProvider)
                     .popUntilRouteWithName(HomeRoute.name),
               ),
-              IconButton(
-                onPressed: () async => ref
-                    .read(receiptServiceProvider)
-                    .shareReceipt(pixelRatio, _screenshotController),
-                icon: const Icon(OctIcons.share),
-              ),
+              // IconButton(
+              //   onPressed: () async => ref
+              //       .read(receiptServiceProvider)
+              //       .shareReceipt(pixelRatio, _screenshotController),
+              //   icon: const Icon(OctIcons.share),
+              // ),
             ],
           ),
           Values.v16.verticalSpace,
@@ -156,12 +155,12 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
             ),
           ),
           const Spacer(flex: 3),
-          OutlinedButton.icon(
-            onPressed: () async =>
-                ref.read(receiptServiceProvider).generateReceiptInPdf(),
-            label: const Text('Get PDF Receipt'),
-            icon: const Icon(OctIcons.download),
-          ),
+          // OutlinedButton.icon(
+          //   onPressed: () async =>
+          //       ref.read(receiptServiceProvider).generateReceiptInPdf(),
+          //   label: const Text('Get PDF Receipt'),
+          //   icon: const Icon(OctIcons.download),
+          // ),
           Values.v12.verticalSpace,
           FilledButton(
             onPressed: () => ref

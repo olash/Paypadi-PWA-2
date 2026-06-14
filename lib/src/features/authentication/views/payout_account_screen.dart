@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 
 import 'package:paypadi/core/models/bank_model/bank_model.dart';
 import 'package:paypadi/core/utils/constants.dart' show Values;
@@ -191,7 +190,7 @@ class _ListOfBanks extends ConsumerWidget {
           controller: controller,
           width: context.screenWidth,
           menuHeight: context.screenHeight * .4,
-          trailingIcon: const Icon(Iconsax.arrow_down_1_outline),
+          // trailingIcon: const Icon(Iconsax.arrow_down_1_outline),
           selectedTrailingIcon: const SizedBox.shrink(),
           onSelected: (bank) {
             if (bank == null) return;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart'
@@ -82,7 +82,7 @@ class AppKeypad extends ConsumerWidget {
           'x' => AppAssets.icons.keypadBackspace.svg(),
           '.' =>
             showBiometric
-                ? const Icon(IonIcons.finger_print, size: Values.v48)
+                ? const FaIcon(FontAwesomeIcons.fingerprint, size: Values.v48)
                 : const SizedBox.shrink(),
           _ => Text(
             key,

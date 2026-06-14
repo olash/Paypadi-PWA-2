@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 
@@ -170,7 +169,7 @@ class _FilePickerWidget extends ConsumerWidget {
                   ),
                 ],
               ),
-              child: const Icon(EvaIcons.cloud_upload_outline),
+              // child: const Icon(EvaIcons.cloud_upload_outline),
             ),
             Values.v4.verticalSpace,
             RichText(
@@ -255,10 +254,10 @@ class _UploadFileWidget extends HookConsumerWidget {
                   .read(fileUploadControllerProvider.notifier)
                   .reset(documentCategory);
             },
-            child: const Icon(
-              EvaIcons.trash_2_outline,
-              color: AppColors.grey400,
-            ),
+            // child: const Icon(
+            //   EvaIcons.trash_2_outline,
+            //   color: AppColors.grey400,
+            // ),
           ),
         ),
       ],
@@ -371,22 +370,22 @@ class _FileUploadStatusWidget extends StatelessWidget {
     return Row(
       spacing: Values.v4,
       children: [
-        switch (uploadStatus) {
-          UploadStatus.uploading => const Icon(
-            EvaIcons.cloud_upload_outline,
-            color: AppColors.grey500,
-          ),
-          UploadStatus.complete => const Icon(
-            EvaIcons.checkmark_circle,
-            color: AppColors.success,
-          ),
-          UploadStatus.failed => const Icon(
-            Iconsax.close_circle_outline,
-            size: Values.v16,
-            color: AppColors.failure,
-          ),
-          _ => const SizedBox.shrink(),
-        },
+        // switch (uploadStatus) {
+        //   UploadStatus.uploading => const Icon(
+        //     EvaIcons.cloud_upload_outline,
+        //     color: AppColors.grey500,
+        //   ),
+        //   UploadStatus.complete => const Icon(
+        //     EvaIcons.checkmark_circle,
+        //     color: AppColors.success,
+        //   ),
+        //   UploadStatus.failed => const Icon(
+        //     Iconsax.close_circle_outline,
+        //     size: Values.v16,
+        //     color: AppColors.failure,
+        //   ),
+        //   _ => const SizedBox.shrink(),
+        // },
         if (statusText.isNotEmpty)
           Text(
             statusText,

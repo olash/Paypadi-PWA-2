@@ -53,4 +53,8 @@ app.*.map.json
 # Generated files directory
 lib/config/gen
 
+# App Secrets
 .env.*
+
+# Sentry Key
+sentry.properties
