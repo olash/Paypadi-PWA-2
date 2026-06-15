@@ -13,7 +13,7 @@ import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
-class BiometricAuthenticationScreen extends HookConsumerWidget {
+class BiometricAuthenticationScreen extends ConsumerWidget {
   const BiometricAuthenticationScreen({super.key});
 
   @override
@@ -51,27 +51,13 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
             children: [
               Flexible(
                 child: OutlinedButton(
-                  onPressed: () {
-                    ref.read(appRouterProvider).replaceAll([
-                      const SignInRoute(),
-                    ]);
-                  },
+                  onPressed: () => maybeLater(ref),
                   child: const Text('Maybe Later'),
                 ),
               ),
               Flexible(
                 child: FilledButton(
-                  onPressed: () async {
-                    // await ref
-                    //     .read(localCacheProvider)
-                    //     .saveToCache(
-                    //       key: CacheKeys.enabledBiometrics,
-                    //       value: true,
-                    //     );
-                    // ref.read(appRouterProvider).replaceAll([
-                    //   const SignInRoute(),
-                    // ]);
-                  },
+                  onPressed: () => enable(ref),
                   child: const Text('Enable'),
                 ),
               ),
@@ -80,5 +66,15 @@ class BiometricAuthenticationScreen extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> maybeLater(WidgetRef ref) async {
+    await ref.read(appRouterProvider).replaceAll([const SignInRoute()]);
+  }
+
+  Future<void> enable(WidgetRef ref) async {
+    final localCache = await ref.read(localCacheProvider.future);
+    await localCache.save(key: CacheKeys.biometrics, value: true);
+    await ref.read(appRouterProvider).replaceAll([const SignInRoute()]);
   }
 }

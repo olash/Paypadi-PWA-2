@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -101,6 +103,6 @@ class SetupPassengerScreen extends HookConsumerWidget {
       ..['first_name'] = firstName
       ..['last_name'] = lastName;
 
-    ref.read(appRouterProvider).push(const CreatePasswordRoute());
+    unawaited(ref.read(appRouterProvider).push(const CreatePasswordRoute()));
   }
 }

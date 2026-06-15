@@ -69,14 +69,14 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
     );
   }
 
-  void createAccount(
+  Future<void> createAccount(
     WidgetRef ref,
     String password,
     String confirmedPassword,
-  ) {
+  ) async {
     if (password == confirmedPassword) {
       ref.read(authenticationPayloadProvider)['password'] = password;
-      ref.read(authenticationControllerProvider.notifier).register();
+   await    ref.read(authenticationControllerProvider.notifier).register();
     }
   }
 }

@@ -106,7 +106,7 @@ class CreateAccountScreen extends HookConsumerWidget {
 
     ref.closeKeyboard();
     ref.read(authenticationPayloadProvider)['phone_number'] = phoneNumber;
-    ref.read(authenticationControllerProvider.notifier).requestForOtp();
+    await ref.read(authenticationControllerProvider.notifier).requestForOtp();
   }
 }
 
@@ -120,10 +120,10 @@ class _TermsAndPrivacyRichText extends HookConsumerWidget {
 
     useEffect(() {
       termsRecognizer.onTap = () {
-        /* TODO: open terms */
+        /* NOTE: open terms */
       };
       privacyRecognizer.onTap = () {
-        /* TODO: open privacy policy */
+        /* NOTE: open privacy policy */
       };
       return () {
         termsRecognizer.dispose();

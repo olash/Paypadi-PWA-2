@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
@@ -59,7 +61,7 @@ class InitiatePaymentController extends _$InitiatePaymentController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        ref.read(appRouterProvider).push(const ConfirmPaymentRoute());
+        unawaited(ref.read(appRouterProvider).push(const ConfirmPaymentRoute()));
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -87,9 +89,9 @@ class TransactionController extends _$TransactionController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        ref
+        unawaited(ref
             .read(appRouterProvider)
-            .push(ReceiptRoute(referenceId: success.data.reference));
+            .push(ReceiptRoute(referenceId: success.data.reference)));
       },
       (failure) {
         ref.showExceptionMessage(failure);

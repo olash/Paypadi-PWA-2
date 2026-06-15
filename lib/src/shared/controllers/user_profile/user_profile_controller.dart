@@ -47,14 +47,14 @@ class RiderProfile extends _$RiderProfile {
     };
 
     final result = await _profileRepository.setTransactionPin(payload);
-    result.fold(
-      (success) {
+    await result.fold(
+      (success) async {
         unawaited(
           ref
               .read(secureCacheProvider)
               .save(key: CacheKeys.transactionPin, value: confirmedPin),
         );
-        ref.read(appRouterProvider).push(const BiometricAuthenticationRoute());
+        await ref.read(appRouterProvider).push(const BiometricAuthenticationRoute());
         state = const AsyncData(null);
       },
       (failure) {

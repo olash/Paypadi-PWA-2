@@ -42,8 +42,8 @@ class AuthenticationInterceptor extends Interceptor {
   final CacheService _cache;
 
   static const Set<String> _publicPaths = {
-    '/auth/login',
-    '/auth/register',
+    '/auth/login/',
+    '/auth/register/',
     '/auth/otp/request/',
     '/auth/otp/verify/',
   };

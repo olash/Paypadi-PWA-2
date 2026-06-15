@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,14 +42,14 @@ class AccountRoleScreen extends HookConsumerWidget {
             role: AccountRole.passenger,
             onWidgetTapped: () {
               ref.read(authenticationPayloadProvider)['role'] = 'rider';
-              ref.read(appRouterProvider).push(const SetupPassengerRoute());
+              unawaited(ref.read(appRouterProvider).push(const SetupPassengerRoute()));
             },
           ),
           _RoleWidget(
             role: AccountRole.driver,
             onWidgetTapped: () {
               ref.read(authenticationPayloadProvider)['role'] = 'driver';
-              ref.read(appRouterProvider).push(const SetupDriverRoute());
+              unawaited(ref.read(appRouterProvider).push(const SetupDriverRoute()));
             },
           ),
         ],

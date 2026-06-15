@@ -1,6 +1,7 @@
 import 'dart:ui' show Color;
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:paypadi/config/env.dart';
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
@@ -35,6 +36,8 @@ import 'package:paypadi/core/services/file_picker_service.dart';
 import 'package:paypadi/core/services/image_picker_service.dart';
 import 'package:paypadi/core/services/monitoring/monitoring_service.dart';
 import 'package:paypadi/core/services/monitoring/sentry_service.dart';
+import 'package:paypadi/core/services/notifications/firebase_notifications_service.dart';
+import 'package:paypadi/core/services/notifications/notifications_service.dart';
 import 'package:paypadi/core/services/receipt_service.dart';
 import 'package:paypadi/core/services/storage/local_cache_service.dart';
 import 'package:paypadi/core/services/storage/secure_cache_service.dart';
@@ -76,6 +79,16 @@ Future<LocalCacheService> localCache(Ref ref) async {
     sharedPreferences: prefs,
     monitoring: monitoring,
   );
+}
+
+@Riverpod(keepAlive: true)
+FirebaseMessaging firebaseMessaging(Ref ref) {
+  return FirebaseMessaging.instance;
+}
+
+@Riverpod(keepAlive: true)
+INotificationsService notificationsService(Ref ref) {
+  return FirebaseNotificationsService(ref.watch(firebaseMessagingProvider));
 }
 
 // =============================================================================

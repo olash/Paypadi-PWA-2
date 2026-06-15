@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -133,11 +135,11 @@ class PayoutAccountScreen extends HookConsumerWidget {
       if (bankCode.isEmpty) ref.showErrorToast('Please select a bank.');
       return;
     }
-    ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
+    unawaited(ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
       'account_number': accountNumber,
       'bank_code': bankCode,
       // 'bank_code': "001",
-    });
+    }));
   }
 
   void _navigateNext(
@@ -161,7 +163,7 @@ class PayoutAccountScreen extends HookConsumerWidget {
       'bank_code': bankCode,
       'is_primary': true,
     };
-    ref.read(payoutAccountProvider.notifier).createPayoutAccount(payload);
+    unawaited(ref.read(payoutAccountProvider.notifier).createPayoutAccount(payload));
   }
 }
 

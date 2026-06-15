@@ -48,7 +48,7 @@ class VerifiedBankAccount extends _$VerifiedBankAccount {
     // Check if provider is still mounted
     if (!ref.mounted) return;
 
-    result.fold(
+  await  result.fold(
       (success) async => state = AsyncData(success),
       (failure) {
         ref.showExceptionMessage(failure);
@@ -75,10 +75,10 @@ class PayoutAccount extends _$PayoutAccount {
     // Check if provider is still mounted
     if (!ref.mounted) return;
 
-    result.fold(
+   await result.fold(
       (success) async {
         state = AsyncData(success.data);
-        ref.read(appRouterProvider).push(const SignInRoute());
+     await   ref.read(appRouterProvider).push(const SignInRoute());
       },
       (failure) {
         state = const AsyncData(null);

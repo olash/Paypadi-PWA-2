@@ -66,9 +66,9 @@ class ConfirmTransactionPinScreen extends HookConsumerWidget {
     );
   }
 
-  void submitPin(WidgetRef ref, String pin, String confirmedPin) {
+  Future<void> submitPin(WidgetRef ref, String pin, String confirmedPin) async  {
     if (pin == confirmedPin) {
-      ref
+   await    ref
           .read(riderProfileProvider.notifier)
           .setTransactionPin(pin, confirmedPin);
     }

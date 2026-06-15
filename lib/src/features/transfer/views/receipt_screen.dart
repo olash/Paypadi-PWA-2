@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_to_pdf/flutter_to_pdf.dart'
     show ExportDelegate, ExportFrame;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
@@ -33,7 +34,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
   final ScreenshotController _screenshotController = ScreenshotController();
 
   final ExportDelegate exportDelegate = ExportDelegate(
-    ttfFonts: {'Poppins': 'fonts/Poppins-Regular.ttf'},
+    ttfFonts: {'DMSans': 'fonts/DMSans-Variable.ttf'},
   );
 
   @override
@@ -54,12 +55,12 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                     .read(appRouterProvider)
                     .popUntilRouteWithName(HomeRoute.name),
               ),
-              // IconButton(
-              //   onPressed: () async => ref
-              //       .read(receiptServiceProvider)
-              //       .shareReceipt(pixelRatio, _screenshotController),
-              //   icon: const Icon(OctIcons.share),
-              // ),
+              IconButton(
+                onPressed: () async => ref
+                    .read(receiptServiceProvider)
+                    .shareReceipt(pixelRatio, _screenshotController),
+                icon: AppAssets.icons.icShare.svg(),
+              ),
             ],
           ),
           Values.v16.verticalSpace,
@@ -155,12 +156,12 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
             ),
           ),
           const Spacer(flex: 3),
-          // OutlinedButton.icon(
-          //   onPressed: () async =>
-          //       ref.read(receiptServiceProvider).generateReceiptInPdf(),
-          //   label: const Text('Get PDF Receipt'),
-          //   icon: const Icon(OctIcons.download),
-          // ),
+          OutlinedButton.icon(
+            onPressed: () async =>
+                ref.read(receiptServiceProvider).generateReceiptInPdf(),
+            label: const Text('Get PDF Receipt'),
+            icon: AppAssets.icons.icDownload.svg(),
+          ),
           Values.v12.verticalSpace,
           FilledButton(
             onPressed: () => ref

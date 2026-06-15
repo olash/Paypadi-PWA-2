@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -9,12 +10,25 @@ import 'package:paypadi/config/env.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:paypadi/core/utils/constants.dart';
+import 'package:paypadi/core/utils/extensions.dart';
 import 'package:paypadi/core/utils/helpers.dart';
 import 'package:paypadi/src/paypadi.dart';
 import 'package:paypadi/src/shared/controllers/session/session_controller.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you need to use other Firebase services (like Firestore) in the background,
+  // you must make sure Firebase is initialized inside this isolate first.
+  await Firebase.initializeApp();
+
+  // Do not try to update UI or Riverpod providers here.
+  // This is strictly for background tasks like logging, updating a local database,
+  // or sending a delivery receipt back to your server.
+  'Handling a background message: ${message.messageId}'.printLog();
+}
 
 Future<void> initializeApp({
   required bool enableMonitoring,
@@ -30,6 +44,9 @@ Future<void> initializeApp({
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     ),
   ]);
+
+  // Register the background handler immediately after Firebase initializes
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (enableMonitoring) {
     await SentryFlutter.init(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -94,7 +96,7 @@ class DashboardScreen extends HookConsumerWidget {
 
   void initializeTransferProcess(WidgetRef ref, String amount) {
     ref.read(transactionPayloadProvider)['amount'] = amount;
-    ref.read(appRouterProvider).push(const TransferRoute());
+    unawaited(ref.read(appRouterProvider).push(const TransferRoute()));
   }
 
   bool canTransfer(String value) {
