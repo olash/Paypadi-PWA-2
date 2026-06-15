@@ -1,0 +1,55 @@
+name: 'Setup PayPadi Environment'
+description: 'Sets up Flutter, Java, Ruby, and handles caching'
+
+inputs:
+  flutter-version:
+    description: 'Flutter version to use'
+    required: true
+  java-version:
+    description: 'Java version to use'
+    required: false
+    default: '17'
+  setup-java:
+    description: 'Whether to setup Java (for Android)'
+    required: false
+    default: 'false'
+  setup-ruby:
+    description: 'Whether to setup Ruby (for Fastlane/iOS)'
+    required: false
+    default: 'false'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Java
+      if: inputs.setup-java == 'true'
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: ${{ inputs.java-version }}
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ inputs.flutter-version }}
+        channel: stable
+        cache: true
+
+    - name: Setup Ruby + Bundler
+      if: inputs.setup-ruby == 'true'
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+        bundler-cache: true
+
+    - name: Install dependencies
+      # We must specify the shell for run commands in composite actions
+      shell: bash 
+      run: flutter pub get
+
+    - name: Cache build_runner
+      uses: actions/cache@v4
+      with:
+        path: .dart_tool/build
+        key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
+        restore-keys: build-runner-${{ runner.os }}-

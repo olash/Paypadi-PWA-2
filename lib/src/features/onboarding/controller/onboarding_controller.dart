@@ -7,7 +7,9 @@ part 'onboarding_controller.g.dart';
 
 @riverpod
 class OnboardingController extends _$OnboardingController {
-  static const _autoAdvanceInterval = Duration(seconds: 3);
+  Timer? _timer;
+  static const _interval = Duration(seconds: 3);
+
   static final _keys = onboardingStoryAndAsset.keys.toList();
   static final _values = onboardingStoryAndAsset.values.toList();
 
@@ -17,8 +19,13 @@ class OnboardingController extends _$OnboardingController {
 
   @override
   int build() {
-    final timer = Timer.periodic(_autoAdvanceInterval, (_) => _advance());
-    ref.onDispose(timer.cancel);
+    _timer ??= Timer.periodic(_interval, (_) => _advance());
+
+    ref.onDispose(() {
+      _timer?.cancel();
+      _timer = null;
+    });
+
     return 0;
   }
 

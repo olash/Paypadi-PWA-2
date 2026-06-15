@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -19,7 +20,7 @@ class AppZeroItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        (context.screenHeight * topPaddingScaleFactor).verticalSpacing,
+        (context.screenHeight * topPaddingScaleFactor).verticalSpace,
         Row(
           spacing: Values.v12,
           mainAxisAlignment: MainAxisAlignment.center,

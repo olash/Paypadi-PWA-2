@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Env {
+class AppEnvironment {
   static String? flavor = appFlavor;
-  static String baseUrl = const String.fromEnvironment('API_BASE_URL');
+  static String backendApiBaseUrl = const String.fromEnvironment(
+    'API_BASE_URL',
+  );
+  static String sentryDsn = const String.fromEnvironment('SENTRY_DSN');
 
   static bool get isProd => flavor == 'prod';
 

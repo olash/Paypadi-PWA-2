@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -37,19 +40,19 @@ class EnterPinScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           Text(
             'Enter PIN',
             style: context.textTheme.headlineMedium,
           ),
-          Values.v12.verticalSpacing,
+          Values.v12.verticalSpace,
           Text(
             'Enter transaction 4-digit PIN-code or use your biometrics to perform action.',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          Values.v64.verticalSpacing,
+          Values.v64.verticalSpace,
           AppPinIndicator(
             controller: pinController,
           ),
@@ -61,24 +64,26 @@ class EnterPinScreen extends HookConsumerWidget {
             onBiometricKeyPressed: () async {
               await biometricService.authenticate();
 
-              final String? pin = await ref
-                  .read(secureCacheProvider)
-                  .read(CacheKeys.transactionPin);
+              // final String? pin = await ref
+              //     .read(secureCacheProvider)
+              //     .read(CacheKeys.transactionPin);
 
-              if (pin == null) return;
+              // if (pin == null) return;
 
-              ref.read(transactionPayloadProvider)['pin'] = pin;
-              ref
-                  .read(initiatePaymentControllerProvider.notifier)
-                  .initiatePayment();
+              // ref.read(transactionPayloadProvider)['pin'] = pin;
+              // ref
+              //     .read(initiatePaymentControllerProvider.notifier)
+              //     .initiatePayment();
             },
 
             onSubmit: (value) {
               ref.read(transactionPayloadProvider)['pin'] = value;
 
-              ref
-                  .read(initiatePaymentControllerProvider.notifier)
-                  .initiatePayment();
+              unawaited(
+                ref
+                    .read(initiatePaymentControllerProvider.notifier)
+                    .initiatePayment(),
+              );
             },
           ),
           const Spacer(),

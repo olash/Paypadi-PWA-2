@@ -1,71 +1,61 @@
 import 'dart:ui' show Color;
 
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:paypadi/config/env.dart';
 import 'package:paypadi/config/router/router.dart' show AppRouter;
 import 'package:paypadi/config/theme.dart' show AppTheme;
-import 'package:paypadi/core/clients/authentication_ds/authentication_client.dart';
-import 'package:paypadi/core/clients/jwt_ds/jwt_client.dart';
-import 'package:paypadi/core/clients/payout_account_ds/payout_account_client.dart';
-import 'package:paypadi/core/clients/profile_ds/profile_client.dart';
-import 'package:paypadi/core/clients/transaction_ds/transaction_client.dart';
-import 'package:paypadi/core/clients/wallet_ds/wallet_client.dart';
-import 'package:paypadi/core/repositories/authentication_repo.dart';
-import 'package:paypadi/core/repositories/jwt_repo.dart';
-import 'package:paypadi/core/repositories/payout_account_repo.dart';
-import 'package:paypadi/core/repositories/profile_repo.dart';
-import 'package:paypadi/core/repositories/transaction_repo.dart';
-import 'package:paypadi/core/repositories/wallet_repo.dart';
+import 'package:paypadi/core/clients/authentication/authentication_client.dart';
+import 'package:paypadi/core/clients/authentication/i_authentication_client.dart';
+import 'package:paypadi/core/clients/payout_account/i_payout_account_client.dart';
+import 'package:paypadi/core/clients/payout_account/payout_account_client.dart';
+import 'package:paypadi/core/clients/profile/i_profile_client.dart';
+import 'package:paypadi/core/clients/profile/profile_client.dart';
+import 'package:paypadi/core/clients/session/i_session_client.dart';
+import 'package:paypadi/core/clients/session/session_client.dart';
+import 'package:paypadi/core/clients/transaction/i_transaction_client.dart';
+import 'package:paypadi/core/clients/transaction/transaction_client.dart';
+import 'package:paypadi/core/clients/wallet/i_wallet_client.dart';
+import 'package:paypadi/core/clients/wallet/wallet_client.dart';
+import 'package:paypadi/core/repositories/authentication/authentication_repository.dart';
+import 'package:paypadi/core/repositories/authentication/i_authentication_repository.dart';
+import 'package:paypadi/core/repositories/payout_account/i_payout_account_repository.dart';
+import 'package:paypadi/core/repositories/payout_account/payout_account_repository.dart';
+import 'package:paypadi/core/repositories/profile/i_profile_repository.dart';
+import 'package:paypadi/core/repositories/profile/profile_repository.dart';
+import 'package:paypadi/core/repositories/session/i_session_repository.dart';
+import 'package:paypadi/core/repositories/session/session_repository.dart';
+import 'package:paypadi/core/repositories/transaction/i_transaction_repository.dart';
+import 'package:paypadi/core/repositories/transaction/transaction_repository.dart';
+import 'package:paypadi/core/repositories/wallet/i_wallet_repository.dart';
+import 'package:paypadi/core/repositories/wallet/wallet_repository.dart';
 import 'package:paypadi/core/services/api_service.dart';
 import 'package:paypadi/core/services/app_version_service.dart';
-import 'package:paypadi/core/services/biometrics_service.dart'
-    show BiometricsService;
+import 'package:paypadi/core/services/biometrics_service.dart';
 import 'package:paypadi/core/services/file_picker_service.dart';
 import 'package:paypadi/core/services/image_picker_service.dart';
-import 'package:paypadi/core/services/local_cache_service.dart'
-    show LocalCacheService;
+import 'package:paypadi/core/services/monitoring/monitoring_service.dart';
+import 'package:paypadi/core/services/monitoring/sentry_service.dart';
+import 'package:paypadi/core/services/notifications/firebase_notifications_service.dart';
+import 'package:paypadi/core/services/notifications/notifications_service.dart';
 import 'package:paypadi/core/services/receipt_service.dart';
-import 'package:paypadi/core/services/secure_cache_service.dart'
-    show SecureCacheService;
-import 'package:paypadi/core/utils/constants.dart'
-    show CacheKeys, availableColors;
+import 'package:paypadi/core/services/storage/local_cache_service.dart';
+import 'package:paypadi/core/services/storage/secure_cache_service.dart';
+import 'package:paypadi/core/utils/constants.dart' show availableColors;
+import 'package:paypadi/src/shared/controllers/app_color/app_color_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
 
 part 'provider_registry.g.dart';
 
-@Riverpod(keepAlive: true)
-class ColorIndexNotifier extends _$ColorIndexNotifier {
-  @override
-  int build() {
-    final localCache = ref.watch(localCacheProvider);
-    final int colorIndex = localCache.getFromCache(CacheKeys.colorTheme) ?? 0;
-    final bool isValidIndex =
-        colorIndex >= 0 && colorIndex < availableColors.length;
-    return isValidIndex ? colorIndex : 0;
-  }
-
-  Future<void> setColorIndex(int index) async {
-    if (index >= 0 && index < availableColors.length) {
-      state = index;
-      final localCache = ref.read(localCacheProvider);
-      await localCache.setColorTheme(index);
-    }
-  }
-}
+// =============================================================================
+// Core & Infrastructure Services
+// =============================================================================
 
 @Riverpod(keepAlive: true)
-AppRouter appRouter(Ref ref) => AppRouter(ref: ref);
-
-@Riverpod(keepAlive: true)
-Color appPrimaryColor(Ref ref) {
-  return availableColors[ref.watch(colorIndexProvider)];
-}
-
-@Riverpod(keepAlive: true)
-AppTheme appTheme(Ref ref) {
-  return AppTheme(
-    primary: ref.watch(appPrimaryColorProvider),
-  );
+MonitoringService monitoring(Ref ref) {
+  return SentryMonitoringService();
 }
 
 @Riverpod(keepAlive: true)
@@ -76,16 +66,147 @@ Future<SharedPreferencesWithCache> sharedPreferencesFuture(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-LocalCacheService localCache(Ref ref) {
+SecureCacheService secureCache(Ref ref) {
+  return SecureCacheService(monitoring: ref.watch(monitoringProvider));
+}
+
+@Riverpod(keepAlive: true)
+Future<LocalCacheService> localCache(Ref ref) async {
+  final monitoring = ref.watch(monitoringProvider);
+  final prefs = await ref.watch(sharedPreferencesFutureProvider.future);
+
   return LocalCacheService(
-    sharedPreferences: ref.watch(sharedPreferencesFutureProvider).requireValue,
+    sharedPreferences: prefs,
+    monitoring: monitoring,
   );
 }
 
 @Riverpod(keepAlive: true)
-SecureCacheService secureCache(Ref ref) => SecureCacheService();
+FirebaseMessaging firebaseMessaging(Ref ref) {
+  return FirebaseMessaging.instance;
+}
+
+@Riverpod(keepAlive: true)
+INotificationsService notificationsService(Ref ref) {
+  return FirebaseNotificationsService(ref.watch(firebaseMessagingProvider));
+}
+
+// =============================================================================
+// Theme & UI Configurations
+// =============================================================================
+
+@Riverpod(keepAlive: true)
+Color appPrimaryColor(Ref ref) {
+  // Watch the async state of the color index
+  final colorIndexAsync = ref.watch(colorIndexProvider);
+
+  // Map the index to the color, defaulting to the first color if loading/error
+  return colorIndexAsync.maybeWhen(
+    data: (index) => availableColors[index],
+    orElse: () => availableColors[0],
+  );
+}
+
+@Riverpod(keepAlive: true)
+AppTheme appTheme(Ref ref) {
+  return AppTheme(primary: ref.watch(appPrimaryColorProvider));
+}
+
+@Riverpod(keepAlive: true)
+AppRouter appRouter(Ref ref) {
+  return AppRouter(ref: ref);
+}
+
+// =============================================================================
+// Network & API Clients
+// =============================================================================
+
+@Riverpod(keepAlive: true)
+ApiService apiService(Ref ref) {
+  return ApiService(
+    cacheService: ref.watch(secureCacheProvider),
+    baseUrl: AppEnvironment.backendApiBaseUrl,
+  );
+}
+
+@Riverpod(keepAlive: true)
+Dio dio(Ref ref) {
+  return ref.watch(apiServiceProvider).dio;
+}
 
 @riverpod
+IAuthenticationClient authenticationClient(Ref ref) {
+  return AuthenticationClient(ref.watch(dioProvider));
+}
+
+@Riverpod(keepAlive: true)
+ISessionClient sessionClient(Ref ref) {
+  return SessionClient(ref.watch(dioProvider));
+}
+
+@riverpod
+IPayoutAccountClient payoutAccountClient(Ref ref) {
+  return PayoutAccountClient(ref.watch(dioProvider));
+}
+
+@riverpod
+IProfileClient profileClient(Ref ref) {
+  return ProfileClient(ref.watch(dioProvider));
+}
+
+@riverpod
+IWalletClient walletClient(Ref ref) {
+  return WalletClient(ref.watch(dioProvider));
+}
+
+@riverpod
+ITransactionClient transactionClient(Ref ref) {
+  return TransactionClient(ref.watch(dioProvider));
+}
+
+// =============================================================================
+// Repositories
+// =============================================================================
+
+@riverpod
+IAuthenticationRepository authenticationRepository(Ref ref) {
+  return AuthenticationRepository(
+    client: ref.watch(authenticationClientProvider),
+  );
+}
+
+@Riverpod(keepAlive: true)
+ISessionRepository sessionRepository(Ref ref) {
+  return SessionRepository(client: ref.watch(sessionClientProvider));
+}
+
+@riverpod
+IPayoutAccountRepository payoutAccountRepository(Ref ref) {
+  return PayoutAccountRepository(
+    client: ref.watch(payoutAccountClientProvider),
+  );
+}
+
+@riverpod
+IProfileRepository profileRepository(Ref ref) {
+  return ProfileRepository(client: ref.watch(profileClientProvider));
+}
+
+@riverpod
+IWalletRepository walletRepository(Ref ref) {
+  return WalletRepository(client: ref.watch(walletClientProvider));
+}
+
+@riverpod
+ITransactionRepository transactionRepository(Ref ref) {
+  return TransactionRepository(client: ref.watch(transactionClientProvider));
+}
+
+// =============================================================================
+// Platform Utilities & Device Services
+// =============================================================================
+
+@Riverpod(keepAlive: true)
 BiometricsService biometrics(Ref ref) {
   return BiometricsService();
 }
@@ -106,78 +227,6 @@ ImagePickerService imagePickerService(Ref ref) {
 }
 
 @riverpod
-AppVersionService versionService(Ref ref) {
+AppVersionService appVersionService(Ref ref) {
   return AppVersionService();
-}
-
-@riverpod
-AuthenticationClient authenticationClient(Ref ref) {
-  final dio = ref.watch(dioProvider);
-  return AuthenticationClient(dio);
-}
-
-@Riverpod(keepAlive: true)
-JwtClient jwtClient(Ref ref) {
-  final dio = ref.watch(dioProvider);
-  return JwtClient(dio);
-}
-
-@riverpod
-PayoutAccountClient payoutAccountClient(Ref ref) {
-  final dio = ref.watch(dioProvider);
-  return PayoutAccountClient(dio);
-}
-
-@riverpod
-ProfileClient profileClient(Ref ref) {
-  final dio = ref.watch(dioProvider);
-  return ProfileClient(dio);
-}
-
-@riverpod
-WalletClient walletClient(Ref ref) {
-  final dio = ref.watch(dioProvider);
-  return WalletClient(dio);
-}
-
-@riverpod
-TransactionClient transactionClient(Ref ref) {
-  final dio = ref.watch(dioProvider);
-  return TransactionClient(dio);
-}
-
-@riverpod
-AuthenticationRepository authenticationRepository(Ref ref) {
-  final AuthenticationClient client = ref.watch(authenticationClientProvider);
-  return AuthenticationRepository(client: client);
-}
-
-@Riverpod(keepAlive: true)
-JwtRepository jwtRepository(Ref ref) {
-  final JwtClient client = ref.watch(jwtClientProvider);
-  return JwtRepository(client: client);
-}
-
-@riverpod
-PayoutAccountRepository payoutAccountRepository(Ref ref) {
-  final PayoutAccountClient client = ref.watch(payoutAccountClientProvider);
-  return PayoutAccountRepository(client: client);
-}
-
-@riverpod
-ProfileRepository profileRepository(Ref ref) {
-  final ProfileClient client = ref.watch(profileClientProvider);
-  return ProfileRepository(client: client);
-}
-
-@riverpod
-WalletRepository walletRepository(Ref ref) {
-  final WalletClient client = ref.watch(walletClientProvider);
-  return WalletRepository(client);
-}
-
-@riverpod
-TransactionRepository transactionRepository(Ref ref) {
-  final TransactionClient client = ref.watch(transactionClientProvider);
-  return TransactionRepository(client);
 }

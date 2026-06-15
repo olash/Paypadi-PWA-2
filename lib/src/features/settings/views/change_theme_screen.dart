@@ -1,13 +1,11 @@
-import 'dart:async' show Timer;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
-import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/src/shared/controllers/app_color/app_color_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
@@ -16,35 +14,32 @@ class ChangeThemeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localCache = ref.watch(localCacheProvider);
-    final currentColor = useState<int>(
-      localCache.getFromCache(CacheKeys.colorTheme) ?? 0,
-    );
+    final currentColor = ref.watch(colorIndexProvider);
 
-    useEffect(() {
-      Timer? debounceTimer;
-      debounceTimer = Timer(
-        const Duration(milliseconds: 400),
-        () => ref
-            .read(colorIndexProvider.notifier)
-            .setColorIndex(currentColor.value),
-      );
-      return () => debounceTimer?.cancel();
-    }, [currentColor.value]);
+    // useEffect(() {
+    //   Timer? debounceTimer;
+    //   debounceTimer = Timer(
+    //     const Duration(milliseconds: 600),
+    //     () => ref
+    //         .read(colorIndexProvider.notifier)
+    //         .setColorIndex(currentColor.value),
+    //   );
+    //   return () => debounceTimer?.cancel();
+    // }, [currentColor.value]);
 
     return AppScaffold(
       title: 'Theme',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           Text(
             'Customize to your preferred theme colour',
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          Values.v16.verticalSpacing,
+          Values.v16.verticalSpace,
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -59,7 +54,7 @@ class ChangeThemeScreen extends HookConsumerWidget {
                   _ThemeColorWidget(
                     color: availableColors[i],
                     isCurrent: currentColor.value == i,
-                    onTap: () => currentColor.value = i,
+                    // onTap: () => currentColor.value = i,
                   ),
               ],
             ),
@@ -74,8 +69,7 @@ class _ThemeColorWidget extends StatelessWidget {
   const _ThemeColorWidget({
     required this.color,
     required this.isCurrent,
-    this.onTap,
-  });
+  }) : onTap = null;
 
   final Color color;
   final bool isCurrent;

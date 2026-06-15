@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -49,7 +50,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
                 ),
               ),
 
-              Values.v16.verticalSpacing,
+              Values.v16.verticalSpace,
               Text(
                 'Account Number',
                 style: context.textTheme.bodyMedium?.copyWith(
@@ -67,7 +68,7 @@ class DepositMoneyScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-              Values.v12.verticalSpacing,
+              Values.v12.verticalSpace,
               Row(
                 spacing: Values.v12,
                 children: [

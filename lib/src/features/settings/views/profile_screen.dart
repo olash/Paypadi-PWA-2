@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart' show kDemoProfilePic, Values;
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/shared/controllers/profile_controller.dart';
+import 'package:paypadi/src/shared/controllers/user_profile/user_profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_avatar.dart' show AppAvatar;
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 import 'package:paypadi/src/shared/widgets/app_textformfield.dart'
@@ -43,9 +44,9 @@ class ProfileScreen extends HookConsumerWidget {
       bottomPadding: Values.v24,
       child: Column(
         children: [
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           const AppAvatar(radius: 80, imageUrl: kDemoProfilePic),
-          Values.v8.verticalSpacing,
+          Values.v8.verticalSpace,
           GestureDetector(
             onTap: () {},
             child: Text(
@@ -56,7 +57,7 @@ class ProfileScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          Values.v20.verticalSpacing,
+          Values.v20.verticalSpace,
           AppTextformfield(
             title: 'First Name',
             titleStyle: style,

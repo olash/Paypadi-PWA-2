@@ -1,5 +1,4 @@
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
-import 'package:paypadi/core/utils/enums.dart';
 
 base class ClientException extends AppException {
   const ClientException({

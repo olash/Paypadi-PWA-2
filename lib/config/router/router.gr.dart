@@ -11,29 +11,29 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i39;
 import 'package:flutter/material.dart' as _i40;
-import 'package:paypadi/src/features/authentication/presentation/views/account_role_screen.dart'
+import 'package:paypadi/src/features/authentication/views/account_role_screen.dart'
     as _i1;
-import 'package:paypadi/src/features/authentication/presentation/views/biometric_auth_screen.dart'
+import 'package:paypadi/src/features/authentication/views/biometric_auth_screen.dart'
     as _i2;
-import 'package:paypadi/src/features/authentication/presentation/views/create_account_screen.dart'
+import 'package:paypadi/src/features/authentication/views/create_account_screen.dart'
     as _i9;
-import 'package:paypadi/src/features/authentication/presentation/views/document_upload_screen.dart'
+import 'package:paypadi/src/features/authentication/views/document_upload_screen.dart'
     as _i14;
-import 'package:paypadi/src/features/authentication/presentation/views/licensing_screen.dart'
+import 'package:paypadi/src/features/authentication/views/licensing_screen.dart'
     as _i20;
-import 'package:paypadi/src/features/authentication/presentation/views/login_screen.dart'
+import 'package:paypadi/src/features/authentication/views/login_screen.dart'
     as _i21;
-import 'package:paypadi/src/features/authentication/presentation/views/otp_screen.dart'
+import 'package:paypadi/src/features/authentication/views/otp_screen.dart'
     as _i25;
-import 'package:paypadi/src/features/authentication/presentation/views/payout_account_screen.dart'
+import 'package:paypadi/src/features/authentication/views/payout_account_screen.dart'
     as _i26;
-import 'package:paypadi/src/features/authentication/presentation/views/setup_driver_screen.dart'
+import 'package:paypadi/src/features/authentication/views/setup_driver_screen.dart'
     as _i32;
-import 'package:paypadi/src/features/authentication/presentation/views/setup_passenger_screen.dart'
+import 'package:paypadi/src/features/authentication/views/setup_passenger_screen.dart'
     as _i33;
-import 'package:paypadi/src/features/authentication/presentation/views/sign_in_screen.dart'
+import 'package:paypadi/src/features/authentication/views/sign_in_screen.dart'
     as _i34;
-import 'package:paypadi/src/features/authentication/presentation/views/vehicle_info_screen.dart'
+import 'package:paypadi/src/features/authentication/views/vehicle_info_screen.dart'
     as _i38;
 import 'package:paypadi/src/features/home/views/dashboard_screen.dart' as _i12;
 import 'package:paypadi/src/features/home/views/deposit_money_screen.dart'

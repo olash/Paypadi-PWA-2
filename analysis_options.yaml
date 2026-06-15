@@ -36,6 +36,8 @@ analyzer:
     always_use_package_imports: error   # Enforces clean layer boundaries
     dead_code: warning
 
+  
+
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"

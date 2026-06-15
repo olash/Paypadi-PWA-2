@@ -2,17 +2,8 @@
 import 'dart:async';
 
 // Package imports:
-import 'package:dio/dio.dart';
-
-import 'package:paypadi/core/api/exceptions/client_exception.dart'
-    show ClientException;
-import 'package:paypadi/core/api/exceptions/server_exception.dart'
-    show ServerException;
-
-bool _isResponseParsingError(Error error) =>
-    error is TypeError ||
-    error.runtimeType.toString() == 'CastError' ||
-    error is NoSuchMethodError;
+import 'package:paypadi/core/api/exceptions/app_exception.dart'
+    show AppException;
 
 /// This class will be used by class users in their methods.
 ///
@@ -179,49 +170,11 @@ sealed class Result<S, F> {
     try {
       final result = await func();
       return success(result);
-    } on DioException catch (exception) {
-      switch (exception.type) {
-        case DioExceptionType.badResponse:
-          final error = ServerException.handleResponse(exception.response);
-          return failure(error);
-        case DioExceptionType.connectionError:
-        case DioExceptionType.connectionTimeout:
-        case DioExceptionType.receiveTimeout:
-        case DioExceptionType.sendTimeout:
-          return failure(
-            const ClientException(
-              message:
-                  'Error establishing a connection to the server. Please try again',
-            ),
-          );
-        case DioExceptionType.cancel:
-          return failure(
-            const ClientException(message: 'Request was cancelled'),
-          );
-        case DioExceptionType.unknown:
-          return failure(
-            ClientException(
-              message: 'An unknown error occurred: ${exception.message}',
-            ),
-          );
-        case _:
-          return failure(ClientException(message: exception.toString()));
-      }
-    } on Exception catch (e) {
-      // Convert other exceptions to Failure so callers don't need to try/catch.
-      return failure(e);
-    } on Error catch (e) {
-      if (_isResponseParsingError(e)) {
-        return failure(
-          const ClientException(
-            message:
-                'Failed to parse server response. Please update the app or try again later.',
-          ),
-        );
-      }
-
-      // Let real programming errors surface — do not swallow unrelated Errors.
-      rethrow;
+    } catch (e, st) {
+      // Delegate to AppException for comprehensive error mapping.
+      // Handles DioException, TypeError, NoSuchMethodError, etc.
+      final appException = AppException.handleException(e, st);
+      return failure(appException);
     }
   }
 
@@ -236,20 +189,11 @@ sealed class Result<S, F> {
     try {
       final result = func();
       return success(result);
-    } on Exception catch (e) {
-      return failure(e);
-    } on Error catch (e) {
-      if (_isResponseParsingError(e)) {
-        return failure(
-          const ClientException(
-            message:
-                'Failed to parse server response. Please update the app or try again later.',
-          ),
-        );
-      }
-
-      // Don't swallow programming errors — let them surface to the caller.
-      rethrow;
+    } catch (e, st) {
+      // Use AppException for consistent error mapping (handles TypeError, NoSuchMethodError, etc).
+      // AppException.handleException rethrows unrelated programming Errors.
+      final appException = AppException.handleException(e, st);
+      return failure(appException);
     }
   }
 
@@ -275,14 +219,14 @@ sealed class Result<S, F> {
   /// the Result is a success with a certain value. If the condition is false,
   /// the Result is an error with a certain error.
   /// ```dart
-  /// final result = Result.fromPredicate(2 > 1, () => 2, () => Exception('Condition is false'));
+  /// final result = Result.fromPredicate(condition: 2 > 1, () => 2, () => Exception('Condition is false'));
   /// print(result.successValue); // prints 2
   /// ```
-  static Result<T, Exception> fromPredicate<T>(
-    bool condition,
-    T Function() onSuccess,
-    Exception Function() onError,
-  ) => condition ? success(onSuccess()) : failure(onError());
+  static Result<T, Exception> fromPredicate<T>({
+    required bool condition,
+    required T Function() onSuccess,
+    required Exception Function() onError,
+  }) => condition ? success(onSuccess()) : failure(onError());
 }
 
 /// A container for Failure values

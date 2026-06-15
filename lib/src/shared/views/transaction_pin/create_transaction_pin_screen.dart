@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -23,19 +26,19 @@ class CreateTransactionPinScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Values.v32.verticalSpacing,
+          Values.v32.verticalSpace,
           Text(
             'Create a Transaction PIN',
             style: context.textTheme.headlineMedium,
           ),
-          Values.v12.verticalSpacing,
+          Values.v12.verticalSpace,
           Text(
             'Set a secure password for your account',
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),
-          Values.v32.verticalSpacing,
+          Values.v32.verticalSpace,
           AppPinIndicator(
             controller: pinController,
           ),
@@ -51,6 +54,8 @@ class CreateTransactionPinScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String pin) {
-    ref.read(appRouterProvider).push(ConfirmTransactionPinRoute(pin: pin));
+    unawaited(
+      ref.read(appRouterProvider).push(ConfirmTransactionPinRoute(pin: pin)),
+    );
   }
 }
