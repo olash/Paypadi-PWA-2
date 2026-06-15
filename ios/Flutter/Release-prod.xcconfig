@@ -1,0 +1,8 @@
+#include "Generated.xcconfig"
+#include "Release.xcconfig"
+
+ASSET_PREFIX=prod
+BUNDLE_NAME=Paypadi
+BUNDLE_DISPLAY_NAME=Paypadi
+GID_CLIENT_ID=193368650800-ei7o59n61qr1mtnr3tknab3khb525b4i.apps.googleusercontent.com
+REVERSED_CLIENT_ID=com.googleusercontent.apps.193368650800-ei7o59n61qr1mtnr3tknab3khb525b4i

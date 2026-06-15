@@ -53,4 +53,15 @@ app.*.map.json
 # Generated files directory
 lib/config/gen
 
+# App Secrets
 .env.*
+
+# Sentry Key
+sentry.properties
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/app_download_*
+firebase-credentials.json

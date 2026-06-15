@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/account_lookup_model/account_lookup_model.dart';
 import 'package:paypadi/core/models/payment_model/payment_model.dart';
 import 'package:paypadi/core/models/transaction_model/transaction_model.dart';
-import 'package:paypadi/core/repositories/transaction_repo.dart';
+import 'package:paypadi/core/repositories/transaction/i_transaction_repository.dart';
 import 'package:paypadi/core/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -33,7 +35,7 @@ class AccountLookup extends _$AccountLookup {
 
 @riverpod
 class InitiatePaymentController extends _$InitiatePaymentController {
-  late final TransactionRepository _repository;
+  late final ITransactionRepository _repository;
 
   @override
   FutureOr<PaymentModel?> build() async {
@@ -59,7 +61,9 @@ class InitiatePaymentController extends _$InitiatePaymentController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        ref.read(appRouterProvider).push(const ConfirmPaymentRoute());
+        unawaited(
+          ref.read(appRouterProvider).push(const ConfirmPaymentRoute()),
+        );
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -71,7 +75,7 @@ class InitiatePaymentController extends _$InitiatePaymentController {
 
 @riverpod
 class TransactionController extends _$TransactionController {
-  late final TransactionRepository _repository;
+  late final ITransactionRepository _repository;
 
   @override
   FutureOr<TransactionModel?> build() async {
@@ -87,9 +91,11 @@ class TransactionController extends _$TransactionController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        ref
-            .read(appRouterProvider)
-            .push(ReceiptRoute(referenceId: success.data.reference));
+        unawaited(
+          ref
+              .read(appRouterProvider)
+              .push(ReceiptRoute(referenceId: success.data.reference)),
+        );
       },
       (failure) {
         ref.showExceptionMessage(failure);

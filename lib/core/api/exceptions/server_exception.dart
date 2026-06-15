@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:paypadi/core/api/exceptions/app_exception.dart';
-import 'package:paypadi/core/utils/enums.dart';
 
 part 'server_exception.freezed.dart';
 

@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:paypadi/config/provider_registry/provider_registry.dart'
-    show localCacheProvider, secureCacheProvider;
+import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
 import 'package:paypadi/core/models/user_model/user_model.dart';
-import 'package:paypadi/core/utils/constants.dart' show CacheKeys;
+import 'package:paypadi/core/utils/constants.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
@@ -20,7 +21,6 @@ class AppRouter extends RootStackRouter {
       path: '/',
       initial: true,
       page: OnboardingRoute.page,
-      // guards: [LandingPageGuard(ref)],
     ),
     AutoRoute(
       path: '/account',
@@ -201,11 +201,15 @@ class AuthenticationGuard extends AutoRouteGuard {
     NavigationResolver resolver,
     StackRouter router,
   ) async {
-    final String? accessToken = await ref
+    final accessToken = await ref
         .read(secureCacheProvider)
-        .read(CacheKeys.accessToken);
+        .get<String?>(CacheKeys.accessToken);
 
-    if (accessToken == null) {
+    final refreshToken = await ref
+        .read(secureCacheProvider)
+        .get<String?>(CacheKeys.refreshToken);
+
+    if (accessToken != null && refreshToken != null) {
       resolver.redirectUntil(const SignInRoute());
       return;
     }
@@ -214,42 +218,42 @@ class AuthenticationGuard extends AutoRouteGuard {
   }
 }
 
-class LandingPageGuard extends AutoRouteGuard {
-  const LandingPageGuard(this.ref);
-  final Ref ref;
+// class LandingPageGuard extends AutoRouteGuard {
+//   const LandingPageGuard(this.ref);
+//   final Ref ref;
 
-  @override
-  Future<void> onNavigation(
-    NavigationResolver resolver,
-    StackRouter router,
-  ) async {
-    final String? accessToken = await ref
-        .read(secureCacheProvider)
-        .read(CacheKeys.accessToken);
+//   @override
+//   Future<void> onNavigation(
+//     NavigationResolver resolver,
+//     StackRouter router,
+//   ) async {
+//     final accessToken = await ref
+//         .read(secureCacheProvider)
+//         .get<String?>(CacheKeys.accessToken);
 
-    final String? refreshToken = await ref
-        .read(secureCacheProvider)
-        .read(CacheKeys.refreshToken);
+//     final String? refreshToken = await ref
+//         .read(secureCacheProvider)
+//         .get<String?>(CacheKeys.refreshToken);
 
-    // final bool? biometricLoginEnabled = ref
-    //     .read(localCacheProvider)
-    //     .getFromCache<bool>(CacheKeys.enabledBiometrics);
+//     // final bool? biometricLoginEnabled = ref
+//     //     .read(localCacheProvider)
+//     //     .getFromCache<bool>(CacheKeys.enabledBiometrics);
 
-    // // Check if user is authenticated and has enabled biometric sign-in
-    // if (biometricLoginEnabled == true && accessToken != null) {
-    //   router.replace(LoginRoute());
-    //   return;
-    // }
+//     // // Check if user is authenticated and has enabled biometric sign-in
+//     // if (biometricLoginEnabled == true && accessToken != null) {
+//     //   router.replace(LoginRoute());
+//     //   return;
+//     // }
 
-    if (accessToken != null && refreshToken != null) {
-      router.replace(const LoginRoute());
-      return;
-    }
+//     // if (accessToken != null && refreshToken != null) {
+//     //   unawaited(router.replace(const LoginRoute()));
+//     //   return;
+//     // }
 
-    // allow navigation
-    resolver.next();
-  }
-}
+//     // // allow navigation
+//     // resolver.next();
+//   }
+// }
 
 class DriverAccountGuard extends AutoRouteGuard {
   const DriverAccountGuard(this.ref);
@@ -260,15 +264,14 @@ class DriverAccountGuard extends AutoRouteGuard {
     NavigationResolver resolver,
     StackRouter router,
   ) async {
-    final UserModel? user = ref
-        .read(localCacheProvider)
-        .getFromCache<UserModel>(
-          CacheKeys.user,
-          (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
-        );
+    final localCache = await ref.read(localCacheProvider.future);
+    final UserModel? user = await localCache.get(
+      CacheKeys.user,
+      (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
+    );
 
     if (user?.isDriver == true && user?.isApproved == false) {
-      router.replace(const VehicleInformationRoute());
+      unawaited(router.replace(const VehicleInformationRoute()));
       return;
     }
 

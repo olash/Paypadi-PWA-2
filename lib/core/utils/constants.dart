@@ -69,7 +69,7 @@ const String placeholderShort = 'Placeholder Short';
 
 const String placeholderLong = 'Placeholder Text Long';
 
-final List<Color> availableColors = [
+const List<Color> availableColors = [
   AppColors.primary,
   AppColors.blueThemeColor,
   AppColors.pinkThemeColor,
@@ -174,12 +174,12 @@ final Talker debugLogger = TalkerFlutter.init(
 );
 
 class CacheKeys {
-  static const String isDarkMode = 'dark_mode';
-  static const String enabledBiometrics = 'biometrics';
-  static const String colorTheme = 'color_theme';
+  static const String darkMode = 'dark_mode';
+  static const String biometrics = 'biometrics';
+  static const String inAppColor = 'in_app_color';
 
-  static const String refreshToken = 'refresh_token';
-  static const String accessToken = 'access_token';
+  static const String accessToken = 'session_access_token';
+  static const String refreshToken = 'session_refresh_token';
 
   static const String user = 'user';
   static const String password = 'user_password';

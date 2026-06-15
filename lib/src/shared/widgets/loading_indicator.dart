@@ -4,7 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
-import 'package:paypadi/src/shared/controllers/app_loading_controller.dart';
+import 'package:paypadi/src/shared/controllers/app_loading/app_loading_controller.dart';
 
 class AppLoadingOverlay extends ConsumerWidget {
   const AppLoadingOverlay({required this.child, super.key});

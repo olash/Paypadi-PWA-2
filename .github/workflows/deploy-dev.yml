@@ -1,0 +1,146 @@
+name: Paypadi Deploy — Dev
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Target platform"
+        type: choice
+        required: true
+        default: all
+        options: [all, android, ios]
+
+concurrency:
+  group: deploy-dev-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: "any"
+  JAVA_VERSION: "17"
+
+jobs:
+  # ─── Validation ─────────────────────────────────────────────────────────────
+  validate:
+    uses: ./.github/workflows/validate.yml
+    secrets: inherit
+
+  # ─── Android ────────────────────────────────────────────────────────────────
+  android-dev:
+    name: Android — Dev
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: dev
+    if: github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'android'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          setup-java: "true"
+          setup-ruby: "true"
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Decode upload keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" \
+            | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << 'EOF'
+          storeFile=upload-keystore.jks
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Build APK — dev
+        run: |
+          flutter build apk \
+            --flavor dev \
+            --target lib/main_dev.dart \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
+            --build-number=${{ github.run_number }} \
+            --release
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paypadi-dev-r${{ github.run_number }}.aab
+          path: build/app/outputs/bundle/devRelease/app-dev-release.aab
+          retention-days: 14
+
+      - name: Setup Firebase Credentials
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > firebase-credentials.json
+
+      - name: Deploy to Firebase App Distribution
+        run: bundle exec fastlane android deploy_firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: firebase-credentials.json
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_ANDROID_APP_ID }}
+
+  # ─── iOS ────────────────────────────────────────────────────────────────────
+  ios-dev:
+    name: iOS — Dev
+    needs: validate
+    runs-on: macos-15
+    environment: dev
+    if: github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'ios'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          setup-ruby: "true"
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Sync dev certificates via Match
+        run: bundle exec fastlane ios sync_dev_certs
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
+      - name: Build IPA — dev
+        run: |
+          flutter build ipa \
+            --flavor dev \
+            --target lib/main_dev.dart \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
+            --build-number=${{ github.run_number }} \
+            --release \
+            --export-options-plist=ios/ExportOptionsDev.plist
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paypadi-dev-r${{ github.run_number }}.ipa
+          path: build/ios/ipa/*.ipa
+          retention-days: 14
+
+      - name: Setup Firebase Credentials
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > firebase-credentials.json
+
+      - name: Deploy to Firebase App Distribution
+        run: bundle exec fastlane ios deploy_firebase # Fixed: original incorrectly called "android" lane
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: firebase-credentials.json
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_IOS_APP_ID }}

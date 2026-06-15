@@ -18,28 +18,30 @@ class OnboardingScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final primaryColor = ref.watch(appPrimaryColorProvider);
+    final currentPage = ref.watch(onboardingControllerProvider);
     final pageController = usePageController();
 
-    // Animate to the new page whenever the controller advances.
-    ref.listen(onboardingControllerProvider, (previous, next) {
-      if (!pageController.hasClients) return;
+    ref.listen<int>(
+      onboardingControllerProvider,
+      (previous, next) async {
+        if (!pageController.hasClients) return;
 
-      final isRestart =
-          previous == OnboardingController.pageCount - 1 && next == 0;
+        final prev = previous ?? 0;
+        final isRestart =
+            prev == OnboardingController.pageCount - 1 && next == 0;
 
-      if (isRestart) {
-        pageController.jumpToPage(0);
-      } else {
-        pageController.animateToPage(
-          next,
-          duration: Durations.medium3,
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-
-    final currentPage = ref.watch(onboardingControllerProvider);
-    final primaryColor = ref.watch(appPrimaryColorProvider);
+        if (isRestart) {
+          pageController.jumpToPage(0);
+        } else {
+          await pageController.animateToPage(
+            next,
+            duration: Durations.medium3,
+            curve: Curves.easeInOut,
+          );
+        }
+      },
+    );
 
     return AppScaffold(
       showAppBar: false,
@@ -79,19 +81,15 @@ class OnboardingScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          Values.v24.verticalSpacing,
+          Values.v24.verticalSpace,
           FilledButton(
-            onPressed: () {
-              ref.read(appRouterProvider).push(const CreateAccountRoute());
-              ref.invalidate(onboardingControllerProvider);
-            },
+            onPressed: () =>
+                ref.read(appRouterProvider).replace(const CreateAccountRoute()),
             child: const Text('Create Account'),
           ),
           OutlinedButton(
-            onPressed: () {
-              ref.read(appRouterProvider).push(const SignInRoute());
-              ref.invalidate(onboardingControllerProvider);
-            },
+            onPressed: () =>
+                ref.read(appRouterProvider).replace(const SignInRoute()),
             child: const Text('Sign In'),
           ),
         ],
@@ -109,11 +107,8 @@ class _OnboardingStory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset(
-          imagePath,
-          height: context.screenHeight * .5,
-        ),
-        Values.v12.verticalSpacing,
+        Image.asset(imagePath, height: context.screenHeight * .5),
+        Values.v12.verticalSpace,
         Text(
           text,
           textAlign: TextAlign.center,

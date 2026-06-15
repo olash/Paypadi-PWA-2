@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:paypadi/config/gen/colors.gen.dart' show AppColors;
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/src/shared/controllers/profile_controller.dart';
+import 'package:paypadi/src/shared/controllers/user_profile/user_profile_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_card.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
 
@@ -43,7 +44,7 @@ class ReferralScreen extends HookConsumerWidget {
                 letterSpacing: kZeroLetterSpacing,
               ),
             ),
-            Values.v8.verticalSpacing,
+            Values.v8.verticalSpace,
             Container(
               padding: const EdgeInsets.symmetric(
                 vertical: Values.v8,
@@ -90,7 +91,7 @@ class ReferralScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            Values.v10.verticalSpacing,
+            Values.v10.verticalSpace,
             Container(
               width: context.screenWidth,
               padding: const EdgeInsets.all(Values.v10),
