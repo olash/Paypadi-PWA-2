@@ -46,10 +46,3 @@ runs:
       # We must specify the shell for run commands in composite actions
       shell: bash 
       run: flutter pub get
-
-    - name: Cache build_runner
-      uses: actions/cache@v4
-      with:
-        path: .dart_tool/build
-        key: build-runner-${{ runner.os }}-${{ hashFiles('**/*.dart') }}
-        restore-keys: build-runner-${{ runner.os }}-
