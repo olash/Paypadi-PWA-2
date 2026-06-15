@@ -10,8 +10,8 @@ platform :android do
       app: ENV["FIREBASE_APP_ID"],
       release_notes: "Automated Dev Build via GitHub Actions",
       groups: "dev-testers",
-      android_artifact_type: "AAB",
-      android_artifact_path: "build/app/outputs/bundle/devRelease/app-dev-release.aab"
+      android_artifact_type: "APK",
+      android_artifact_path: "build/app/outputs/flutter-apk/app-dev-release.apk"
     )
   end
 

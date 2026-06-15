@@ -63,9 +63,9 @@ jobs:
           keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
           EOF
 
-      - name: Build App Bundle — dev
+      - name: Build APK — dev
         run: |
-          flutter build appbundle \
+          flutter build apk \
             --flavor dev \
             --target lib/main_dev.dart \
             --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
