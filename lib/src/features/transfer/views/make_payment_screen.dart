@@ -66,9 +66,11 @@ class MakePaymentScreen extends HookConsumerWidget {
                     ? null
                     : (value) {
                         hasSavedAsBeneficiary.value = true;
-                        unawaited(ref
-                            .read(walletControllerProvider.notifier)
-                            .saveBeneficiary(recipientDetails.value!));
+                        unawaited(
+                          ref
+                              .read(walletControllerProvider.notifier)
+                              .saveBeneficiary(recipientDetails.value!),
+                        );
                       },
               ),
             ],

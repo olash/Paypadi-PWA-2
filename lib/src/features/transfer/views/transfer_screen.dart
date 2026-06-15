@@ -55,9 +55,11 @@ class TransferScreen extends HookConsumerWidget {
 
   void continueAction(WidgetRef ref, String receipientNumber) {
     if (receipientNumber.isNotEmpty) {
-      unawaited(ref
-          .read(appRouterProvider)
-          .push(MakePaymentRoute(recipientNumber: receipientNumber)));
+      unawaited(
+        ref
+            .read(appRouterProvider)
+            .push(MakePaymentRoute(recipientNumber: receipientNumber)),
+      );
     }
   }
 }

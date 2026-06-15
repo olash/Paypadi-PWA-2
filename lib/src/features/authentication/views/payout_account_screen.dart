@@ -135,11 +135,13 @@ class PayoutAccountScreen extends HookConsumerWidget {
       if (bankCode.isEmpty) ref.showErrorToast('Please select a bank.');
       return;
     }
-    unawaited(ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
-      'account_number': accountNumber,
-      'bank_code': bankCode,
-      // 'bank_code': "001",
-    }));
+    unawaited(
+      ref.read(verifiedBankAccountProvider.notifier).verifyBankInformation({
+        'account_number': accountNumber,
+        'bank_code': bankCode,
+        // 'bank_code': "001",
+      }),
+    );
   }
 
   void _navigateNext(
@@ -163,7 +165,9 @@ class PayoutAccountScreen extends HookConsumerWidget {
       'bank_code': bankCode,
       'is_primary': true,
     };
-    unawaited(ref.read(payoutAccountProvider.notifier).createPayoutAccount(payload));
+    unawaited(
+      ref.read(payoutAccountProvider.notifier).createPayoutAccount(payload),
+    );
   }
 }
 

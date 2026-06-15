@@ -79,9 +79,11 @@ class EnterPinScreen extends HookConsumerWidget {
             onSubmit: (value) {
               ref.read(transactionPayloadProvider)['pin'] = value;
 
-              unawaited(ref
-                  .read(initiatePaymentControllerProvider.notifier)
-                  .initiatePayment());
+              unawaited(
+                ref
+                    .read(initiatePaymentControllerProvider.notifier)
+                    .initiatePayment(),
+              );
             },
           ),
           const Spacer(),

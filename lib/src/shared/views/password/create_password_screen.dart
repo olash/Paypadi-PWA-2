@@ -55,6 +55,10 @@ class CreatePasswordScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String password) {
-    unawaited(ref.read(appRouterProvider).push(ConfirmPasswordRoute(password: password)));
+    unawaited(
+      ref
+          .read(appRouterProvider)
+          .push(ConfirmPasswordRoute(password: password)),
+    );
   }
 }

@@ -76,7 +76,7 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
   ) async {
     if (password == confirmedPassword) {
       ref.read(authenticationPayloadProvider)['password'] = password;
-   await    ref.read(authenticationControllerProvider.notifier).register();
+      await ref.read(authenticationControllerProvider.notifier).register();
     }
   }
 }

@@ -54,6 +54,8 @@ class CreateTransactionPinScreen extends HookConsumerWidget {
   }
 
   void onSubmit(WidgetRef ref, String pin) {
-    unawaited(ref.read(appRouterProvider).push(ConfirmTransactionPinRoute(pin: pin)));
+    unawaited(
+      ref.read(appRouterProvider).push(ConfirmTransactionPinRoute(pin: pin)),
+    );
   }
 }

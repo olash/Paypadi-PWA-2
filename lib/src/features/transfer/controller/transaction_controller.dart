@@ -61,7 +61,9 @@ class InitiatePaymentController extends _$InitiatePaymentController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        unawaited(ref.read(appRouterProvider).push(const ConfirmPaymentRoute()));
+        unawaited(
+          ref.read(appRouterProvider).push(const ConfirmPaymentRoute()),
+        );
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -89,9 +91,11 @@ class TransactionController extends _$TransactionController {
     result.fold(
       (success) {
         state = AsyncValue.data(success.data);
-        unawaited(ref
-            .read(appRouterProvider)
-            .push(ReceiptRoute(referenceId: success.data.reference)));
+        unawaited(
+          ref
+              .read(appRouterProvider)
+              .push(ReceiptRoute(referenceId: success.data.reference)),
+        );
       },
       (failure) {
         ref.showExceptionMessage(failure);

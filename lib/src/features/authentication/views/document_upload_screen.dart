@@ -352,7 +352,9 @@ class _FileUploadWidget extends HookConsumerWidget {
   }
 
   void retry(WidgetRef ref) {
-    unawaited(ref.read(fileUploadControllerProvider.notifier).retry(documentCategory));
+    unawaited(
+      ref.read(fileUploadControllerProvider.notifier).retry(documentCategory),
+    );
   }
 }
 

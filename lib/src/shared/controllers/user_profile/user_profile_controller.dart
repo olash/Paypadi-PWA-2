@@ -54,7 +54,9 @@ class RiderProfile extends _$RiderProfile {
               .read(secureCacheProvider)
               .save(key: CacheKeys.transactionPin, value: confirmedPin),
         );
-        await ref.read(appRouterProvider).push(const BiometricAuthenticationRoute());
+        await ref
+            .read(appRouterProvider)
+            .push(const BiometricAuthenticationRoute());
         state = const AsyncData(null);
       },
       (failure) {
