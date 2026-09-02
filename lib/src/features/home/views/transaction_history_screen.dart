@@ -112,7 +112,7 @@ class _TransactionTile extends ConsumerWidget {
                 child: isLoading
                     ? Icon(Icons.question_mark, color: color)
                     : Icon(
-                        switch (transaction.type) {
+                        switch (transaction.type as TransactionType) {
                           TransactionType.deposit => Icons.arrow_downward,
                           TransactionType.transfer ||
                           TransactionType.withdrawal => Icons.arrow_upward,
