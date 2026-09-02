@@ -22,7 +22,33 @@ class PayPadi extends ConsumerWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       designSize: appDesignSize,
+      fontSizeResolver: (fontSize, instance) {
+        if (kIsWeb) {
+          final double effectiveWidth =
+              instance.screenWidth > 450.0 ? 450.0 : instance.screenWidth;
+          final double scale = effectiveWidth / appDesignSize.width;
+          return fontSize * scale;
+        }
+        return FontSizeResolvers.width(fontSize, instance);
+      },
       builder: (context, _) {
+        if (kIsWeb) {
+          final rawView = View.maybeOf(context);
+          if (rawView != null) {
+            final mq = MediaQueryData.fromView(rawView);
+            final double clampedWidth =
+                mq.size.width > 450.0 ? 450.0 : mq.size.width;
+            ScreenUtil.configure(
+              data: mq.copyWith(
+                size: Size(clampedWidth, mq.size.height),
+              ),
+              designSize: appDesignSize,
+              minTextAdapt: true,
+              splitScreenMode: true,
+            );
+          }
+        }
+
         return ToastificationWrapper(
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
@@ -35,11 +61,39 @@ class PayPadi extends ConsumerWidget {
             builder: (context, child) {
               Widget content = AppLoadingOverlay(child: child!);
               if (kIsWeb) {
-                // Constrain the app width on desktop monitors to prevent stretching
+                final mq = MediaQuery.of(context);
+                final double clampedWidth =
+                    mq.size.width > 450.0 ? 450.0 : mq.size.width;
+                final clampedMq = mq.copyWith(
+                  size: Size(clampedWidth, mq.size.height),
+                );
+
+                ScreenUtil.configure(
+                  data: clampedMq,
+                  designSize: appDesignSize,
+                  minTextAdapt: true,
+                  splitScreenMode: true,
+                );
+
                 content = Center(
-                  child: ConstrainedBox(
+                  child: Container(
                     constraints: const BoxConstraints(maxWidth: 450),
-                    child: ClipRect(child: content),
+                    decoration: mq.size.width > 450.0
+                        ? BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.18),
+                                blurRadius: 30,
+                                spreadRadius: 2,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          )
+                        : null,
+                    child: MediaQuery(
+                      data: clampedMq,
+                      child: ClipRect(child: content),
+                    ),
                   ),
                 );
               }

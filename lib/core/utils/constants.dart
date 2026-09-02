@@ -1,3 +1,6 @@
+import 'dart:math' show min;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
@@ -50,7 +53,11 @@ const double kBottomPadding = 40.0;
 
 const Size appDesignSize = Size(393, 852);
 
-final Size kButtonSize = Size(362.w, 48.h);
+Size get kButtonSize {
+  final double width = kIsWeb ? min(362.w, 393.0) : 362.w;
+  final double height = kIsWeb ? min(48.h, 52.0) : 48.h;
+  return Size(width, height);
+}
 
 const Size kButtonMediumSize = Size(158, 48);
 

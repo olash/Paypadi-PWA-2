@@ -1,3 +1,6 @@
+import 'dart:math' show min;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,15 +25,18 @@ class AppTheme {
       style: ButtonStyle(
         textStyle: WidgetStatePropertyAll(
           TextStyle(
-            fontSize: 16.sp,
+            fontSize: kIsWeb ? min(16.sp, 17.0) : 16.sp,
             letterSpacing: Values.zero,
+            fontWeight: FontWeight.w600,
           ),
         ),
         fixedSize: WidgetStatePropertyAll(kButtonSize),
         foregroundColor: const WidgetStatePropertyAll(AppColors.white),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Values.v12.r),
+            borderRadius: BorderRadius.circular(
+              kIsWeb ? min(Values.v12.r, 14.0) : Values.v12.r,
+            ),
           ),
         ),
         backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
@@ -44,8 +50,9 @@ class AppTheme {
       style: ButtonStyle(
         textStyle: WidgetStatePropertyAll(
           TextStyle(
-            fontSize: 16.sp,
+            fontSize: kIsWeb ? min(16.sp, 17.0) : 16.sp,
             letterSpacing: Values.zero,
+            fontWeight: FontWeight.w600,
           ),
         ),
         side: WidgetStatePropertyAll(BorderSide(color: primary)),
@@ -53,7 +60,9 @@ class AppTheme {
         foregroundColor: WidgetStatePropertyAll(primary),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Values.v12.r),
+            borderRadius: BorderRadius.circular(
+              kIsWeb ? min(Values.v12.r, 14.0) : Values.v12.r,
+            ),
           ),
         ),
       ),
@@ -61,13 +70,15 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.white,
-      constraints: BoxConstraints(maxWidth: 362.w),
+      constraints: BoxConstraints(
+        maxWidth: kIsWeb ? min(362.w, 400.0) : 362.w,
+      ),
       contentPadding: const EdgeInsets.symmetric(
         horizontal: Values.v16,
         vertical: Values.v8,
       ),
       hintStyle: TextStyle(
-        fontSize: 14.sp,
+        fontSize: kIsWeb ? min(14.sp, 15.0) : 14.sp,
         letterSpacing: Values.zero,
         color: AppColors.hintText,
       ),
