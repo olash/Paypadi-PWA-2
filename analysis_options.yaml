@@ -47,9 +47,6 @@ analyzer:
     - "lib/generated/**"
     - "test/.test_coverage.dart"
     - "build/**"
-    - android/**
-    - ios/**
-    - web/**
 
 # ─── Formatter ───────────────────────────────────────────────────────────────
 

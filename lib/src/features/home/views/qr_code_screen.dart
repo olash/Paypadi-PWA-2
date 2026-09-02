@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:paypadi/config/gen/assets.gen.dart';
 import 'package:paypadi/config/gen/colors.gen.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
-import 'package:paypadi/core/utils/platform_utils.dart';
 import 'package:paypadi/src/features/home/controller/qr_code_controller.dart';
 import 'package:paypadi/src/shared/widgets/app_scaffold.dart';
-import 'package:paypadi/src/shared/widgets/platform_qr_scanner.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 @RoutePage()
@@ -29,7 +28,7 @@ class QrCodeScreen extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const CloseButton(),
-              if (isScanning.value && supportsNativeCamera)
+              if (isScanning.value)
                 IconButton(
                   onPressed: ref
                       .read(qrCodeControllerProvider.notifier)
@@ -126,9 +125,31 @@ class _ScanQrCode extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Delegates to PlatformQrScannerView which handles both mobile (native
-    // camera) and web (manual text input) cases.
-    return const PlatformQrScannerView();
+    final controller = ref
+        .watch(qrCodeControllerProvider.notifier)
+        .scannerController;
+
+    return Column(
+      mainAxisSize: .min,
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: context.screenWidth * .8,
+            maxHeight: context.screenHeight * .35,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(Values.v24),
+            child: MobileScanner(
+              controller: controller,
+            ),
+          ),
+        ),
+        Text(
+          'Scan QR code',
+          style: context.textTheme.bodyMedium,
+        ),
+      ],
+    );
   }
 }
 

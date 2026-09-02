@@ -69,7 +69,7 @@ class _BeneficiariesList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final beneficiaryType = ref.watch(beneficiaryTypeControllerProvider);
 
-    final beneficiaries = switch (beneficiaryType as BeneficiaryType) {
+    final beneficiaries = switch (beneficiaryType) {
       BeneficiaryType.recent => ref.watch(recentBeneficiariesProvider),
       BeneficiaryType.saved => ref.watch(savedBeneficiariesProvider),
     };
