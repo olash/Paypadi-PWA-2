@@ -44,14 +44,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# All generated files
-*.g.dart
-*.gen.dart
-*.gr.dart
-*.*.dart
+# Generated files (uncommented so CI like Vercel can build without heavy code generation)
+# *.g.dart
+# *.gen.dart
+# *.gr.dart
+# *.*.dart
 
 # Generated files directory
-lib/config/gen
+# lib/config/gen
 
 # App Secrets
 .env.*
