@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:paypadi/core/models/push_notifications_message/push_notifications_message.dart';
 import 'package:paypadi/core/services/notifications/notifications_service.dart';
 
@@ -6,18 +7,23 @@ class FirebaseNotificationsService implements INotificationsService {
   FirebaseNotificationsService(this._messaging);
   final FirebaseMessaging _messaging;
 
+  // ──────────────────────────────────────────────────────────────────────────
+  // ⚠️  SETUP REQUIRED — Replace with your VAPID public key from Firebase
+  // Console → Project Settings → Cloud Messaging → Web Push certificates.
+  // ──────────────────────────────────────────────────────────────────────────
+  static const String _vapidKey = 'YOUR_VAPID_PUBLIC_KEY';
+
   @override
   Future<void> initialize() async {
-    // Note: To handle background messages in Firebase, you must define a
-    // top-level or static function using FirebaseMessaging.onBackgroundMessage()
-    // inside your main.dart file, outside of this class.
-
-    // Optional: Configure foreground presentation options for iOS
-    await _messaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    // setForegroundNotificationPresentationOptions is an iOS-only API.
+    // Calling it on web throws a PlatformException.
+    if (!kIsWeb) {
+      await _messaging.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
   }
 
   @override
@@ -29,7 +35,12 @@ class FirebaseNotificationsService implements INotificationsService {
 
   @override
   Future<String?> getToken() async {
-    return _messaging.getToken();
+    // Web push requires the VAPID key to obtain an FCM registration token.
+    final bool hasValidVapidKey =
+        kIsWeb && _vapidKey.isNotEmpty && _vapidKey != 'YOUR_VAPID_PUBLIC_KEY';
+    return _messaging.getToken(
+      vapidKey: hasValidVapidKey ? _vapidKey : null,
+    );
   }
 
   @override

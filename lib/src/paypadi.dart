@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -32,7 +32,19 @@ class PayPadi extends ConsumerWidget {
                 return [if (kDebugMode) TalkerRouteObserver(debugLogger)];
               },
             ),
-            builder: (context, child) => AppLoadingOverlay(child: child!),
+            builder: (context, child) {
+              Widget content = AppLoadingOverlay(child: child!);
+              if (kIsWeb) {
+                // Constrain the app width on desktop monitors to prevent stretching
+                content = Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 450),
+                    child: ClipRect(child: content),
+                  ),
+                );
+              }
+              return content;
+            },
           ),
         );
       },
