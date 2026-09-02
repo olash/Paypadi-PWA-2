@@ -39,12 +39,9 @@ import 'package:paypadi/core/services/monitoring/sentry_service.dart';
 import 'package:paypadi/core/services/notifications/firebase_notifications_service.dart';
 import 'package:paypadi/core/services/notifications/notifications_service.dart';
 import 'package:paypadi/core/services/receipt_service.dart';
-import 'package:paypadi/core/services/storage/cache_service.dart';
 import 'package:paypadi/core/services/storage/local_cache_service.dart';
 import 'package:paypadi/core/services/storage/secure_cache_service.dart';
-import 'package:paypadi/core/services/storage/web_memory_cache_service.dart';
 import 'package:paypadi/core/utils/constants.dart' show availableColors;
-import 'package:paypadi/core/utils/platform_utils.dart' show isWeb;
 import 'package:paypadi/src/shared/controllers/app_color/app_color_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart'
@@ -69,10 +66,7 @@ Future<SharedPreferencesWithCache> sharedPreferencesFuture(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-CacheService secureCache(Ref ref) {
-  // On web: use an in-memory store so no sensitive data lands in localStorage.
-  // On mobile: use the OS keychain via flutter_secure_storage.
-  if (isWeb) return WebMemoryCacheService();
+SecureCacheService secureCache(Ref ref) {
   return SecureCacheService(monitoring: ref.watch(monitoringProvider));
 }
 

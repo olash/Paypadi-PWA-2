@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:paypadi/core/utils/platform_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paypadi/config/env.dart';
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
@@ -19,8 +18,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
 
-// Background message handler — only available on Android/iOS native isolates.
-// Web FCM background messages are handled by firebase-messaging-sw.js instead.
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you need to use other Firebase services (like Firestore) in the background,
@@ -42,19 +39,14 @@ Future<void> initializeApp({
   await Future.wait([
     preCacheSVGs(),
     Firebase.initializeApp(options: firebaseConfig),
-    // SystemChrome is not applicable on web — the browser controls the chrome.
-    if (!isWeb)
-      SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
-      ),
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
+    ),
   ]);
 
-  // Background message handler — only register on native mobile isolates.
-  // On web, background FCM is handled by web/firebase-messaging-sw.js.
-  if (!isWeb) {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
+  // Register the background handler immediately after Firebase initializes
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (enableMonitoring) {
     await SentryFlutter.init(
