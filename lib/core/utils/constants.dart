@@ -109,7 +109,7 @@ final List<String> kAppKeyPadKeys = [
 final List<BeneficiaryModel> kMockBeneficiaries = List.generate(
   5,
   (index) => BeneficiaryModel(
-    id: index,
+    id: index.toString(),
     accountNumber: '01234567${(10 + index).toString()}',
     accountName: [
       'Adaeze Okafor',
@@ -128,7 +128,7 @@ final List<BeneficiaryModel> kMockBeneficiaries = List.generate(
 final List<TransactionModel> kMockTransactionHistory = List.generate(
   10,
   (index) => TransactionModel(
-    id: index,
+    id: index.toString(),
     amount: (1500 + (index * 750)).toString(),
     status: index.isEven
         ? TransactionStatus.success

@@ -6,7 +6,7 @@ part 'beneficiary_model.g.dart';
 @freezed
 sealed class BeneficiaryModel with _$BeneficiaryModel {
   const factory BeneficiaryModel({
-    required int id,
+    required String id,
     @JsonKey(name: 'account_number') required String accountNumber,
     @JsonKey(name: 'account_name') required String accountName,
     @JsonKey(name: 'bank_name') required String bankName,

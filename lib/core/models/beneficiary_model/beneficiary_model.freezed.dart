@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BeneficiaryModel {
 
- int get id;@JsonKey(name: 'account_number') String get accountNumber;@JsonKey(name: 'account_name') String get accountName;@JsonKey(name: 'bank_name') String get bankName;@JsonKey(name: 'bank_code') String get bankCode;@JsonKey(name: 'is_paypadi_account') bool get isPaypadiAccount;@JsonKey(name: 'created_at') String get createdAt;
+ String get id;@JsonKey(name: 'account_number') String get accountNumber;@JsonKey(name: 'account_name') String get accountName;@JsonKey(name: 'bank_name') String get bankName;@JsonKey(name: 'bank_code') String get bankCode;@JsonKey(name: 'is_paypadi_account') bool get isPaypadiAccount;@JsonKey(name: 'created_at') String get createdAt;
 /// Create a copy of BeneficiaryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $BeneficiaryModelCopyWith<$Res>  {
   factory $BeneficiaryModelCopyWith(BeneficiaryModel value, $Res Function(BeneficiaryModel) _then) = _$BeneficiaryModelCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'account_number') String accountNumber,@JsonKey(name: 'account_name') String accountName,@JsonKey(name: 'bank_name') String bankName,@JsonKey(name: 'bank_code') String bankCode,@JsonKey(name: 'is_paypadi_account') bool isPaypadiAccount,@JsonKey(name: 'created_at') String createdAt
+ String id,@JsonKey(name: 'account_number') String accountNumber,@JsonKey(name: 'account_name') String accountName,@JsonKey(name: 'bank_name') String bankName,@JsonKey(name: 'bank_code') String bankCode,@JsonKey(name: 'is_paypadi_account') bool isPaypadiAccount,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -68,7 +68,7 @@ class _$BeneficiaryModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? accountNumber = null,Object? accountName = null,Object? bankName = null,Object? bankCode = null,Object? isPaypadiAccount = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,accountNumber: null == accountNumber ? _self.accountNumber : accountNumber // ignore: cast_nullable_to_non_nullable
+as String,accountNumber: null == accountNumber ? _self.accountNumber : accountNumber // ignore: cast_nullable_to_non_nullable
 as String,accountName: null == accountName ? _self.accountName : accountName // ignore: cast_nullable_to_non_nullable
 as String,bankName: null == bankName ? _self.bankName : bankName // ignore: cast_nullable_to_non_nullable
 as String,bankCode: null == bankCode ? _self.bankCode : bankCode // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'account_number')  String accountNumber, @JsonKey(name: 'account_name')  String accountName, @JsonKey(name: 'bank_name')  String bankName, @JsonKey(name: 'bank_code')  String bankCode, @JsonKey(name: 'is_paypadi_account')  bool isPaypadiAccount, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'account_number')  String accountNumber, @JsonKey(name: 'account_name')  String accountName, @JsonKey(name: 'bank_name')  String bankName, @JsonKey(name: 'bank_code')  String bankCode, @JsonKey(name: 'is_paypadi_account')  bool isPaypadiAccount, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BeneficiaryModel() when $default != null:
 return $default(_that.id,_that.accountNumber,_that.accountName,_that.bankName,_that.bankCode,_that.isPaypadiAccount,_that.createdAt);case _:
@@ -177,7 +177,7 @@ return $default(_that.id,_that.accountNumber,_that.accountName,_that.bankName,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'account_number')  String accountNumber, @JsonKey(name: 'account_name')  String accountName, @JsonKey(name: 'bank_name')  String bankName, @JsonKey(name: 'bank_code')  String bankCode, @JsonKey(name: 'is_paypadi_account')  bool isPaypadiAccount, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'account_number')  String accountNumber, @JsonKey(name: 'account_name')  String accountName, @JsonKey(name: 'bank_name')  String bankName, @JsonKey(name: 'bank_code')  String bankCode, @JsonKey(name: 'is_paypadi_account')  bool isPaypadiAccount, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _BeneficiaryModel():
 return $default(_that.id,_that.accountNumber,_that.accountName,_that.bankName,_that.bankCode,_that.isPaypadiAccount,_that.createdAt);}
@@ -194,7 +194,7 @@ return $default(_that.id,_that.accountNumber,_that.accountName,_that.bankName,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'account_number')  String accountNumber, @JsonKey(name: 'account_name')  String accountName, @JsonKey(name: 'bank_name')  String bankName, @JsonKey(name: 'bank_code')  String bankCode, @JsonKey(name: 'is_paypadi_account')  bool isPaypadiAccount, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'account_number')  String accountNumber, @JsonKey(name: 'account_name')  String accountName, @JsonKey(name: 'bank_name')  String bankName, @JsonKey(name: 'bank_code')  String bankCode, @JsonKey(name: 'is_paypadi_account')  bool isPaypadiAccount, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _BeneficiaryModel() when $default != null:
 return $default(_that.id,_that.accountNumber,_that.accountName,_that.bankName,_that.bankCode,_that.isPaypadiAccount,_that.createdAt);case _:
@@ -212,7 +212,7 @@ class _BeneficiaryModel implements BeneficiaryModel {
   const _BeneficiaryModel({required this.id, @JsonKey(name: 'account_number') required this.accountNumber, @JsonKey(name: 'account_name') required this.accountName, @JsonKey(name: 'bank_name') required this.bankName, @JsonKey(name: 'bank_code') required this.bankCode, @JsonKey(name: 'is_paypadi_account') required this.isPaypadiAccount, @JsonKey(name: 'created_at') required this.createdAt});
   factory _BeneficiaryModel.fromJson(Map<String, dynamic> json) => _$BeneficiaryModelFromJson(json);
 
-@override final  int id;
+@override final  String id;
 @override@JsonKey(name: 'account_number') final  String accountNumber;
 @override@JsonKey(name: 'account_name') final  String accountName;
 @override@JsonKey(name: 'bank_name') final  String bankName;
@@ -253,7 +253,7 @@ abstract mixin class _$BeneficiaryModelCopyWith<$Res> implements $BeneficiaryMod
   factory _$BeneficiaryModelCopyWith(_BeneficiaryModel value, $Res Function(_BeneficiaryModel) _then) = __$BeneficiaryModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'account_number') String accountNumber,@JsonKey(name: 'account_name') String accountName,@JsonKey(name: 'bank_name') String bankName,@JsonKey(name: 'bank_code') String bankCode,@JsonKey(name: 'is_paypadi_account') bool isPaypadiAccount,@JsonKey(name: 'created_at') String createdAt
+ String id,@JsonKey(name: 'account_number') String accountNumber,@JsonKey(name: 'account_name') String accountName,@JsonKey(name: 'bank_name') String bankName,@JsonKey(name: 'bank_code') String bankCode,@JsonKey(name: 'is_paypadi_account') bool isPaypadiAccount,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -273,7 +273,7 @@ class __$BeneficiaryModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? accountNumber = null,Object? accountName = null,Object? bankName = null,Object? bankCode = null,Object? isPaypadiAccount = null,Object? createdAt = null,}) {
   return _then(_BeneficiaryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,accountNumber: null == accountNumber ? _self.accountNumber : accountNumber // ignore: cast_nullable_to_non_nullable
+as String,accountNumber: null == accountNumber ? _self.accountNumber : accountNumber // ignore: cast_nullable_to_non_nullable
 as String,accountName: null == accountName ? _self.accountName : accountName // ignore: cast_nullable_to_non_nullable
 as String,bankName: null == bankName ? _self.bankName : bankName // ignore: cast_nullable_to_non_nullable
 as String,bankCode: null == bankCode ? _self.bankCode : bankCode // ignore: cast_nullable_to_non_nullable

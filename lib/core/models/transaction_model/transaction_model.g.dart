@@ -8,7 +8,7 @@ part of 'transaction_model.dart';
 
 _TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     _TransactionModel(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       transactionType: $enumDecode(
         _$TransactionTypeEnumMap,
         json['transaction_type'],

@@ -7,7 +7,7 @@ part 'transaction_model.g.dart';
 @freezed
 sealed class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
-    required int id,
+    required String id,
     @JsonKey(
       name: 'transaction_type',
       unknownEnumValue: TransactionType.unknown,

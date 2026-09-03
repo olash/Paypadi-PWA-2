@@ -7,7 +7,7 @@ part of 'wallet_model.dart';
 // **************************************************************************
 
 _WalletModel _$WalletModelFromJson(Map<String, dynamic> json) => _WalletModel(
-  id: (json['id'] as num).toInt(),
+  id: json['id'] as String,
   balance: json['balance'] as String,
   currency: json['currency'] as String,
   createdAt: json['created_at'] as String,

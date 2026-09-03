@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- int get id;@JsonKey(name: 'phone_number') String get phoneNumber;@JsonKey(name: 'first_name') String get firstName;@JsonKey(name: 'last_name') String get lastName;@JsonKey(name: 'is_active') bool get isActive; String? get email; UserProfileModel? get profile;@JsonKey(name: 'driver_profile') DriverProfileModel? get driverProfile;
+ String get id;@JsonKey(name: 'phone_number') String get phoneNumber;@JsonKey(name: 'first_name') String get firstName;@JsonKey(name: 'last_name') String get lastName;@JsonKey(name: 'is_active') bool get isActive; String? get email; UserProfileModel? get profile;@JsonKey(name: 'driver_profile') DriverProfileModel? get driverProfile;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName,@JsonKey(name: 'is_active') bool isActive, String? email, UserProfileModel? profile,@JsonKey(name: 'driver_profile') DriverProfileModel? driverProfile
+ String id,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName,@JsonKey(name: 'is_active') bool isActive, String? email, UserProfileModel? profile,@JsonKey(name: 'driver_profile') DriverProfileModel? driverProfile
 });
 
 
@@ -68,7 +68,7 @@ class _$UserModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phoneNumber = null,Object? firstName = null,Object? lastName = null,Object? isActive = null,Object? email = freezed,Object? profile = freezed,Object? driverProfile = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
@@ -181,7 +181,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName, @JsonKey(name: 'is_active')  bool isActive,  String? email,  UserProfileModel? profile, @JsonKey(name: 'driver_profile')  DriverProfileModel? driverProfile)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName, @JsonKey(name: 'is_active')  bool isActive,  String? email,  UserProfileModel? profile, @JsonKey(name: 'driver_profile')  DriverProfileModel? driverProfile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.phoneNumber,_that.firstName,_that.lastName,_that.isActive,_that.email,_that.profile,_that.driverProfile);case _:
@@ -202,7 +202,7 @@ return $default(_that.id,_that.phoneNumber,_that.firstName,_that.lastName,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName, @JsonKey(name: 'is_active')  bool isActive,  String? email,  UserProfileModel? profile, @JsonKey(name: 'driver_profile')  DriverProfileModel? driverProfile)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName, @JsonKey(name: 'is_active')  bool isActive,  String? email,  UserProfileModel? profile, @JsonKey(name: 'driver_profile')  DriverProfileModel? driverProfile)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
 return $default(_that.id,_that.phoneNumber,_that.firstName,_that.lastName,_that.isActive,_that.email,_that.profile,_that.driverProfile);}
@@ -219,7 +219,7 @@ return $default(_that.id,_that.phoneNumber,_that.firstName,_that.lastName,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName, @JsonKey(name: 'is_active')  bool isActive,  String? email,  UserProfileModel? profile, @JsonKey(name: 'driver_profile')  DriverProfileModel? driverProfile)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName, @JsonKey(name: 'is_active')  bool isActive,  String? email,  UserProfileModel? profile, @JsonKey(name: 'driver_profile')  DriverProfileModel? driverProfile)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.phoneNumber,_that.firstName,_that.lastName,_that.isActive,_that.email,_that.profile,_that.driverProfile);case _:
@@ -237,7 +237,7 @@ class _UserModel implements UserModel {
   const _UserModel({required this.id, @JsonKey(name: 'phone_number') required this.phoneNumber, @JsonKey(name: 'first_name') required this.firstName, @JsonKey(name: 'last_name') required this.lastName, @JsonKey(name: 'is_active') required this.isActive, this.email, this.profile, @JsonKey(name: 'driver_profile') this.driverProfile});
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-@override final  int id;
+@override final  String id;
 @override@JsonKey(name: 'phone_number') final  String phoneNumber;
 @override@JsonKey(name: 'first_name') final  String firstName;
 @override@JsonKey(name: 'last_name') final  String lastName;
@@ -279,7 +279,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName,@JsonKey(name: 'is_active') bool isActive, String? email, UserProfileModel? profile,@JsonKey(name: 'driver_profile') DriverProfileModel? driverProfile
+ String id,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName,@JsonKey(name: 'is_active') bool isActive, String? email, UserProfileModel? profile,@JsonKey(name: 'driver_profile') DriverProfileModel? driverProfile
 });
 
 
@@ -299,7 +299,7 @@ class __$UserModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phoneNumber = null,Object? firstName = null,Object? lastName = null,Object? isActive = null,Object? email = freezed,Object? profile = freezed,Object? driverProfile = freezed,}) {
   return _then(_UserModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable

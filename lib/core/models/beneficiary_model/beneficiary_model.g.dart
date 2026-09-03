@@ -8,7 +8,7 @@ part of 'beneficiary_model.dart';
 
 _BeneficiaryModel _$BeneficiaryModelFromJson(Map<String, dynamic> json) =>
     _BeneficiaryModel(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       accountNumber: json['account_number'] as String,
       accountName: json['account_name'] as String,
       bankName: json['bank_name'] as String,

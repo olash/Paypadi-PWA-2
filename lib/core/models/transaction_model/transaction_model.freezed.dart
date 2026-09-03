@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionModel {
 
- int get id;@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) TransactionType get transactionType; String get amount;@JsonKey(unknownEnumValue: TransactionStatus.failure) TransactionStatus get status; String get reference; String get description; Map<String, dynamic> get metadata;@JsonKey(name: 'created_at') String get createdAt;
+ String get id;@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) TransactionType get transactionType; String get amount;@JsonKey(unknownEnumValue: TransactionStatus.failure) TransactionStatus get status; String get reference; String get description; Map<String, dynamic> get metadata;@JsonKey(name: 'created_at') String get createdAt;
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TransactionModelCopyWith<$Res>  {
   factory $TransactionModelCopyWith(TransactionModel value, $Res Function(TransactionModel) _then) = _$TransactionModelCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) TransactionType transactionType, String amount,@JsonKey(unknownEnumValue: TransactionStatus.failure) TransactionStatus status, String reference, String description, Map<String, dynamic> metadata,@JsonKey(name: 'created_at') String createdAt
+ String id,@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) TransactionType transactionType, String amount,@JsonKey(unknownEnumValue: TransactionStatus.failure) TransactionStatus status, String reference, String description, Map<String, dynamic> metadata,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -68,7 +68,7 @@ class _$TransactionModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? transactionType = null,Object? amount = null,Object? status = null,Object? reference = null,Object? description = null,Object? metadata = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,transactionType: null == transactionType ? _self.transactionType : transactionType // ignore: cast_nullable_to_non_nullable
+as String,transactionType: null == transactionType ? _self.transactionType : transactionType // ignore: cast_nullable_to_non_nullable
 as TransactionType,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as TransactionStatus,reference: null == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown)  TransactionType transactionType,  String amount, @JsonKey(unknownEnumValue: TransactionStatus.failure)  TransactionStatus status,  String reference,  String description,  Map<String, dynamic> metadata, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown)  TransactionType transactionType,  String amount, @JsonKey(unknownEnumValue: TransactionStatus.failure)  TransactionStatus status,  String reference,  String description,  Map<String, dynamic> metadata, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TransactionModel() when $default != null:
 return $default(_that.id,_that.transactionType,_that.amount,_that.status,_that.reference,_that.description,_that.metadata,_that.createdAt);case _:
@@ -178,7 +178,7 @@ return $default(_that.id,_that.transactionType,_that.amount,_that.status,_that.r
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown)  TransactionType transactionType,  String amount, @JsonKey(unknownEnumValue: TransactionStatus.failure)  TransactionStatus status,  String reference,  String description,  Map<String, dynamic> metadata, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown)  TransactionType transactionType,  String amount, @JsonKey(unknownEnumValue: TransactionStatus.failure)  TransactionStatus status,  String reference,  String description,  Map<String, dynamic> metadata, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _TransactionModel():
 return $default(_that.id,_that.transactionType,_that.amount,_that.status,_that.reference,_that.description,_that.metadata,_that.createdAt);}
@@ -195,7 +195,7 @@ return $default(_that.id,_that.transactionType,_that.amount,_that.status,_that.r
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown)  TransactionType transactionType,  String amount, @JsonKey(unknownEnumValue: TransactionStatus.failure)  TransactionStatus status,  String reference,  String description,  Map<String, dynamic> metadata, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown)  TransactionType transactionType,  String amount, @JsonKey(unknownEnumValue: TransactionStatus.failure)  TransactionStatus status,  String reference,  String description,  Map<String, dynamic> metadata, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _TransactionModel() when $default != null:
 return $default(_that.id,_that.transactionType,_that.amount,_that.status,_that.reference,_that.description,_that.metadata,_that.createdAt);case _:
@@ -213,7 +213,7 @@ class _TransactionModel implements TransactionModel {
   const _TransactionModel({required this.id, @JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) required this.transactionType, required this.amount, @JsonKey(unknownEnumValue: TransactionStatus.failure) required this.status, required this.reference, required this.description, required final  Map<String, dynamic> metadata, @JsonKey(name: 'created_at') required this.createdAt}): _metadata = metadata;
   factory _TransactionModel.fromJson(Map<String, dynamic> json) => _$TransactionModelFromJson(json);
 
-@override final  int id;
+@override final  String id;
 @override@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) final  TransactionType transactionType;
 @override final  String amount;
 @override@JsonKey(unknownEnumValue: TransactionStatus.failure) final  TransactionStatus status;
@@ -261,7 +261,7 @@ abstract mixin class _$TransactionModelCopyWith<$Res> implements $TransactionMod
   factory _$TransactionModelCopyWith(_TransactionModel value, $Res Function(_TransactionModel) _then) = __$TransactionModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) TransactionType transactionType, String amount,@JsonKey(unknownEnumValue: TransactionStatus.failure) TransactionStatus status, String reference, String description, Map<String, dynamic> metadata,@JsonKey(name: 'created_at') String createdAt
+ String id,@JsonKey(name: 'transaction_type', unknownEnumValue: TransactionType.unknown) TransactionType transactionType, String amount,@JsonKey(unknownEnumValue: TransactionStatus.failure) TransactionStatus status, String reference, String description, Map<String, dynamic> metadata,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -281,7 +281,7 @@ class __$TransactionModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? transactionType = null,Object? amount = null,Object? status = null,Object? reference = null,Object? description = null,Object? metadata = null,Object? createdAt = null,}) {
   return _then(_TransactionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,transactionType: null == transactionType ? _self.transactionType : transactionType // ignore: cast_nullable_to_non_nullable
+as String,transactionType: null == transactionType ? _self.transactionType : transactionType // ignore: cast_nullable_to_non_nullable
 as TransactionType,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as TransactionStatus,reference: null == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
