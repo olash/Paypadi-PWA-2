@@ -10,7 +10,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'wallet_client.g.dart';
 
-const String _basePath = '/wallet';
+const String _basePath = '/wallets';
 
 @RestApi()
 abstract class WalletClient implements IWalletClient {

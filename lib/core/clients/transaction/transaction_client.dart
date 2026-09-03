@@ -9,7 +9,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'transaction_client.g.dart';
 
-const String _basePath = '/wallet';
+const String _basePath = '/wallets';
 
 @RestApi()
 abstract class TransactionClient implements ITransactionClient {

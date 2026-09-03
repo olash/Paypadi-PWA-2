@@ -29,7 +29,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallet/wallet/',
+            '/wallets/wallet/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -64,7 +64,7 @@ class _WalletClient implements WalletClient {
           Options(method: 'GET', headers: _headers, extra: _extra)
               .compose(
                 _dio.options,
-                '/wallet/transactions/',
+                '/wallets/transactions/',
                 queryParameters: queryParameters,
                 data: _data,
               )
@@ -99,7 +99,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallet/deposit/account/',
+            '/wallets/deposit/account/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -132,7 +132,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallet/beneficiaries/',
+            '/wallets/beneficiaries/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -165,7 +165,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallet/transfer/verify-bank-account/',
+            '/wallets/transfer/verify-bank-account/',
             queryParameters: queryParameters,
             data: _data,
           )
