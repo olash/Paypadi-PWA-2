@@ -5,6 +5,7 @@ class AppEnvironment {
   static String? flavor = appFlavor;
   static String backendApiBaseUrl = const String.fromEnvironment(
     'API_BASE_URL',
+    defaultValue: 'https://khidr.pythonanywhere.com/api/v1',
   );
   static String sentryDsn = const String.fromEnvironment('SENTRY_DSN');
 

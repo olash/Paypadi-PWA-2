@@ -17,6 +17,6 @@ echo "=== Running Code Generation (build_runner) ==="
 dart run build_runner build --delete-conflicting-outputs
 
 echo "=== Building Flutter Web Application ==="
-flutter build web --release -t lib/main_dev.dart
+flutter build web --release -t lib/main_dev.dart --dart-define=API_BASE_URL=https://khidr.pythonanywhere.com/api/v1
 
 echo "=== Build Complete: output in build/web ==="
