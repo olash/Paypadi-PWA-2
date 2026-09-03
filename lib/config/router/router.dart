@@ -209,7 +209,7 @@ class AuthenticationGuard extends AutoRouteGuard {
         .read(secureCacheProvider)
         .get<String?>(CacheKeys.refreshToken);
 
-    if (accessToken != null && refreshToken != null) {
+    if (accessToken == null || refreshToken == null) {
       resolver.redirectUntil(const SignInRoute());
       return;
     }
