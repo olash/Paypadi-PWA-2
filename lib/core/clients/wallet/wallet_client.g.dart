@@ -29,7 +29,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/wallet/',
+            '/wallet/wallet/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -50,7 +50,7 @@ class _WalletClient implements WalletClient {
   }
 
   @override
-  Future<ApiResponse<PaginatedListResponse<TransactionHistoryModel>>>
+  Future<ApiResponse<PaginatedListResponse<TransactionModel>>>
   getTransactionHistory({required int page, required int pageSize}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -60,13 +60,11 @@ class _WalletClient implements WalletClient {
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =
-        _setStreamType<
-          ApiResponse<PaginatedListResponse<TransactionHistoryModel>>
-        >(
+        _setStreamType<ApiResponse<PaginatedListResponse<TransactionModel>>>(
           Options(method: 'GET', headers: _headers, extra: _extra)
               .compose(
                 _dio.options,
-                '/wallets/transactions/',
+                '/wallet/transactions/',
                 queryParameters: queryParameters,
                 data: _data,
               )
@@ -75,18 +73,15 @@ class _WalletClient implements WalletClient {
               ),
         );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiResponse<PaginatedListResponse<TransactionHistoryModel>> _value;
+    late ApiResponse<PaginatedListResponse<TransactionModel>> _value;
     try {
-      _value =
-          ApiResponse<PaginatedListResponse<TransactionHistoryModel>>.fromJson(
-            _result.data!,
-            (json) => PaginatedListResponse<TransactionHistoryModel>.fromJson(
-              json as Map<String, dynamic>,
-              (json) => TransactionHistoryModel.fromJson(
-                json as Map<String, dynamic>,
-              ),
-            ),
-          );
+      _value = ApiResponse<PaginatedListResponse<TransactionModel>>.fromJson(
+        _result.data!,
+        (json) => PaginatedListResponse<TransactionModel>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => TransactionModel.fromJson(json as Map<String, dynamic>),
+        ),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -104,7 +99,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/deposit/account/',
+            '/wallet/deposit/account/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -137,7 +132,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/beneficiaries/',
+            '/wallet/beneficiaries/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -170,7 +165,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/bank/verify/',
+            '/wallet/transfer/verify-bank-account/',
             queryParameters: queryParameters,
             data: _data,
           )

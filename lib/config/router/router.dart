@@ -270,7 +270,7 @@ class DriverAccountGuard extends AutoRouteGuard {
       (raw) => UserModel.fromJson(raw as Map<String, dynamic>),
     );
 
-    if (user?.isDriver == true && user?.isApproved == false) {
+    if (user?.driverProfile != null && user?.driverProfile?.isApproved != true) {
       unawaited(router.replace(const VehicleInformationRoute()));
       return;
     }

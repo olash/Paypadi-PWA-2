@@ -4,7 +4,7 @@ import 'package:paypadi/core/api/response/api_response.dart';
 import 'package:paypadi/core/api/result.dart';
 import 'package:paypadi/core/clients/profile/i_profile_client.dart';
 import 'package:paypadi/core/models/driver_profile_model/driver_profile_model.dart';
-import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
+import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/repositories/profile/i_profile_repository.dart';
 import 'package:paypadi/core/utils/enums.dart';
 import 'package:paypadi/core/utils/typedefs.dart';
@@ -24,8 +24,8 @@ class ProfileRepository implements IProfileRepository {
   }
 
   @override
-  FutureResultOf<ApiResponse<UserProfileModel>> getAccountProfile() async {
-    final response = await Result.fromAsync<ApiResponse<UserProfileModel>>(
+  FutureResultOf<ApiResponse<UserModel>> getAccountProfile() async {
+    final response = await Result.fromAsync<ApiResponse<UserModel>>(
       _client.getAccountInfo,
     );
     return response;

@@ -9,14 +9,14 @@ import 'package:retrofit/retrofit.dart';
 
 part 'transaction_client.g.dart';
 
-const String _basePath = '/wallets';
+const String _basePath = '/wallet';
 
 @RestApi()
 abstract class TransactionClient implements ITransactionClient {
   factory TransactionClient(Dio dio, {String baseUrl}) = _TransactionClient;
 
   @override
-  @POST('$_basePath/payments/initiate/')
+  @POST('$_basePath/deposit/')
   Future<ApiResponse<PaymentModel>> initiatePayment({
     @Body() required Map<String, dynamic> payload,
   });
@@ -28,19 +28,19 @@ abstract class TransactionClient implements ITransactionClient {
   });
 
   @override
-  @POST('$_basePath/transfer/')
+  @POST('$_basePath/withdrawal/')
   Future<ApiResponse<TransactionModel>> withdraw({
     @Body() required Map<String, dynamic> payload,
   });
 
   @override
-  @POST('$_basePath/transfer/')
+  @POST('$_basePath/deposit/')
   Future<ApiResponse<TransactionModel>> deposit({
     @Body() required Map<String, dynamic> payload,
   });
 
   @override
-  @POST('$_basePath/payments/lookup/')
+  @POST('$_basePath/transfer/lookup/')
   Future<ApiResponse<AccountLookupModel>> getAccountDetails({
     @Body() required Map<String, dynamic> payload,
   });
@@ -52,11 +52,11 @@ abstract class TransactionClient implements ITransactionClient {
 
   @override
   @GET('$_basePath/beneficiaries/recent/')
-  Future<ApiListResponse<BeneficiaryModel>> getRecentBeneficiaries();
+  Future<ApiResponse<PaginatedListResponse<BeneficiaryModel>>> getRecentBeneficiaries();
 
   @override
-  @GET('$_basePath/transactions/{reference}/')
-  Future<ApiResponse<TransactionHistoryModel>> getTransactionByRefNo({
+  @GET('$_basePath/transactions/verify/{reference}/')
+  Future<ApiResponse<TransactionModel>> getTransactionByRefNo({
     @Path('reference') required String reference,
   });
 

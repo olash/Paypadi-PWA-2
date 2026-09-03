@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WalletModel {
 
- String get id; String get balance; String get currency;@JsonKey(name: 'reserved_balance') String get reservedBalance;@JsonKey(name: 'available_balance') String get availableBalance;@JsonKey(name: 'created_at') String get createdAt;@JsonKey(name: 'updated_at') String get updatedAt;
+ int get id; String get balance; String get currency;@JsonKey(name: 'created_at') String get createdAt;@JsonKey(name: 'updated_at') String get updatedAt;
 /// Create a copy of WalletModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $WalletModelCopyWith<WalletModel> get copyWith => _$WalletModelCopyWithImpl<Wall
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WalletModel&&(identical(other.id, id) || other.id == id)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.reservedBalance, reservedBalance) || other.reservedBalance == reservedBalance)&&(identical(other.availableBalance, availableBalance) || other.availableBalance == availableBalance)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WalletModel&&(identical(other.id, id) || other.id == id)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,balance,currency,reservedBalance,availableBalance,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,balance,currency,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'WalletModel(id: $id, balance: $balance, currency: $currency, reservedBalance: $reservedBalance, availableBalance: $availableBalance, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'WalletModel(id: $id, balance: $balance, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $WalletModelCopyWith<$Res>  {
   factory $WalletModelCopyWith(WalletModel value, $Res Function(WalletModel) _then) = _$WalletModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String balance, String currency,@JsonKey(name: 'reserved_balance') String reservedBalance,@JsonKey(name: 'available_balance') String availableBalance,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'updated_at') String updatedAt
+ int id, String balance, String currency,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'updated_at') String updatedAt
 });
 
 
@@ -65,13 +65,11 @@ class _$WalletModelCopyWithImpl<$Res>
 
 /// Create a copy of WalletModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? balance = null,Object? currency = null,Object? reservedBalance = null,Object? availableBalance = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? balance = null,Object? currency = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
+as int,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,reservedBalance: null == reservedBalance ? _self.reservedBalance : reservedBalance // ignore: cast_nullable_to_non_nullable
-as String,availableBalance: null == availableBalance ? _self.availableBalance : availableBalance // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String,
@@ -156,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String balance,  String currency, @JsonKey(name: 'reserved_balance')  String reservedBalance, @JsonKey(name: 'available_balance')  String availableBalance, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String balance,  String currency, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WalletModel() when $default != null:
-return $default(_that.id,_that.balance,_that.currency,_that.reservedBalance,_that.availableBalance,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.balance,_that.currency,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -177,10 +175,10 @@ return $default(_that.id,_that.balance,_that.currency,_that.reservedBalance,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String balance,  String currency, @JsonKey(name: 'reserved_balance')  String reservedBalance, @JsonKey(name: 'available_balance')  String availableBalance, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String balance,  String currency, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _WalletModel():
-return $default(_that.id,_that.balance,_that.currency,_that.reservedBalance,_that.availableBalance,_that.createdAt,_that.updatedAt);}
+return $default(_that.id,_that.balance,_that.currency,_that.createdAt,_that.updatedAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -194,10 +192,10 @@ return $default(_that.id,_that.balance,_that.currency,_that.reservedBalance,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String balance,  String currency, @JsonKey(name: 'reserved_balance')  String reservedBalance, @JsonKey(name: 'available_balance')  String availableBalance, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String balance,  String currency, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _WalletModel() when $default != null:
-return $default(_that.id,_that.balance,_that.currency,_that.reservedBalance,_that.availableBalance,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.balance,_that.currency,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -209,14 +207,12 @@ return $default(_that.id,_that.balance,_that.currency,_that.reservedBalance,_tha
 @JsonSerializable()
 
 class _WalletModel implements WalletModel {
-  const _WalletModel({required this.id, required this.balance, required this.currency, @JsonKey(name: 'reserved_balance') required this.reservedBalance, @JsonKey(name: 'available_balance') required this.availableBalance, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt});
+  const _WalletModel({required this.id, required this.balance, required this.currency, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt});
   factory _WalletModel.fromJson(Map<String, dynamic> json) => _$WalletModelFromJson(json);
 
-@override final  String id;
+@override final  int id;
 @override final  String balance;
 @override final  String currency;
-@override@JsonKey(name: 'reserved_balance') final  String reservedBalance;
-@override@JsonKey(name: 'available_balance') final  String availableBalance;
 @override@JsonKey(name: 'created_at') final  String createdAt;
 @override@JsonKey(name: 'updated_at') final  String updatedAt;
 
@@ -233,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WalletModel&&(identical(other.id, id) || other.id == id)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.reservedBalance, reservedBalance) || other.reservedBalance == reservedBalance)&&(identical(other.availableBalance, availableBalance) || other.availableBalance == availableBalance)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WalletModel&&(identical(other.id, id) || other.id == id)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,balance,currency,reservedBalance,availableBalance,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,balance,currency,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'WalletModel(id: $id, balance: $balance, currency: $currency, reservedBalance: $reservedBalance, availableBalance: $availableBalance, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'WalletModel(id: $id, balance: $balance, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -253,7 +249,7 @@ abstract mixin class _$WalletModelCopyWith<$Res> implements $WalletModelCopyWith
   factory _$WalletModelCopyWith(_WalletModel value, $Res Function(_WalletModel) _then) = __$WalletModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String balance, String currency,@JsonKey(name: 'reserved_balance') String reservedBalance,@JsonKey(name: 'available_balance') String availableBalance,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'updated_at') String updatedAt
+ int id, String balance, String currency,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'updated_at') String updatedAt
 });
 
 
@@ -270,13 +266,11 @@ class __$WalletModelCopyWithImpl<$Res>
 
 /// Create a copy of WalletModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? balance = null,Object? currency = null,Object? reservedBalance = null,Object? availableBalance = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? balance = null,Object? currency = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_WalletModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
+as int,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,reservedBalance: null == reservedBalance ? _self.reservedBalance : reservedBalance // ignore: cast_nullable_to_non_nullable
-as String,availableBalance: null == availableBalance ? _self.availableBalance : availableBalance // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String,

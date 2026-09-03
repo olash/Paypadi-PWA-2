@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:paypadi/config/provider_registry/provider_registry.dart';
 import 'package:paypadi/config/router/router.gr.dart';
-import 'package:paypadi/core/models/user_profile_model/user_profile_model.dart';
+import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/repositories/profile/i_profile_repository.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
@@ -16,7 +16,7 @@ Map<String, dynamic> profilePayload(Ref ref) => <String, dynamic>{};
 @riverpod
 class UserProfile extends _$UserProfile {
   @override
-  FutureOr<UserProfileModel?> build() async {
+  FutureOr<UserModel?> build() async {
     final repository = ref.watch(profileRepositoryProvider);
     final result = await repository.getAccountProfile();
 

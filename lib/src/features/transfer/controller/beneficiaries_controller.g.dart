@@ -35,7 +35,7 @@ final class RecentBeneficiariesProvider
 }
 
 String _$recentBeneficiariesHash() =>
-    r'492131db6bb01fc8e056733a54eafb4792f01e8f';
+    r'6d9da4e98065d5ac8a9a2d8bb23fc1ecff302a6c';
 
 abstract class _$RecentBeneficiaries
     extends $AsyncNotifier<List<BeneficiaryModel>> {

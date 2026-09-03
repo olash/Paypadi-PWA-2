@@ -38,4 +38,34 @@ abstract class AuthenticationClient implements IAuthenticationClient {
   Future<ApiResponse<VerifyOtpResponse>> verifyOTP({
     @Body() required Map<String, dynamic> payload,
   });
+
+  @override
+  @POST('$_basePath/password/reset/')
+  Future<ApiResponse<dynamic>> resetPassword({
+    @Body() required Map<String, dynamic> payload,
+  });
+
+  @override
+  @POST('$_basePath/password/change/')
+  Future<ApiResponse<dynamic>> changePassword({
+    @Body() required Map<String, dynamic> payload,
+  });
+
+  @override
+  @POST('$_basePath/pin/set/')
+  Future<ApiResponse<dynamic>> setTransactionPin({
+    @Body() required Map<String, dynamic> payload,
+  });
+
+  @override
+  @POST('$_basePath/pin/change/')
+  Future<ApiResponse<dynamic>> changeTransactionPin({
+    @Body() required Map<String, dynamic> payload,
+  });
+
+  @override
+  @POST('$_basePath/pin/reset/')
+  Future<ApiResponse<dynamic>> resetTransactionPin({
+    @Body() required Map<String, dynamic> payload,
+  });
 }

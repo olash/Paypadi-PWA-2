@@ -57,11 +57,7 @@ abstract class _$WalletController extends $AsyncNotifier<WalletModel?> {
 final historyControllerProvider = HistoryControllerProvider._();
 
 final class HistoryControllerProvider
-    extends
-        $AsyncNotifierProvider<
-          HistoryController,
-          List<TransactionHistoryModel>
-        > {
+    extends $AsyncNotifierProvider<HistoryController, List<TransactionModel>> {
   HistoryControllerProvider._()
     : super(
         from: null,
@@ -81,28 +77,25 @@ final class HistoryControllerProvider
   HistoryController create() => HistoryController();
 }
 
-String _$historyControllerHash() => r'cd1593dc0ed50366aa39cbd0244fa4b19a0056b5';
+String _$historyControllerHash() => r'2f30be1c574f547140ac36d58b8cacbd8a3ecc40';
 
 abstract class _$HistoryController
-    extends $AsyncNotifier<List<TransactionHistoryModel>> {
-  FutureOr<List<TransactionHistoryModel>> build();
+    extends $AsyncNotifier<List<TransactionModel>> {
+  FutureOr<List<TransactionModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final ref =
         this.ref
-            as $Ref<
-              AsyncValue<List<TransactionHistoryModel>>,
-              List<TransactionHistoryModel>
-            >;
+            as $Ref<AsyncValue<List<TransactionModel>>, List<TransactionModel>>;
     final element =
         ref.element
             as $ClassProviderElement<
               AnyNotifier<
-                AsyncValue<List<TransactionHistoryModel>>,
-                List<TransactionHistoryModel>
+                AsyncValue<List<TransactionModel>>,
+                List<TransactionModel>
               >,
-              AsyncValue<List<TransactionHistoryModel>>,
+              AsyncValue<List<TransactionModel>>,
               Object?,
               Object?
             >;

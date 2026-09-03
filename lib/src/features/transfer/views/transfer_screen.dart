@@ -236,8 +236,6 @@ class _BeneficiaryTile extends ConsumerWidget {
   }
 
   Future<void> deleteBeneficiary(WidgetRef ref) async {
-    if (beneficiary.id == null) return;
-
     final beneficiaryType = ref.read(beneficiaryTypeControllerProvider);
 
     if (beneficiaryType == BeneficiaryType.recent) {
@@ -248,7 +246,7 @@ class _BeneficiaryTile extends ConsumerWidget {
 
     final result = await ref
         .read(transactionRepositoryProvider)
-        .deleteBeneficiaryById(beneficiary.id!);
+        .deleteBeneficiaryById(beneficiary.id.toString());
 
     await result.fold(
       (_) => null,

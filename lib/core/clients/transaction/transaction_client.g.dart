@@ -32,7 +32,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/payments/initiate/',
+            '/wallet/deposit/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -65,7 +65,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transfer/',
+            '/wallet/transfer/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -98,7 +98,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transfer/',
+            '/wallet/withdrawal/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -131,7 +131,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transfer/',
+            '/wallet/deposit/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -164,7 +164,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/payments/lookup/',
+            '/wallet/transfer/lookup/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -196,7 +196,7 @@ class _TransactionClient implements TransactionClient {
           Options(method: 'GET', headers: _headers, extra: _extra)
               .compose(
                 _dio.options,
-                '/wallets/beneficiaries/',
+                '/wallet/beneficiaries/',
                 queryParameters: queryParameters,
                 data: _data,
               )
@@ -222,27 +222,34 @@ class _TransactionClient implements TransactionClient {
   }
 
   @override
-  Future<ApiListResponse<BeneficiaryModel>> getRecentBeneficiaries() async {
+  Future<ApiResponse<PaginatedListResponse<BeneficiaryModel>>>
+  getRecentBeneficiaries() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiListResponse<BeneficiaryModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/wallets/beneficiaries/recent/',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<ApiResponse<PaginatedListResponse<BeneficiaryModel>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/wallet/beneficiaries/recent/',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiListResponse<BeneficiaryModel> _value;
+    late ApiResponse<PaginatedListResponse<BeneficiaryModel>> _value;
     try {
-      _value = ApiListResponse<BeneficiaryModel>.fromJson(
+      _value = ApiResponse<PaginatedListResponse<BeneficiaryModel>>.fromJson(
         _result.data!,
-        (json) => BeneficiaryModel.fromJson(json as Map<String, dynamic>),
+        (json) => PaginatedListResponse<BeneficiaryModel>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => BeneficiaryModel.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -252,30 +259,29 @@ class _TransactionClient implements TransactionClient {
   }
 
   @override
-  Future<ApiResponse<TransactionHistoryModel>> getTransactionByRefNo({
+  Future<ApiResponse<TransactionModel>> getTransactionByRefNo({
     required String reference,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<TransactionHistoryModel>>(
+    final _options = _setStreamType<ApiResponse<TransactionModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transactions/${reference}/',
+            '/wallet/transactions/verify/${reference}/',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiResponse<TransactionHistoryModel> _value;
+    late ApiResponse<TransactionModel> _value;
     try {
-      _value = ApiResponse<TransactionHistoryModel>.fromJson(
+      _value = ApiResponse<TransactionModel>.fromJson(
         _result.data!,
-        (json) =>
-            TransactionHistoryModel.fromJson(json as Map<String, dynamic>),
+        (json) => TransactionModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -294,7 +300,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/beneficiaries/${beneficiaryId}/',
+            '/wallet/beneficiaries/${beneficiaryId}/',
             queryParameters: queryParameters,
             data: _data,
           )

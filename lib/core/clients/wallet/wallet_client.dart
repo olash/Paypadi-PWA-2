@@ -10,7 +10,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'wallet_client.g.dart';
 
-const String _basePath = '/wallets';
+const String _basePath = '/wallet';
 
 @RestApi()
 abstract class WalletClient implements IWalletClient {
@@ -22,7 +22,7 @@ abstract class WalletClient implements IWalletClient {
 
   @override
   @GET('$_basePath/transactions/')
-  Future<ApiResponse<PaginatedListResponse<TransactionHistoryModel>>>
+  Future<ApiResponse<PaginatedListResponse<TransactionModel>>>
   getTransactionHistory({
     @Query('page') required int page,
     @Query('page_size') required int pageSize,
@@ -39,7 +39,7 @@ abstract class WalletClient implements IWalletClient {
   });
 
   @override
-  @POST('$_basePath/bank/verify/')
+  @POST('$_basePath/transfer/verify-bank-account/')
   Future<ApiResponse<VerifiedBankAccountModel>> verifyBankInformation({
     @Body() required Map<String, dynamic> payload,
   });

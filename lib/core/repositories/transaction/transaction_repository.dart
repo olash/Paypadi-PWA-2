@@ -34,11 +34,11 @@ class TransactionRepository implements ITransactionRepository {
   }
 
   @override
-  FutureResultOf<ApiListResponse<BeneficiaryModel>>
-  getRecentBeneficiaries() async {
-    final response = await Result.fromAsync<ApiListResponse<BeneficiaryModel>>(
-      _client.getRecentBeneficiaries,
-    );
+  FuturePaginatedApiOf<BeneficiaryModel> getRecentBeneficiaries() async {
+    final response =
+        await Result.fromAsync<
+          ApiResponse<PaginatedListResponse<BeneficiaryModel>>
+        >(_client.getRecentBeneficiaries);
     return response;
   }
 
@@ -62,11 +62,11 @@ class TransactionRepository implements ITransactionRepository {
   }
 
   @override
-  FutureApiResultOf<TransactionHistoryModel> getTransactionDetailsById(
+  FutureApiResultOf<TransactionModel> getTransactionDetailsById(
     String reference,
   ) async {
     final response =
-        await Result.fromAsync<ApiResponse<TransactionHistoryModel>>(
+        await Result.fromAsync<ApiResponse<TransactionModel>>(
           () => _client.getTransactionByRefNo(reference: reference),
         );
     return response;

@@ -58,7 +58,7 @@ class ReferralScreen extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    profile.value?.referralCode ?? '',
+                    profile.value?.profile?.referralCode ?? '',
                     style: context.textTheme.labelSmall?.copyWith(
                       color: AppColors.white,
                       letterSpacing: kZeroLetterSpacing,
@@ -68,7 +68,7 @@ class ReferralScreen extends HookConsumerWidget {
                   GestureDetector(
                     onTap: () => copyCodeToClipBoard(
                       ref,
-                      profile.value?.referralCode ?? '',
+                      profile.value?.profile?.referralCode ?? '',
                     ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -110,7 +110,7 @@ class ReferralScreen extends HookConsumerWidget {
                     ),
                   ),
                   Text(
-                    '${profile.value?.totalReferrals ?? 0}',
+                    '${profile.value?.profile?.totalReferrals ?? 0}',
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: AppColors.white,
                       fontWeight: FontWeight.w500,

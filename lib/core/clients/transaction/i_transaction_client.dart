@@ -28,9 +28,9 @@ abstract interface class ITransactionClient {
   Future<ApiResponse<PaginatedListResponse<BeneficiaryModel>>>
   getSavedBeneficiaries();
 
-  Future<ApiListResponse<BeneficiaryModel>> getRecentBeneficiaries();
+  Future<ApiResponse<PaginatedListResponse<BeneficiaryModel>>> getRecentBeneficiaries();
 
-  Future<ApiResponse<TransactionHistoryModel>> getTransactionByRefNo({
+  Future<ApiResponse<TransactionModel>> getTransactionByRefNo({
     required String reference,
   });
 

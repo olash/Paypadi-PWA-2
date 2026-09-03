@@ -13,7 +13,7 @@ class RecentBeneficiaries extends _$RecentBeneficiaries {
     final result = await repository.getRecentBeneficiaries();
 
     return result.fold(
-      (success) => success.data,
+      (success) => success.data.results,
       (failure) => throw failure,
     );
   }

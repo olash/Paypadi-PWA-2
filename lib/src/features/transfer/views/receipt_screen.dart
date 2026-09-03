@@ -119,21 +119,11 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                           : getTransactionDate(receipt.value?.createdAt),
                     ),
                     PaymentDetails(
-                      detail: 'Payment Method',
+                      detail: 'Description',
                       isLoading: receipt.isLoading,
                       value: receipt.isLoading
                           ? placeholderShort
-                          : capitalizeFirstChar(receipt.value?.type.name),
-                    ),
-                    PaymentDetails(
-                      detail: 'Sender Name',
-                      isLoading: receipt.isLoading,
-                      value: receipt.value?.senderName,
-                    ),
-                    PaymentDetails(
-                      detail: 'Receiver Name',
-                      isLoading: receipt.isLoading,
-                      value: receipt.value?.recipientName,
+                          : receipt.value?.description,
                     ),
                     const DottedDivider(topPadding: Values.v2),
                     PaymentDetails(
@@ -142,13 +132,6 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
                       value: receipt.isLoading
                           ? placeholderShort
                           : '₦ ${formatAmount(receipt.value?.amount)}',
-                    ),
-                    PaymentDetails(
-                      detail: 'Transaction Fee',
-                      isLoading: receipt.isLoading,
-                      value: receipt.isLoading
-                          ? placeholderShort
-                          : '₦ ${formatAmount(receipt.value?.transactionFee)}',
                     ),
                   ],
                 ),
@@ -189,8 +172,7 @@ class _PaymentDetailsStatusIcon extends HookWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: switch (status) {
-          TransactionStatus.success || TransactionStatus.completed =>
-            AppColors.success.withValues(alpha: .12),
+          TransactionStatus.success || TransactionStatus.completed => AppColors.success.withValues(alpha: .12),
           TransactionStatus.failure => AppColors.failure.withValues(alpha: .12),
           TransactionStatus.pending => Colors.amber.withValues(alpha: .12),
           null => AppColors.disabled.withValues(alpha: .12),
@@ -200,8 +182,7 @@ class _PaymentDetailsStatusIcon extends HookWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: switch (status) {
-            TransactionStatus.success ||
-            TransactionStatus.completed => AppColors.success,
+            TransactionStatus.success || TransactionStatus.completed => AppColors.success,
             TransactionStatus.failure => AppColors.failure,
             TransactionStatus.pending => Colors.amber,
             null => AppColors.disabled,
@@ -209,8 +190,7 @@ class _PaymentDetailsStatusIcon extends HookWidget {
         ),
         child: Icon(
           switch (status) {
-            TransactionStatus.success ||
-            TransactionStatus.completed => Icons.check,
+            TransactionStatus.success || TransactionStatus.completed => Icons.check,
             TransactionStatus.failure => Icons.close,
             TransactionStatus.pending => Icons.pending,
             null => Icons.question_mark,

@@ -74,7 +74,7 @@ class WalletController extends _$WalletController {
 @riverpod
 class HistoryController extends _$HistoryController {
   @override
-  FutureOr<List<TransactionHistoryModel>> build() async {
+  FutureOr<List<TransactionModel>> build() async {
     final repository = ref.watch(walletRepositoryProvider);
     final result = await repository.getTransactionHistory();
 
@@ -84,7 +84,7 @@ class HistoryController extends _$HistoryController {
       (success) => success.data.results,
       (failure) {
         ref.showExceptionMessage(failure);
-        return <TransactionHistoryModel>[];
+        return <TransactionModel>[];
       },
     );
   }
@@ -102,7 +102,7 @@ class HistoryController extends _$HistoryController {
           state = AsyncData([...?state.value, ...success.data.results]),
       (failure) {
         ref.showExceptionMessage(failure);
-        state = const AsyncData(<TransactionHistoryModel>[]);
+        state = const AsyncData(<TransactionModel>[]);
       },
     );
   }

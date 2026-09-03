@@ -60,7 +60,7 @@ String _$profilePayloadHash() => r'fecb78eebb40f048c696c3282ddfeeb20a427425';
 final userProfileProvider = UserProfileProvider._();
 
 final class UserProfileProvider
-    extends $AsyncNotifierProvider<UserProfile, UserProfileModel?> {
+    extends $AsyncNotifierProvider<UserProfile, UserModel?> {
   UserProfileProvider._()
     : super(
         from: null,
@@ -80,20 +80,19 @@ final class UserProfileProvider
   UserProfile create() => UserProfile();
 }
 
-String _$userProfileHash() => r'0d212706c88319e74710e0acc1dcd8f56f7e8b1a';
+String _$userProfileHash() => r'b679ce99e956e1758ad94ad8bad0d4fd7e143b9f';
 
-abstract class _$UserProfile extends $AsyncNotifier<UserProfileModel?> {
-  FutureOr<UserProfileModel?> build();
+abstract class _$UserProfile extends $AsyncNotifier<UserModel?> {
+  FutureOr<UserModel?> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref =
-        this.ref as $Ref<AsyncValue<UserProfileModel?>, UserProfileModel?>;
+    final ref = this.ref as $Ref<AsyncValue<UserModel?>, UserModel?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<UserProfileModel?>, UserProfileModel?>,
-              AsyncValue<UserProfileModel?>,
+              AnyNotifier<AsyncValue<UserModel?>, UserModel?>,
+              AsyncValue<UserModel?>,
               Object?,
               Object?
             >;

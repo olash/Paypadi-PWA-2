@@ -55,7 +55,7 @@ class UserWallet extends HookConsumerWidget {
                 child: Text(
                   hideBalance.value
                       ? "${wallet.value?.currency ?? "₦"} ****"
-                      : "${wallet.value?.currency ?? "₦"} ${formatAmount(wallet.value?.availableBalance)}",
+                      : "${wallet.value?.currency ?? "₦"} ${formatAmount(wallet.value?.balance)}",
                   style: context.textTheme.headlineSmall,
                 ),
               ),

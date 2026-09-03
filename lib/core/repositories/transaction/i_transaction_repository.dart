@@ -14,7 +14,7 @@ abstract interface class ITransactionRepository {
     Map<String, dynamic> payload,
   );
 
-  FutureResultOf<ApiListResponse<BeneficiaryModel>> getRecentBeneficiaries();
+  FuturePaginatedApiOf<BeneficiaryModel> getRecentBeneficiaries();
 
   FuturePaginatedApiOf<BeneficiaryModel> getSavedBeneficiaries();
 
@@ -22,7 +22,7 @@ abstract interface class ITransactionRepository {
     Map<String, dynamic> payload,
   );
 
-  FutureApiResultOf<TransactionHistoryModel> getTransactionDetailsById(
+  FutureApiResultOf<TransactionModel> getTransactionDetailsById(
     String reference,
   );
 

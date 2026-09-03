@@ -20,12 +20,12 @@ class _ProfileClient implements ProfileClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<dynamic>> getRider() async {
+  Future<ApiResponse<UserProfileModel>> getRider() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<dynamic>>(
+    final _options = _setStreamType<ApiResponse<UserProfileModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,11 +36,11 @@ class _ProfileClient implements ProfileClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiResponse<dynamic> _value;
+    late ApiResponse<UserProfileModel> _value;
     try {
-      _value = ApiResponse<dynamic>.fromJson(
+      _value = ApiResponse<UserProfileModel>.fromJson(
         _result.data!,
-        (json) => json as dynamic,
+        (json) => UserProfileModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -50,12 +50,12 @@ class _ProfileClient implements ProfileClient {
   }
 
   @override
-  Future<ApiResponse<dynamic>> updateRider() async {
+  Future<ApiResponse<UserProfileModel>> updateRider() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<dynamic>>(
+    final _options = _setStreamType<ApiResponse<UserProfileModel>>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -66,11 +66,11 @@ class _ProfileClient implements ProfileClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiResponse<dynamic> _value;
+    late ApiResponse<UserProfileModel> _value;
     try {
-      _value = ApiResponse<dynamic>.fromJson(
+      _value = ApiResponse<UserProfileModel>.fromJson(
         _result.data!,
-        (json) => json as dynamic,
+        (json) => UserProfileModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -80,12 +80,12 @@ class _ProfileClient implements ProfileClient {
   }
 
   @override
-  Future<ApiResponse<dynamic>> partiallyUpdateRider() async {
+  Future<ApiResponse<UserProfileModel>> partiallyUpdateRider() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<dynamic>>(
+    final _options = _setStreamType<ApiResponse<UserProfileModel>>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -96,11 +96,11 @@ class _ProfileClient implements ProfileClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiResponse<dynamic> _value;
+    late ApiResponse<UserProfileModel> _value;
     try {
-      _value = ApiResponse<dynamic>.fromJson(
+      _value = ApiResponse<UserProfileModel>.fromJson(
         _result.data!,
-        (json) => json as dynamic,
+        (json) => UserProfileModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -206,27 +206,27 @@ class _ProfileClient implements ProfileClient {
   }
 
   @override
-  Future<ApiResponse<UserProfileModel>> getAccountInfo() async {
+  Future<ApiResponse<UserModel>> getAccountInfo() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<UserProfileModel>>(
+    final _options = _setStreamType<ApiResponse<UserModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/me/',
+            '/auth/user/',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ApiResponse<UserProfileModel> _value;
+    late ApiResponse<UserModel> _value;
     try {
-      _value = ApiResponse<UserProfileModel>.fromJson(
+      _value = ApiResponse<UserModel>.fromJson(
         _result.data!,
-        (json) => UserProfileModel.fromJson(json as Map<String, dynamic>),
+        (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

@@ -10,7 +10,7 @@ class ReceiptController extends _$ReceiptController {
   late final ITransactionRepository _repository;
 
   @override
-  FutureOr<TransactionHistoryModel?> build(String receiptId) async {
+  FutureOr<TransactionModel?> build(String receiptId) async {
     _repository = ref.watch(transactionRepositoryProvider);
     final result = await _repository.getTransactionDetailsById(receiptId);
 

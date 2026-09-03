@@ -13,8 +13,7 @@ part of 'receipt_controller.dart';
 final receiptControllerProvider = ReceiptControllerFamily._();
 
 final class ReceiptControllerProvider
-    extends
-        $AsyncNotifierProvider<ReceiptController, TransactionHistoryModel?> {
+    extends $AsyncNotifierProvider<ReceiptController, TransactionModel?> {
   ReceiptControllerProvider._({
     required ReceiptControllerFamily super.from,
     required String super.argument,
@@ -51,15 +50,15 @@ final class ReceiptControllerProvider
   }
 }
 
-String _$receiptControllerHash() => r'32a1bf0eb66c33f37f7005c6048ab5aeee50b27e';
+String _$receiptControllerHash() => r'0eff62c50defaeb349e81252c9b566d881c871df';
 
 final class ReceiptControllerFamily extends $Family
     with
         $ClassFamilyOverride<
           ReceiptController,
-          AsyncValue<TransactionHistoryModel?>,
-          TransactionHistoryModel?,
-          FutureOr<TransactionHistoryModel?>,
+          AsyncValue<TransactionModel?>,
+          TransactionModel?,
+          FutureOr<TransactionModel?>,
           String
         > {
   ReceiptControllerFamily._()
@@ -78,29 +77,21 @@ final class ReceiptControllerFamily extends $Family
   String toString() => r'receiptControllerProvider';
 }
 
-abstract class _$ReceiptController
-    extends $AsyncNotifier<TransactionHistoryModel?> {
+abstract class _$ReceiptController extends $AsyncNotifier<TransactionModel?> {
   late final _$args = ref.$arg as String;
   String get receiptId => _$args;
 
-  FutureOr<TransactionHistoryModel?> build(String receiptId);
+  FutureOr<TransactionModel?> build(String receiptId);
   @$mustCallSuper
   @override
   void runBuild() {
     final ref =
-        this.ref
-            as $Ref<
-              AsyncValue<TransactionHistoryModel?>,
-              TransactionHistoryModel?
-            >;
+        this.ref as $Ref<AsyncValue<TransactionModel?>, TransactionModel?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<
-                AsyncValue<TransactionHistoryModel?>,
-                TransactionHistoryModel?
-              >,
-              AsyncValue<TransactionHistoryModel?>,
+              AnyNotifier<AsyncValue<TransactionModel?>, TransactionModel?>,
+              AsyncValue<TransactionModel?>,
               Object?,
               Object?
             >;

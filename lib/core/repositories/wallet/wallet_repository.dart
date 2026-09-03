@@ -30,13 +30,13 @@ class WalletRepository implements IWalletRepository {
   }
 
   @override
-  FuturePaginatedApiOf<TransactionHistoryModel> getTransactionHistory({
+  FuturePaginatedApiOf<TransactionModel> getTransactionHistory({
     int page = 1,
     int pageSize = 10,
   }) async {
     final response =
         await Result.fromAsync<
-          ApiResponse<PaginatedListResponse<TransactionHistoryModel>>
+          ApiResponse<PaginatedListResponse<TransactionModel>>
         >(() => _client.getTransactionHistory(page: page, pageSize: pageSize));
     return response;
   }

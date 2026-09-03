@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DriverProfileModel {
 
- int get id;@JsonKey(name: 'total_rides') int get totalRides;@JsonKey(name: 'is_approved') bool get isApproved;@JsonKey(name: 'is_available') bool get isAvailable;@JsonKey(name: 'submitted_for_approval') bool get documentsApproved;@JsonKey(name: 'vehicle_make') String get vehicleMake;@JsonKey(name: 'vehicle_model') String get vehicleModel;@JsonKey(name: 'vehicle_year') int get vehicleYear;@JsonKey(name: 'license_plate') String get licensePlate;@JsonKey(name: 'created_at') String get createdAt;@JsonKey(name: 'updated_at') String get updatedAt;@JsonKey(name: 'driver_license_number') String? get licenseNumber;@JsonKey(name: 'driver_license_expiry') String? get licenseExpiryDate;@JsonKey(name: 'license_front') String? get licenseFrontPicUrl;@JsonKey(name: 'license_back') String? get licenseBackPicUrl;@JsonKey(name: 'vehicle_registration') String? get vehicleRegistrationPicUrl;@JsonKey(name: 'approved_at') String? get approvedAt;@JsonKey(name: 'rejection_reason') String? get reasonForRejection;
+@JsonKey(name: 'license_plate') String? get licensePlate;@JsonKey(name: 'vehicle_model') String? get vehicleModel;@JsonKey(name: 'driver_license_number') String? get driverLicenseNumber;@JsonKey(name: 'is_approved') bool? get isApproved;@JsonKey(name: 'kyc_status') String? get kycStatus;@JsonKey(name: 'profile_picture') String? get profilePicture;
 /// Create a copy of DriverProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DriverProfileModelCopyWith<DriverProfileModel> get copyWith => _$DriverProfileM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DriverProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.totalRides, totalRides) || other.totalRides == totalRides)&&(identical(other.isApproved, isApproved) || other.isApproved == isApproved)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.documentsApproved, documentsApproved) || other.documentsApproved == documentsApproved)&&(identical(other.vehicleMake, vehicleMake) || other.vehicleMake == vehicleMake)&&(identical(other.vehicleModel, vehicleModel) || other.vehicleModel == vehicleModel)&&(identical(other.vehicleYear, vehicleYear) || other.vehicleYear == vehicleYear)&&(identical(other.licensePlate, licensePlate) || other.licensePlate == licensePlate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.licenseNumber, licenseNumber) || other.licenseNumber == licenseNumber)&&(identical(other.licenseExpiryDate, licenseExpiryDate) || other.licenseExpiryDate == licenseExpiryDate)&&(identical(other.licenseFrontPicUrl, licenseFrontPicUrl) || other.licenseFrontPicUrl == licenseFrontPicUrl)&&(identical(other.licenseBackPicUrl, licenseBackPicUrl) || other.licenseBackPicUrl == licenseBackPicUrl)&&(identical(other.vehicleRegistrationPicUrl, vehicleRegistrationPicUrl) || other.vehicleRegistrationPicUrl == vehicleRegistrationPicUrl)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reasonForRejection, reasonForRejection) || other.reasonForRejection == reasonForRejection));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DriverProfileModel&&(identical(other.licensePlate, licensePlate) || other.licensePlate == licensePlate)&&(identical(other.vehicleModel, vehicleModel) || other.vehicleModel == vehicleModel)&&(identical(other.driverLicenseNumber, driverLicenseNumber) || other.driverLicenseNumber == driverLicenseNumber)&&(identical(other.isApproved, isApproved) || other.isApproved == isApproved)&&(identical(other.kycStatus, kycStatus) || other.kycStatus == kycStatus)&&(identical(other.profilePicture, profilePicture) || other.profilePicture == profilePicture));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,totalRides,isApproved,isAvailable,documentsApproved,vehicleMake,vehicleModel,vehicleYear,licensePlate,createdAt,updatedAt,licenseNumber,licenseExpiryDate,licenseFrontPicUrl,licenseBackPicUrl,vehicleRegistrationPicUrl,approvedAt,reasonForRejection);
+int get hashCode => Object.hash(runtimeType,licensePlate,vehicleModel,driverLicenseNumber,isApproved,kycStatus,profilePicture);
 
 @override
 String toString() {
-  return 'DriverProfileModel(id: $id, totalRides: $totalRides, isApproved: $isApproved, isAvailable: $isAvailable, documentsApproved: $documentsApproved, vehicleMake: $vehicleMake, vehicleModel: $vehicleModel, vehicleYear: $vehicleYear, licensePlate: $licensePlate, createdAt: $createdAt, updatedAt: $updatedAt, licenseNumber: $licenseNumber, licenseExpiryDate: $licenseExpiryDate, licenseFrontPicUrl: $licenseFrontPicUrl, licenseBackPicUrl: $licenseBackPicUrl, vehicleRegistrationPicUrl: $vehicleRegistrationPicUrl, approvedAt: $approvedAt, reasonForRejection: $reasonForRejection)';
+  return 'DriverProfileModel(licensePlate: $licensePlate, vehicleModel: $vehicleModel, driverLicenseNumber: $driverLicenseNumber, isApproved: $isApproved, kycStatus: $kycStatus, profilePicture: $profilePicture)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DriverProfileModelCopyWith<$Res>  {
   factory $DriverProfileModelCopyWith(DriverProfileModel value, $Res Function(DriverProfileModel) _then) = _$DriverProfileModelCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'total_rides') int totalRides,@JsonKey(name: 'is_approved') bool isApproved,@JsonKey(name: 'is_available') bool isAvailable,@JsonKey(name: 'submitted_for_approval') bool documentsApproved,@JsonKey(name: 'vehicle_make') String vehicleMake,@JsonKey(name: 'vehicle_model') String vehicleModel,@JsonKey(name: 'vehicle_year') int vehicleYear,@JsonKey(name: 'license_plate') String licensePlate,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'updated_at') String updatedAt,@JsonKey(name: 'driver_license_number') String? licenseNumber,@JsonKey(name: 'driver_license_expiry') String? licenseExpiryDate,@JsonKey(name: 'license_front') String? licenseFrontPicUrl,@JsonKey(name: 'license_back') String? licenseBackPicUrl,@JsonKey(name: 'vehicle_registration') String? vehicleRegistrationPicUrl,@JsonKey(name: 'approved_at') String? approvedAt,@JsonKey(name: 'rejection_reason') String? reasonForRejection
+@JsonKey(name: 'license_plate') String? licensePlate,@JsonKey(name: 'vehicle_model') String? vehicleModel,@JsonKey(name: 'driver_license_number') String? driverLicenseNumber,@JsonKey(name: 'is_approved') bool? isApproved,@JsonKey(name: 'kyc_status') String? kycStatus,@JsonKey(name: 'profile_picture') String? profilePicture
 });
 
 
@@ -65,26 +65,14 @@ class _$DriverProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of DriverProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? totalRides = null,Object? isApproved = null,Object? isAvailable = null,Object? documentsApproved = null,Object? vehicleMake = null,Object? vehicleModel = null,Object? vehicleYear = null,Object? licensePlate = null,Object? createdAt = null,Object? updatedAt = null,Object? licenseNumber = freezed,Object? licenseExpiryDate = freezed,Object? licenseFrontPicUrl = freezed,Object? licenseBackPicUrl = freezed,Object? vehicleRegistrationPicUrl = freezed,Object? approvedAt = freezed,Object? reasonForRejection = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? licensePlate = freezed,Object? vehicleModel = freezed,Object? driverLicenseNumber = freezed,Object? isApproved = freezed,Object? kycStatus = freezed,Object? profilePicture = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,totalRides: null == totalRides ? _self.totalRides : totalRides // ignore: cast_nullable_to_non_nullable
-as int,isApproved: null == isApproved ? _self.isApproved : isApproved // ignore: cast_nullable_to_non_nullable
-as bool,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
-as bool,documentsApproved: null == documentsApproved ? _self.documentsApproved : documentsApproved // ignore: cast_nullable_to_non_nullable
-as bool,vehicleMake: null == vehicleMake ? _self.vehicleMake : vehicleMake // ignore: cast_nullable_to_non_nullable
-as String,vehicleModel: null == vehicleModel ? _self.vehicleModel : vehicleModel // ignore: cast_nullable_to_non_nullable
-as String,vehicleYear: null == vehicleYear ? _self.vehicleYear : vehicleYear // ignore: cast_nullable_to_non_nullable
-as int,licensePlate: null == licensePlate ? _self.licensePlate : licensePlate // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,licenseNumber: freezed == licenseNumber ? _self.licenseNumber : licenseNumber // ignore: cast_nullable_to_non_nullable
-as String?,licenseExpiryDate: freezed == licenseExpiryDate ? _self.licenseExpiryDate : licenseExpiryDate // ignore: cast_nullable_to_non_nullable
-as String?,licenseFrontPicUrl: freezed == licenseFrontPicUrl ? _self.licenseFrontPicUrl : licenseFrontPicUrl // ignore: cast_nullable_to_non_nullable
-as String?,licenseBackPicUrl: freezed == licenseBackPicUrl ? _self.licenseBackPicUrl : licenseBackPicUrl // ignore: cast_nullable_to_non_nullable
-as String?,vehicleRegistrationPicUrl: freezed == vehicleRegistrationPicUrl ? _self.vehicleRegistrationPicUrl : vehicleRegistrationPicUrl // ignore: cast_nullable_to_non_nullable
-as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
-as String?,reasonForRejection: freezed == reasonForRejection ? _self.reasonForRejection : reasonForRejection // ignore: cast_nullable_to_non_nullable
+licensePlate: freezed == licensePlate ? _self.licensePlate : licensePlate // ignore: cast_nullable_to_non_nullable
+as String?,vehicleModel: freezed == vehicleModel ? _self.vehicleModel : vehicleModel // ignore: cast_nullable_to_non_nullable
+as String?,driverLicenseNumber: freezed == driverLicenseNumber ? _self.driverLicenseNumber : driverLicenseNumber // ignore: cast_nullable_to_non_nullable
+as String?,isApproved: freezed == isApproved ? _self.isApproved : isApproved // ignore: cast_nullable_to_non_nullable
+as bool?,kycStatus: freezed == kycStatus ? _self.kycStatus : kycStatus // ignore: cast_nullable_to_non_nullable
+as String?,profilePicture: freezed == profilePicture ? _self.profilePicture : profilePicture // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -167,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'total_rides')  int totalRides, @JsonKey(name: 'is_approved')  bool isApproved, @JsonKey(name: 'is_available')  bool isAvailable, @JsonKey(name: 'submitted_for_approval')  bool documentsApproved, @JsonKey(name: 'vehicle_make')  String vehicleMake, @JsonKey(name: 'vehicle_model')  String vehicleModel, @JsonKey(name: 'vehicle_year')  int vehicleYear, @JsonKey(name: 'license_plate')  String licensePlate, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt, @JsonKey(name: 'driver_license_number')  String? licenseNumber, @JsonKey(name: 'driver_license_expiry')  String? licenseExpiryDate, @JsonKey(name: 'license_front')  String? licenseFrontPicUrl, @JsonKey(name: 'license_back')  String? licenseBackPicUrl, @JsonKey(name: 'vehicle_registration')  String? vehicleRegistrationPicUrl, @JsonKey(name: 'approved_at')  String? approvedAt, @JsonKey(name: 'rejection_reason')  String? reasonForRejection)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'license_plate')  String? licensePlate, @JsonKey(name: 'vehicle_model')  String? vehicleModel, @JsonKey(name: 'driver_license_number')  String? driverLicenseNumber, @JsonKey(name: 'is_approved')  bool? isApproved, @JsonKey(name: 'kyc_status')  String? kycStatus, @JsonKey(name: 'profile_picture')  String? profilePicture)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DriverProfileModel() when $default != null:
-return $default(_that.id,_that.totalRides,_that.isApproved,_that.isAvailable,_that.documentsApproved,_that.vehicleMake,_that.vehicleModel,_that.vehicleYear,_that.licensePlate,_that.createdAt,_that.updatedAt,_that.licenseNumber,_that.licenseExpiryDate,_that.licenseFrontPicUrl,_that.licenseBackPicUrl,_that.vehicleRegistrationPicUrl,_that.approvedAt,_that.reasonForRejection);case _:
+return $default(_that.licensePlate,_that.vehicleModel,_that.driverLicenseNumber,_that.isApproved,_that.kycStatus,_that.profilePicture);case _:
   return orElse();
 
 }
@@ -188,10 +176,10 @@ return $default(_that.id,_that.totalRides,_that.isApproved,_that.isAvailable,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'total_rides')  int totalRides, @JsonKey(name: 'is_approved')  bool isApproved, @JsonKey(name: 'is_available')  bool isAvailable, @JsonKey(name: 'submitted_for_approval')  bool documentsApproved, @JsonKey(name: 'vehicle_make')  String vehicleMake, @JsonKey(name: 'vehicle_model')  String vehicleModel, @JsonKey(name: 'vehicle_year')  int vehicleYear, @JsonKey(name: 'license_plate')  String licensePlate, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt, @JsonKey(name: 'driver_license_number')  String? licenseNumber, @JsonKey(name: 'driver_license_expiry')  String? licenseExpiryDate, @JsonKey(name: 'license_front')  String? licenseFrontPicUrl, @JsonKey(name: 'license_back')  String? licenseBackPicUrl, @JsonKey(name: 'vehicle_registration')  String? vehicleRegistrationPicUrl, @JsonKey(name: 'approved_at')  String? approvedAt, @JsonKey(name: 'rejection_reason')  String? reasonForRejection)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'license_plate')  String? licensePlate, @JsonKey(name: 'vehicle_model')  String? vehicleModel, @JsonKey(name: 'driver_license_number')  String? driverLicenseNumber, @JsonKey(name: 'is_approved')  bool? isApproved, @JsonKey(name: 'kyc_status')  String? kycStatus, @JsonKey(name: 'profile_picture')  String? profilePicture)  $default,) {final _that = this;
 switch (_that) {
 case _DriverProfileModel():
-return $default(_that.id,_that.totalRides,_that.isApproved,_that.isAvailable,_that.documentsApproved,_that.vehicleMake,_that.vehicleModel,_that.vehicleYear,_that.licensePlate,_that.createdAt,_that.updatedAt,_that.licenseNumber,_that.licenseExpiryDate,_that.licenseFrontPicUrl,_that.licenseBackPicUrl,_that.vehicleRegistrationPicUrl,_that.approvedAt,_that.reasonForRejection);}
+return $default(_that.licensePlate,_that.vehicleModel,_that.driverLicenseNumber,_that.isApproved,_that.kycStatus,_that.profilePicture);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -205,10 +193,10 @@ return $default(_that.id,_that.totalRides,_that.isApproved,_that.isAvailable,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'total_rides')  int totalRides, @JsonKey(name: 'is_approved')  bool isApproved, @JsonKey(name: 'is_available')  bool isAvailable, @JsonKey(name: 'submitted_for_approval')  bool documentsApproved, @JsonKey(name: 'vehicle_make')  String vehicleMake, @JsonKey(name: 'vehicle_model')  String vehicleModel, @JsonKey(name: 'vehicle_year')  int vehicleYear, @JsonKey(name: 'license_plate')  String licensePlate, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt, @JsonKey(name: 'driver_license_number')  String? licenseNumber, @JsonKey(name: 'driver_license_expiry')  String? licenseExpiryDate, @JsonKey(name: 'license_front')  String? licenseFrontPicUrl, @JsonKey(name: 'license_back')  String? licenseBackPicUrl, @JsonKey(name: 'vehicle_registration')  String? vehicleRegistrationPicUrl, @JsonKey(name: 'approved_at')  String? approvedAt, @JsonKey(name: 'rejection_reason')  String? reasonForRejection)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'license_plate')  String? licensePlate, @JsonKey(name: 'vehicle_model')  String? vehicleModel, @JsonKey(name: 'driver_license_number')  String? driverLicenseNumber, @JsonKey(name: 'is_approved')  bool? isApproved, @JsonKey(name: 'kyc_status')  String? kycStatus, @JsonKey(name: 'profile_picture')  String? profilePicture)?  $default,) {final _that = this;
 switch (_that) {
 case _DriverProfileModel() when $default != null:
-return $default(_that.id,_that.totalRides,_that.isApproved,_that.isAvailable,_that.documentsApproved,_that.vehicleMake,_that.vehicleModel,_that.vehicleYear,_that.licensePlate,_that.createdAt,_that.updatedAt,_that.licenseNumber,_that.licenseExpiryDate,_that.licenseFrontPicUrl,_that.licenseBackPicUrl,_that.vehicleRegistrationPicUrl,_that.approvedAt,_that.reasonForRejection);case _:
+return $default(_that.licensePlate,_that.vehicleModel,_that.driverLicenseNumber,_that.isApproved,_that.kycStatus,_that.profilePicture);case _:
   return null;
 
 }
@@ -220,27 +208,15 @@ return $default(_that.id,_that.totalRides,_that.isApproved,_that.isAvailable,_th
 @JsonSerializable()
 
 class _DriverProfileModel implements DriverProfileModel {
-  const _DriverProfileModel({required this.id, @JsonKey(name: 'total_rides') required this.totalRides, @JsonKey(name: 'is_approved') required this.isApproved, @JsonKey(name: 'is_available') required this.isAvailable, @JsonKey(name: 'submitted_for_approval') required this.documentsApproved, @JsonKey(name: 'vehicle_make') required this.vehicleMake, @JsonKey(name: 'vehicle_model') required this.vehicleModel, @JsonKey(name: 'vehicle_year') required this.vehicleYear, @JsonKey(name: 'license_plate') required this.licensePlate, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(name: 'driver_license_number') this.licenseNumber, @JsonKey(name: 'driver_license_expiry') this.licenseExpiryDate, @JsonKey(name: 'license_front') this.licenseFrontPicUrl, @JsonKey(name: 'license_back') this.licenseBackPicUrl, @JsonKey(name: 'vehicle_registration') this.vehicleRegistrationPicUrl, @JsonKey(name: 'approved_at') this.approvedAt, @JsonKey(name: 'rejection_reason') this.reasonForRejection});
+  const _DriverProfileModel({@JsonKey(name: 'license_plate') this.licensePlate, @JsonKey(name: 'vehicle_model') this.vehicleModel, @JsonKey(name: 'driver_license_number') this.driverLicenseNumber, @JsonKey(name: 'is_approved') this.isApproved, @JsonKey(name: 'kyc_status') this.kycStatus, @JsonKey(name: 'profile_picture') this.profilePicture});
   factory _DriverProfileModel.fromJson(Map<String, dynamic> json) => _$DriverProfileModelFromJson(json);
 
-@override final  int id;
-@override@JsonKey(name: 'total_rides') final  int totalRides;
-@override@JsonKey(name: 'is_approved') final  bool isApproved;
-@override@JsonKey(name: 'is_available') final  bool isAvailable;
-@override@JsonKey(name: 'submitted_for_approval') final  bool documentsApproved;
-@override@JsonKey(name: 'vehicle_make') final  String vehicleMake;
-@override@JsonKey(name: 'vehicle_model') final  String vehicleModel;
-@override@JsonKey(name: 'vehicle_year') final  int vehicleYear;
-@override@JsonKey(name: 'license_plate') final  String licensePlate;
-@override@JsonKey(name: 'created_at') final  String createdAt;
-@override@JsonKey(name: 'updated_at') final  String updatedAt;
-@override@JsonKey(name: 'driver_license_number') final  String? licenseNumber;
-@override@JsonKey(name: 'driver_license_expiry') final  String? licenseExpiryDate;
-@override@JsonKey(name: 'license_front') final  String? licenseFrontPicUrl;
-@override@JsonKey(name: 'license_back') final  String? licenseBackPicUrl;
-@override@JsonKey(name: 'vehicle_registration') final  String? vehicleRegistrationPicUrl;
-@override@JsonKey(name: 'approved_at') final  String? approvedAt;
-@override@JsonKey(name: 'rejection_reason') final  String? reasonForRejection;
+@override@JsonKey(name: 'license_plate') final  String? licensePlate;
+@override@JsonKey(name: 'vehicle_model') final  String? vehicleModel;
+@override@JsonKey(name: 'driver_license_number') final  String? driverLicenseNumber;
+@override@JsonKey(name: 'is_approved') final  bool? isApproved;
+@override@JsonKey(name: 'kyc_status') final  String? kycStatus;
+@override@JsonKey(name: 'profile_picture') final  String? profilePicture;
 
 /// Create a copy of DriverProfileModel
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DriverProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.totalRides, totalRides) || other.totalRides == totalRides)&&(identical(other.isApproved, isApproved) || other.isApproved == isApproved)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.documentsApproved, documentsApproved) || other.documentsApproved == documentsApproved)&&(identical(other.vehicleMake, vehicleMake) || other.vehicleMake == vehicleMake)&&(identical(other.vehicleModel, vehicleModel) || other.vehicleModel == vehicleModel)&&(identical(other.vehicleYear, vehicleYear) || other.vehicleYear == vehicleYear)&&(identical(other.licensePlate, licensePlate) || other.licensePlate == licensePlate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.licenseNumber, licenseNumber) || other.licenseNumber == licenseNumber)&&(identical(other.licenseExpiryDate, licenseExpiryDate) || other.licenseExpiryDate == licenseExpiryDate)&&(identical(other.licenseFrontPicUrl, licenseFrontPicUrl) || other.licenseFrontPicUrl == licenseFrontPicUrl)&&(identical(other.licenseBackPicUrl, licenseBackPicUrl) || other.licenseBackPicUrl == licenseBackPicUrl)&&(identical(other.vehicleRegistrationPicUrl, vehicleRegistrationPicUrl) || other.vehicleRegistrationPicUrl == vehicleRegistrationPicUrl)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reasonForRejection, reasonForRejection) || other.reasonForRejection == reasonForRejection));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DriverProfileModel&&(identical(other.licensePlate, licensePlate) || other.licensePlate == licensePlate)&&(identical(other.vehicleModel, vehicleModel) || other.vehicleModel == vehicleModel)&&(identical(other.driverLicenseNumber, driverLicenseNumber) || other.driverLicenseNumber == driverLicenseNumber)&&(identical(other.isApproved, isApproved) || other.isApproved == isApproved)&&(identical(other.kycStatus, kycStatus) || other.kycStatus == kycStatus)&&(identical(other.profilePicture, profilePicture) || other.profilePicture == profilePicture));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,totalRides,isApproved,isAvailable,documentsApproved,vehicleMake,vehicleModel,vehicleYear,licensePlate,createdAt,updatedAt,licenseNumber,licenseExpiryDate,licenseFrontPicUrl,licenseBackPicUrl,vehicleRegistrationPicUrl,approvedAt,reasonForRejection);
+int get hashCode => Object.hash(runtimeType,licensePlate,vehicleModel,driverLicenseNumber,isApproved,kycStatus,profilePicture);
 
 @override
 String toString() {
-  return 'DriverProfileModel(id: $id, totalRides: $totalRides, isApproved: $isApproved, isAvailable: $isAvailable, documentsApproved: $documentsApproved, vehicleMake: $vehicleMake, vehicleModel: $vehicleModel, vehicleYear: $vehicleYear, licensePlate: $licensePlate, createdAt: $createdAt, updatedAt: $updatedAt, licenseNumber: $licenseNumber, licenseExpiryDate: $licenseExpiryDate, licenseFrontPicUrl: $licenseFrontPicUrl, licenseBackPicUrl: $licenseBackPicUrl, vehicleRegistrationPicUrl: $vehicleRegistrationPicUrl, approvedAt: $approvedAt, reasonForRejection: $reasonForRejection)';
+  return 'DriverProfileModel(licensePlate: $licensePlate, vehicleModel: $vehicleModel, driverLicenseNumber: $driverLicenseNumber, isApproved: $isApproved, kycStatus: $kycStatus, profilePicture: $profilePicture)';
 }
 
 
@@ -275,7 +251,7 @@ abstract mixin class _$DriverProfileModelCopyWith<$Res> implements $DriverProfil
   factory _$DriverProfileModelCopyWith(_DriverProfileModel value, $Res Function(_DriverProfileModel) _then) = __$DriverProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'total_rides') int totalRides,@JsonKey(name: 'is_approved') bool isApproved,@JsonKey(name: 'is_available') bool isAvailable,@JsonKey(name: 'submitted_for_approval') bool documentsApproved,@JsonKey(name: 'vehicle_make') String vehicleMake,@JsonKey(name: 'vehicle_model') String vehicleModel,@JsonKey(name: 'vehicle_year') int vehicleYear,@JsonKey(name: 'license_plate') String licensePlate,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'updated_at') String updatedAt,@JsonKey(name: 'driver_license_number') String? licenseNumber,@JsonKey(name: 'driver_license_expiry') String? licenseExpiryDate,@JsonKey(name: 'license_front') String? licenseFrontPicUrl,@JsonKey(name: 'license_back') String? licenseBackPicUrl,@JsonKey(name: 'vehicle_registration') String? vehicleRegistrationPicUrl,@JsonKey(name: 'approved_at') String? approvedAt,@JsonKey(name: 'rejection_reason') String? reasonForRejection
+@JsonKey(name: 'license_plate') String? licensePlate,@JsonKey(name: 'vehicle_model') String? vehicleModel,@JsonKey(name: 'driver_license_number') String? driverLicenseNumber,@JsonKey(name: 'is_approved') bool? isApproved,@JsonKey(name: 'kyc_status') String? kycStatus,@JsonKey(name: 'profile_picture') String? profilePicture
 });
 
 
@@ -292,26 +268,14 @@ class __$DriverProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of DriverProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? totalRides = null,Object? isApproved = null,Object? isAvailable = null,Object? documentsApproved = null,Object? vehicleMake = null,Object? vehicleModel = null,Object? vehicleYear = null,Object? licensePlate = null,Object? createdAt = null,Object? updatedAt = null,Object? licenseNumber = freezed,Object? licenseExpiryDate = freezed,Object? licenseFrontPicUrl = freezed,Object? licenseBackPicUrl = freezed,Object? vehicleRegistrationPicUrl = freezed,Object? approvedAt = freezed,Object? reasonForRejection = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? licensePlate = freezed,Object? vehicleModel = freezed,Object? driverLicenseNumber = freezed,Object? isApproved = freezed,Object? kycStatus = freezed,Object? profilePicture = freezed,}) {
   return _then(_DriverProfileModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,totalRides: null == totalRides ? _self.totalRides : totalRides // ignore: cast_nullable_to_non_nullable
-as int,isApproved: null == isApproved ? _self.isApproved : isApproved // ignore: cast_nullable_to_non_nullable
-as bool,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
-as bool,documentsApproved: null == documentsApproved ? _self.documentsApproved : documentsApproved // ignore: cast_nullable_to_non_nullable
-as bool,vehicleMake: null == vehicleMake ? _self.vehicleMake : vehicleMake // ignore: cast_nullable_to_non_nullable
-as String,vehicleModel: null == vehicleModel ? _self.vehicleModel : vehicleModel // ignore: cast_nullable_to_non_nullable
-as String,vehicleYear: null == vehicleYear ? _self.vehicleYear : vehicleYear // ignore: cast_nullable_to_non_nullable
-as int,licensePlate: null == licensePlate ? _self.licensePlate : licensePlate // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,licenseNumber: freezed == licenseNumber ? _self.licenseNumber : licenseNumber // ignore: cast_nullable_to_non_nullable
-as String?,licenseExpiryDate: freezed == licenseExpiryDate ? _self.licenseExpiryDate : licenseExpiryDate // ignore: cast_nullable_to_non_nullable
-as String?,licenseFrontPicUrl: freezed == licenseFrontPicUrl ? _self.licenseFrontPicUrl : licenseFrontPicUrl // ignore: cast_nullable_to_non_nullable
-as String?,licenseBackPicUrl: freezed == licenseBackPicUrl ? _self.licenseBackPicUrl : licenseBackPicUrl // ignore: cast_nullable_to_non_nullable
-as String?,vehicleRegistrationPicUrl: freezed == vehicleRegistrationPicUrl ? _self.vehicleRegistrationPicUrl : vehicleRegistrationPicUrl // ignore: cast_nullable_to_non_nullable
-as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
-as String?,reasonForRejection: freezed == reasonForRejection ? _self.reasonForRejection : reasonForRejection // ignore: cast_nullable_to_non_nullable
+licensePlate: freezed == licensePlate ? _self.licensePlate : licensePlate // ignore: cast_nullable_to_non_nullable
+as String?,vehicleModel: freezed == vehicleModel ? _self.vehicleModel : vehicleModel // ignore: cast_nullable_to_non_nullable
+as String?,driverLicenseNumber: freezed == driverLicenseNumber ? _self.driverLicenseNumber : driverLicenseNumber // ignore: cast_nullable_to_non_nullable
+as String?,isApproved: freezed == isApproved ? _self.isApproved : isApproved // ignore: cast_nullable_to_non_nullable
+as bool?,kycStatus: freezed == kycStatus ? _self.kycStatus : kycStatus // ignore: cast_nullable_to_non_nullable
+as String?,profilePicture: freezed == profilePicture ? _self.profilePicture : profilePicture // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

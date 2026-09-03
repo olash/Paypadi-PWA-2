@@ -10,7 +10,7 @@ abstract interface class IWalletRepository {
 
   FutureApiResultOf<UserBankAccountModel> getDepositAccount();
 
-  FuturePaginatedApiOf<TransactionHistoryModel> getTransactionHistory({
+  FuturePaginatedApiOf<TransactionModel> getTransactionHistory({
     int page = 1,
     int pageSize = 10,
   });

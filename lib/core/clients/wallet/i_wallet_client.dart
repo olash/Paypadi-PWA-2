@@ -8,7 +8,7 @@ import 'package:paypadi/core/models/wallet_model/wallet_model.dart';
 abstract interface class IWalletClient {
   Future<ApiResponse<WalletModel>> getBalance();
 
-  Future<ApiResponse<PaginatedListResponse<TransactionHistoryModel>>>
+  Future<ApiResponse<PaginatedListResponse<TransactionModel>>>
   getTransactionHistory({
     required int page,
     required int pageSize,

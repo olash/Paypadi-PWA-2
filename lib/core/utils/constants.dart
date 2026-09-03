@@ -109,8 +109,7 @@ final List<String> kAppKeyPadKeys = [
 final List<BeneficiaryModel> kMockBeneficiaries = List.generate(
   5,
   (index) => BeneficiaryModel(
-    id: 'beneficiary_$index',
-    type: index.isEven ? 'User' : 'Merchant',
+    id: index,
     accountNumber: '01234567${(10 + index).toString()}',
     accountName: [
       'Adaeze Okafor',
@@ -121,20 +120,15 @@ final List<BeneficiaryModel> kMockBeneficiaries = List.generate(
     ][index],
     bankName: ['First Bank', 'GT Bank', 'Opay', 'UBA', 'Zenith'][index],
     bankCode: ['058', '044', '033', '011', '232'][index],
-    isVerified: index != 3,
-    createdAt: DateTime.now()
-        .subtract(Duration(days: index + 2))
-        .toIso8601String(),
-    updatedAt: DateTime.now()
-        .subtract(Duration(hours: index * 3))
-        .toIso8601String(),
+    isPaypadiAccount: index.isEven,
+    createdAt: DateTime.now().subtract(Duration(days: index + 2)).toIso8601String(),
   ),
 );
 
-final List<TransactionHistoryModel> kMockTransactionHistory = List.generate(
+final List<TransactionModel> kMockTransactionHistory = List.generate(
   10,
-  (index) => TransactionHistoryModel(
-    id: 'txn_$index',
+  (index) => TransactionModel(
+    id: index,
     amount: (1500 + (index * 750)).toString(),
     status: index.isEven
         ? TransactionStatus.success
@@ -143,18 +137,9 @@ final List<TransactionHistoryModel> kMockTransactionHistory = List.generate(
     description: index.isEven
         ? 'Wallet transfer to beneficiary'
         : 'Wallet funding from bank card',
-    metadata: TransactionHistoryMetadata(
-      receipientAccount: '01234567${(index % 10).toString().padLeft(2, '0')}',
-      receipientBankCode: '058',
-      isPinVerified: index.isEven,
-    ),
-    type: index.isEven ? TransactionType.transfer : TransactionType.deposit,
-    createdAt: DateTime.now()
-        .subtract(Duration(days: index, hours: index + 1))
-        .toIso8601String(),
-    senderName: index.isEven ? 'PayPadi Wallet' : 'GTBank Card',
-    recipientName: index.isEven ? 'Tunde Adebayo' : 'PayPadi Wallet',
-    transactionFee: index.isEven ? '15' : '0',
+    transactionType: index.isEven ? TransactionType.transfer : TransactionType.deposit,
+    metadata: {},
+    createdAt: DateTime.now().subtract(Duration(days: index, hours: index + 1)).toIso8601String(),
   ),
 );
 
