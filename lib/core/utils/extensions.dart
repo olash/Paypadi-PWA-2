@@ -26,6 +26,10 @@ extension RefExt on Ref {
   void showExceptionMessage(Object? error, [StackTrace? stackTrace]) => read(
     appToastControllerProvider.notifier,
   ).showExceptionMessage(error, stackTrace);
+
+  void showInfoToast(String message) => read(appToastControllerProvider.notifier).showInfo(message);
+  void showSuccessToast(String message) => read(appToastControllerProvider.notifier).showSuccess(message);
+  void showErrorToast(String message) => read(appToastControllerProvider.notifier).showError(message);
 }
 
 extension WidgetRefExt on WidgetRef {

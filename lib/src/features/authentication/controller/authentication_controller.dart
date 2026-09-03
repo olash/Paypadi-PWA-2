@@ -7,6 +7,7 @@ import 'package:paypadi/core/models/user_model/user_model.dart';
 import 'package:paypadi/core/repositories/authentication/i_authentication_repository.dart';
 import 'package:paypadi/core/utils/constants.dart';
 import 'package:paypadi/core/utils/extensions.dart';
+import 'package:paypadi/core/api/exceptions/app_exception.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_controller.g.dart';
@@ -78,7 +79,8 @@ class AuthenticationController extends _$AuthenticationController {
             .push(const CreateTransactionPinRoute());
       },
       (failure) async {
-        if (failure.message.toLowerCase().contains('already exists')) {
+        final errorMessage = AppException.getExceptionMessage(failure).toLowerCase();
+        if (errorMessage.contains('already exists')) {
           ref.showInfoToast(
             'An account with this phone number already exists. Please log in.',
           );
@@ -110,7 +112,8 @@ class AuthenticationController extends _$AuthenticationController {
     checkUserResult.fold(
       (success) => userExists = true,
       (failure) {
-        if (failure.message.contains('No active account found')) {
+        final errorMessage = AppException.getExceptionMessage(failure).toLowerCase();
+        if (errorMessage.contains('no active account found')) {
           userExists = true;
         }
       },
