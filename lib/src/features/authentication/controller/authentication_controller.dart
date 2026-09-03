@@ -77,9 +77,20 @@ class AuthenticationController extends _$AuthenticationController {
             .read(appRouterProvider)
             .push(const CreateTransactionPinRoute());
       },
-      (failure) {
-        ref.showExceptionMessage(failure);
-        state = const AsyncData(null);
+      (failure) async {
+        if (failure.message.toLowerCase().contains('already exists')) {
+          ref.showInfoToast(
+            'An account with this phone number already exists. Please log in.',
+          );
+          state = const AsyncData(null);
+          await ref.read(appRouterProvider).pushAndPopUntil(
+                const SignInRoute(),
+                predicate: (route) => false,
+              );
+        } else {
+          ref.showExceptionMessage(failure);
+          state = const AsyncData(null);
+        }
       },
     );
   }
@@ -87,9 +98,38 @@ class AuthenticationController extends _$AuthenticationController {
   Future<void> requestForOtp() async {
     state = const AsyncLoading();
     final payloadBuilder = ref.read(authenticationPayloadProvider);
+    final phoneNumber = payloadBuilder['phone_number'] as String;
+
+    // Check if the user already exists using a dummy login call
+    final checkUserResult = await _repository.login({
+      'phone_number': phoneNumber,
+      'password': 'dummy_password_for_existence_check',
+    });
+
+    bool userExists = false;
+    checkUserResult.fold(
+      (success) => userExists = true,
+      (failure) {
+        if (failure.message.contains('No active account found')) {
+          userExists = true;
+        }
+      },
+    );
+
+    if (userExists) {
+      ref.showInfoToast(
+        'An account with this phone number already exists. Please log in.',
+      );
+      state = const AsyncData(null);
+      await ref.read(appRouterProvider).pushAndPopUntil(
+            const SignInRoute(),
+            predicate: (route) => false,
+          );
+      return;
+    }
 
     final result = await _repository.requestForOtpCode({
-      'phone_number': payloadBuilder['phone_number'],
+      'phone_number': phoneNumber,
       'purpose': 'registration',
     });
 
