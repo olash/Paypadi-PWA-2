@@ -75,6 +75,8 @@ sealed class ServerException extends AppException with _$ServerException {
         if (errorMessages.isNotEmpty) {
           message = errorMessages.join('\n');
         }
+      } else if (errors is String && errors.isNotEmpty) {
+        message = errors;
       }
     }
 
