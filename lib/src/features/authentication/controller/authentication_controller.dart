@@ -44,8 +44,8 @@ class AuthenticationController extends _$AuthenticationController {
           ]),
         );
 
-        await ref.read(appRouterProvider).push(const DashboardRoute());
         state = const AsyncData(null);
+        await ref.read(appRouterProvider).push(const DashboardRoute());
       },
       (exception) {
         ref.showExceptionMessage(exception);
@@ -56,7 +56,7 @@ class AuthenticationController extends _$AuthenticationController {
 
   Future<void> register() async {
     state = const AsyncLoading();
-    final payload = ref.watch(authenticationPayloadProvider);
+    final payload = ref.read(authenticationPayloadProvider);
 
     final result = await _repository.createAccount(payload);
 
@@ -72,10 +72,10 @@ class AuthenticationController extends _$AuthenticationController {
           ]),
         );
 
+        state = const AsyncData(null);
         await ref
             .read(appRouterProvider)
             .push(const CreateTransactionPinRoute());
-        state = const AsyncData(null);
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -86,7 +86,7 @@ class AuthenticationController extends _$AuthenticationController {
 
   Future<void> requestForOtp() async {
     state = const AsyncLoading();
-    final payloadBuilder = ref.watch(authenticationPayloadProvider);
+    final payloadBuilder = ref.read(authenticationPayloadProvider);
 
     final result = await _repository.requestForOtpCode({
       'phone_number': payloadBuilder['phone_number'],
@@ -95,8 +95,8 @@ class AuthenticationController extends _$AuthenticationController {
 
     await result.fold(
       (success) async {
-        await ref.read(appRouterProvider).push(const OtpRoute());
         state = const AsyncData(null);
+        await ref.read(appRouterProvider).push(const OtpRoute());
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -107,7 +107,7 @@ class AuthenticationController extends _$AuthenticationController {
 
   Future<void> verifyOtpCode(String code) async {
     state = const AsyncLoading();
-    final payloadBuilder = ref.watch(authenticationPayloadProvider);
+    final payloadBuilder = ref.read(authenticationPayloadProvider);
 
     final result = await _repository.verifyOtpCode({
       'phone_number': payloadBuilder['phone_number'],
@@ -117,12 +117,12 @@ class AuthenticationController extends _$AuthenticationController {
 
     await result.fold(
       (success) async {
-        final payload = ref.watch(authenticationPayloadProvider);
+        final payload = ref.read(authenticationPayloadProvider);
 
         payload['phone_token'] = success.data.token;
 
-        await ref.read(appRouterProvider).push(const AccountRoleRoute());
         state = const AsyncData(null);
+        await ref.read(appRouterProvider).push(const AccountRoleRoute());
       },
       (failure) {
         ref.showExceptionMessage(failure);
@@ -132,7 +132,7 @@ class AuthenticationController extends _$AuthenticationController {
   }
 
   Future<void> loginWithBiometrics() async {
-    final biometricService = ref.watch(biometricsProvider);
+    final biometricService = ref.read(biometricsProvider);
     final localCache = await ref.read(localCacheProvider.future);
 
     final user = await localCache.get<UserModel?>(
