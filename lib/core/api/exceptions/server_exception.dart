@@ -60,6 +60,22 @@ sealed class ServerException extends AppException with _$ServerException {
     if (data is Map) {
       message = data['message'] as String?;
       conflictingAssetId = (data['data'] as Map?)?['document_id'] as String?;
+      
+      final errors = data['error'];
+      if (errors is Map && errors.isNotEmpty) {
+        final List<String> errorMessages = [];
+        for (final entry in errors.entries) {
+          final value = entry.value;
+          if (value is List && value.isNotEmpty) {
+            errorMessages.add('${entry.key}: ${value.first}');
+          } else if (value is String) {
+            errorMessages.add('${entry.key}: $value');
+          }
+        }
+        if (errorMessages.isNotEmpty) {
+          message = errorMessages.join('\n');
+        }
+      }
     }
 
     switch (statusCode) {

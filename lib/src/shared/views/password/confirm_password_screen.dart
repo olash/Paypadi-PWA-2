@@ -77,6 +77,8 @@ class ConfirmPasswordScreen extends HookConsumerWidget {
     if (password == confirmedPassword) {
       ref.read(authenticationPayloadProvider)['password'] = password;
       await ref.read(authenticationControllerProvider.notifier).register();
+    } else {
+      ref.showErrorToast('Passwords do not match');
     }
   }
 }
