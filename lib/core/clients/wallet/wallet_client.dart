@@ -39,7 +39,7 @@ abstract class WalletClient implements IWalletClient {
   });
 
   @override
-  @POST('$_basePath/transfer/verify-bank-account/')
+  @POST('/wallets/bank/verify/')
   Future<ApiResponse<VerifiedBankAccountModel>> verifyBankInformation({
     @Body() required Map<String, dynamic> payload,
   });

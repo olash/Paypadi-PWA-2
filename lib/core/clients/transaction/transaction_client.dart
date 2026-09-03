@@ -16,7 +16,7 @@ abstract class TransactionClient implements ITransactionClient {
   factory TransactionClient(Dio dio, {String baseUrl}) = _TransactionClient;
 
   @override
-  @POST('$_basePath/deposit/')
+  @POST('/wallets/payments/initiate/')
   Future<ApiResponse<PaymentModel>> initiatePayment({
     @Body() required Map<String, dynamic> payload,
   });
@@ -28,7 +28,7 @@ abstract class TransactionClient implements ITransactionClient {
   });
 
   @override
-  @POST('$_basePath/withdrawal/')
+  @POST('$_basePath/withdraw/')
   Future<ApiResponse<TransactionModel>> withdraw({
     @Body() required Map<String, dynamic> payload,
   });
@@ -40,7 +40,7 @@ abstract class TransactionClient implements ITransactionClient {
   });
 
   @override
-  @POST('$_basePath/transfer/lookup/')
+  @POST('/wallets/payments/lookup/')
   Future<ApiResponse<AccountLookupModel>> getAccountDetails({
     @Body() required Map<String, dynamic> payload,
   });
@@ -55,7 +55,7 @@ abstract class TransactionClient implements ITransactionClient {
   Future<ApiResponse<PaginatedListResponse<BeneficiaryModel>>> getRecentBeneficiaries();
 
   @override
-  @GET('$_basePath/transactions/verify/{reference}/')
+  @GET('$_basePath/transactions/{reference}/')
   Future<ApiResponse<TransactionModel>> getTransactionByRefNo({
     @Path('reference') required String reference,
   });

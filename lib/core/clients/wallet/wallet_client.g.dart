@@ -165,7 +165,7 @@ class _WalletClient implements WalletClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transfer/verify-bank-account/',
+            '/wallets/bank/verify/',
             queryParameters: queryParameters,
             data: _data,
           )

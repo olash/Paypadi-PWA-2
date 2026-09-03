@@ -32,7 +32,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/deposit/',
+            '/wallets/payments/initiate/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -98,7 +98,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/withdrawal/',
+            '/wallets/withdraw/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -164,7 +164,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transfer/lookup/',
+            '/wallets/payments/lookup/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -270,7 +270,7 @@ class _TransactionClient implements TransactionClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wallets/transactions/verify/${reference}/',
+            '/wallets/transactions/${reference}/',
             queryParameters: queryParameters,
             data: _data,
           )

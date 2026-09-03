@@ -45,7 +45,7 @@ abstract class ProfileClient implements IProfileClient {
   });
 
   @override
-  @GET('$_basePath/user/')
+  @GET('$_basePath/me/')
   Future<ApiResponse<UserModel>> getAccountInfo();
 
   @override
